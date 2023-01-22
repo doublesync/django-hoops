@@ -17,5 +17,3 @@ class DiscordUser(models.Model):
     # Discord User Methods
     def is_authenticated(self, request):
         return True
-    def is_activate(self, request):
-        return True
