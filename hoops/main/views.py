@@ -16,6 +16,7 @@ import main.discord.auth as discord_auth
 # Create your views here.
 @login_required(login_url="/login/discord/")
 def home(request):
+    current_user = request.user
     return HttpResponse("Hello, world. You're at the main index.")
 
 def login(request):
@@ -26,8 +27,12 @@ def login_discord(request):
     return redirect(discord_auth_url)
 
 def login_discord_redirect(request):
+    # Get information from Discord
     code = request.GET.get('code')
-    user = discord_auth.exchange_code(code)
+    info = discord_auth.exchange_code(code)
+    user = info[0]
+    # guilds = info[1]
+    # Log the user in
     discord_user = authenticate(request, user=user)
     discord_user = list(discord_user).pop()
     django_login(request, discord_user, backend="main.authorize.DiscordBackend")
