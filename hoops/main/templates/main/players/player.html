@@ -1,0 +1,10 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+    <h2 class="text-uppercase fw-bold mb-3 mt-3" style="text-align: center;">{{ player.first_name}} {{ player.last_name}}</h2>
+    <div class="container ">
+        <p class="mb-4" style="text-align: center;"><b>{{ player.first_name }} {{ player.last_name }}</b> is a <b>{{ player.primary_position }}/{{ player.secondary_position }}</b> who plays for the <a href="{% url 'team' player.current_team.id %}">{{ player.current_team }}</a>.</p>
+    </div>
+
+{% endblock %}

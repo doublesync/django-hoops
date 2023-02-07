@@ -1,0 +1,33 @@
+Quick Note: 
+    1. MAKE SURE WHEN YOU COMPILE PLAYER DATA (VITALS, ATTRIBUTES, BADGES, ETC.)
+    THAT YOU CAST THE VALUES TO THE CORRECT TYPE (STR, ETC.) BEFORE YOU RETURN THEM.
+
+Quick Idea: 
+    HERE THE PLAYER EXPORT PROCESS:
+        1. HAVE A PAGE WHERE USER (PERMITTED USERS PREFERABLY) CAN SELECT PLAYERS TO ADD TO DUMP (THROUGH A FORM).
+        2. CREATE A ROUTE THAT TAKES A LIST OF PLAYERS AND DUMPS THEIR FORMATTED JSON FILES SO THE USER CAN COPY THEM.
+        3. USERS CAN ALSO DUMP FROM A LIST OF PLAYERS WHO HAVE YET TO BE UPGRADED. (IN GAME)
+        4. PLAYERS ARE ADDED TO THE LIST REFERENCED IN STEP 3 WHENEVER THEY UPGRADE. (IF THEY ARE NOT IN THE LIST ALREADY)
+        5. I WILL NEED TO FORMAT PLAYER DUMPS SO THEY WORK WITH 2KTOOLS --> THIS SHOULD BE QUITE EASY AS IT'S JUST PLUGGING IN VALUES
+
+Todo List: 
+    - Finish the 'create a player form' and the 'upgrade form' and add logic to both of them.
+    - Finish designing the other pages and making them user-friendly/accessible/good on the eye.
+    - Create the export system so that administrators can copy compiled versions of player files that will work with the game.
+
+Quick Note:
+    HERE IS THE PROCESS FOR ADDING CONTRACTS TO PLAYERS:
+        1. Use the admin panel to create new entries in the JSON.
+            OR.
+        1. Create a page where administrators can add contracts to players.
+        2. Find the current season's number from the configuration (use the first configuration -- should be the only one in the whole table).
+        3. Take data for each season in the contract, to get the number for other seasons, increment the current season's number.
+        4. Make sure users cannot add more seasons to a player than the "contract_years_max" variable listed in the league configuration file. 
+
+Quick Note:
+    HERE IS HOW WE WOULD MOVE TO A NEW SEASON:
+        1. Simply change the season in the admin panel to the new season.
+        2. Create a page that would "refresh" the league.
+        3. All the "refresh" would do is:
+            - Check if players have a contract for the new season, if they don't, it will make them free agents.
+        
