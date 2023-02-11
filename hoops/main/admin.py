@@ -1,5 +1,9 @@
 # Django imports
 from django.contrib import admin
+from django.db.models.fields.json import JSONField
+
+# Third party imports
+from jsoneditor.forms import JSONEditor
 
 # Model imports
 from .models import DiscordUser
@@ -11,12 +15,18 @@ from .models import Configuration
 from .models import Contract
 from .models import Season
 
+# Override the default JSONField widget with the JSONEditor widget
+class MyAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        JSONField: {'widget': JSONEditor},
+    }
+
 # Register your models here.
-admin.site.register(DiscordUser)
-admin.site.register(Player)
-admin.site.register(FeatureList)
-admin.site.register(HistoryList)
-admin.site.register(Team)
-admin.site.register(Configuration)
-admin.site.register(Contract)
-admin.site.register(Season)
+admin.site.register(DiscordUser, MyAdmin)
+admin.site.register(Player, MyAdmin)
+admin.site.register(FeatureList, MyAdmin)
+admin.site.register(HistoryList, MyAdmin)
+admin.site.register(Team, MyAdmin)
+admin.site.register(Configuration, MyAdmin)
+admin.site.register(Contract, MyAdmin)
+admin.site.register(Season, MyAdmin)

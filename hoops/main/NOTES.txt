@@ -14,6 +14,20 @@ Todo List:
     - Finish the 'create a player form' and the 'upgrade form' and add logic to both of them.
     - Finish designing the other pages and making them user-friendly/accessible/good on the eye.
     - Create the export system so that administrators can copy compiled versions of player files that will work with the game.
+    - Create the "refresh" system/page so that after the season has been changed in the admin panel/on another page, the league will update.
+    - Create a trading system/page so that team managers can trade players that are currently on their roster.
+        - There will need to be a few pages:
+            - Sent Trades (locate this into the sending teams Record)
+            - Trade Offers (locate this into the receiving teams Record)
+            - Create Trade (this is just a page that has a form that allows managers to create trades)
+                - It should pre-load all of the players on both teams.
+                - You will have to use javascript for this, because it'll need to load the players each time the user chooses a new team
+                    to trade with.
+    - Create a page for administrators to add a manager to a team, maybe?
+        - Could even have assistant managers?
+        - This may be easy considering once you login to the admin panel, you are authenticated with that account on the main pages too.
+    - Add daily rewards that users can collect (or automatically be given on an interval).
+        - Maybe even add streaks?
 
 Quick Note:
     HERE IS THE PROCESS FOR ADDING CONTRACTS TO PLAYERS:

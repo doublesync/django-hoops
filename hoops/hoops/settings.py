@@ -1,3 +1,5 @@
+import os
+
 """
 Django settings for hoops project.
 
@@ -35,6 +37,8 @@ AUTHENTICATION_BACKENDS = [
 # Application definition
 
 INSTALLED_APPS = [
+    # Django Light Theme
+    'django_light',
     # Django Apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,6 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Local Apps
     'main.apps.MainConfig',
+    # Third Party Apps
+    'jsoneditor',
 ]
 
 MIDDLEWARE = [
@@ -61,7 +67,7 @@ ROOT_URLCONF = 'hoops.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [(os.path.join(BASE_DIR, 'templates')),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -5,6 +5,10 @@
 # Description : Attribute, badge & upgrade configuration
 start_attribute = 65
 start_badge = 0
+min_attribute = 0
+max_attribute = 99
+min_badge = 0
+max_badge = 4
 attribute_cost = 0 
 badge_cost = 0
 
@@ -140,7 +144,7 @@ initial_team_logo = "https://cdn.simplystamps.com/media/catalog/product/5/8/5802
 # Description : Choice lists (for forms)
 height_choices = [("69", "5'9"), ("70", "5'10"), ("71", "5'11"), ("72", "6'0"), ("73", "6'1"), ("74", "6'2"), ("75", "6'3"), ("76", "6'4"), ("77", "6'5"), ("78", "6'6"), ("79", "6'7"), ("80", "6'8"), ("81", "6'9"), ("82", "6'10"), ("83", "6'11"), ("84", "7'0"), ("85", "7'1")]
 position_choices = [("PG", "Point Guard"), ("SG", "Shooting Guard"), ("SF", "Small Forward"), ("PF", "Power Forward"), ("C", "Center")]
-badge_upgrade_choices = [("Bronze", "Bronze"), ("Silver", "Silver"), ("Gold", "Gold"), ("Hall of Fame", "Hall of Fame")]
+badge_upgrade_choices = [(1, "Bronze"), (2, "Silver"), (3, "Gold"), (4, "Hall of Fame")]
 
 # Description : League configuration variables
 # Description : Test configuration

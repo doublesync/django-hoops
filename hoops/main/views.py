@@ -20,7 +20,11 @@ from .forms import UpgradeForm
 # Custom imports
 from .discord import auth as discord_auth
 from .league import config as league_config
-from .league import methods as league_methods
+
+# Custom packages
+from .league.player import get as hoops_player_get
+from .league.teams import get as hoops_teams_get
+from .league.extra import convert as hoops_extra_convert
 
 # .ENV file import
 import os, json
@@ -84,7 +88,7 @@ def upgrade_player(request, id):
     # convert the attributes & badges from the database to the game-friendly names
     # before we can export them for game use.
     user = request.user
-    player = league_methods.get_player(id)
+    player = hoops_player_get.fetch(id)
     # Check if the player exists (or not)
     if player:
         if player.discord_user == user:
