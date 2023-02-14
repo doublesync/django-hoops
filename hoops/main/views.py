@@ -23,6 +23,7 @@ from .league import config as league_config
 
 # Custom packages
 from .league.player import get as hoops_player_get
+from .league.player import upgrade as hoops_player_upgrade
 from .league.teams import get as hoops_teams_get
 from .league.extra import convert as hoops_extra_convert
 
@@ -70,42 +71,52 @@ def player(request, id):
     context = {
         "title": f"{player_object.first_name} {player_object.last_name}",
         "player": player_object,
-        "player_currency": {
-            "primary_currency_name": (league_config.primary_currency_name).capitalize(),
-            "secondary_currency_name": (league_config.secondary_currency_name).capitalize(),
-            "primary_currency": getattr(player_object, league_config.primary_currency_name),
-            "secondary_currency": getattr(player_object, league_config.secondary_currency_name),
-        }
     }
     return render(request, "main/players/player.html", context)
 
 @login_required(login_url="/login/discord/")
 def upgrade_player(request, id):
     # Collect user & player information
-    # Quick Note: The player attributes & badges are formatted differently in the database
-    # than they are in the game. The database stores them with more user-friendly names,
-    # while the game stores them with more game-friendly names. This is why we have to
-    # convert the attributes & badges from the database to the game-friendly names
-    # before we can export them for game use.
     user = request.user
     player = hoops_player_get.fetch(id)
-    # Check if the player exists (or not)
+    # If the request is a POST request, then the user is trying to upgrade the player
     if player:
         if player.discord_user == user:
-            # Initialize the prefill information
-            prefill_info = dict(player.attributes, **player.badges) # Combine the attributes & badges into one dictionary
-            prefill_info = {k.lower(): v for k, v in prefill_info.items()} # To match field names in the form (lowercase)
-            prefill_info = {k.replace(" ", "_"): v for k, v in prefill_info.items()} # To match field names in the form (underscores)
-            # Initialize the context
-            context = {
-                "title": "Upgrade Player", 
-                "player": player, 
-                "upgrade_player_form": UpgradeForm(initial=prefill_info),
-                "formatted_player": prefill_info,
-                "badge_prices": league_config.badge_prices,
-                "attribute_prices": league_config.attribute_prices,
-            }
-            return render(request, "main/players/upgrade.html", context)
+            if request.method == "POST": 
+                form = UpgradeForm(request.POST)
+                if form.is_valid():
+                    response = hoops_player_upgrade.createUpgrade(player, form.cleaned_data)
+                    print(response)
+                    return redirect(upgrade_player, id=id)
+                else:
+                    print(form.errors)
+                    return redirect(upgrade_player, id=id)
+            else:
+                # Initialize the prefill information
+                prefill_info = dict(player.attributes, **player.badges) # Combine the attributes & badges into one dictionary
+                prefill_info = {k.lower(): v for k, v in prefill_info.items()} # To match field names in the form (lowercase)
+                prefill_info = {k.replace(" ", "_"): v for k, v in prefill_info.items()} # To match field names in the form (underscores)
+                # Initialize the context
+                context = {
+                    # Context items
+                    "title": "Upgrade Player", 
+                    "player": player, 
+                    "upgrade_player_form": UpgradeForm(initial=prefill_info),
+                    "formatted_player": prefill_info,
+                    "badge_prices": league_config.badge_prices,
+                    "attribute_prices": league_config.attribute_prices,
+                    # Attribute categories
+                    "finishing_attributes": league_config.attribute_categories["finishing"],
+                    "shooting_attributes": league_config.attribute_categories["shooting"],
+                    "playmaking_attributes": league_config.attribute_categories["playmaking"],
+                    "defense_attributes": league_config.attribute_categories["defense"],
+                    # Badge categories
+                    "finishing_badges": league_config.badge_categories["finishing"],
+                    "shooting_badges": league_config.badge_categories["shooting"],
+                    "playmaking_badges": league_config.badge_categories["playmaking"],
+                    "defense_badges": league_config.badge_categories["defense"],
+                }
+                return render(request, "main/players/upgrade.html", context)
         else:
             return HttpResponse(f"Sorry, you don't own {player.first_name} {player.last_name}!")
     else:

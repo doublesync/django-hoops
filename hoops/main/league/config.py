@@ -9,8 +9,8 @@ min_attribute = 0
 max_attribute = 99
 min_badge = 0
 max_badge = 4
-attribute_prices = {} 
-badge_prices = {"Current": 0, "Bronze": 10, "Silver": 25, "Gold": 50, "Hall of Fame": 75}
+attribute_prices = {"Default": 10} 
+badge_prices = {0: 0, 1: 10, 2: 25, 3: 50, 4: 75}
 
 # Description : League configuration variables
 # Description : Contract configuration (salary)
@@ -25,10 +25,7 @@ contract_years_max = 3
 
 # Description : League configuration variables
 # Description : Currency configuration
-primary_currency_name = "cash"
 primary_currency_start = 1000
-secondary_currency_name = "gems"
-secondary_currency_start = 0
 
 # Description : League configuration variables
 # Description : Player configuration
@@ -48,14 +45,14 @@ initial_attributes = {
     "Three Point Shot": start_attribute,
     "Free Throw": start_attribute,
     "Ball Control": start_attribute,
-    "Passing IQ": start_attribute,
+    "Passing Iq": start_attribute,
     "Passing Vision": start_attribute,
     "Passing Accuracy": start_attribute,
     "Defensive Rebound": start_attribute,
     "Offensive Rebound": start_attribute,
     "Standing Dunk": start_attribute,
     "Driving Dunk": start_attribute,
-    "Shot IQ": start_attribute,
+    "Shot Iq": start_attribute,
     "Hands": start_attribute,
     "Interior Defense": start_attribute,
     "Perimeter Defense": start_attribute,
@@ -134,7 +131,9 @@ initial_badges = {
     "Rebound Chaser": start_badge,
 }
 initial_features = {}
-initial_history = {}
+initial_history = {
+    "upgrade_history": {"spent": 0, "logs": []}
+}
 initial_contract = {}
 initial_settings = {}
 # Description : Initial database field configuration (for new teams)
@@ -145,6 +144,123 @@ initial_team_logo = "https://cdn.simplystamps.com/media/catalog/product/5/8/5802
 height_choices = [("69", "5'9"), ("70", "5'10"), ("71", "5'11"), ("72", "6'0"), ("73", "6'1"), ("74", "6'2"), ("75", "6'3"), ("76", "6'4"), ("77", "6'5"), ("78", "6'6"), ("79", "6'7"), ("80", "6'8"), ("81", "6'9"), ("82", "6'10"), ("83", "6'11"), ("84", "7'0"), ("85", "7'1")]
 position_choices = [("PG", "Point Guard"), ("SG", "Shooting Guard"), ("SF", "Small Forward"), ("PF", "Power Forward"), ("C", "Center")]
 badge_upgrade_choices = [(0, "Current"), (1, "Bronze"), (2, "Silver"), (3, "Gold"), (4, "Hall of Fame")]
+
+# Description : Attribute & badge categories
+attribute_categories = {
+    "finishing": [
+        "Driving Layup",
+        "Post Control",
+        "Draw Foul",
+        "Shot Close",
+        "Standing Dunk",
+        "Driving Dunk",
+    ],
+    "shooting": [
+        "Post Fadeaway",
+        "Post Hook",
+        "Mid Range Shot",
+        "Three Point Shot",
+        "Free Throw",
+        "Shot Iq",
+
+    ],
+    "defense": [
+        "Defensive Rebound",
+        "Offensive Rebound",
+        "Interior Defense",
+        "Perimeter Defense",
+        "Block",
+        "Steal",
+        "Shot Contest",
+        "Lateral Quickness",
+    ],
+    "playmaking": [
+        "Ball Control",
+        "Passing Iq",
+        "Passing Vision",
+        "Passing Accuracy",
+        "Speed With Ball",
+    ],
+    "physical": [
+        "Hands",
+        "Speed",
+        "Acceleration",
+        "Vertical",
+        "Strength",
+    ],
+}
+badge_categories = {
+    "finishing": [
+        "Acrobat", 
+        "Aerial Wizard", 
+        "Backdown Punisher", 
+        "Bully", 
+        "Dream Shake",
+        "Drop Stepper",
+        "Fast Twitch",
+        "Fearless Finisher",
+        "Giant Slayer",
+        "Limitless Takeoff",
+        "Masher",
+        "Post Spin Technician",
+        "Posterizer",
+        "Pro Touch",
+        "Rise Up",
+        "Slithery"
+    ],
+    "shooting": [
+        "Agent 3",
+        "Amped",
+        "Blinders",
+        "Catch and Shoot",
+        "Claymore",
+        "Corner Specialist",
+        "Deadeye",
+        "Green Machine",
+        "Guard Up",
+        "Limitless Range",
+        "Middy Magician",
+        "Slippery Off Ball",
+        "Space Creator",
+        "Volume Shooter"
+    ],
+    "defense": [
+        "Anchor",
+        "Ankle Braces",
+        "Challenger",
+        "Chase Down Artist",
+        "Clamps",
+        "Glove",
+        "Interceptor",
+        "Menace",
+        "Off Ball Pest",
+        "Pick Dodger",
+        "Post Lockdown",
+        "Pogo Stick",
+        "Work Horse",
+        "Brick Wall",
+        "Boxout Beast",
+        "Rebound Chaser"
+    ],
+    "playmaking": [
+        "Ankle Breaker",
+        "Bail Out",
+        "Break Starter",
+        "Clamp Breaker",
+        "Killer Combos",
+        "Dimer",
+        "Floor General",
+        "Handles for Days",
+        "Hyperdrive",
+        "Mismatch Expert",
+        "Needle Threader",
+        "Post Playmaker",
+        "Quick First Step",
+        "Special Delivery",
+        "Unpluckable",
+        "Vice Grip"
+    ],
+}
 
 # Description : League configuration variables
 # Description : Test configuration

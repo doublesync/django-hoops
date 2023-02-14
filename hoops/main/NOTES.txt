@@ -57,3 +57,22 @@ Quick Note:
               , then use the caps from the related physical_caps model.
         4. Create a refresh page/system so that when an administrator updates a player
            their attributes can be lowered (if needed).
+
+Quick Note:
+    THIS IS FOR THE UPGRADE SUBMISSION SYSTEM
+        1. Setup the request & iterate through each field from the cleaned data.
+        2. Format each key so you can find the matching k/v pair in the database (attributes/badges fields)
+        3. If the attribute/badge is different from value in database, add price to total cost variable (price depends)
+            - Also update the attribute/badge in the player (it's ok, we won't save the player to database until validated)
+            - Lastly, add the attribute/badge to a variable that holds all of the updated attributes & badges.
+        4. Validate the upgrade
+            - Does the player have enough money? (total cost variable)
+            - For attributes:
+                - Would sending this upgrade through put the attribute over the max? (global or cap max)
+                - Would sending this upgrade through make the attribute lower than it already is?
+                - Is it a physical attribute? (if so -- it's non-upgradable)
+            - For badges:
+                - Would sending this upgrade through put the badge over the max? (global or cap max)
+                - Would sending this upgrade through make the badge lower than it already is?
+        5. Update the player in the database. (save the player to the database)
+        6. In the players history list, update the career total spent and add the upgrade to the upgrade log.

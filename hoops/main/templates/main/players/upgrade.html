@@ -10,7 +10,11 @@
 
     <!-- upgrades -->
     <div class="container">
-        <form>
+        <form action="/player/upgrade/{{ player.id }}/" method="post">
+
+            {% csrf_token %}
+
+            <!-- cart/price details -->
             <div class="card mt-5">
                 <div class="card-header">
                     <h5 class="mb-0">My Cart</h5>
@@ -18,53 +22,204 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text mb-0">My Cash<br><b>$<span id="cash">0</b></span></p>
-                    <p class="card-text mb-0">Cart Cost<br><b>$<span id="price">0</b></span></span></p>
+                    <p class="card-text mb-0">Spending<br><b>$<span id="price">0</b></span></span></p>
                     <p class="card-text mb-0">Leftover<br><b>$<span id="cashLeft">0</span></b></p>
                     <hr>
                     <input type="submit" value="Purchase" id="submitButton" class="btn btn-success btn-sm">
+                    {{ upgrade_player_form.non_field_errors }}
                 </div>
             </div>
-            
-            <!-- form -->
-            {% csrf_token %}
+        
             <!-- attributes -->
-            <!-- badges -->
-            <!-- finishing badges -->
-            <div class="card mt-2">
-                <div class="card-header">
-                    <h5 class="mb-0">Finishing Badges</h5>
-                    <p id="status" class="mb-0"></p>
-                </div>
-                <div class="card-body">
-                    <h4>Finishing</h4>
-                    <div class="row">
-                        <div class="col-md-2">
-                            {{ upgrade_player_form.acrobat.label }}<br>
-                            {{ upgrade_player_form.acrobat|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+            <div id="accordion-1" class="accordion mt-2" role="tablist">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" role="tab"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-1" aria-expanded="true" aria-controls="accordion-1 .item-1">Attributes</button></h2>
+                    <div class="accordion-collapse collapse show item-1" role="tabpanel" data-bs-parent="#accordion-1">
+                        <div class="card mt-2">
+                            <div class="card-header">
+                                <h5 class="mb-0">Attributes</h5>
+                                <p>Below you find the categorized attributes for your player.</p>
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            {{ upgrade_player_form.aerial_wizard.label }}<br>
-                            {{ upgrade_player_form.aerial_wizard|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+                        <!-- finishing attributes -->
+                        <div class="card mt-2">
+                            <div class="card-header">
+                                <h5 class="mb-0">Finishing Attributes</h5>
+                                <p id="status" class="mb-0"></p>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    {% for field in upgrade_player_form %} 
+                                        {% if field.label in finishing_attributes %}
+                                            <div class="col-md-2">
+                                                {{ field.errors }}
+                                                {{ field.label }}<br>
+                                                {{ field|addclass:"form-control form-control-sm mt-1 attributeUpgrade" }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            {{ upgrade_player_form.backdown_punisher.label }}<br>
-                            {{ upgrade_player_form.backdown_punisher|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+                        <!-- shooting attributes -->
+                        <div class="card mt-2">
+                            <div class="card-header">
+                                <h5 class="mb-0">Shooting Attributes</h5>
+                                <p id="status" class="mb-0"></p>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    {% for field in upgrade_player_form %} 
+                                        {% if field.label in shooting_attributes %}
+                                            <div class="col-md-2">
+                                                {{ field.errors }}
+                                                {{ field.label }}<br>
+                                                {{ field|addclass:"form-control form-control-sm mt-1 attributeUpgrade" }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            {{ upgrade_player_form.bully.label }}<br>
-                            {{ upgrade_player_form.bully|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+                        <!-- playmaking attributes -->
+                        <div class="card mt-2">
+                            <div class="card-header">
+                                <h5 class="mb-0">Playmaking Attributes</h5>
+                                <p id="status" class="mb-0"></p>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    {% for field in upgrade_player_form %} 
+                                        {% if field.label in playmaking_attributes %}
+                                            <div class="col-md-2">
+                                                {{ field.errors }}
+                                                {{ field.label }}<br>
+                                                {{ field|addclass:"form-control form-control-sm mt-1 attributeUpgrade" }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            {{ upgrade_player_form.dream_shake.label }}<br>
-                            {{ upgrade_player_form.dream_shake|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
-                        </div>
-                        <div class="col-md-2">
-                            {{ upgrade_player_form.drop_stepper.label }}
-                            {{ upgrade_player_form.drop_stepper|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+                        <!-- defense attributes -->
+                        <div class="card mt-2">
+                            <div class="card-header">
+                                <h5 class="mb-0">Defense Attributes</h5>
+                                <p id="status" class="mb-0"></p>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    {% for field in upgrade_player_form %} 
+                                        {% if field.label in defense_attributes %}
+                                            <div class="col-md-2">
+                                                {{ field.errors }}
+                                                {{ field.label }}<br>
+                                                {{ field|addclass:"form-control form-control-sm mt-1 attributeUpgrade" }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- badges -->
+            <div id="accordion-2" class="accordion mt-2" role="tablist">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" role="tab"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-2 .item-1" aria-expanded="true" aria-controls="accordion-2 .item-1">Badges</button></h2>
+                    <div class="accordion-collapse collapse show item-1" role="tabpanel" data-bs-parent="#accordion-2">
+                        <div class="card mt-2">
+                            <div class="card-header">
+                                <h5 class="mb-0">Badges</h5>
+                                <p>Below you find the categorized badges for your player.</p>
+                            </div>
+                        </div>
+                        <!-- finishing badges -->
+                        <div class="card mt-2">
+                            <div class="card-header">
+                                <h5 class="mb-0">Finishing Badges</h5>
+                                <p id="status" class="mb-0"></p>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    {% for field in upgrade_player_form %} 
+                                        {% if field.label in finishing_badges %}
+                                            <div class="col-md-2">
+                                                {{ field.errors }}
+                                                {{ field.label }}<br>
+                                                {{ field|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- shooting badges -->
+                        <div class="card mt-2">
+                            <div class="card-header">
+                                <h5 class="mb-0">Shooting Badges</h5>
+                                <p id="status" class="mb-0"></p>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    {% for field in upgrade_player_form %} 
+                                        {% if field.label in shooting_badges %}
+                                            <div class="col-md-2">
+                                                {{ field.errors }}
+                                                {{ field.label }}<br>
+                                                {{ field|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- playmaking badges -->
+                        <div class="card mt-2">
+                            <div class="card-header">
+                                <h5 class="mb-0">Playmaking Badges</h5>
+                                <p id="status" class="mb-0"></p>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    {% for field in upgrade_player_form %} 
+                                        {% if field.label in playmaking_badges %}
+                                            <div class="col-md-2">
+                                                {{ field.errors }}
+                                                {{ field.label }}<br>
+                                                {{ field|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- defense badges -->
+                        <div class="card mt-2">
+                            <div class="card-header">
+                                <h5 class="mb-0">Defense Badges</h5>
+                                <p id="status" class="mb-0"></p>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    {% for field in upgrade_player_form %} 
+                                        {% if field.label in defense_badges %}
+                                            <div class="col-md-2">
+                                                {{ field.errors }}
+                                                {{ field.label }}<br>
+                                                {{ field|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </form>
     </div>
 
@@ -73,6 +228,7 @@
         const attributePrices = {{ attribute_prices|safe }};
         const badgePrices = {{ badge_prices|safe }};
         const formattedPlayer = {{ formatted_player|safe }};
+        const cash = {{ player.cash }}
     </script>
     <script src="{% static 'main/js/players/updatePrice.js' %}"></script>
 

@@ -53,13 +53,10 @@ class Player(models.Model):
     badges = models.JSONField(default=league_config.get_default_badges)
     # Player Currencies
     primary_currency = models.PositiveBigIntegerField(
-        name=league_config.primary_currency_name, 
+        name="cash", 
         default=league_config.primary_currency_start,
     )
-    secondary_currency = models.PositiveBigIntegerField(
-        name=league_config.secondary_currency_name, 
-        default=league_config.secondary_currency_start,
-    )
+    spent = models.PositiveBigIntegerField(name="spent", default=0)
     # Relationships
     current_team = models.ForeignKey("Team", on_delete=models.CASCADE) # Each player has one team
     discord_user = models.ForeignKey("DiscordUser", on_delete=models.CASCADE) # Each player has one discord user
