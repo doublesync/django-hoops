@@ -45,3 +45,15 @@ Quick Note:
         3. All the "refresh" would do is:
             - Check if players have a contract for the new season, if they don't, it will make them free agents.
         
+Quick Note:
+    HERE IS HOW WE IMPLEMENT PHYSICAL CAPS
+        1. It's actually so easy.
+        2. Make a new model for physical caps.
+            - (So administrators can CRUD them in the admin page)
+            - Create a "physical_cap" field in the player model
+              which would have a OneToOne relationship with a physical cap record.
+        3. Implement them into the upgrade system.
+            - Fetch the "physical_cap" field from the player model
+              , then use the caps from the related physical_caps model.
+        4. Create a refresh page/system so that when an administrator updates a player
+           their attributes can be lowered (if needed).

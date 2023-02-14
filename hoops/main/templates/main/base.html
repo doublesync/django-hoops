@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="{% static 'main/fonts/ionicons.min.css' %}">
         <link rel="stylesheet" href="{% static 'main/css/Navbar-Right-Links-Dark-icons.css' %}">
         <link rel="stylesheet" href="{% static 'main/css/home-styles.css' %}">
+        {% block title %}{% endblock %}
     </head>
     <body>
         <nav class="navbar navbar-dark navbar-expand-md bg-dark py-3">
@@ -26,8 +27,7 @@
                 </div>
             </div>
         </nav>
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
         <script src="{% static 'main/bootstrap/js/bootstrap.min.js' %}"></script>
     </body>
 </html>

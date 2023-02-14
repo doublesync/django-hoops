@@ -1,14 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=\, initial-scale=1.0">
-    <title>{{ title }}</title>
-</head>
-<body>
-    {% csrf_token %}
-    {{ upgrade_player_form }}
-    <input type="submit" value="Upgrade Player">
-</body>
-</html>
+{% extends 'main/base.html' %}
+{% load static %}
+{% load main_filters %}
+
+{% block title %}
+    <!-- <link rel="stylesheet" href="{% static 'main/css/players/upgrade.css' %}"> -->
+{% endblock %}
+
+{% block content %}
+
+    <!-- upgrades -->
+    <div class="container">
+        <form>
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h5 class="mb-0">My Cart</h5>
+                    <p id="status" class="mb-0"></p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text mb-0">My Cash<br><b>$<span id="cash">0</b></span></p>
+                    <p class="card-text mb-0">Cart Cost<br><b>$<span id="price">0</b></span></span></p>
+                    <p class="card-text mb-0">Leftover<br><b>$<span id="cashLeft">0</span></b></p>
+                    <hr>
+                    <input type="submit" value="Purchase" id="submitButton" class="btn btn-success btn-sm">
+                </div>
+            </div>
+            
+            <!-- form -->
+            {% csrf_token %}
+            <!-- attributes -->
+            <!-- badges -->
+            <!-- finishing badges -->
+            <div class="card mt-2">
+                <div class="card-header">
+                    <h5 class="mb-0">Finishing Badges</h5>
+                    <p id="status" class="mb-0"></p>
+                </div>
+                <div class="card-body">
+                    <h4>Finishing</h4>
+                    <div class="row">
+                        <div class="col-md-2">
+                            {{ upgrade_player_form.acrobat.label }}<br>
+                            {{ upgrade_player_form.acrobat|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+                        </div>
+                        <div class="col-md-2">
+                            {{ upgrade_player_form.aerial_wizard.label }}<br>
+                            {{ upgrade_player_form.aerial_wizard|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+                        </div>
+                        <div class="col-md-2">
+                            {{ upgrade_player_form.backdown_punisher.label }}<br>
+                            {{ upgrade_player_form.backdown_punisher|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+                        </div>
+                        <div class="col-md-2">
+                            {{ upgrade_player_form.bully.label }}<br>
+                            {{ upgrade_player_form.bully|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+                        </div>
+                        <div class="col-md-2">
+                            {{ upgrade_player_form.dream_shake.label }}<br>
+                            {{ upgrade_player_form.dream_shake|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+                        </div>
+                        <div class="col-md-2">
+                            {{ upgrade_player_form.drop_stepper.label }}
+                            {{ upgrade_player_form.drop_stepper|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- scripts -->
+    <script>
+        const attributePrices = {{ attribute_prices|safe }};
+        const badgePrices = {{ badge_prices|safe }};
+        const formattedPlayer = {{ formatted_player|safe }};
+    </script>
+    <script src="{% static 'main/js/players/updatePrice.js' %}"></script>
+
+{% endblock %}

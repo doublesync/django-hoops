@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Test Server</title>
+</head>
+<body>
+    <!-- headers -->
+    <h1>Test Server</h1>
+    <!-- info group -->
+    <div class="infoGroup">
+        <p id="priceLabel"><b>Total Price: </b>$<span id="price">0</span></p>
+        <p id="cashLabel"><b>My Cash: </b>$<span id="cash">0</span></p>
+    </div>
+    <!-- form -->
+    <form>
+        <!-- testbadge1 -->
+        <label for="testbadge1">Test Badge 1</label>
+        <select name="testbadge1" class="badgeUpgrade" onchange="badgeChange()">
+            <option value="N/A">N/A</option>
+            <option value="Bronze">Bronze</option>
+            <option value="Silver">Silver</option>
+            <option value="Gold">Gold</option>
+            <option value="Hall of Fame">Hall of Fame</option>
+        </select><br>
+        <!-- testbadge2 -->
+        <label for="testbadge2">Test Badge 2</label>
+        <select name="testbadge2" class="badgeUpgrade" onchange="badgeChange()">
+            <option value="N/A">N/A</option>
+            <option value="Bronze">Bronze</option>
+            <option value="Silver">Silver</option>
+            <option value="Gold">Gold</option>
+            <option value="Hall of Fame">Hall of Fame</option>
+        </select><br>
+        <!-- testbadge3 -->
+        <label for="testbadge3">Test Badge 3</label>
+        <select name="testbadge3" class="badgeUpgrade" onchange="badgeChange()">
+            <option value="N/A">N/A</option>
+            <option value="Bronze">Bronze</option>
+            <option value="Silver">Silver</option>
+            <option value="Gold">Gold</option>
+            <option value="Hall of Fame">Hall of Fame</option>
+        </select><br>
+        <!-- testbadge4 -->
+        <label for="testbadge4">Test Badge 4</label>
+        <select name="testbadge4" class="badgeUpgrade" onchange="badgeChange()">
+            <option value="N/A">N/A</option>
+            <option value="Bronze">Bronze</option>
+            <option value="Silver">Silver</option>
+            <option value="Gold">Gold</option>
+            <option value="Hall of Fame">Hall of Fame</option>
+        </select><br>
+        <!-- status -->
+        <p id="status">Click the items above to upgrade badges</p>
+        <!-- submissions -->
+        <button type="submit" id="submit">Submit Upgrades</button>
+    </form>
+    <!-- scripts -->
+    <script src="main.js"></script>
+</body>
+</html>
