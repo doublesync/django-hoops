@@ -1,13 +1,18 @@
-from ...models import Player
+# Custom imports
 from ...league import config as league_config
+from . import physicals as player_physicals
 
+# Python imports
 import datetime
 
+# Upgrade methods
 def formatFormData(player, cleanedFormData):
     # Format the cleaned form data (so it works with the database)
     formatFormData = cleanedFormData.copy()
     formatFormData = {k.title(): v for k, v in formatFormData.items()} 
     formatFormData = {k.replace("_", " "): v for k, v in formatFormData.items()}
+    # Initialize the upgrade data (will be returned to upgrade the player with)
+    # Basically, we'll just be adding the values that were changed and are valid to this dictionary
     upgradeData = {"attributes": {}, "badges": {}}
     # Filter out values that are under minimum, over maximum or equal to current value
     for k, v in formatFormData.items():
@@ -60,11 +65,14 @@ def createUpgrade(player, cleanedFormData):
                 totalCost += league_config.badge_prices[v["new"]]
     # Return if cost is below zero
     if totalCost <= 0:
-        return "Nothing was upgraded!"
+        return "😕 Nothing to upgrade!"
     # Check if the player has enough cash
     if (player.cash >= totalCost):
         # Subtract the cost from the player's cash
         player.cash -= totalCost
+        # Validate the upgrades based on player physicals (physical caps)
+        # isPhysicallyValid = player_physicals.validatePhysicals(player, upgradeData)
+        # if not isPhysicallyValid: return "❌ Physical caps would be exceeded!"
         # Add the upgrades to the player
         for k, v in upgradeData["attributes"].items():
             player.attributes[k] = v["new"]
@@ -72,18 +80,18 @@ def createUpgrade(player, cleanedFormData):
                 player.badges[k] = v["new"]
         # Add the totalCost to spent & add history list log
         currentTime = datetime.datetime.now()
-        timestamp = currentTime.strftime("%Y-%m-%d %H:%M:%S")
+        timestamp = currentTime.strftime("%Y-%m-%d | %H:%M:%S")
         player.spent += totalCost
         player.history_list.history["upgrade_logs"].append({
             "cost": totalCost,
             "data": upgradeData,
             "timestamp": timestamp,
         })
-        # Save the player
+        # Save the player & history lists
         player.save()
         player.history_list.save()
         # Return success message
-        return f"Validated successfully! (${totalCost})"
+        return f"✅ Congrats, you upgraded your player for ${totalCost}!"
     else:
         # Return error message
         return "Not enough cash!"
