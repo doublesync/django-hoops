@@ -132,10 +132,11 @@ initial_badges = {
 }
 initial_features = {}
 initial_history = {
-    "upgrade_history": {"spent": 0, "logs": []}
+    "upgrade_logs": [],
 }
 initial_contract = {}
 initial_settings = {}
+initial_physical = {}
 # Description : Initial database field configuration (for new teams)
 initial_team_logo = "https://cdn.simplystamps.com/media/catalog/product/5/8/5802-n-a-stock-stamp-hcb.png"
 
@@ -274,3 +275,4 @@ def get_default_features(): return initial_features
 def get_default_history(): return initial_history
 def get_default_contract(): return initial_contract
 def get_default_settings(): return initial_settings
+def get_default_physical(): return initial_physical

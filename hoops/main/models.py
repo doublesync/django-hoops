@@ -52,20 +52,30 @@ class Player(models.Model):
     attributes = models.JSONField(default=league_config.get_default_attributes)
     badges = models.JSONField(default=league_config.get_default_badges)
     # Player Currencies
-    primary_currency = models.PositiveBigIntegerField(
-        name="cash", 
-        default=league_config.primary_currency_start,
-    )
+    primary_currency = models.PositiveBigIntegerField(name="cash", default=league_config.primary_currency_start)
     spent = models.PositiveBigIntegerField(name="spent", default=0)
+    # Pending (for game updates)
+    pending = models.BooleanField(default=False)
     # Relationships
     current_team = models.ForeignKey("Team", on_delete=models.CASCADE) # Each player has one team
     discord_user = models.ForeignKey("DiscordUser", on_delete=models.CASCADE) # Each player has one discord user
     feature_list = models.OneToOneField("FeatureList", on_delete=models.CASCADE) # Each player has one features object
     history_list = models.OneToOneField("HistoryList", on_delete=models.CASCADE) # Each player has one history object
     contract_details = models.OneToOneField("Contract", null=True, blank=True, on_delete=models.CASCADE) # Each player has one contract
+    physical_limits = models.OneToOneField("Physical", on_delete=models.CASCADE) # Each player has one physical object
     # Player Methods
     def __str__(self):
         return f"[{self.id}] {self.first_name} {self.last_name}"
+
+class Physical(models.Model):
+    # Physical Model
+    id = models.BigIntegerField(primary_key=True, serialize=False)
+    effected_attributes = models.JSONField(default=league_config.get_default_physical, blank=True)
+    effected_badges = models.JSONField(default=league_config.get_default_physical, blank=True)
+    enabled = models.BooleanField(default=True)
+    # Physical Methods
+    def __str__(self):
+        return f"Physical Entry #{self.id}"
 
 # List Models (for players)
 class FeatureList(models.Model):

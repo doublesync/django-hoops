@@ -137,6 +137,19 @@ def players(request):
     }
     return render(request, "main/players/players.html", context)
 
+def upgrade_logs(request, id):
+    player = hoops_player_get.fetch(id)
+    logs = player.history_list.history["upgrade_logs"]
+    logs.reverse()
+    if player:
+        context = {
+            "name": f"{player.first_name} {player.last_name}",
+            "logs": logs,
+        }
+        return render(request, "main/players/history.html", context)
+    else:
+        return HttpResponse("Sorry, this player doesn't exist!")
+
 def team(request, id):
     team_object = Team.objects.get(pk=id)
     context = {
