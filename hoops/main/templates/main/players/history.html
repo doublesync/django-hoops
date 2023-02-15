@@ -33,10 +33,10 @@
                                                     <thead>
                                                         <tr>
                                                             <th>Name</th>
-                                                            <th>Old</th>
-                                                            <th>New</th>
-                                                            <th>Trend</th>
-                                                            <th>Cost</th>
+                                                            <th>🟥 Old</th>
+                                                            <th>🟩 New</th>
+                                                            <th>📈 Trend</th>
+                                                            <th>💵 Cost</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -44,10 +44,10 @@
                                                         {% for k, v in log.data.attributes.items %}
                                                             <tr>
                                                                 <td>{{ k }}</td>
-                                                                <td>🟥 {{ v.old }}</td>
-                                                                <td>🟩 {{ v.new }}</td>
-                                                                <td>📈 +{{ v.new|sub:v.old }}</td>
-                                                                <td>💵 ${{ v.cost }}</td>
+                                                                <td>{{ v.old }}</td>
+                                                                <td>{{ v.new }}</td>
+                                                                <td>+{{ v.new|sub:v.old }}</td>
+                                                                <td>${{ v.cost }}</td>
                                                             </tr>
                                                         {% endfor %}
                                                     </tbody>
@@ -59,10 +59,10 @@
                                                     <thead>
                                                         <tr>
                                                             <th>Name</th>
-                                                            <th>Old</th>
-                                                            <th>New</th>
-                                                            <th>Trend</th>
-                                                            <th>Cost</th>
+                                                            <th>🟥 Old</th>
+                                                            <th>🟩 New</th>
+                                                            <th>📈 Trend</th>
+                                                            <th>💵 Cost</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -70,10 +70,10 @@
                                                         {% for k, v in log.data.badges.items %}
                                                             <tr>
                                                                 <td>{{ k }}</td>
-                                                                <td>🟥 {{ v.old }}</td>
-                                                                <td>🟩 {{ v.new }}</td>
-                                                                <td>📈 +{{ v.new|sub:v.old }}</td>
-                                                                <td>💵 ${{ v.cost }}</td>
+                                                                <td>{{ v.old }}</td>
+                                                                <td>{{ v.new }}</td>
+                                                                <td>+{{ v.new|sub:v.old }}</td>
+                                                                <td>${{ v.cost }}</td>
                                                             </tr>
                                                         {% endfor %}
                                                     </tbody>
