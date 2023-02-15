@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # Model imports
 from .models import DiscordUser
@@ -86,10 +87,9 @@ def upgrade_player(request, id):
                 form = UpgradeForm(request.POST)
                 if form.is_valid():
                     response = hoops_player_upgrade.createUpgrade(player, form.cleaned_data)
-                    print(response)
+                    messages.success(request, response)
                     return redirect(upgrade_player, id=id)
                 else:
-                    print(form.errors)
                     return redirect(upgrade_player, id=id)
             else:
                 # Initialize the prefill information

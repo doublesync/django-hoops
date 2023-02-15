@@ -27,6 +27,14 @@
                     <hr>
                     <input type="submit" value="Purchase" id="submitButton" class="btn btn-success btn-sm">
                     {{ upgrade_player_form.non_field_errors }}
+                    {% if messages %}
+                        <hr>
+                        <div class="container">
+                            {% for message in messages %}
+                                <span  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </span><br>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         

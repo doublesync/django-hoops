@@ -17,4 +17,5 @@ urlpatterns = [
     # Team PATHS
     path(route="team/<int:id>/", view=views.team, name="team"),
     path(route="teams/", view=views.teams, name="teams"),
+    # Misc PATHS
 ]
