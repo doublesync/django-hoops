@@ -25,7 +25,34 @@
                     <p class="card-text mb-0">Spending<br><b>$<span id="price">0</b></span></span></p>
                     <p class="card-text mb-0">Leftover<br><b>$<span id="cashLeft">0</span></b></p>
                     <hr>
-                    <input type="submit" value="Purchase" id="submitButton" class="btn btn-success btn-sm">
+                    <!-- Continue/False-Submit Button -->
+                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">
+                        Purchase
+                    </button>
+                    <!-- Confirmation Modal -->
+                    <div class="modal" id="myModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <!-- Modal header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Confirm Purchase</h4>
+                            </div>
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <p class="mb-4"><b>Are you sure you want to continue with this upgrade?</b></p>
+                                <ul class="container list-group mt-2" id="cartList" style="list-style-type: none; padding: 0px; margin: 0px;">
+                                </ul>
+                                <p class="mt-4"><b>Total Price: </b><span id="confirmationPrice"></span></p>
+                            </div>
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <input type="submit" value="Purchase" id="submitButton" class="btn btn-success btn-sm">
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                            </div>
+                        </div>
+                      </div>
+                    <!-- Errors & Messages -->
                     {{ upgrade_player_form.non_field_errors }}
                     {% if messages %}
                         <hr>
@@ -235,7 +262,7 @@
     <script>
         const attributePrices = {{ attribute_prices|safe }};
         const badgePrices = {{ badge_prices|safe }};
-        const formattedPlayer = {{ formatted_player|safe }};
+        const badgeAttributes = {{ badge_attributes|safe }};
         const cash = {{ player.cash }}
     </script>
     <script src="{% static 'main/js/players/updatePrice.js' %}"></script>

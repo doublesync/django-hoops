@@ -102,7 +102,7 @@ def upgrade_player(request, id):
                     "title": "Upgrade Player", 
                     "player": player, 
                     "upgrade_player_form": UpgradeForm(initial=prefill_info),
-                    "formatted_player": prefill_info,
+                    "badge_attributes": prefill_info,
                     "badge_prices": league_config.badge_prices,
                     "attribute_prices": league_config.attribute_prices,
                     # Attribute categories
