@@ -1,6 +1,6 @@
 # Custom imports
 from ...league import config as league_config
-from . import physicals as player_physicals
+from . import limits as player_limits
 
 # Python imports
 import datetime
@@ -71,8 +71,10 @@ def createUpgrade(player, cleanedFormData):
         # Subtract the cost from the player's cash
         player.cash -= totalCost
         # Validate the upgrades based on player physicals (physical caps)
-        # isPhysicallyValid = player_physicals.validatePhysicals(player, upgradeData)
-        # if not isPhysicallyValid: return "❌ Physical caps would be exceeded!"
+        checkLimits = player_limits.validatePhysicals(player, upgradeData)
+        response = checkLimits[0]
+        status = checkLimits[1]
+        if response != True: return status
         # Add the upgrades to the player
         for k, v in upgradeData["attributes"].items():
             player.attributes[k] = v["new"]

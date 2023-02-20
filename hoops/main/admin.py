@@ -14,7 +14,10 @@ from .models import Team
 from .models import Configuration
 from .models import Contract
 from .models import Season
-from .models import Physical
+from .models import HeightLimit
+from .models import WeightLimit
+from .models import PlayerOffers
+from .models import TeamOffers
 
 # Override the default JSONField widget with the JSONEditor widget
 class MyAdmin(admin.ModelAdmin):
@@ -31,4 +34,7 @@ admin.site.register(Team, MyAdmin)
 admin.site.register(Configuration, MyAdmin)
 admin.site.register(Contract, MyAdmin)
 admin.site.register(Season, MyAdmin)
-admin.site.register(Physical, MyAdmin)
+admin.site.register(HeightLimit, MyAdmin)
+admin.site.register(WeightLimit, MyAdmin)
+admin.site.register(PlayerOffers, MyAdmin)
+admin.site.register(TeamOffers, MyAdmin)

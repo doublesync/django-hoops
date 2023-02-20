@@ -9,6 +9,11 @@ min_attribute = 0
 max_attribute = 99
 min_badge = 0
 max_badge = 4
+# Description : Oak & Syp configuration
+oak_start_attribute = 80
+syp_start_attribute = 70
+
+# Description : Attribute & badge prices
 attribute_prices = {"Default": 10} 
 badge_prices = {0: 0, 1: 10, 2: 25, 3: 50, 4: 75}
 
@@ -136,13 +141,22 @@ initial_history = {
 }
 initial_contract = {}
 initial_settings = {}
-initial_physical = {}
+initial_limits = {
+    "Speed": start_attribute,
+    "Speed With Ball": start_attribute,
+    "Acceleration": start_attribute,
+    "Vertical": start_attribute,
+    "Strength": start_attribute,
+}
+initial_offers = {}
+initial_trade_logs = {}
+initial_draft_picks = {}
 # Description : Initial database field configuration (for new teams)
 initial_team_logo = "https://cdn.simplystamps.com/media/catalog/product/5/8/5802-n-a-stock-stamp-hcb.png"
 
 # Description : League configuration variables
 # Description : Choice lists (for forms)
-height_choices = [("69", "5'9"), ("70", "5'10"), ("71", "5'11"), ("72", "6'0"), ("73", "6'1"), ("74", "6'2"), ("75", "6'3"), ("76", "6'4"), ("77", "6'5"), ("78", "6'6"), ("79", "6'7"), ("80", "6'8"), ("81", "6'9"), ("82", "6'10"), ("83", "6'11"), ("84", "7'0"), ("85", "7'1")]
+height_choices = [(70, "5'10"), (71, "5'11"), (72, "6'0"), (73, "6'1"), (74, "6'2"), (75, "6'3"), (76, "6'4"), (77, "6'5"), (78, "6'6"), (79, "6'7"), (80, "6'8"), (81, "6'9"), (82, "6'10"), (83, "6'11"), (84, "7'0"), (85, "7'1"), (86, "7'2"), (87, "7'3")]
 position_choices = [("PG", "Point Guard"), ("SG", "Shooting Guard"), ("SF", "Small Forward"), ("PF", "Power Forward"), ("C", "Center")]
 badge_upgrade_choices = [(0, "Current"), (1, "Bronze"), (2, "Silver"), (3, "Gold"), (4, "Hall of Fame")]
 
@@ -176,18 +190,18 @@ attribute_categories = {
         "Lateral Quickness",
     ],
     "playmaking": [
+        "Hands",
         "Ball Control",
         "Passing Iq",
         "Passing Vision",
         "Passing Accuracy",
-        "Speed With Ball",
     ],
     "physical": [
-        "Hands",
         "Speed",
         "Acceleration",
         "Vertical",
         "Strength",
+        "Speed With Ball",
     ],
 }
 badge_categories = {
@@ -266,7 +280,6 @@ badge_categories = {
 # Description : League configuration variables
 # Description : Test configuration
 
-
 # Description : League configuration methods
 # Quick Note: Django prefers a callable be used as a default value in a JSONField initialization instead of an instance
 def get_default_attributes(): return initial_attributes
@@ -275,4 +288,7 @@ def get_default_features(): return initial_features
 def get_default_history(): return initial_history
 def get_default_contract(): return initial_contract
 def get_default_settings(): return initial_settings
-def get_default_physical(): return initial_physical
+def get_default_limits(): return initial_limits
+def get_default_offers(): return initial_offers
+def get_default_trade_logs(): return initial_trade_logs
+def get_default_draft_picks(): return initial_draft_picks
