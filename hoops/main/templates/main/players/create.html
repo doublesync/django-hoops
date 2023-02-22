@@ -20,8 +20,10 @@
                         <div class="card mb-5">
                             <div class="card-body p-sm-5">
                                 <h3 class="text-uppercase fw-bold mb-2">REGISTER</h3>
-                                <form>
+                                <form action="/player/create/" method="post">
                                     {% csrf_token %}
+                                    <!-- Link Physical Limits/Caps -->
+                                    <a classs="mb-2" href="https://tinyurl.com/2xu7s3as" target="_blank">View physical limits</a>
                                     <!-- First & Last names -->
                                     <div class="">
                                         <label for="first_name" class="label label-primary">First Name</label>

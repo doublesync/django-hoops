@@ -28,10 +28,9 @@ class DiscordUser(models.Model):
 
 class Player(models.Model):
     # Player Model
-    id = models.BigIntegerField(primary_key=True, serialize=False)
     first_name = models.CharField(default="Unknown", max_length=16) # Ex: LeBron
     last_name = models.CharField(default="Player", max_length=16) # Ex: James
-    height = models.SmallIntegerField(choices = league_config.height_choices, default = league_config.height_choices[0][0]) 
+    height = models.SmallIntegerField(choices=league_config.height_choices, default=league_config.height_choices[0][0]) 
     weight = models.IntegerField( # Ex: 226 (in lbs)
         validators=[
             MinValueValidator(league_config.player_weight_min), 
@@ -56,13 +55,13 @@ class Player(models.Model):
     spent = models.PositiveBigIntegerField(name="spent", default=0)
     # Relationships
     discord_user = models.ForeignKey("DiscordUser", on_delete=models.CASCADE) # Each player has one discord user
-    current_team = models.ForeignKey("Team", on_delete=models.CASCADE) # Each player has one team
-    height_limits = models.ForeignKey("HeightLimit", on_delete=models.CASCADE) # Each player has one heightLimit object
-    weight_limits = models.ForeignKey("WeightLimit", on_delete=models.CASCADE) # Each player has one weightLimit object
-    contract_details = models.OneToOneField("Contract", on_delete=models.CASCADE) # Each player has one contract
-    contract_offers = models.OneToOneField("PlayerOffers", on_delete=models.CASCADE) # Each player has one offers object
-    feature_list = models.OneToOneField("FeatureList", on_delete=models.CASCADE) # Each player has one features object
-    history_list = models.OneToOneField("HistoryList", on_delete=models.CASCADE) # Each player has one history object
+    current_team = models.ForeignKey("Team", blank=True, null=True, on_delete=models.CASCADE) # Each player has one team
+    height_limits = models.ForeignKey("HeightLimit", blank=True, null=True, on_delete=models.CASCADE) # Each player has one heightLimit object
+    weight_limits = models.ForeignKey("WeightLimit", blank=True, null=True, on_delete=models.CASCADE) # Each player has one weightLimit object
+    contract_details = models.ForeignKey("Contract", on_delete=models.CASCADE) # Each player has one contract
+    contract_offers = models.ForeignKey("PlayerOffers", on_delete=models.CASCADE) # Each player has one offers object
+    feature_list = models.ForeignKey("FeatureList", on_delete=models.CASCADE) # Each player has one features object
+    history_list = models.ForeignKey("HistoryList", on_delete=models.CASCADE) # Each player has one history object
     # Pending (for game updates)
     upgrades_pending = models.BooleanField(default=False)
     # Player Methods
@@ -71,7 +70,6 @@ class Player(models.Model):
 
 class HeightLimit(models.Model):
     # HeightLimit Model
-    id = models.BigIntegerField(primary_key=True, serialize=False)
     height = models.SmallIntegerField(default=0)
     limits = models.JSONField(default=league_config.get_default_limits)
     enabled = models.BooleanField(default=True)
@@ -81,7 +79,6 @@ class HeightLimit(models.Model):
 
 class WeightLimit(models.Model):
     # WeightLimit Model
-    id = models.BigIntegerField(primary_key=True, serialize=False)
     range1 = models.SmallIntegerField(default=0)
     range2 = models.SmallIntegerField(default=0)
     limits = models.JSONField(default=league_config.get_default_limits)
@@ -91,31 +88,24 @@ class WeightLimit(models.Model):
         return f"{self.range1}lbs - {self.range2-1}lbs"
 
 class PlayerOffers(models.Model):
-    id = models.BigIntegerField(primary_key=True, serialize=False)
-    # Relationships
     offers = models.JSONField(default=league_config.get_default_offers, blank=True)
 
 class TeamOffers(models.Model):
-    id = models.BigIntegerField(primary_key=True, serialize=False)
     # Relationships
     offers = models.JSONField(default=league_config.get_default_offers, blank=True)
 
 # List Models (for players)
 class FeatureList(models.Model):
-    id = models.BigIntegerField(primary_key=True, serialize=False)
     features = models.JSONField(default=league_config.get_default_features, blank=True)
 
 class HistoryList(models.Model):
-    id = models.BigIntegerField(primary_key=True, serialize=False)  
     history = models.JSONField(default=league_config.get_default_history, blank=True)
 
 class Contract(models.Model):
-    id = models.BigIntegerField(primary_key=True, serialize=False)
     breakdown = models.JSONField(default=league_config.get_default_contract, blank=True) 
 
 # Team & Statistic Models
 class Team(models.Model):
-    id = models.BigIntegerField(primary_key=True, serialize=False)
     name = models.CharField(max_length=32) # Ex: Los Angeles Lakers
     logo = models.CharField(max_length=100, default=league_config.initial_team_logo) # Ex: https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg
     abbrev = models.CharField(max_length=3) # Ex: LAL
@@ -130,13 +120,11 @@ class Team(models.Model):
 
 # League Models
 class Season(models.Model):
-    id = models.BigIntegerField(primary_key=True, serialize=False)
     # Season Methods
     def __str__(self):
         return f"Season {self.id}"
 
 class Configuration(models.Model):
-    id = models.BigIntegerField(primary_key=True, serialize=False)
     name = models.CharField(max_length=32)
     settings = models.JSONField(default=league_config.get_default_settings, blank=True)
     # Relationships

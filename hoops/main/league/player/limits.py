@@ -13,26 +13,27 @@ def getPlayerLimits(player):
     # Figure out which height limit to use for this player
     for option in height_limit_list:
         option_height = option.height
-        if player.height == option_height:
+        if int(player.height) == int(option_height):
             current_height_limits = option
             break
     # Figure out which weight limit to use for this player
     for option in weight_limit_list:
         weight_range = range(option.range1, option.range2)
-        if player.weight in weight_range:
+        if int(player.weight) in weight_range:
             current_weight_limits = option
             break
     # If we found a height limit, set the player's attributes based on it
-    if current_height_limits != None:
+    if current_height_limits:
         # Change the player's height limits (relationship)
         player.height_limits = current_height_limits
         # Calculate & change the player's attributes based on height (height sets the base limits)
         for name in current_height_limits.limits:
+            print(f"Changing {name} to {current_height_limits.limits[name]}")
             player.attributes[name] = current_height_limits.limits[name]
     else:
         current_height_limits = []
     # If we found a weight limit, set the player's attributes based on it
-    if current_weight_limits != None:
+    if current_weight_limits:
         # Change the player's weight limits (relationship)
         player.weight_limits = current_weight_limits
         # Calculate & change the player's attributes based on weight (weight adds a bonus to the height's base limits)

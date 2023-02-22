@@ -2,6 +2,10 @@
 # Description : A configuration file for the league.
 
 # Description : League configuration variables
+# Description : Constant settings variables
+max_players = 100
+
+# Description : League configuration variables
 # Description : Attribute, badge & upgrade configuration
 start_attribute = 65
 start_badge = 0
