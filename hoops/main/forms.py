@@ -38,11 +38,11 @@ class UpgradeForm(forms.Form):
     lateral_quickness = forms.IntegerField(label="Lateral Quickness", min_value=league_config.start_attribute, max_value=league_config.max_attribute, widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}))
     hands = forms.IntegerField(label="Hands", min_value=league_config.start_attribute, max_value=league_config.max_attribute, widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}))
     # Physicals
-    speed = forms.IntegerField(disabled=True, label="Speed", min_value=league_config.start_attribute, max_value=league_config.max_attribute, widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}))
-    speed_with_ball = forms.IntegerField(disabled=True, label="Speed With Ball", min_value=league_config.start_attribute, max_value=league_config.max_attribute, widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}))
-    acceleration = forms.IntegerField(disabled=True, label="Acceleration", min_value=league_config.start_attribute, max_value=league_config.max_attribute, widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}))
-    vertical = forms.IntegerField(disabled=True, label="Vertical", min_value=league_config.start_attribute, max_value=league_config.max_attribute, widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}))
-    strength = forms.IntegerField(disabled=True, label="Strength", min_value=league_config.start_attribute, max_value=league_config.max_attribute, widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}))
+    # speed = forms.IntegerField(disabled=True, label="Speed", min_value=league_config.start_attribute, max_value=league_config.max_attribute)
+    # speed_with_ball = forms.IntegerField(disabled=True, label="Speed With Ball", min_value=league_config.start_attribute, max_value=league_config.max_attribute)
+    # acceleration = forms.IntegerField(disabled=True, label="Acceleration", min_value=league_config.start_attribute, max_value=league_config.max_attribute)
+    # vertical = forms.IntegerField(disabled=True, label="Vertical", min_value=league_config.start_attribute, max_value=league_config.max_attribute)
+    # strength = forms.IntegerField(disabled=True, label="Strength", min_value=league_config.start_attribute, max_value=league_config.max_attribute)
     # Badges
     acrobat = forms.ChoiceField(label="Acrobat", choices=league_config.badge_upgrade_choices, widget=forms.Select(attrs={"onchange": "updatePrice()"}))
     aerial_wizard = forms.ChoiceField(label="Aerial Wizard", choices=league_config.badge_upgrade_choices, widget=forms.Select(attrs={"onchange": "updatePrice()"}))

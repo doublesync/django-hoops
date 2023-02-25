@@ -8,10 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 # Model imports
-from .models import DiscordUser
 from .models import Player
-from .models import FeatureList
-from .models import HistoryList
 from .models import Team
 
 # Form imports
@@ -23,10 +20,8 @@ from .discord import auth as discord_auth
 from .league import config as league_config
 
 # Custom packages
-from .league.player import get as hoops_player_get
 from .league.player import upgrade as hoops_player_upgrade
 from .league.player import create as hoops_player_create
-from .league.teams import get as hoops_teams_get
 from .league.extra import convert as hoops_extra_convert
 
 # .ENV file import
@@ -35,7 +30,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Create your views here.
-# @login_required(login_url="/login/discord/")
 def home(request):
     current_user = request.user
     context = {
@@ -69,10 +63,15 @@ def logout(request):
     return redirect("/")
 
 def player(request, id):
-    player_object = Player.objects.get(pk=id)
+    # Check if the player exists
+    try:
+        plr = Player.objects.get(pk=id)
+    except Player.DoesNotExist:
+        return HttpResponse("Sorry, this player doesn't exist!")
+    # Initialize the context
     context = {
-        "title": f"{player_object.first_name} {player_object.last_name}",
-        "player": player_object,
+        "title": f"{plr.first_name} {plr.last_name}",
+        "player": plr,
     }
     return render(request, "main/players/player.html", context)
 
@@ -80,10 +79,12 @@ def player(request, id):
 def upgrade_player(request, id):
     # Collect user & player information
     user = request.user
-    player = hoops_player_get.fetch(id)
-    # Check if the player exists & if the user has permission to upgrade the player
-    if not player:
+    # Check if the player exists
+    try:
+        player = Player.objects.get(pk=id)
+    except Player.DoesNotExist:
         return HttpResponse("Sorry, this player doesn't exist!")
+    # Check if the user has permission to upgrade this player
     if not player.discord_user == user:
         return HttpResponse("Sorry, you don't have permission to upgrade this player!")
     # Process the request (if it's a POST request)
@@ -94,6 +95,8 @@ def upgrade_player(request, id):
             messages.success(request, response)
             return redirect(upgrade_player, id=id)
         else:
+            print(form.errors)
+            messages.error(request, form.errors)
             return redirect(upgrade_player, id=id)
     else:
         # Initialize the prefill information
@@ -155,7 +158,12 @@ def players(request):
     return render(request, "main/players/players.html", context)
 
 def upgrade_logs(request, id):
-    player = hoops_player_get.fetch(id)
+    # Check if the player exists
+    try:
+        player = Player.objects.get(pk=id)
+    except Player.DoesNotExist:
+        return HttpResponse("Sorry, this player doesn't exist!")
+    # Get the upgrade logs
     logs = player.history_list.history["upgrade_logs"]
     logs.reverse()
     if player:

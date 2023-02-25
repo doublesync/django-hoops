@@ -58,12 +58,12 @@ class Player(models.Model):
     current_team = models.ForeignKey("Team", blank=True, null=True, on_delete=models.CASCADE) # Each player has one team
     height_limits = models.ForeignKey("HeightLimit", blank=True, null=True, on_delete=models.CASCADE) # Each player has one heightLimit object
     weight_limits = models.ForeignKey("WeightLimit", blank=True, null=True, on_delete=models.CASCADE) # Each player has one weightLimit object
-    contract_details = models.ForeignKey("Contract", on_delete=models.CASCADE) # Each player has one contract
-    contract_offers = models.ForeignKey("PlayerOffers", on_delete=models.CASCADE) # Each player has one offers object
-    feature_list = models.ForeignKey("FeatureList", on_delete=models.CASCADE) # Each player has one features object
+    contract_details = models.ForeignKey("Contract", blank=True, null=True, on_delete=models.CASCADE) # Each player has one contract
     history_list = models.ForeignKey("HistoryList", on_delete=models.CASCADE) # Each player has one history object
-    # Pending (for game updates)
+    # Others
     upgrades_pending = models.BooleanField(default=False)
+    free_agent = models.BooleanField(default=True)
+    years_played = models.SmallIntegerField(default=1)
     # Player Methods
     def __str__(self):
         return f"[{self.id}] {self.first_name} {self.last_name}"
@@ -87,33 +87,55 @@ class WeightLimit(models.Model):
     def __str__(self):
         return f"{self.range1}lbs - {self.range2-1}lbs"
 
-class PlayerOffers(models.Model):
-    offers = models.JSONField(default=league_config.get_default_offers, blank=True)
-
-class TeamOffers(models.Model):
-    # Relationships
-    offers = models.JSONField(default=league_config.get_default_offers, blank=True)
+class Offer(models.Model):
+    # PlayerOffer Model
+    offer_player = models.ForeignKey("Player", on_delete=models.CASCADE) # Each offer has one player
+    offer_team = models.ForeignKey("Team", blank=True, null=True, on_delete=models.CASCADE) # Each offer has one team
+    offer_length = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(3)])
+    # Salaries
+    year_one_salary = models.SmallIntegerField(default=0)
+    year_two_salary = models.SmallIntegerField(default=0)
+    year_three_salary = models.SmallIntegerField(default=0)
+    # Options
+    player_option = models.BooleanField(default=False)
+    team_option = models.BooleanField(default=False)
+    # Clauses
+    no_trade_clause = models.BooleanField(default=False)
+    no_cut_clause = models.BooleanField(default=False)
+    # Does player ot team accept/decline offer
+    player_choice = models.BooleanField(default=False)
+    # PlayerOffer Methods
+    def __str__(self):
+        return f"{self.offer_player} | {self.offer_team} for {self.offer_length} years"
 
 # List Models (for players)
-class FeatureList(models.Model):
-    features = models.JSONField(default=league_config.get_default_features, blank=True)
-
 class HistoryList(models.Model):
     history = models.JSONField(default=league_config.get_default_history, blank=True)
 
 class Contract(models.Model):
-    breakdown = models.JSONField(default=league_config.get_default_contract, blank=True) 
+    # Contract
+    contract_team = models.ForeignKey("Team", on_delete=models.CASCADE) # Each contract has one team
+    contract_year = models.SmallIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(3)])
+    contract_length = models.SmallIntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(3)])
+    # Salaries
+    year_one_salary = models.SmallIntegerField(default=0)
+    year_two_salary = models.SmallIntegerField(default=0)
+    year_three_salary = models.SmallIntegerField(default=0)
+    # Options
+    player_option = models.BooleanField(default=False)
+    team_option = models.BooleanField(default=False)
+    # Clauses
+    no_trade_clause = models.BooleanField(default=False)
+    no_cut_clause = models.BooleanField(default=False)
 
 # Team & Statistic Models
 class Team(models.Model):
     name = models.CharField(max_length=32) # Ex: Los Angeles Lakers
     logo = models.CharField(max_length=100, default=league_config.initial_team_logo) # Ex: https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg
     abbrev = models.CharField(max_length=3) # Ex: LAL
-    # Logs
-    trade_logs = models.JSONField(default=league_config.get_default_trade_logs, blank=True)
-    draft_picks = models.JSONField(default=league_config.get_default_draft_picks, blank=True)
     # Relationships
-    contract_offers = models.OneToOneField("TeamOffers", on_delete=models.CASCADE) # Each player has one offers object
+    manager = models.ForeignKey("DiscordUser", on_delete=models.CASCADE) # Each team has one manager
+    history_list = models.ForeignKey("HistoryList", on_delete=models.CASCADE) # Each team has one history object
     # Team Methods
     def __str__(self):
         return f"{self.name}"

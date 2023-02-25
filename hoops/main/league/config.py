@@ -139,11 +139,11 @@ initial_badges = {
     "Boxout Beast": start_badge,
     "Rebound Chaser": start_badge,
 }
-initial_features = {}
 initial_history = {
     "upgrade_logs": [],
+    "contract_logs": [],
+    "trade_logs": [],
 }
-initial_contract = {}
 initial_settings = {}
 initial_limits = {
     "Speed": start_attribute,
@@ -152,9 +152,6 @@ initial_limits = {
     "Vertical": start_attribute,
     "Strength": start_attribute,
 }
-initial_offers = {}
-initial_trade_logs = {}
-initial_draft_picks = {}
 # Description : Initial database field configuration (for new teams)
 initial_team_logo = "https://cdn.simplystamps.com/media/catalog/product/5/8/5802-n-a-stock-stamp-hcb.png"
 
@@ -288,11 +285,6 @@ badge_categories = {
 # Quick Note: Django prefers a callable be used as a default value in a JSONField initialization instead of an instance
 def get_default_attributes(): return initial_attributes
 def get_default_badges(): return initial_badges
-def get_default_features(): return initial_features
 def get_default_history(): return initial_history
-def get_default_contract(): return initial_contract
 def get_default_settings(): return initial_settings
 def get_default_limits(): return initial_limits
-def get_default_offers(): return initial_offers
-def get_default_trade_logs(): return initial_trade_logs
-def get_default_draft_picks(): return initial_draft_picks

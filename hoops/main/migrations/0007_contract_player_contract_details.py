@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='Contract',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('breakdown', models.JSONField(blank=True, default=main.league.config.get_default_contract)),
+                ('breakdown', models.JSONField(blank=True, default=None)),
             ],
         ),
         migrations.AddField(

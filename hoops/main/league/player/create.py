@@ -1,8 +1,6 @@
 from ...models import Player
 from ...models import HistoryList
-from ...models import FeatureList
 from ...models import Contract
-from ...models import PlayerOffers
 
 from ...league import config as league_config
 from ...league.player import limits as league_limits
@@ -22,9 +20,7 @@ def validatePlayerCreation(user, formData):
 def createPlayer(user, formData):
     # Create the player's relationship objects
     historyList = HistoryList.objects.create()
-    featureList = FeatureList.objects.create()
     contractDetails = Contract.objects.create()
-    playerOffers = PlayerOffers.objects.create()
     # Create the player
     newPlayer = Player.objects.create(
         # Customs
@@ -38,8 +34,6 @@ def createPlayer(user, formData):
         # Relationships
         discord_user=user,
         contract_details=contractDetails,
-        contract_offers=playerOffers,
-        feature_list=featureList,
         history_list=historyList,
     )
     # Update the player's limits
@@ -47,9 +41,7 @@ def createPlayer(user, formData):
     updatedPlayer = myLimits[0]
     # Save the player
     historyList.save()
-    featureList.save()
     contractDetails.save()
-    playerOffers.save()
     updatedPlayer.save()
     # Return the player
     return newPlayer

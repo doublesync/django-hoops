@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             name='Contract',
             fields=[
                 ('id', models.BigIntegerField(primary_key=True, serialize=False)),
-                ('breakdown', models.JSONField(blank=True, default=main.league.config.get_default_contract)),
+                ('breakdown', models.JSONField(blank=True, default=None)),
             ],
         ),
         migrations.CreateModel(
@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
             name='FeatureList',
             fields=[
                 ('id', models.BigIntegerField(primary_key=True, serialize=False)),
-                ('features', models.JSONField(blank=True, default=main.league.config.get_default_features)),
+                ('features', models.JSONField(blank=True, default=None)),
             ],
         ),
         migrations.CreateModel(
@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
             name='PlayerOffers',
             fields=[
                 ('id', models.BigIntegerField(primary_key=True, serialize=False)),
-                ('offers', models.JSONField(blank=True, default=main.league.config.get_default_offers)),
+                ('offers', models.JSONField(blank=True, default=None)),
             ],
         ),
         migrations.CreateModel(
@@ -79,7 +79,7 @@ class Migration(migrations.Migration):
             name='TeamOffers',
             fields=[
                 ('id', models.BigIntegerField(primary_key=True, serialize=False)),
-                ('offers', models.JSONField(blank=True, default=main.league.config.get_default_offers)),
+                ('offers', models.JSONField(blank=True, default=None)),
             ],
         ),
         migrations.CreateModel(
@@ -99,8 +99,8 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=32)),
                 ('logo', models.CharField(default='https://cdn.simplystamps.com/media/catalog/product/5/8/5802-n-a-stock-stamp-hcb.png', max_length=100)),
                 ('abbrev', models.CharField(max_length=3)),
-                ('trade_logs', models.JSONField(blank=True, default=main.league.config.get_default_trade_logs)),
-                ('draft_picks', models.JSONField(blank=True, default=main.league.config.get_default_draft_picks)),
+                ('trade_logs', models.JSONField(blank=True, default=None)),
+                ('draft_picks', models.JSONField(blank=True, default=None)),
                 ('contract_offers', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='main.teamoffers')),
             ],
         ),
