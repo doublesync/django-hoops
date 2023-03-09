@@ -1,5 +1,6 @@
 from django.contrib.auth import models
 
+
 class DiscordAuthorizationManager(models.UserManager):
     def create_discord_user(self, user):
         discord_tag = "%s#%s" % (user["username"], user["discriminator"])

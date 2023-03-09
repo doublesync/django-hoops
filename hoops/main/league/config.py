@@ -1,48 +1,30 @@
 # Title : League configuration file
 # Description : A configuration file for the league.
 
-# Description : League configuration variables
-# Description : Constant settings variables
 max_players = 100
+primary_currency_start = 1000
 
-# Description : League configuration variables
-# Description : Attribute, badge & upgrade configuration
 start_attribute = 65
 start_badge = 0
 min_attribute = 0
 max_attribute = 99
 min_badge = 0
 max_badge = 4
-# Description : Oak & Syp configuration
-oak_start_attribute = 80
-syp_start_attribute = 70
-
-# Description : Attribute & badge prices
-attribute_prices = {"Default": 10} 
+oak_start_attribute = 65
+syp_start_attribute = 65
+attribute_prices = {"Default": 10}
 badge_prices = {0: 0, 1: 10, 2: 25, 3: 50, 4: 75}
 
-# Description : League configuration variables
-# Description : Contract configuration (salary)
-# Quick Note : The x * 1000 is just for readability.
-contract_salary_min = (10 * 1000) # 100,000
-contract_salary_rook = (250 * 1000) # 250,000
-contract_salary_max = (100 * 1000) # 1,000,000
-# Description : Contract configuration (years/length)
+contract_salary_min = 25
+contract_salary_rook = 50
+contract_salary_max = 100
 contract_years_min = 1
 contract_years_rook = 2
 contract_years_max = 3
 
-# Description : League configuration variables
-# Description : Currency configuration
-primary_currency_start = 1000
-
-# Description : League configuration variables
-# Description : Player configuration
 player_weight_min = 170
 player_weight_max = 300
 
-# Description : League configuration variables
-# Description : Initial database field configuration (for new players)
 initial_attributes = {
     "Driving Layup": start_attribute,
     "Post Fadeaway": start_attribute,
@@ -76,8 +58,8 @@ initial_attributes = {
     "Strength": start_attribute,
 }
 initial_badges = {
-    "Acrobat": start_badge, 
-    "Aerial Wizard": start_badge, 
+    "Acrobat": start_badge,
+    "Aerial Wizard": start_badge,
     "Backdown Punisher": start_badge,
     "Bully": start_badge,
     "Dream Shake": start_badge,
@@ -144,7 +126,9 @@ initial_history = {
     "contract_logs": [],
     "trade_logs": [],
 }
-initial_settings = {}
+initial_settings = {
+    "test": False,
+}
 initial_limits = {
     "Speed": start_attribute,
     "Speed With Ball": start_attribute,
@@ -152,16 +136,58 @@ initial_limits = {
     "Vertical": start_attribute,
     "Strength": start_attribute,
 }
-# Description : Initial database field configuration (for new teams)
 initial_team_logo = "https://cdn.simplystamps.com/media/catalog/product/5/8/5802-n-a-stock-stamp-hcb.png"
+initial_hotzones = {
+    "Left Corner Three": False,
+    "Left Wing Three": False,
+    "Middle Three": False,
+    "Right Wing Three": False,
+    "Right Corner Three": False,
+    "Left Corner Midrange": False,
+    "Left Wing Midrange": False,
+    "Middle Midrange": False,
+    "Right Wing Midrange": False,
+    "Right Corner Midrange": False,
+    "Inside Left": False,
+    "Inside Middle": False,
+    "Inside Right": False,
+    "Inside Center": False,
+}
+height_choices = [
+    (70, "5'10"),
+    (71, "5'11"),
+    (72, "6'0"),
+    (73, "6'1"),
+    (74, "6'2"),
+    (75, "6'3"),
+    (76, "6'4"),
+    (77, "6'5"),
+    (78, "6'6"),
+    (79, "6'7"),
+    (80, "6'8"),
+    (81, "6'9"),
+    (82, "6'10"),
+    (83, "6'11"),
+    (84, "7'0"),
+    (85, "7'1"),
+    (86, "7'2"),
+    (87, "7'3"),
+]
+position_choices = [
+    ("PG", "Point Guard"),
+    ("SG", "Shooting Guard"),
+    ("SF", "Small Forward"),
+    ("PF", "Power Forward"),
+    ("C", "Center"),
+]
+badge_upgrade_choices = [
+    (0, "Current"),
+    (1, "Bronze"),
+    (2, "Silver"),
+    (3, "Gold"),
+    (4, "Hall of Fame"),
+]
 
-# Description : League configuration variables
-# Description : Choice lists (for forms)
-height_choices = [(70, "5'10"), (71, "5'11"), (72, "6'0"), (73, "6'1"), (74, "6'2"), (75, "6'3"), (76, "6'4"), (77, "6'5"), (78, "6'6"), (79, "6'7"), (80, "6'8"), (81, "6'9"), (82, "6'10"), (83, "6'11"), (84, "7'0"), (85, "7'1"), (86, "7'2"), (87, "7'3")]
-position_choices = [("PG", "Point Guard"), ("SG", "Shooting Guard"), ("SF", "Small Forward"), ("PF", "Power Forward"), ("C", "Center")]
-badge_upgrade_choices = [(0, "Current"), (1, "Bronze"), (2, "Silver"), (3, "Gold"), (4, "Hall of Fame")]
-
-# Description : Attribute & badge categories
 attribute_categories = {
     "finishing": [
         "Driving Layup",
@@ -178,7 +204,6 @@ attribute_categories = {
         "Three Point Shot",
         "Free Throw",
         "Shot Iq",
-
     ],
     "defense": [
         "Defensive Rebound",
@@ -207,10 +232,10 @@ attribute_categories = {
 }
 badge_categories = {
     "finishing": [
-        "Acrobat", 
-        "Aerial Wizard", 
-        "Backdown Punisher", 
-        "Bully", 
+        "Acrobat",
+        "Aerial Wizard",
+        "Backdown Punisher",
+        "Bully",
         "Dream Shake",
         "Drop Stepper",
         "Fast Twitch",
@@ -222,7 +247,7 @@ badge_categories = {
         "Posterizer",
         "Pro Touch",
         "Rise Up",
-        "Slithery"
+        "Slithery",
     ],
     "shooting": [
         "Agent 3",
@@ -238,7 +263,7 @@ badge_categories = {
         "Middy Magician",
         "Slippery Off Ball",
         "Space Creator",
-        "Volume Shooter"
+        "Volume Shooter",
     ],
     "defense": [
         "Anchor",
@@ -256,7 +281,7 @@ badge_categories = {
         "Work Horse",
         "Brick Wall",
         "Boxout Beast",
-        "Rebound Chaser"
+        "Rebound Chaser",
     ],
     "playmaking": [
         "Ankle Breaker",
@@ -274,17 +299,30 @@ badge_categories = {
         "Quick First Step",
         "Special Delivery",
         "Unpluckable",
-        "Vice Grip"
+        "Vice Grip",
     ],
 }
 
-# Description : League configuration variables
-# Description : Test configuration
 
-# Description : League configuration methods
-# Quick Note: Django prefers a callable be used as a default value in a JSONField initialization instead of an instance
-def get_default_attributes(): return initial_attributes
-def get_default_badges(): return initial_badges
-def get_default_history(): return initial_history
-def get_default_settings(): return initial_settings
-def get_default_limits(): return initial_limits
+def get_default_attributes():
+    return initial_attributes
+
+
+def get_default_badges():
+    return initial_badges
+
+
+def get_default_history():
+    return initial_history
+
+
+def get_default_settings():
+    return initial_settings
+
+
+def get_default_limits():
+    return initial_limits
+
+
+def get_default_hotzones():
+    return initial_hotzones

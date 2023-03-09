@@ -44,6 +44,7 @@ def getPlayerLimits(player):
     # Return the player
     return [player, current_height_limits, current_weight_limits]
 
+
 # Validates the physical attributes included in the upgradeData
 def validatePhysicals(player, upgradeData):
     # Get the possible height & weight limits
@@ -56,6 +57,13 @@ def validatePhysicals(player, upgradeData):
         if (k in height_limits.limits) or (k in weight_limits.limits):
             maximum = height_limits.limits[k] + weight_limits.limits[k]
             if newValue > maximum:
-                return [False, "❌ The attribute '" + k + "' cannot be upgraded past " + str(maximum) + "."]
+                return [
+                    False,
+                    "❌ The attribute '"
+                    + k
+                    + "' cannot be upgraded past "
+                    + str(maximum)
+                    + ".",
+                ]
     # If we made it this far, everything is good
     return [True, None]
