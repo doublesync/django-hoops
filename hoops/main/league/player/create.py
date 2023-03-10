@@ -53,7 +53,7 @@ def createPlayer(user, formData):
     print("Acceleration:" + str(updatedPlayer.attributes["Acceleration"]))
     print("Vertical:" + str(updatedPlayer.attributes["Vertical"]))
     print("Strength:" + str(updatedPlayer.attributes["Strength"]))
-    # historyList.save()
-    # updatedPlayer.save()
+    historyList.save()
+    updatedPlayer.save()
     # Return the player
     return updatedPlayer
