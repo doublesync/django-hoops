@@ -43,7 +43,7 @@
         <div class="card-body">
             {% if players %}
                 {% for p in players %}
-                <p class="card-text mb-0"><a href=href="{% url 'player' p.id %}" >({{p.id}}) {{ p.first_name }} {{ p.last_name }}'s player profile.</a></p>
+                <p class="card-text mb-0"><a href="{% url 'player' p.id %}" >({{p.id}}) {{ p.first_name }} {{ p.last_name }}'s player profile.</a></p>
                 {% endfor %}
             {% else %}
                 <p class="card-text mb-0">😒 You have not started any careers.</p>
