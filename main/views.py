@@ -35,27 +35,37 @@ def home(request):
     context = {
         "title": "Home",
         "current_user": current_user,
+        "players": [],
     }
+    # Send players to home page
+    if current_user.is_authenticated:
+        players = Player.objects.filter(discord_user=current_user)
+        for p in players:
+            context["players"].append(p)
+    # Return the home page
     return render(request, "main/league/home.html", context)
 
 def login(request):
-    return HttpResponse("Hello, world. This is the login page.")
+    return HttpResponse("This is the login page.")
 
 def login_discord(request):
     discord_auth_url = os.environ.get("DISCORD_AUTH_URL")
     return redirect(discord_auth_url)
 
 def login_discord_redirect(request):
-    # Get information from Discord
-    code = request.GET.get('code')
-    info = discord_auth.exchange_code(code)
-    user = info[0]
-    guilds = info[1]
-    # Create the discord user
-    discord_user = authenticate(request, user=user)
-    discord_user = list(discord_user).pop()
-    # Finally, log the user in
-    django_login(request, discord_user, backend="main.authorize.DiscordBackend")
+    try:
+        # Get information from Discord
+        code = request.GET.get('code')
+        info = discord_auth.exchange_code(code)
+        user = info[0]
+        guilds = info[1]
+        # Create the discord user
+        discord_user = authenticate(request, user=user)
+        discord_user = list(discord_user).pop()
+        # Finally, log the user in
+        django_login(request, discord_user, backend="main.authorize.DiscordBackend")
+    except:
+        pass
     return redirect(home)
 
 def logout(request):
