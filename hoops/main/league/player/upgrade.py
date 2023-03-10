@@ -1,6 +1,5 @@
 # Custom imports
 from ...league import config as league_config
-from . import limits as player_limits
 
 # Python imports
 import datetime
@@ -67,18 +66,13 @@ def createUpgrade(player, cleanedFormData):
     totalCost = 0
     # Calculate the total cost
     for k, v in upgradeData["attributes"].items():
-        if not (v["new"] > league_config.max_attribute) and not (
-            v["new"] < league_config.min_attribute
-        ):
+        if not (v["new"] > league_config.max_attribute) and not (v["new"] < league_config.min_attribute):
             currentValue = player.attributes[k]
             futureValue = v["new"]
-            totalCost += (futureValue - currentValue) * league_config.attribute_prices[
-                "Default"
-            ]  # Probably subject to change.
+            difference = futureValue - currentValue
+            totalCost += difference * league_config.attribute_prices["Default"]
     for k, v in upgradeData["badges"].items():
-        if not (v["new"] > league_config.max_badge) and not (
-            v["new"] < league_config.min_badge
-        ):
+        if not (v["new"] > league_config.max_badge) and not (v["new"] < league_config.min_badge):
             totalCost += league_config.badge_prices[v["new"]]
     # Return if cost is below zero
     if totalCost <= 0:
@@ -87,15 +81,15 @@ def createUpgrade(player, cleanedFormData):
     if player.cash >= totalCost:
         # Subtract the cost from the player's cash
         player.cash -= totalCost
-        # Validate the upgrades based on player physicals (physical caps)
-        checkLimits = player_limits.validatePhysicals(player, upgradeData)
-        response = checkLimits[0]
-        status = checkLimits[1]
-        if response != True:
-            return status
         # Add the upgrades to the player
         for k, v in upgradeData["attributes"].items():
-            player.attributes[k] = v["new"]
+            # Check if the attribute is a physical attribute
+            if k in league_config.attribute_categories["physical"]:
+                return (
+                    f"❌ The attribute '{k}' cannot be upgraded because it's a physical."
+                )
+            else:
+                player.attributes[k] = v["new"]
         for k, v in upgradeData["badges"].items():
             player.badges[k] = v["new"]
         # Add the totalCost to spent & add history list log

@@ -4,7 +4,7 @@
 max_players = 100
 primary_currency_start = 1000
 
-start_attribute = 65
+start_attribute = 0
 start_badge = 0
 min_attribute = 0
 max_attribute = 99
@@ -22,8 +22,28 @@ contract_years_min = 1
 contract_years_rook = 2
 contract_years_max = 3
 
-player_weight_min = 170
-player_weight_max = 300
+player_weight_min = 150
+player_weight_max = 270
+
+# Descriptions: For height & weight limits
+
+min_max_heights = {
+    "PG": {"min": 72, "max": 76},
+    "SG": {"min": 74, "max": 78},
+    "SF": {"min": 76, "max": 80},
+    "PF": {"min": 78, "max": 82},
+    "C": {"min": 80, "max": 84}
+}
+
+min_max_weights = {
+    "PG": {"min": 150, "max": 250},
+    "SG": {"min": 155, "max": 255},
+    "SF": {"min": 160, "max": 260},
+    "PF": {"min": 165, "max": 265},
+    "C": {"min": 170, "max": 270}
+}
+
+# Description: Initials for models
 
 initial_attributes = {
     "Driving Layup": start_attribute,
@@ -136,7 +156,6 @@ initial_limits = {
     "Vertical": start_attribute,
     "Strength": start_attribute,
 }
-initial_team_logo = "https://cdn.simplystamps.com/media/catalog/product/5/8/5802-n-a-stock-stamp-hcb.png"
 initial_hotzones = {
     "Left Corner Three": False,
     "Left Wing Three": False,
@@ -153,9 +172,11 @@ initial_hotzones = {
     "Inside Right": False,
     "Inside Center": False,
 }
+initial_team_logo = "https://cdn.simplystamps.com/media/catalog/product/5/8/5802-n-a-stock-stamp-hcb.png"
+
+# Description: Choices & labels for player forms
+
 height_choices = [
-    (70, "5'10"),
-    (71, "5'11"),
     (72, "6'0"),
     (73, "6'1"),
     (74, "6'2"),
@@ -168,10 +189,7 @@ height_choices = [
     (81, "6'9"),
     (82, "6'10"),
     (83, "6'11"),
-    (84, "7'0"),
-    (85, "7'1"),
-    (86, "7'2"),
-    (87, "7'3"),
+    (84, "7'0")
 ]
 position_choices = [
     ("PG", "Point Guard"),
@@ -303,6 +321,7 @@ badge_categories = {
     ],
 }
 
+# Description: Initials methods for models
 
 def get_default_attributes():
     return initial_attributes
