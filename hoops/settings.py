@@ -1,6 +1,9 @@
 import os, sys, dj_database_url
 from django.core.management.utils import get_random_secret_key
 
+from dotenv import load_dotenv
+load_dotenv()
+
 """
 Django settings for hoops project.
 
@@ -28,7 +31,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = ['localhost://8000', 'sea-lion-app-rva8v.ondigitalocean.app', 'hoopscord.com']
 
 AUTHENTICATION_BACKENDS = [
     "main.authorize.DiscordBackend",
@@ -90,6 +93,7 @@ WSGI_APPLICATION = 'hoops.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
+print("Development Mode: " + str(DEVELOPMENT_MODE))
 
 if DEVELOPMENT_MODE is True:
     DATABASES = {
@@ -100,7 +104,7 @@ if DEVELOPMENT_MODE is True:
     }
 elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
     if os.getenv("DATABASE_URL", None) is None:
-        raise Exception("DATABASE_URL environment variable not defined")
+        raise Exception("DATABASE_URL environment variable not set")
     DATABASES = {
         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
     }
