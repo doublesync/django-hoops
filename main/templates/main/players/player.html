@@ -4,7 +4,10 @@
 
     <div class="container-fluid" style="padding: 25px;">
         <h2 class="text-uppercase fw-bold mb-3 mt-3" style="text-align: center;">{{ player.first_name}} {{ player.last_name}}</h2>
-        <p style="text-align: center;"><a class="btn btn-success btn-sm" href="{% url 'upgrade_player' player.id %}">Upgrade player</a><p>
+        <p style="text-align: center;">
+            <a class="btn btn-success btn-sm" href="{% url 'upgrade_player' player.id %}">Upgrade player</a>
+            <a class="btn btn-success btn-sm" href="{% url 'upgrade_logs' player.id %}">Upgrade history</a>
+        <p>
     </div>
 
     <div class="container-fluid mb-5" style="padding: 100px; padding-top: 0px; padding-bottom: 10px;">
