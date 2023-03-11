@@ -2,9 +2,222 @@
 
 {% block content %}
 
-    <h2 class="text-uppercase fw-bold mb-3 mt-3" style="text-align: center;">{{ player.first_name}} {{ player.last_name}}</h2>
-    <div class="container ">
-        <p class="mb-4" style="text-align: center;"><b>{{ player.first_name }} {{ player.last_name }}</b> is a <b>{{ player.primary_position }}/{{ player.secondary_position }}</b> who plays for the {{ player.current_team }}</a>.</p>
+    <div class="container-fluid" style="padding: 25px;">
+        <h2 class="text-uppercase fw-bold mb-3 mt-3" style="text-align: center;">{{ player.first_name}} {{ player.last_name}}</h2>
+        <p style="text-align: center;"><a class="btn btn-success btn-sm" href="{% url 'upgrade_player' player.id %}">Upgrade player</a><p>
+    </div>
+
+    <div class="container-fluid mb-5" style="padding: 100px; padding-top: 0px; padding-bottom: 10px;">
+        <hr>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <p><b>Full Name</b></p><hr>
+                    <p>{{ player.first_name }} {{ player.last_name }}</p>
+                </div>
+                <div class="col-md-2">
+                    <p><b>Height</b></p><hr>
+                    <p>{{ height_in_feet }}</p>
+                </div>
+                <div class="col-md-2">
+                    <p><b>Weight</b></p><hr>
+                    <p>{{ player.weight }}</p>
+                </div>
+                <div class="col-md-2">
+                    <p><b>Position</b></p><hr>
+                    <p>{{ player.primary_position }}/{{ player.secondary_position }}</p>
+                </div>
+                <div class="col-md-2">
+                    <p><b>Jersey</b></p><hr>
+                    <p>#{{ player.jersey_number }}</p>
+                </div>
+                <div class="col-md-2">
+                    <p><b>Team</b></p><hr>
+                    <p>{{ player.current_team.abbrev }}</p>
+                </div>
+                <hr>
+                <p class="mb-0"><b>Creator: </b>{{ player.discord_user.discord_tag }}</p>
+            </div>
+        </div>
+        <hr>
+    </div>
+    
+
+    <div class="container-fluid" style="padding: 100px; padding-top: 0px; padding-bottom: 10px;">
+
+        <hr>
+
+        <div class="container">
+            <div class="row">
+                {% for k, v in player.attributes.items %} 
+                    {% if k in finishing_attributes %}
+                        <div class="col-md-2">
+                            <p class="mt-0 mb-1"><b>{{ k }}</b></p><p>{{ v }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <hr>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                {% for k, v in player.attributes.items %} 
+                    {% if k in shooting_attributes %}
+                        <div class="col-md-2">
+                            <p class="mt-0 mb-1"><b>{{ k }}</b></p><p>{{ v }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <hr>
+            </div>
+        </div>
+    
+        <div class="container">
+            <div class="row">
+                {% for k, v in player.attributes.items %} 
+                    {% if k in playmaking_attributes %}
+                        <div class="col-md-2">
+                            <p class="mt-0 mb-1"><b>{{ k }}</b></p><p>{{ v }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <hr>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                {% for k, v in player.attributes.items %} 
+                    {% if k in defense_attributes %}
+                        <div class="col-md-2">
+                            <p class="mt-0 mb-1"><b>{{ k }}</b></p><p>{{ v }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <hr>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                {% for k, v in player.attributes.items %} 
+                    {% if k in physical_attributes %}
+                        <div class="col-md-2">
+                            <p class="mt-0 mb-1"><b>{{ k }}</b></p><p>{{ v }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <hr>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid mt-5" style="padding: 100px; padding-top: 0px; padding-bottom: 10px;">
+
+        <hr>
+
+        <div class="container">
+            <div class="row">
+                {% for k, v in player.badges.items %} 
+                    {% if k in finishing_badges %}
+                        <div class="col-md-2 mb-2">
+                            <p class="mt-0 mb-1"><b>{{ k }}</b></p>
+                            {% if v == 0 %}
+                                {{ badgeEmojis.0 }} Unequipped
+                            {% elif v == 1 %}
+                                {{ badgeEmojis.1 }} Bronze
+                            {% elif v == 2 %}
+                                {{ badgeEmojis.2 }} Silver
+                            {% elif v == 3 %}
+                                {{ badgeEmojis.3 }} Gold
+                            {% elif v == 4 %}
+                                {{ badgeEmojis.4 }} Hall of Fame
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <hr>
+        </div>
+
+
+        <div class="container">
+            <div class="row">
+                {% for k, v in player.badges.items %} 
+                    {% if k in shooting_badges %}
+                        <div class="col-md-2 mb-2">
+                            <p class="mt-0 mb-1"><b>{{ k }}</b></p>
+                            {% if v == 0 %}
+                                {{ badgeEmojis.0 }} Unequipped
+                            {% elif v == 1 %}
+                                {{ badgeEmojis.1 }} Bronze
+                            {% elif v == 2 %}
+                                {{ badgeEmojis.2 }} Silver
+                            {% elif v == 3 %}
+                                {{ badgeEmojis.3 }} Gold
+                            {% elif v == 4 %}
+                                {{ badgeEmojis.4 }} Hall of Fame
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="container">
+            <div class="row">
+                {% for k, v in player.badges.items %} 
+                    {% if k in playmaking_badges %}
+                        <div class="col-md-2 mb-2">
+                            <p class="mt-0 mb-1"><b>{{ k }}</b></p>
+                            {% if v == 0 %}
+                                {{ badgeEmojis.0 }} Unequipped
+                            {% elif v == 1 %}
+                                {{ badgeEmojis.1 }} Bronze
+                            {% elif v == 2 %}
+                                {{ badgeEmojis.2 }} Silver
+                            {% elif v == 3 %}
+                                {{ badgeEmojis.3 }} Gold
+                            {% elif v == 4 %}
+                                {{ badgeEmojis.4 }} Hall of Fame
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="container">
+            <div class="row">
+                {% for k, v in player.badges.items %} 
+                    {% if k in defense_badges %}
+                        <div class="col-md-2 mb-2">
+                            <p class="mt-0 mb-1"><b>{{ k }}</b></p>
+                            {% if v == 0 %}
+                                {{ badgeEmojis.0 }} Unequipped
+                            {% elif v == 1 %}
+                                {{ badgeEmojis.1 }} Bronze
+                            {% elif v == 2 %}
+                                {{ badgeEmojis.2 }} Silver
+                            {% elif v == 3 %}
+                                {{ badgeEmojis.3 }} Gold
+                            {% elif v == 4 %}
+                                {{ badgeEmojis.4 }} Hall of Fame
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <hr>
+
     </div>
 
 {% endblock %}
