@@ -80,8 +80,23 @@ def player(request, id):
         return HttpResponse("Sorry, this player doesn't exist!")
     # Initialize the context
     context = {
+        # Page information
         "title": f"{plr.first_name} {plr.last_name}",
         "player": plr,
+        "badgeEmojis": {0: "🚫", 1: "🟫", 2: "🌫️", 3: "🟨", 4: "🟪"},
+        # Attribute categories
+        "playmaking_attributes": league_config.attribute_categories["playmaking"],
+        "shooting_attributes": league_config.attribute_categories["shooting"],
+        "physical_attributes": league_config.attribute_categories["physical"],
+        "defense_attributes": league_config.attribute_categories["defense"],
+        "finishing_attributes": league_config.attribute_categories["finishing"],
+        # Badge categories
+        "finishing_badges": league_config.badge_categories["finishing"],
+        "shooting_badges": league_config.badge_categories["shooting"],
+        "playmaking_badges": league_config.badge_categories["playmaking"],
+        "defense_badges": league_config.badge_categories["defense"],
+        # Precalled methods
+        "height_in_feet": hoops_extra_convert.convert_to_height(plr.height)
     }
     return render(request, "main/players/player.html", context)
 
