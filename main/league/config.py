@@ -4,7 +4,7 @@
 max_players = 100
 primary_currency_start = 1000
 
-start_attribute = 0
+start_attribute = 65
 start_badge = 0
 min_attribute = 0
 max_attribute = 99
