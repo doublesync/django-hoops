@@ -36,7 +36,13 @@
                     <p>{{ player.current_team.abbrev }}</p>
                 </div>
                 <hr>
-                <p class="mb-0"><b>Creator: </b>{{ player.discord_user.discord_tag }}</p>
+                <p class="mb-0"><b>Traits:</b> {{ player.trait_one }}, {{ player.trait_two }} & {{ player.trait_three }}</p>
+                {% if player.primary_archetype != player.secondary_archetype %}
+                    <p class="mb-0"><b>Archetypes:</b> {{ player.primary_archetype }} {{ player.secondary_archetype }}</p>
+                {% else %}
+                    <p class="mb-0"><b>Archetype:</b> {{ player.primary_archetype }}</p>
+                {% endif %}
+                <p class="mb-0"><b>Creator:</b> {{ player.discord_user.discord_tag }}</p>
             </div>
         </div>
         <hr>

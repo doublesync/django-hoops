@@ -54,6 +54,33 @@ class Player(models.Model):
     jersey_number = models.IntegerField(
         default=0, validators=[MinValueValidator(0), MaxValueValidator(99)]
     )
+    # Archetypes & Traits
+    primary_archetype = models.CharField(
+        max_length=36,
+        choices=league_config.archetype_choices,
+        default=league_config.archetype_choices[0][0],
+    )
+    secondary_archetype = models.CharField(
+        max_length=36,
+        choices=league_config.archetype_choices,
+        default=league_config.archetype_choices[0][0],
+    )
+    trait_one = models.CharField(
+        max_length=36,
+        choices=league_config.trait_choices,
+        default=league_config.trait_choices[0][0],
+    )
+    trait_two = models.CharField(
+        max_length=36,
+        choices=league_config.trait_choices,
+        default=league_config.trait_choices[0][0],
+    )
+    trait_three = models.CharField(
+        max_length=36,
+        choices=league_config.trait_choices,
+        default=league_config.trait_choices[0][0],
+    )
+    # Attributes, Badges, & Hotzones
     attributes = models.JSONField(default=league_config.get_default_attributes)
     badges = models.JSONField(default=league_config.get_default_badges)
     hotzones = models.JSONField(default=league_config.get_default_hotzones)
@@ -74,6 +101,7 @@ class Player(models.Model):
     # Player Methods
     def __str__(self):
         return f"[{self.id}] {self.first_name} {self.last_name}"
+
 
 # List Models (for players)
 class HistoryList(models.Model):

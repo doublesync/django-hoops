@@ -27,6 +27,7 @@ from .league.extra import convert as hoops_extra_convert
 # .ENV file import
 import os, json
 from dotenv import load_dotenv
+
 load_dotenv()
 
 # Create your views here.
@@ -45,17 +46,20 @@ def home(request):
     # Return the home page
     return render(request, "main/league/home.html", context)
 
+
 def login(request):
     return HttpResponse("This is the login page.")
+
 
 def login_discord(request):
     discord_auth_url = os.environ.get("DISCORD_AUTH_URL")
     return redirect(discord_auth_url)
 
+
 def login_discord_redirect(request):
     try:
         # Get information from Discord
-        code = request.GET.get('code')
+        code = request.GET.get("code")
         info = discord_auth.exchange_code(code)
         user = info[0]
         guilds = info[1]
@@ -68,9 +72,11 @@ def login_discord_redirect(request):
         pass
     return redirect(home)
 
+
 def logout(request):
     django_logout(request)
     return redirect("/")
+
 
 def player(request, id):
     # Check if the player exists
@@ -96,9 +102,10 @@ def player(request, id):
         "playmaking_badges": league_config.badge_categories["playmaking"],
         "defense_badges": league_config.badge_categories["defense"],
         # Precalled methods
-        "height_in_feet": hoops_extra_convert.convert_to_height(plr.height)
+        "height_in_feet": hoops_extra_convert.convert_to_height(plr.height),
     }
     return render(request, "main/players/player.html", context)
+
 
 @login_required(login_url="/login/discord/")
 def upgrade_player(request, id):
@@ -113,7 +120,7 @@ def upgrade_player(request, id):
     if not player.discord_user == user:
         return HttpResponse("Sorry, you don't have permission to upgrade this player!")
     # Process the request (if it's a POST request)
-    if request.method == "POST": 
+    if request.method == "POST":
         form = UpgradeForm(request.POST)
         if form.is_valid():
             response = hoops_player_upgrade.createUpgrade(player, form.cleaned_data)
@@ -125,14 +132,20 @@ def upgrade_player(request, id):
             return redirect(upgrade_player, id=id)
     else:
         # Initialize the prefill information
-        prefill_info = dict(player.attributes, **player.badges) # Combine the attributes & badges into one dictionary
-        prefill_info = {k.lower(): v for k, v in prefill_info.items()} # To match field names in the form (lowercase)
-        prefill_info = {k.replace(" ", "_"): v for k, v in prefill_info.items()} # To match field names in the form (underscores)
+        prefill_info = dict(
+            player.attributes, **player.badges
+        )  # Combine the attributes & badges into one dictionary
+        prefill_info = {
+            k.lower(): v for k, v in prefill_info.items()
+        }  # To match field names in the form (lowercase)
+        prefill_info = {
+            k.replace(" ", "_"): v for k, v in prefill_info.items()
+        }  # To match field names in the form (underscores)
         # Initialize the context
         context = {
             # Context items
-            "title": "Upgrade Player", 
-            "player": player, 
+            "title": "Upgrade Player",
+            "player": player,
             "upgrade_player_form": UpgradeForm(initial=prefill_info),
             "badge_attributes": prefill_info,
             "badge_prices": league_config.badge_prices,
@@ -151,15 +164,18 @@ def upgrade_player(request, id):
         }
         return render(request, "main/players/upgrade.html", context)
 
+
 @login_required(login_url="/login/discord/")
 def create_player(request):
     # Collect user & player information
     user = request.user
     # Process the request (if it's a POST request)
-    if request.method == "POST": 
+    if request.method == "POST":
         form = PlayerForm(request.POST)
         if form.is_valid():
-            response = hoops_player_create.validatePlayerCreation(user, form.cleaned_data)
+            response = hoops_player_create.validatePlayerCreation(
+                user, form.cleaned_data
+            )
             success = response[0]
             status = response[1]
             # If the form is valid, and the player creation succeeded, redirect to the player page
@@ -175,12 +191,14 @@ def create_player(request):
         context = {"create_player_form": PlayerForm}
         return render(request, "main/players/create.html", context)
 
+
 def players(request):
     context = {
         "title": "Players",
         "players": Player.objects.all(),
     }
     return render(request, "main/players/players.html", context)
+
 
 def upgrade_logs(request, id):
     # Check if the player exists
@@ -200,6 +218,7 @@ def upgrade_logs(request, id):
     else:
         return HttpResponse("Sorry, this player doesn't exist!")
 
+
 def team(request, id):
     team_object = Team.objects.get(pk=id)
     context = {
@@ -207,6 +226,7 @@ def team(request, id):
         "team": team_object,
     }
     return render(request, "main/teams/team.html", context)
+
 
 def teams(request):
     context = {

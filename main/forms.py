@@ -20,166 +20,199 @@ class PlayerForm(forms.Form):
     jersey_number = forms.IntegerField(
         label="Jersey Number", min_value=0, max_value=league_config.max_attribute
     )
+    primary_archetype = forms.ChoiceField(
+        label="Primary Archetype", choices=league_config.archetype_choices
+    )
+    secondary_archetype = forms.ChoiceField(
+        label="Secondary Archetype", choices=league_config.archetype_choices
+    )
+    trait_one = forms.ChoiceField(
+        label="Trait One", choices=league_config.trait_choices
+    )
+    trait_two = forms.ChoiceField(
+        label="Trait Two", choices=league_config.trait_choices
+    )
+    trait_three = forms.ChoiceField(
+        label="Trait Three", choices=league_config.trait_choices
+    )
 
 
 class UpgradeForm(forms.Form):
     # Attributes
     driving_layup = forms.IntegerField(
         label="Driving Layup",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     post_fadeaway = forms.IntegerField(
         label="Post Fadeaway",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     post_hook = forms.IntegerField(
         label="Post Hook",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
-    post_control = forms.IntegerField(
-        label="Post Control",
-        min_value=league_config.start_attribute,
+    post_moves = forms.IntegerField(
+        label="Post Moves",
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     draw_foul = forms.IntegerField(
         label="Draw Foul",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
-    shot_close = forms.IntegerField(
-        label="Shot Close",
-        min_value=league_config.start_attribute,
+    close_shot = forms.IntegerField(
+        label="Close Shot",
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     mid_range_shot = forms.IntegerField(
         label="Mid Range Shot",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     three_point_shot = forms.IntegerField(
         label="Three Point Shot",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     free_throw = forms.IntegerField(
         label="Free Throw",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     ball_control = forms.IntegerField(
         label="Ball Control",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     passing_iq = forms.IntegerField(
         label="Passing Iq",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     passing_vision = forms.IntegerField(
         label="Passing Vision",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     passing_accuracy = forms.IntegerField(
         label="Passing Accuracy",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     defensive_rebound = forms.IntegerField(
         label="Defensive Rebound",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     offensive_rebound = forms.IntegerField(
         label="Offensive Rebound",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     standing_dunk = forms.IntegerField(
         label="Standing Dunk",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     driving_dunk = forms.IntegerField(
         label="Driving Dunk",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     shot_iq = forms.IntegerField(
         label="Shot Iq",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     interior_defense = forms.IntegerField(
         label="Interior Defense",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     perimeter_defense = forms.IntegerField(
         label="Perimeter Defense",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     block = forms.IntegerField(
         label="Block",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     steal = forms.IntegerField(
         label="Steal",
-        min_value=league_config.start_attribute,
-        max_value=league_config.max_attribute,
-        widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
-    )
-    shot_contest = forms.IntegerField(
-        label="Shot Contest",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     lateral_quickness = forms.IntegerField(
         label="Lateral Quickness",
-        min_value=league_config.start_attribute,
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     hands = forms.IntegerField(
         label="Hands",
-        min_value=league_config.start_attribute,
+        min_value=0,
+        max_value=league_config.max_attribute,
+        widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
+    )
+    offensive_consistency = forms.IntegerField(
+        label="Offensive Consistency",
+        min_value=0,
+        max_value=league_config.max_attribute,
+        widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
+    )
+    defensive_consistency = forms.IntegerField(
+        label="Defensive Consistency",
+        min_value=0,
+        max_value=league_config.max_attribute,
+        widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
+    )
+    help_defense_iq = forms.IntegerField(
+        label="Help Defense Iq",
+        min_value=0,
+        max_value=league_config.max_attribute,
+        widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
+    )
+    pass_perception = forms.IntegerField(
+        label="Pass Perception",
+        min_value=0,
         max_value=league_config.max_attribute,
         widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
     )
     # Physicals
-    # speed = forms.IntegerField(disabled=True, label="Speed", min_value=league_config.start_attribute, max_value=league_config.max_attribute)
-    # speed_with_ball = forms.IntegerField(disabled=True, label="Speed With Ball", min_value=league_config.start_attribute, max_value=league_config.max_attribute)
-    # acceleration = forms.IntegerField(disabled=True, label="Acceleration", min_value=league_config.start_attribute, max_value=league_config.max_attribute)
-    # vertical = forms.IntegerField(disabled=True, label="Vertical", min_value=league_config.start_attribute, max_value=league_config.max_attribute)
-    # strength = forms.IntegerField(disabled=True, label="Strength", min_value=league_config.start_attribute, max_value=league_config.max_attribute)
+    # speed = forms.IntegerField(disabled=True, label="Speed", min_value=0, max_value=league_config.max_attribute)
+    # speed_with_ball = forms.IntegerField(disabled=True, label="Speed With Ball", min_value=0, max_value=league_config.max_attribute)
+    # acceleration = forms.IntegerField(disabled=True, label="Acceleration", min_value=0, max_value=league_config.max_attribute)
+    # vertical = forms.IntegerField(disabled=True, label="Vertical", min_value=0, max_value=league_config.max_attribute)
+    # strength = forms.IntegerField(disabled=True, label="Strength", min_value=0, max_value=league_config.max_attribute)
     # Badges
     acrobat = forms.ChoiceField(
         label="Acrobat",

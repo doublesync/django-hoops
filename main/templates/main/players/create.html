@@ -46,6 +46,20 @@
                                         <label for="jersey_number" class="label label-primary">Jersey Number</label>
                                         {{ create_player_form.jersey_number|addclass:"form-control form-control-sm mb-2" }}
                                     </div> 
+                                    <!-- Archetypes & Traits -->
+                                    <div class="">
+                                        <label for="primary_archetype" class="label label-primary">Primary Archetype</label>
+                                        {{ create_player_form.primary_archetype|addclass:"form-control form-control-sm mb-2" }}
+                                        <label for="secondary_archetype" class="label label-primary">Secondary Archetype</label>
+                                        {{ create_player_form.secondary_archetype|addclass:"form-control form-control-sm mb-2" }}
+                                        <label for="trait_one" class="label label-primary">Trait One</label>
+                                        {{ create_player_form.trait_one|addclass:"form-control form-control-sm mb-2" }}
+                                        <label for="trait_two" class="label label-primary">Trait Two</label>
+                                        {{ create_player_form.trait_two|addclass:"form-control form-control-sm mb-2" }}
+                                        <label for="trait_three" class="label label-primary">Trait Three</label>
+                                        {{ create_player_form.trait_three|addclass:"form-control form-control-sm mb-2" }}
+                                    </div>
+                                    <!-- Submission -->
                                     <input type="submit" class="btn btn-success mt-1" value="Create Player">
                                 </form>
                             </div>

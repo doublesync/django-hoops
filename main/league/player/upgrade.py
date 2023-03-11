@@ -66,13 +66,17 @@ def createUpgrade(player, cleanedFormData):
     totalCost = 0
     # Calculate the total cost
     for k, v in upgradeData["attributes"].items():
-        if not (v["new"] > league_config.max_attribute) and not (v["new"] < league_config.min_attribute):
+        if not (v["new"] > league_config.max_attribute) and not (
+            v["new"] < league_config.min_attribute
+        ):
             currentValue = player.attributes[k]
             futureValue = v["new"]
             difference = futureValue - currentValue
             totalCost += difference * league_config.attribute_prices["Default"]
     for k, v in upgradeData["badges"].items():
-        if not (v["new"] > league_config.max_badge) and not (v["new"] < league_config.min_badge):
+        if not (v["new"] > league_config.max_badge) and not (
+            v["new"] < league_config.min_badge
+        ):
             totalCost += league_config.badge_prices[v["new"]]
     # Return if cost is below zero
     if totalCost <= 0:
