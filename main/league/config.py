@@ -10,10 +10,6 @@ min_attribute = 0
 max_attribute = 99
 min_badge = 0
 max_badge = 4
-oak_start_attribute = 65
-syp_start_attribute = 65
-attribute_prices = {"Default": 10}
-badge_prices = {0: 0, 1: 10, 2: 25, 3: 50, 4: 75}
 
 contract_salary_min = 25
 contract_salary_rook = 50
@@ -228,6 +224,18 @@ position_starting_attributes = {
     },
 }
 
+# Description: For attributes & badge prices
+
+attribute_prices = {
+    "60-70": {"range": range(60, 71), "base": 10, "primary": 5, "secondary": 8},
+    "71-80": {"range": range(71, 81), "base": 20, "primary": 10, "secondary": 16},
+    "81-86": {"range": range(81, 87), "base": 30, "primary": 15, "secondary": 24},
+    "87-93": {"range": range(87, 94), "base": 40, "primary": 20, "secondary": 32},
+    "94-96": {"range": range(94, 97), "base": 50, "primary": 25, "secondary": 40},
+    "97-99": {"range": range(97, 100), "base": 60, "primary": 30, "secondary": 48},
+}
+badge_prices = {0: 1, 1: 1, 2: 1, 3: 1, 4: 1}
+
 # Description: For player traits (traits unlock badges)
 # Description: Players not have duplicate traits, they can have duplicate archetypes though.
 
@@ -392,6 +400,10 @@ archetype_attribute_bonuses = {
     ],
     "Interior Defender": ["Interior Defense", "Block", "Help Defense Iq"],
 }
+
+# Description: Configurations for cap space
+
+cap_space = 0
 
 # Description: Initials for models
 

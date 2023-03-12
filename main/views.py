@@ -20,6 +20,7 @@ from .discord import auth as discord_auth
 from .league import config as league_config
 
 # Custom packages
+import copy
 from .league.player import upgrade as hoops_player_upgrade
 from .league.player import create as hoops_player_create
 from .league.extra import convert as hoops_extra_convert
@@ -131,16 +132,20 @@ def upgrade_player(request, id):
             messages.error(request, form.errors)
             return redirect(upgrade_player, id=id)
     else:
-        # Initialize the prefill information
-        prefill_info = dict(
-            player.attributes, **player.badges
-        )  # Combine the attributes & badges into one dictionary
-        prefill_info = {
-            k.lower(): v for k, v in prefill_info.items()
-        }  # To match field names in the form (lowercase)
-        prefill_info = {
-            k.replace(" ", "_"): v for k, v in prefill_info.items()
-        }  # To match field names in the form (underscores)
+        # Combine attributes & badges + convert to Django form format
+        prefill_info = dict(player.attributes, **player.badges)
+        prefill_info = hoops_extra_convert.format_dict_for_django_forms(prefill_info)
+        # Convert primary & secondary attributes to Django form format
+        js_primary_attributes = hoops_extra_convert.format_list_for_django_forms(
+            league_config.archetype_attribute_bonuses[player.primary_archetype]
+        )
+        js_secondary_attributes = hoops_extra_convert.format_list_for_django_forms(
+            league_config.archetype_attribute_bonuses[player.secondary_archetype]
+        )
+        # Have to remove the 'range' function from attribute prices or javascript shits the bed
+        js_attribute_prices = copy.deepcopy(league_config.attribute_prices)
+        for _, v in js_attribute_prices.items():
+            v["range"] = 0
         # Initialize the context
         context = {
             # Context items
@@ -149,7 +154,10 @@ def upgrade_player(request, id):
             "upgrade_player_form": UpgradeForm(initial=prefill_info),
             "badge_attributes": prefill_info,
             "badge_prices": league_config.badge_prices,
-            "attribute_prices": league_config.attribute_prices,
+            "attribute_prices": js_attribute_prices,
+            "attribute_bonuses": league_config.archetype_attribute_bonuses,
+            "primary_attributes": js_primary_attributes,
+            "secondary_attributes": js_secondary_attributes,
             # Attribute categories
             "finishing_attributes": league_config.attribute_categories["finishing"],
             "shooting_attributes": league_config.attribute_categories["shooting"],

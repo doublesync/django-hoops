@@ -5,6 +5,32 @@ from ...league import config as league_config
 import datetime
 
 # Upgrade methods
+
+
+def attributeCost(player, attribute, currentValue, futureValue):
+    # Define some league config variables
+    total_price = 0
+    attribute_prices = league_config.attribute_prices
+    attribute_bonuses = league_config.archetype_attribute_bonuses
+    # Define some player variables
+    primary_archetype = player.primary_archetype
+    secondary_archetype = player.secondary_archetype
+    primary_attributes = attribute_bonuses[primary_archetype]
+    secondary_attributes = attribute_bonuses[secondary_archetype]
+    # Check the attribute tier (60-70, 71-80)
+    for i in range((currentValue + 1), (futureValue + 1)):
+        for _, tier in attribute_prices.items():
+            if i in tier["range"]:
+                if attribute in primary_attributes:
+                    total_price += tier["primary"]
+                elif attribute in secondary_attributes:
+                    total_price += tier["secondary"]
+                else:
+                    total_price += tier["base"]
+    # Return the upgrade cost
+    return total_price
+
+
 def formatFormData(player, cleanedFormData):
     # Format the cleaned form data (so it works with the database)
     formatFormData = cleanedFormData.copy()
@@ -15,45 +41,47 @@ def formatFormData(player, cleanedFormData):
     upgradeData = {"attributes": {}, "badges": {}}
     # Filter out values that are under minimum, over maximum or equal to current value
     for k, v in formatFormData.items():
+        # Type cast the value to an integer
+        v = int(v)
+        # If the key is an attribute
         if k in player.attributes:
             # Initialize the values
             currentValue = player.attributes[k]
             minimumValue = league_config.min_attribute
             maximumValue = league_config.max_attribute
             # Cases
-            if int(v) <= minimumValue:  # Upgrade value is less than minimum value
+            if v <= minimumValue:  # Upgrade value is less than minimum value
                 continue
-            if int(v) > maximumValue:  # Upgrade value is greater than maximum value
+            if v > maximumValue:  # Upgrade value is greater than maximum value
                 continue
-            if int(v) <= currentValue:  # Upgrade value is less/equal to current value
+            if v <= currentValue:  # Upgrade value is less/equal to current value
                 continue
             # Add the value to the upgrade data
-            upgradeCost = league_config.attribute_prices["Default"] * (
-                int(v) - currentValue
-            )  # Probably subject to change.
+            upgradeCost = attributeCost(player, k, currentValue, v)
             upgradeData["attributes"][k] = {
                 "cost": upgradeCost,
                 "old": currentValue,
-                "new": int(v),
+                "new": v,
             }
+        # If the key is a badge
         if k in player.badges:
             # Initialize the values
             currentValue = player.badges[k]
             minimumValue = league_config.min_badge
             maximumValue = league_config.max_badge
             # Cases
-            if int(v) <= minimumValue:  # Upgrade value is less than minimum value
+            if v <= minimumValue:  # Upgrade value is less than minimum value
                 continue
-            if int(v) > maximumValue:  # Upgrade value is greater than maximum value
+            if v > maximumValue:  # Upgrade value is greater than maximum value
                 continue
-            if int(v) <= currentValue:  # Upgrade value is less/equal to current value
+            if v <= currentValue:  # Upgrade value is less/equal to current value
                 continue
             # Add the value to the upgrade data
-            upgradeCost = league_config.badge_prices[int(v)]
+            upgradeCost = league_config.badge_prices[v]
             upgradeData["badges"][k] = {
                 "cost": upgradeCost,
                 "old": currentValue,
-                "new": int(v),
+                "new": v,
             }
     # Return the upgrade data
     return upgradeData
@@ -69,10 +97,7 @@ def createUpgrade(player, cleanedFormData):
         if not (v["new"] > league_config.max_attribute) and not (
             v["new"] < league_config.min_attribute
         ):
-            currentValue = player.attributes[k]
-            futureValue = v["new"]
-            difference = futureValue - currentValue
-            totalCost += difference * league_config.attribute_prices["Default"]
+            totalCost += v["cost"]
     for k, v in upgradeData["badges"].items():
         if not (v["new"] > league_config.max_badge) and not (
             v["new"] < league_config.min_badge
