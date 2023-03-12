@@ -88,6 +88,7 @@ class Player(models.Model):
     primary_currency = models.PositiveBigIntegerField(
         name="cash", default=league_config.primary_currency_start
     )
+    salary = models.PositiveBigIntegerField(name="salary", default=0)
     spent = models.PositiveBigIntegerField(name="spent", default=0)
     # Relationships
     discord_user = models.ForeignKey("DiscordUser", on_delete=models.CASCADE)
