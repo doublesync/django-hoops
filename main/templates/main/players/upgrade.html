@@ -281,9 +281,12 @@
     <!-- scripts -->
     <script>
         const attributePrices = {{ attribute_prices|safe }};
+        const attributeBonuses = {{ attribute_bonuses|safe }};
         const badgePrices = {{ badge_prices|safe }};
-        const badgeAttributes = {{ badge_attributes|safe }};
-        const cash = {{ player.cash }}
+        const badgeAttributes = {{ badge_attributes|safe }}; // a dictionary that holds all of the attributes & badges
+        const cash = {{ player.cash }};
+        const primaryAttributes = {{ primary_attributes|safe }};
+        const secondaryAttributes = {{ secondary_attributes|safe }};
     </script>
     <script src="{% static 'main/js/players/updatePrice.js' %}"></script>
 

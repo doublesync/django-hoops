@@ -35,6 +35,16 @@ const submitButton = document.getElementById("submitButton");
 cashLabel.innerText = cash;
 cashLeft.innerText = cash;
 
+// attribute price tiers
+attributePriceRanges = {
+    "60-70": [60, 70],
+    "71-80": [71, 80],
+    "81-86": [81, 86],
+    "87-93": [87, 93],
+    "94-96": [94, 96],
+    "97-99": [97, 99],
+}
+
 // calculate price of attributes in form
 const calculateAttributePrice = function() {
     let price = 0;
@@ -47,7 +57,23 @@ const calculateAttributePrice = function() {
         let timesUpgraded = Number(futureAttribute) - Number(currentAttribute)
         // recalculate the price
         if (futureAttribute > currentAttribute) {
-            cost = timesUpgraded * attributePrices["Default"];
+            let cost = 0;
+            for (let i = (currentAttribute + 1); i < Number(futureAttribute) + 1; i++) {
+                if (i >= 100) { break };
+                for (const [tier, value] of Object.entries(attributePriceRanges)) {
+                    if (i >= value[0] && i <= value[1]) {
+                        console.log(`${i} was found inside ${tier} (${value[0]}/${value[1]})`);
+                        if (primaryAttributes.includes(currentIndex.name)) {
+                            cost += attributePrices[tier]["primary"];
+                        } else if (secondaryAttributes.includes(currentIndex.name)) {
+                            cost += attributePrices[tier]["secondary"];
+                        } else {
+                            cost += attributePrices[tier]["base"];
+                        }
+                        continue;
+                    }
+                }
+            }
             cart[currentIndex.name] = [timesUpgraded, cost];
             price += cost;
         }
