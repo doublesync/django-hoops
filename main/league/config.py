@@ -77,6 +77,7 @@ position_starting_attributes = {
         "Speed": 94,
         "Speed With Ball": 94,
         "Vertical": 95,
+        "Intangibles": 60,
     },
     "SG": {
         "Driving Layup": 65,
@@ -113,6 +114,7 @@ position_starting_attributes = {
         "Speed": 92,
         "Speed With Ball": 92,
         "Vertical": 90,
+        "Intangibles": 60,
     },
     "SF": {
         "Driving Layup": 55,
@@ -149,6 +151,7 @@ position_starting_attributes = {
         "Speed": 88,
         "Speed With Ball": 88,
         "Vertical": 80,
+        "Intangibles": 60,
     },
     "PF": {
         "Driving Layup": 45,
@@ -185,6 +188,7 @@ position_starting_attributes = {
         "Speed": 78,
         "Speed With Ball": 78,
         "Vertical": 70,
+        "Intangibles": 60,
     },
     "C": {
         "Driving Layup": 45,
@@ -221,18 +225,19 @@ position_starting_attributes = {
         "Speed": 70,
         "Speed With Ball": 70,
         "Vertical": 60,
+        "Intangibles": 60,
     },
 }
 
 # Description: For attributes & badge prices
 
 attribute_prices = {
-    "60-70": {"range": range(60, 71), "base": 10, "primary": 5, "secondary": 8},
-    "71-80": {"range": range(71, 81), "base": 20, "primary": 10, "secondary": 16},
-    "81-86": {"range": range(81, 87), "base": 30, "primary": 15, "secondary": 24},
-    "87-93": {"range": range(87, 94), "base": 40, "primary": 20, "secondary": 32},
-    "94-96": {"range": range(94, 97), "base": 50, "primary": 25, "secondary": 40},
-    "97-99": {"range": range(97, 100), "base": 60, "primary": 30, "secondary": 48},
+    "60-70": {"range": range(60, 71), "base": 40, "primary": 10, "secondary": 20},
+    "71-80": {"range": range(71, 81), "base": 100, "primary": 25, "secondary": 50},
+    "81-86": {"range": range(81, 87), "base": 200, "primary": 50, "secondary": 100},
+    "87-93": {"range": range(87, 94), "base": 400, "primary": 100, "secondary": 200},
+    "94-96": {"range": range(94, 97), "base": 800, "primary": 200, "secondary": 400},
+    "97-99": {"range": range(97, 100), "base": 1200, "primary": 400, "secondary": 800},
 }
 badge_prices = {0: 1, 1: 1, 2: 1, 3: 1, 4: 1}
 
@@ -442,6 +447,7 @@ initial_attributes = {
     "Strength": start_attribute,
     "Vertical": start_attribute,
     "Hustle": start_attribute,
+    "Intangibles": start_attribute,
 }
 initial_badges = {
     "Acrobat": start_badge,
