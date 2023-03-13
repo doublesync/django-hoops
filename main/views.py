@@ -128,7 +128,6 @@ def upgrade_player(request, id):
             messages.success(request, response)
             return redirect(upgrade_player, id=id)
         else:
-            print(form.errors)
             messages.error(request, form.errors)
             return redirect(upgrade_player, id=id)
     else:
@@ -142,6 +141,15 @@ def upgrade_player(request, id):
         js_secondary_attributes = hoops_extra_convert.format_list_for_django_forms(
             league_config.archetype_attribute_bonuses[player.secondary_archetype]
         )
+        js_trait_one_attributes = hoops_extra_convert.format_list_for_django_forms(
+            league_config.trait_badge_unlocks[player.trait_one]
+        )
+        js_trait_two_attributes = hoops_extra_convert.format_list_for_django_forms(
+            league_config.trait_badge_unlocks[player.trait_two]
+        )
+        js_trait_three_attributes = hoops_extra_convert.format_list_for_django_forms(
+            league_config.trait_badge_unlocks[player.trait_three]
+        )
         # Have to remove the 'range' function from attribute prices or javascript shits the bed
         js_attribute_prices = copy.deepcopy(league_config.attribute_prices)
         for _, v in js_attribute_prices.items():
@@ -152,12 +160,17 @@ def upgrade_player(request, id):
             "title": "Upgrade Player",
             "player": player,
             "upgrade_player_form": UpgradeForm(initial=prefill_info),
+            # Badges & attributes
             "badge_attributes": prefill_info,
             "badge_prices": league_config.badge_prices,
             "attribute_prices": js_attribute_prices,
             "attribute_bonuses": league_config.archetype_attribute_bonuses,
             "primary_attributes": js_primary_attributes,
             "secondary_attributes": js_secondary_attributes,
+            # Traits
+            "trait_one_attributes": js_trait_one_attributes,
+            "trait_two_attributes": js_trait_two_attributes,
+            "trait_three_attributes": js_trait_three_attributes,
             # Attribute categories
             "finishing_attributes": league_config.attribute_categories["finishing"],
             "shooting_attributes": league_config.attribute_categories["shooting"],

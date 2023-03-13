@@ -32,7 +32,35 @@ def attributeCost(player, attribute, currentValue, futureValue):
     return total_price
 
 
-def formatFormData(player, cleanedFormData):
+def badgeCost(player, badge, currentValue, futureValue):
+    # Define some league config variables
+    total_price = 0
+    badge_prices = league_config.badge_prices
+    trait_badge_unlocks = league_config.trait_badge_unlocks
+    # Define some player variables
+    trait_one_badges = trait_badge_unlocks[player.trait_one]
+    trait_two_badges = trait_badge_unlocks[player.trait_two]
+    trait_three_badges = trait_badge_unlocks[player.trait_three]
+    # Check the badge tier (Bronze, Silver, Gold, Hof)
+    for i in range((currentValue + 1), (futureValue + 1)):
+        for index, tier in badge_prices.items():
+            if i == index:
+                if badge in trait_one_badges:
+                    total_price += tier["trait_one"]
+                    continue
+                elif badge in trait_two_badges:
+                    total_price += tier["trait_two"]
+                    continue
+                elif badge in trait_three_badges:
+                    total_price += tier["trait_three"]
+                    continue
+                else:
+                    total_price += tier["base"]
+    # Return the upgrade cost
+    return total_price
+
+
+def formatAndValidate(player, cleanedFormData):
     # Format the cleaned form data (so it works with the database)
     formatFormData = cleanedFormData.copy()
     formatFormData = {k.title(): v for k, v in formatFormData.items()}
@@ -40,6 +68,12 @@ def formatFormData(player, cleanedFormData):
     # Initialize the upgrade data (will be returned to upgrade the player with)
     # Basically, we'll just be adding the values that were changed and are valid to this dictionary
     upgradeData = {"attributes": {}, "badges": {}}
+    error = ""
+    # Define some player variables
+    trait_badge_unlocks = league_config.trait_badge_unlocks
+    trait_one_badges = trait_badge_unlocks[player.trait_one]
+    trait_two_badges = trait_badge_unlocks[player.trait_two]
+    trait_three_badges = trait_badge_unlocks[player.trait_three]
     # Filter out values that are under minimum, over maximum or equal to current value
     for k, v in formatFormData.items():
         # Type cast the value to an integer
@@ -51,11 +85,16 @@ def formatFormData(player, cleanedFormData):
             minimumValue = league_config.min_attribute
             maximumValue = league_config.max_attribute
             # Cases
-            if v <= minimumValue:  # Upgrade value is less than minimum value
-                continue
+            if v < minimumValue:  # Upgrade value is less than minimum value
+                error = f"❌ {k} ({v}) value is less than the minimum value."
+                break
             if v > maximumValue:  # Upgrade value is greater than maximum value
-                continue
-            if v <= currentValue:  # Upgrade value is less/equal to current value
+                error = f"❌ {k} ({v}) value is greater than the maximum value."
+                break
+            if v < currentValue:  # Upgrade value is less/equal to current value
+                error = f"❌ {k} ({v}) value is less than the current value."
+                break
+            if v == currentValue:
                 continue
             # Add the value to the upgrade data
             upgradeCost = attributeCost(player, k, currentValue, v)
@@ -66,47 +105,62 @@ def formatFormData(player, cleanedFormData):
             }
         # If the key is a badge
         if k in player.badges:
+            # Finding the maximum value for the badges
+            if k in trait_one_badges:
+                maximumValue = league_config.trait_one_max
+            elif k in trait_two_badges:
+                maximumValue = league_config.trait_two_max
+            elif k in trait_three_badges:
+                maximumValue = league_config.trait_three_max
+            else:
+                maximumValue = league_config.trait_none_max
             # Initialize the values
             currentValue = player.badges[k]
             minimumValue = league_config.min_badge
-            maximumValue = league_config.max_badge
             # Cases
-            if v <= minimumValue:  # Upgrade value is less than minimum value
-                continue
+            if v < minimumValue:  # Upgrade value is less than minimum value
+                error = f"❌ {k} ({v}) is less than the minimum value."
+                break
             if v > maximumValue:  # Upgrade value is greater than maximum value
-                continue
-            if v <= currentValue:  # Upgrade value is less/equal to current value
+                error = f"❌ {k} ({v}) is greater than the maximum value."
+                break
+            if v < currentValue:  # Upgrade value is less/equal to current value
+                error = f"❌ {k} ({v}) is less to the current value."
+                break
+            if v == currentValue:
                 continue
             # Add the value to the upgrade data
-            upgradeCost = league_config.badge_prices[v]
+            upgradeCost = badgeCost(player, k, currentValue, v)
             upgradeData["badges"][k] = {
                 "cost": upgradeCost,
                 "old": currentValue,
                 "new": v,
             }
     # Return the upgrade data
-    return upgradeData
+    return [upgradeData, error]
 
 
 def createUpgrade(player, cleanedFormData):
     # Format the form data
-    upgradeData = formatFormData(player, cleanedFormData)
+    formatResponse = formatAndValidate(player, cleanedFormData)
+    print(formatResponse)
+    upgradeData = formatResponse[0]
+    upgradeError = formatResponse[1]
+    # Check if there were any errors
+    if upgradeError != "":
+        return upgradeError
     # Initialize the total cost
     totalCost = 0
     # Calculate the total cost
     for k, v in upgradeData["attributes"].items():
-        if not (v["new"] > league_config.max_attribute) and not (
-            v["new"] < league_config.min_attribute
-        ):
-            totalCost += v["cost"]
+        totalCost += v["cost"]
     for k, v in upgradeData["badges"].items():
-        if not (v["new"] > league_config.max_badge) and not (
-            v["new"] < league_config.min_badge
-        ):
-            totalCost += league_config.badge_prices[v["new"]]
-    # Return if cost is below zero
+        totalCost += v["cost"]
+    # Return if cost is below zero, or player doesn't have enough cash
     if totalCost <= 0:
         return "😕 Nothing to upgrade!"
+    if player.cash < totalCost:
+        return "❌ You don't have enough cash for this upgrade!"
     # Check if the player has enough cash
     if player.cash >= totalCost:
         # Subtract the cost from the player's cash
@@ -115,9 +169,7 @@ def createUpgrade(player, cleanedFormData):
         for k, v in upgradeData["attributes"].items():
             # Check if the attribute is a physical attribute
             if k in league_config.attribute_categories["physical"]:
-                return (
-                    f"❌ The attribute '{k}' cannot be upgraded because it's a physical."
-                )
+                return f"❌ '{k}' cannot be upgraded because it's a physical."
             else:
                 player.attributes[k] = v["new"]
         for k, v in upgradeData["badges"].items():
@@ -138,6 +190,3 @@ def createUpgrade(player, cleanedFormData):
         player.history_list.save()
         # Return success message
         return f"✅ Congrats, you upgraded your player for ${totalCost}!"
-    else:
-        # Return error message
-        return "Not enough cash!"

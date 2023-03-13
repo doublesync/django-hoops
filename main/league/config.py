@@ -6,17 +6,11 @@ primary_currency_start = 1000
 
 start_attribute = 0
 start_badge = 0
+
 min_attribute = 0
 max_attribute = 99
 min_badge = 0
 max_badge = 4
-
-contract_salary_min = 25
-contract_salary_rook = 50
-contract_salary_max = 100
-contract_years_min = 1
-contract_years_rook = 2
-contract_years_max = 3
 
 player_weight_min = 150
 player_weight_max = 270
@@ -232,6 +226,7 @@ position_starting_attributes = {
 # Description: For attributes & badge prices
 # Work in progress!
 attribute_prices = {
+    "0-59": {"range": range(0, 60), "base": 40, "primary": 10, "secondary": 20},
     "60-70": {"range": range(60, 71), "base": 40, "primary": 10, "secondary": 20},
     "71-80": {"range": range(71, 81), "base": 100, "primary": 25, "secondary": 50},
     "81-86": {"range": range(81, 87), "base": 200, "primary": 50, "secondary": 100},
@@ -239,11 +234,40 @@ attribute_prices = {
     "94-96": {"range": range(94, 97), "base": 800, "primary": 200, "secondary": 400},
     "97-99": {"range": range(97, 100), "base": 1200, "primary": 400, "secondary": 800},
 }
-badge_prices = {0: 1, 1: 1, 2: 1, 3: 1, 4: 1}
+badge_prices = {
+    1: {
+        "base": 100,
+        "trait_one": 25,
+        "trait_two": 50,
+        "trait_three": 75,
+    },
+    2: {
+        "base": 200,
+        "trait_one": 50,
+        "trait_two": 75,
+        "trait_three": 100,
+    },
+    3: {
+        "base": 300,
+        "trait_one": 75,
+        "trait_two": 100,
+        "trait_three": 125,
+    },
+    4: {
+        "base": 400,
+        "trait_one": 100,
+        "trait_two": 125,
+        "trait_three": 150,
+    },
+}
 
 # Description: For player traits (traits unlock badges)
 # Description: Players not have duplicate traits, they can have duplicate archetypes though.
 
+trait_one_max = 4
+trait_two_max = 3
+trait_three_max = 2
+trait_none_max = 1
 trait_badge_unlocks = {
     "Movement Shooter": [
         "Agent Threes",
