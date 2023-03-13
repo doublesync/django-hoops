@@ -23,6 +23,7 @@ def attributeCost(player, attribute, currentValue, futureValue):
             if i in tier["range"]:
                 if attribute in primary_attributes:
                     total_price += tier["primary"]
+                    continue
                 elif attribute in secondary_attributes:
                     total_price += tier["secondary"]
                 else:
