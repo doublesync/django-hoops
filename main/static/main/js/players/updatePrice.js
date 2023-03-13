@@ -45,7 +45,7 @@ attributePriceRanges = {
     "97-99": [97, 99],
 }
 
-// calculate price of attributes in form
+// calculate price of attributes in the form
 const calculateAttributePrice = function() {
     let price = 0;
     let cart = {};
@@ -70,7 +70,6 @@ const calculateAttributePrice = function() {
                         } else {
                             cost += attributePrices[tier]["base"];
                         }
-                        continue;
                     }
                 }
             }
@@ -82,22 +81,42 @@ const calculateAttributePrice = function() {
     return [price, cart];
 }
 
-// calculate price of badges in form
+// calculate price of badges in the form
 const calculateBadgePrice = function() {
     let price = 0;
     let cart = {};
     for (let i = 0; i < badgeUpgrades.length; i++) {
         // find the current index + level of badge
         let currentIndex = badgeUpgrades[i];
-        let futureLevel = currentIndex.options[currentIndex.selectedIndex];
+        let futureLevel = currentIndex.options[currentIndex.selectedIndex].value;
         let currentLevel = badgeAttributes[currentIndex.name]
+        let timesUpgraded = Number(futureLevel) - Number(currentLevel)
         // recalculate the price
-        if (futureLevel.value in badgePrices) {
-            if (futureLevel.value > currentLevel) {
-                cost = badgePrices[futureLevel.value];
-                cart[currentIndex.name] = [futureLevel.value, cost];
-                price += cost;
+        if (Number(futureLevel) > currentLevel) {
+            let cost = 0;
+            // for loop to calculate the price of the badge
+            for (let i = (currentLevel + 1); i < Number(futureLevel) + 1; i++) {
+                // break the loop at the max badge level
+                if (i >= 5) { break };
+                // loop through the badge prices
+                for (const [tier, value] of Object.entries(badgePrices)) {
+                    // if the badge level is equivalent to the index of the tier
+                    if (i == tier) {
+                        // check which traits the user has, and use the price for those traits
+                        if (traitOneAttributes.includes(currentIndex.name)) {
+                            cost += value["trait_one"];
+                        } else if (traitTwoAttributes.includes(currentIndex.name)) {
+                            cost += value["trait_two"];
+                        } else if (traitThreeAttributes.includes(currentIndex.name)) {
+                            cost += value["trait_three"];
+                        } else {
+                            cost += value["base"];
+                        }
+                    }
+                }
             }
+            cart[currentIndex.name] = [timesUpgraded, cost];
+            price += cost;
         }
     }
     // return the price
