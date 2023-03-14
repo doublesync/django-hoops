@@ -32,6 +32,7 @@ class Player(models.Model):
     # Player Model
     first_name = models.CharField(default="Unknown", max_length=16)
     last_name = models.CharField(default="Player", max_length=16)
+    cyberface = models.SmallIntegerField(default=0)
     height = models.SmallIntegerField(
         choices=league_config.height_choices, default=league_config.height_choices[0][0]
     )

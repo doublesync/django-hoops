@@ -5,6 +5,7 @@ from .league import config as league_config
 class PlayerForm(forms.Form):
     first_name = forms.CharField(label="First Name", max_length=16)
     last_name = forms.CharField(label="Last Name", max_length=16)
+    cyberface = forms.IntegerField(label="Cyberface", min_value=0, max_value=40000)
     height = forms.ChoiceField(label="Height", choices=league_config.height_choices)
     weight = forms.IntegerField(
         label="Weight",
