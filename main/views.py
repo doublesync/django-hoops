@@ -41,9 +41,13 @@ def home(request):
     }
     # Send players to home page
     if current_user.is_authenticated:
-        players = Player.objects.filter(discord_user=current_user)
-        for p in players:
-            context["players"].append(p)
+        try:
+            players = Player.objects.filter(discord_user=current_user)
+            for p in players:
+                context["players"].append(p)
+        except ValueError:
+            # If the user is still signed into an administration account
+            redirect(logout)
     # Return the home page
     return render(request, "main/league/home.html", context)
 
