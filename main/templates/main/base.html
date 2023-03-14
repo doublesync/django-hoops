@@ -20,9 +20,9 @@
                         <li class="nav-item"><a class="nav-link" href="/teams">Teams</a></li>
                     </ul>
                     {% if current_user.is_authenticated != False %}
-                        <a class="btn btn-primary ms-md-2" role="button" href="/logout">Logout</a>
+                        <a class="btn btn-primary btn-sm ms-md-2" role="button" href="/logout">Logout</a>
                     {% else %}
-                        <a class="btn btn-primary ms-md-2" role="button" href="/login/discord">Login</a>
+                        <a class="btn btn-primary btn-sm ms-md-2" role="button" href="/login/discord">Login</a>
                     {% endif %}
                 </div>
             </div>
