@@ -66,208 +66,270 @@
             </div>
         
             <!-- attributes -->
-            <div id="accordion-1" class="accordion mt-2" role="tablist">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" role="tab"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-1 .item-1" aria-expanded="true" aria-controls="accordion-1 .item-1">Attributes</button></h2>
-                    <div class="accordion-collapse collapse show item-1" role="tabpanel" data-bs-parent="#accordion-1">
-                        <div class="card mt-2">
-                            <div class="card-header">
-                                <h5 class="mb-0">Attributes</h5>
-                                <p>Below you find the categorized attributes for your player.</p>
-                            </div>
-                        </div>
-                        <!-- finishing attributes -->
-                        <div class="card mt-2">
-                            <div class="card-header">
-                                <h5 class="mb-0">Finishing Attributes</h5>
-                                <p id="status" class="mb-0"></p>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    {% for field in upgrade_player_form %} 
-                                        {% if field.label in finishing_attributes %}
-                                            <div class="col-md-2">
-                                                {{ field.errors }}
-                                                {{ field.label }}<br>
+            <div class="mt-2 row">
+                <!-- finishing attributes -->
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-start-primary py-2" style="height: 685px;">
+                        <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col me-2">
+                                    <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                        <span class="text-dark" style="font-size: 12px;">Finishing Attributes</span>
+                                    </div><hr>
+                                    <div class="text-dark h5 mb-0" style="margin-top: -6px;">
+                                        {% for field in upgrade_player_form %} 
+                                            {% if field.label in finishing_attributes %}         
+                                                <span class="ml-0" style="font-size: 11px; text-decoration: none; text-transform: capitalize;">
+                                                    {% if field.name in primary_attributes %}
+                                                    <span class="fw-bold text-success" style="font-size: 10px; margin-right: 2px;">PRIMARY </span>
+                                                    {% elif field.name in secondary_attributes %}
+                                                    <span class="fw-bold text-primary" style="font-size: 10px; margin-right: 2px;">SECONDARY </span>
+                                                    {% else %}
+                                                    <span class="fw-bold text-danger" style="font-size: 10px; margin-right: 2px;">BASE </span>
+                                                    {% endif %}
+                                                    {{ field.label }}
+                                                </span>                                         
                                                 {{ field|addclass:"form-control form-control-sm mt-1 attributeUpgrade" }}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
+                                                {{ field.errors }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- shooting attributes -->
-                        <div class="card mt-2">
-                            <div class="card-header">
-                                <h5 class="mb-0">Shooting Attributes</h5>
-                                <p id="status" class="mb-0"></p>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    {% for field in upgrade_player_form %} 
-                                        {% if field.label in shooting_attributes %}
-                                            <div class="col-md-2">
-                                                {{ field.errors }}
-                                                {{ field.label }}<br>
+                    </div>
+                </div>
+                <!-- shooting attributes -->
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-start-primary py-2" style="height: 685px;">
+                        <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col me-2">
+                                    <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                        <span class="text-dark" style="font-size: 12px;">Shooting Attributes</span>
+                                    </div><hr>
+                                    <div class="text-dark h5 mb-0" style="margin-top: -6px;">
+                                        {% for field in upgrade_player_form %} 
+                                            {% if field.label in shooting_attributes %}         
+                                                <span class="ml-0" style="font-size: 11px; text-decoration: none; text-transform: capitalize;">
+                                                    {% if field.name in primary_attributes %}
+                                                    <span class="fw-bold text-success" style="font-size: 10px; margin-right: 2px;">PRIMARY </span>
+                                                    {% elif field.name in secondary_attributes %}
+                                                    <span class="fw-bold text-primary" style="font-size: 10px; margin-right: 2px;">SECONDARY </span>
+                                                    {% else %}
+                                                    <span class="fw-bold text-danger" style="font-size: 10px; margin-right: 2px;">BASE </span>
+                                                    {% endif %}
+                                                    {{ field.label }}
+                                                </span>                                         
                                                 {{ field|addclass:"form-control form-control-sm mt-1 attributeUpgrade" }}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
+                                                {{ field.errors }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- playmaking attributes -->
-                        <div class="card mt-2">
-                            <div class="card-header">
-                                <h5 class="mb-0">Playmaking Attributes</h5>
-                                <p id="status" class="mb-0"></p>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    {% for field in upgrade_player_form %} 
-                                        {% if field.label in playmaking_attributes %}
-                                            <div class="col-md-2">
-                                                {{ field.errors }}
-                                                {{ field.label }}<br>
+                    </div>
+                </div>
+                <!-- playmaking attributes -->
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-start-primary py-2" style="height: 685px;">
+                        <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col me-2">
+                                    <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                        <span class="text-dark" style="font-size: 12px;">Playmaking Attributes</span>
+                                    </div><hr>
+                                    <div class="text-dark h5 mb-0" style="margin-top: -6px;">
+                                        {% for field in upgrade_player_form %} 
+                                            {% if field.label in playmaking_attributes %}         
+                                                <span class="ml-0" style="font-size: 11px; text-decoration: none; text-transform: capitalize;">
+                                                    {% if field.name in primary_attributes %}
+                                                    <span class="fw-bold text-success" style="font-size: 10px; margin-right: 2px;">PRIMARY </span>
+                                                    {% elif field.name in secondary_attributes %}
+                                                    <span class="fw-bold text-primary" style="font-size: 10px; margin-right: 2px;">SECONDARY </span>
+                                                    {% else %}
+                                                    <span class="fw-bold text-danger" style="font-size: 10px; margin-right: 2px;">BASE </span>
+                                                    {% endif %}
+                                                    {{ field.label }}
+                                                </span>                                         
                                                 {{ field|addclass:"form-control form-control-sm mt-1 attributeUpgrade" }}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
+                                                {{ field.errors }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- defense attributes -->
-                        <div class="card mt-2">
-                            <div class="card-header">
-                                <h5 class="mb-0">Defense Attributes</h5>
-                                <p id="status" class="mb-0"></p>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    {% for field in upgrade_player_form %} 
-                                        {% if field.label in defense_attributes %}
-                                            <div class="col-md-2">
-                                                {{ field.errors }}
-                                                {{ field.label }}<br>
+                    </div>
+                </div>
+                <!-- defensive attributes -->
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-start-primary py-2" style="height: 685px;">
+                        <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col me-2">
+                                    <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                        <span class="text-dark" style="font-size: 12px;">Defensive Attributes</span>
+                                    </div><hr>
+                                    <div class="text-dark h5 mb-0" style="margin-top: -6px;">
+                                        {% for field in upgrade_player_form %} 
+                                            {% if field.label in defense_attributes %}         
+                                                <span class="ml-0" style="font-size: 11px; text-decoration: none; text-transform: capitalize;">
+                                                    {% if field.name in primary_attributes %}
+                                                    <span class="fw-bold text-success" style="font-size: 10px; margin-right: 2px;">PRIMARY </span>
+                                                    {% elif field.name in secondary_attributes %}
+                                                    <span class="fw-bold text-primary" style="font-size: 10px; margin-right: 2px;">SECONDARY </span>
+                                                    {% else %}
+                                                    <span class="fw-bold text-danger" style="font-size: 10px; margin-right: 2px;">BASE </span>
+                                                    {% endif %}
+                                                    {{ field.label }}
+                                                </span>                                         
                                                 {{ field|addclass:"form-control form-control-sm mt-1 attributeUpgrade" }}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
+                                                {{ field.errors }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- physical attributes -->
-                        <!-- <div class="card mt-2">
-                            <div class="card-header">
-                                <h5 class="mb-0">Physical Attributes</h5>
-                                <p id="status" class="mb-0"></p>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    {% for field in upgrade_player_form %} 
-                                        {% if field.label in physical_attributes %}
-                                            <div class="col-md-2">
-                                                {{ field.errors }}
-                                                {{ field.label }}<br>
-                                                {{ field|addclass:"form-control form-control-sm mt-1" }}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>
-
+            
             <!-- badges -->
-            <div id="accordion-2" class="accordion mt-2" role="tablist">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" role="tab"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-2 .item-1" aria-expanded="true" aria-controls="accordion-2 .item-1">Badges</button></h2>
-                    <div class="accordion-collapse collapse show item-1" role="tabpanel" data-bs-parent="#accordion-2">
-                        <div class="card mt-2">
-                            <div class="card-header">
-                                <h5 class="mb-0">Badges</h5>
-                                <p>Below you find the categorized badges for your player.</p>
-                            </div>
-                        </div>
-                        <!-- finishing badges -->
-                        <div class="card mt-2">
-                            <div class="card-header">
-                                <h5 class="mb-0">Finishing Badges</h5>
-                                <p id="status" class="mb-0"></p>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    {% for field in upgrade_player_form %} 
-                                        {% if field.label in finishing_badges %}
-                                            <div class="col-md-2">
+            <div class="mt-2 row">
+                <!-- finishing badges -->
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-start-primary py-2" style="height: 1030px;">
+                        <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col me-2">
+                                    <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                        <span class="text-dark" style="font-size: 12px;">Finishing Badges</span>
+                                    </div><hr>
+                                    <div class="text-dark h5 mb-0" style="margin-top: -6px;">
+                                        {% for field in upgrade_player_form %} 
+                                            {% if field.label in finishing_badges %}         
+                                                <span class="ml-0" style="font-size: 11px; text-decoration: none; text-transform: capitalize;">
+                                                    {% if field.name in trait_one_attributes %}
+                                                        <span class="fw-bold text-success" style="font-size: 10px; margin-right: 2px;">TRAIT ONE</span>
+                                                    {% elif field.name in trait_two_attributes %}
+                                                        <span class="fw-bold text-primary" style="font-size: 10px; margin-right: 2px;">TRAIT TWO</span>
+                                                    {% elif field.name in trait_three_attributes %}
+                                                        <span class="fw-bold text-info" style="font-size: 10px; margin-right: 2px;">TRAIT THREE</span>
+                                                    {% else %}
+                                                        <span class="fw-bold text-danger" style="font-size: 10px; margin-right: 2px;">BASE </span>
+                                                    {% endif %}
+                                                    {{ field.label }}
+                                                </span>                                         
                                                 {{ field.errors }}
-                                                {{ field.label }}<br>
                                                 {{ field|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- shooting badges -->
-                        <div class="card mt-2">
-                            <div class="card-header">
-                                <h5 class="mb-0">Shooting Badges</h5>
-                                <p id="status" class="mb-0"></p>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    {% for field in upgrade_player_form %} 
-                                        {% if field.label in shooting_badges %}
-                                            <div class="col-md-2">
+                    </div>
+                </div>
+                <!-- shootings badges -->
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-start-primary py-2" style="height: 1030px;">
+                        <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col me-2">
+                                    <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                        <span class="text-dark" style="font-size: 12px;">Shooting Badges</span>
+                                    </div><hr>
+                                    <div class="text-dark h5 mb-0" style="margin-top: -6px;">
+                                        {% for field in upgrade_player_form %} 
+                                            {% if field.label in shooting_badges %}         
+                                                <span class="ml-0" style="font-size: 11px; text-decoration: none; text-transform: capitalize;">
+                                                    {% if field.name in trait_one_attributes %}
+                                                        <span class="fw-bold text-success" style="font-size: 10px; margin-right: 2px;">TRAIT ONE</span>
+                                                    {% elif field.name in trait_two_attributes %}
+                                                        <span class="fw-bold text-primary" style="font-size: 10px; margin-right: 2px;">TRAIT TWO</span>
+                                                    {% elif field.name in trait_three_attributes %}
+                                                        <span class="fw-bold text-info" style="font-size: 10px; margin-right: 2px;">TRAIT THREE</span>
+                                                    {% else %}
+                                                        <span class="fw-bold text-danger" style="font-size: 10px; margin-right: 2px;">BASE </span>
+                                                    {% endif %}
+                                                    {{ field.label }}
+                                                </span>                                         
                                                 {{ field.errors }}
-                                                {{ field.label }}<br>
                                                 {{ field|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- playmaking badges -->
-                        <div class="card mt-2">
-                            <div class="card-header">
-                                <h5 class="mb-0">Playmaking Badges</h5>
-                                <p id="status" class="mb-0"></p>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    {% for field in upgrade_player_form %} 
-                                        {% if field.label in playmaking_badges %}
-                                            <div class="col-md-2">
+                    </div>
+                </div>
+                <!-- playmaking badges -->
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-start-primary py-2" style="height: 1030px;">
+                        <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col me-2">
+                                    <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                        <span class="text-dark" style="font-size: 12px;">Playmaking Badges</span>
+                                    </div><hr>
+                                    <div class="text-dark h5 mb-0" style="margin-top: -6px;">
+                                        {% for field in upgrade_player_form %} 
+                                            {% if field.label in playmaking_badges %}         
+                                                <span class="ml-0" style="font-size: 11px; text-decoration: none; text-transform: capitalize;">
+                                                    {% if field.name in trait_one_attributes %}
+                                                        <span class="fw-bold text-success" style="font-size: 10px; margin-right: 2px;">TRAIT ONE</span>
+                                                    {% elif field.name in trait_two_attributes %}
+                                                        <span class="fw-bold text-primary" style="font-size: 10px; margin-right: 2px;">TRAIT TWO</span>
+                                                    {% elif field.name in trait_three_attributes %}
+                                                        <span class="fw-bold text-info" style="font-size: 10px; margin-right: 2px;">TRAIT THREE</span>
+                                                    {% else %}
+                                                        <span class="fw-bold text-danger" style="font-size: 10px; margin-right: 2px;">BASE </span>
+                                                    {% endif %}
+                                                    {{ field.label }}
+                                                </span>                                         
                                                 {{ field.errors }}
-                                                {{ field.label }}<br>
                                                 {{ field|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- defense badges -->
-                        <div class="card mt-2">
-                            <div class="card-header">
-                                <h5 class="mb-0">Defense Badges</h5>
-                                <p id="status" class="mb-0"></p>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    {% for field in upgrade_player_form %} 
-                                        {% if field.label in defense_badges %}
-                                            <div class="col-md-2">
+                    </div>
+                </div>
+                <!-- defensive badges -->
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-start-primary py-2" style="height: 1030px;">
+                        <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col me-2">
+                                    <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                        <span class="text-dark" style="font-size: 12px;">Defensive Badges</span>
+                                    </div><hr>
+                                    <div class="text-dark h5 mb-0" style="margin-top: -6px;">
+                                        {% for field in upgrade_player_form %} 
+                                            {% if field.label in defense_badges %}         
+                                                <span class="ml-0" style="font-size: 11px; text-decoration: none; text-transform: capitalize;">
+                                                    {% if field.name in trait_one_attributes %}
+                                                        <span class="fw-bold text-success" style="font-size: 10px; margin-right: 2px;">TRAIT ONE</span>
+                                                    {% elif field.name in trait_two_attributes %}
+                                                        <span class="fw-bold text-primary" style="font-size: 10px; margin-right: 2px;">TRAIT TWO</span>
+                                                    {% elif field.name in trait_three_attributes %}
+                                                        <span class="fw-bold text-info" style="font-size: 10px; margin-right: 2px;">TRAIT THREE</span>
+                                                    {% else %}
+                                                        <span class="fw-bold text-danger" style="font-size: 10px; margin-right: 2px;">BASE </span>
+                                                    {% endif %}
+                                                    {{ field.label }}
+                                                </span>                                         
                                                 {{ field.errors }}
-                                                {{ field.label }}<br>
                                                 {{ field|addclass:"form-control form-control-sm mt-1 badgeUpgrade" }}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
