@@ -40,7 +40,6 @@ def badgeCost(player, badge, currentValue, futureValue):
     # Define some player variables
     trait_one_badges = trait_badge_unlocks[player.trait_one]
     trait_two_badges = trait_badge_unlocks[player.trait_two]
-    trait_three_badges = trait_badge_unlocks[player.trait_three]
     # Check the badge tier (Bronze, Silver, Gold, Hof)
     for i in range((currentValue + 1), (futureValue + 1)):
         for index, tier in badge_prices.items():
@@ -50,9 +49,6 @@ def badgeCost(player, badge, currentValue, futureValue):
                     continue
                 elif badge in trait_two_badges:
                     total_price += tier["trait_two"]
-                    continue
-                elif badge in trait_three_badges:
-                    total_price += tier["trait_three"]
                     continue
                 else:
                     total_price += tier["base"]
@@ -73,7 +69,6 @@ def formatAndValidate(player, cleanedFormData):
     trait_badge_unlocks = league_config.trait_badge_unlocks
     trait_one_badges = trait_badge_unlocks[player.trait_one]
     trait_two_badges = trait_badge_unlocks[player.trait_two]
-    trait_three_badges = trait_badge_unlocks[player.trait_three]
     # Filter out values that are under minimum, over maximum or equal to current value
     for k, v in formatFormData.items():
         # Type cast the value to an integer
@@ -110,8 +105,6 @@ def formatAndValidate(player, cleanedFormData):
                 maximumValue = league_config.trait_one_max
             elif k in trait_two_badges:
                 maximumValue = league_config.trait_two_max
-            elif k in trait_three_badges:
-                maximumValue = league_config.trait_three_max
             else:
                 maximumValue = league_config.trait_none_max
             # Initialize the values

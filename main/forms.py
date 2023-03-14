@@ -32,9 +32,6 @@ class PlayerForm(forms.Form):
     trait_two = forms.ChoiceField(
         label="Trait Two", choices=league_config.trait_choices
     )
-    trait_three = forms.ChoiceField(
-        label="Trait Three", choices=league_config.trait_choices
-    )
 
 
 class UpgradeForm(forms.Form):
@@ -524,3 +521,7 @@ class UpgradeForm(forms.Form):
         choices=league_config.badge_upgrade_choices,
         widget=forms.Select(attrs={"onchange": "updatePrice()"}),
     )
+
+
+class TradeForm(forms.Form):
+    pass

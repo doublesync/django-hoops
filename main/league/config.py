@@ -239,25 +239,21 @@ badge_prices = {
         "base": 100,
         "trait_one": 25,
         "trait_two": 50,
-        "trait_three": 75,
     },
     2: {
         "base": 200,
         "trait_one": 50,
         "trait_two": 75,
-        "trait_three": 100,
     },
     3: {
         "base": 300,
         "trait_one": 75,
         "trait_two": 100,
-        "trait_three": 125,
     },
     4: {
         "base": 400,
         "trait_one": 100,
         "trait_two": 125,
-        "trait_three": 150,
     },
 }
 
@@ -266,8 +262,7 @@ badge_prices = {
 
 trait_one_max = 4
 trait_two_max = 3
-trait_three_max = 2
-trait_none_max = 1
+trait_none_max = 2
 trait_badge_unlocks = {
     "Movement Shooter": [
         "Agent Threes",
@@ -568,6 +563,7 @@ initial_hotzones = {
     "Inside Right": False,
     "Inside Center": False,
 }
+initial_picks = {}
 initial_team_logo = "https://cdn.simplystamps.com/media/catalog/product/5/8/5802-n-a-stock-stamp-hcb.png"
 
 # Description: Choices & labels for player forms
@@ -771,3 +767,7 @@ def get_default_limits():
 
 def get_default_hotzones():
     return initial_hotzones
+
+
+def get_default_picks():
+    return initial_picks

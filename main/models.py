@@ -75,11 +75,6 @@ class Player(models.Model):
         choices=league_config.trait_choices,
         default=league_config.trait_choices[0][0],
     )
-    trait_three = models.CharField(
-        max_length=36,
-        choices=league_config.trait_choices,
-        default=league_config.trait_choices[0][0],
-    )
     # Attributes, Badges, & Hotzones
     attributes = models.JSONField(default=league_config.get_default_attributes)
     badges = models.JSONField(default=league_config.get_default_badges)
@@ -114,6 +109,7 @@ class Team(models.Model):
     name = models.CharField(max_length=32)
     logo = models.CharField(max_length=100, default=league_config.initial_team_logo)
     abbrev = models.CharField(max_length=3)
+    picks = models.JSONField(default=league_config.get_default_picks)
     # Relationships
     manager = models.ForeignKey("DiscordUser", on_delete=models.CASCADE)
     history_list = models.ForeignKey("HistoryList", on_delete=models.CASCADE)

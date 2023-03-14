@@ -103,12 +103,10 @@ const calculateBadgePrice = function() {
                     // if the badge level is equivalent to the index of the tier
                     if (i == tier) {
                         // check which traits the user has, and use the price for those traits
-                        if (traitOneAttributes.includes(currentIndex.name)) {
+                        if (traitOneBadges.includes(currentIndex.name)) {
                             cost += value["trait_one"];
-                        } else if (traitTwoAttributes.includes(currentIndex.name)) {
+                        } else if (traitTwoBadges.includes(currentIndex.name)) {
                             cost += value["trait_two"];
-                        } else if (traitThreeAttributes.includes(currentIndex.name)) {
-                            cost += value["trait_three"];
                         } else {
                             cost += value["base"];
                         }

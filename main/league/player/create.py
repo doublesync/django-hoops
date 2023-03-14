@@ -44,7 +44,6 @@ def validatePlayerCreation(user, formData):
     selected_traits = [
         formData["trait_one"],
         formData["trait_two"],
-        formData["trait_three"],
     ]
     if len(selected_traits) != len(set(selected_traits)):
         return "❌ You are trying to make a player with duplicate traits."
@@ -74,7 +73,6 @@ def createPlayer(user, formData):
     newPlayer.secondary_archetype = formData["secondary_archetype"]
     newPlayer.trait_one = formData["trait_one"]
     newPlayer.trait_two = formData["trait_two"]
-    newPlayer.trait_three = formData["trait_three"]
     # Update the player's starting attributes
     for attribute in newPlayer.attributes:
         new_attributes = position_attributes[newPlayer.primary_position]

@@ -141,14 +141,11 @@ def upgrade_player(request, id):
         js_secondary_attributes = hoops_extra_convert.format_list_for_django_forms(
             league_config.archetype_attribute_bonuses[player.secondary_archetype]
         )
-        js_trait_one_attributes = hoops_extra_convert.format_list_for_django_forms(
+        js_trait_one_badges = hoops_extra_convert.format_list_for_django_forms(
             league_config.trait_badge_unlocks[player.trait_one]
         )
-        js_trait_two_attributes = hoops_extra_convert.format_list_for_django_forms(
+        js_trait_two_badges = hoops_extra_convert.format_list_for_django_forms(
             league_config.trait_badge_unlocks[player.trait_two]
-        )
-        js_trait_three_attributes = hoops_extra_convert.format_list_for_django_forms(
-            league_config.trait_badge_unlocks[player.trait_three]
         )
         # Have to remove the 'range' function from attribute prices or javascript shits the bed
         js_attribute_prices = copy.deepcopy(league_config.attribute_prices)
@@ -168,9 +165,8 @@ def upgrade_player(request, id):
             "primary_attributes": js_primary_attributes,
             "secondary_attributes": js_secondary_attributes,
             # Traits
-            "trait_one_attributes": js_trait_one_attributes,
-            "trait_two_attributes": js_trait_two_attributes,
-            "trait_three_attributes": js_trait_three_attributes,
+            "trait_one_badges": js_trait_one_badges,
+            "trait_two_badges": js_trait_two_badges,
             # Attribute categories
             "finishing_attributes": league_config.attribute_categories["finishing"],
             "shooting_attributes": league_config.attribute_categories["shooting"],
