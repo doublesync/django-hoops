@@ -7,6 +7,11 @@
         <p style="text-align: center;">
             <a class="btn btn-success btn-sm" href="{% url 'upgrade_player' player.id %}">Upgrade player</a>
             <a class="btn btn-success btn-sm" href="{% url 'upgrade_logs' player.id %}">Upgrade history</a>
+            {% if player.upgrades_pending %}
+                <p class="fw-bold text-danger text-center">Pending upgrades</p>
+            {% else %}
+                <p class="fw-bold text-success text-center">No pending upgrades</p>
+            {% endif %}
         <p>
     </div>
 
@@ -228,6 +233,20 @@
 
         <hr>
 
+    </div>
+
+    <div class="container-fluid mt-5" style="padding: 100px; padding-top: 0px; padding-bottom: 10px;">
+        <div class="container">
+            <div class="row">
+                {% for k, v in player.tendencies.items %} 
+                    <div class="col-md-4 mb-2">
+                        <p class="mt-0 mb-1"><b>{{ k }}</b></p>
+                        <p>{{ v }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <hr>
+        </div>
     </div>
 
 {% endblock %}

@@ -5,6 +5,7 @@ const badgeEmojis = {0: "🚫", 1: "🟫", 2: "🌫️", 3: "🟨", 4: "🟪"};
 // cart variables
 let badgeUpgrades = document.getElementsByClassName("badgeUpgrade");
 let attributeUpgrades = document.getElementsByClassName("attributeUpgrade");
+let tendencyUpgrades = document.getElementsByClassName("tendencyUpgrade");
 let cartList = document.getElementById("cartList");
 let confirmationPriceLabel = document.getElementById("confirmationPrice");
 
@@ -121,6 +122,28 @@ const calculateBadgePrice = function() {
     return [price, cart];
 }
 
+// calculate price of badges in the form
+const calculateTendencyPrice = function() {
+    console.log("Calculating price");
+    let price = 0;
+    let cart = {};
+    for (let i = 0; i < tendencyUpgrades.length; i++) {
+        // find the current index + level of badge
+        let currentIndex = tendencyUpgrades[i];
+        let futureLevel = currentIndex.value;
+        let currentLevel = badgeAttributes[currentIndex.name]
+        let timesUpgraded = Number(futureLevel) - Number(currentLevel)
+        // recalculate the price
+        if (Number(futureLevel) > currentLevel) {
+            cost = timesUpgraded;
+            price += cost;
+            cart[currentIndex.name] = [timesUpgraded, cost];
+        }
+    }
+    // return the price
+    return [price, cart];
+}
+
 // update price on changes of attributes + badges
 const updatePrice = function() {
     // calculate prices & fetch cart/s
@@ -130,14 +153,18 @@ const updatePrice = function() {
     const badgeInfo = calculateBadgePrice();
     const badgePrice = badgeInfo[0];
     const badgeCart = badgeInfo[1];
+    const tendencyInfo = calculateTendencyPrice();
+    const tendencyPrice = tendencyInfo[0];
+    const tendencyCart = tendencyInfo[1];
     // get the total price
-    const totalPrice = attributePrice + badgePrice;
+    const totalPrice = attributePrice + badgePrice + tendencyPrice;
     // update price & cash labels
     priceLabel.innerText = totalPrice;
     cashLeft.innerText = cash - totalPrice;
     // add attributes & badges to cart list
     buyingAttributes = Object.keys(attributeCart);
     buyingBadges = Object.keys(badgeCart);
+    buyingTendencies = Object.keys(tendencyCart);
     // add attributes to cart list
     cartList.innerText = ""; // first, reset the cart list
     buyingAttributes.forEach(name => {
@@ -156,6 +183,15 @@ const updatePrice = function() {
         listItem.innerText = `($${cost}) ${badgeEmojis[value]} ${name}`;
         listItem.className = "list-group-item";
         cartList.appendChild(listItem);
+    });
+    // add tendencies to cart list
+    buyingTendencies.forEach(name => {
+        const quantity = tendencyCart[name][0];
+        const cost = tendencyCart[name][1];   
+        let listItem = document.createElement("li");
+        listItem.innerText = `($${cost}) ${name}`;
+        listItem.className = "list-group-item";
+        cartList.appendChild(listItem); 
     });
     // update confirmation modal price label
     confirmationPriceLabel.innerText = `$${totalPrice}`;

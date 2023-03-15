@@ -132,7 +132,7 @@
                 </div>
             </div>
         </div>
-        <!-- Media -->
+        <!-- Sheets -->
         <div class="col-md-6 col-xl-3 mb-4">
             <div class="card shadow border-start-primary py-2" style="height: 400px;">
                 <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
@@ -151,6 +151,25 @@
                                     <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"></path>
                                 </svg>
                                 <a class="fw-bold"href="{% url 'teams' %}" style="font-size: 10px; text-decoration: none;">Contract Management Sheet</a><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Special -->
+        <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card shadow border-start-primary py-2" style="height: 400px;">
+                <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col me-2">
+                            <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                <span class="text-dark" style="font-size: 12px;">Permissions</span>
+                            </div><hr>
+                            <div class="text-dark h5 mb-0" style="margin-top: -6px;">
+                                {% if current_user.can_update_players %}
+                                    <a class="fw-bold"href="{% url 'upgrades_pending' %}" style="font-size: 10px; text-decoration: none;">Export Pending Upgrades</a><br>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

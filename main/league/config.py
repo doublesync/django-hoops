@@ -11,6 +11,8 @@ min_attribute = 0
 max_attribute = 99
 min_badge = 0
 max_badge = 4
+min_tendency = 0
+max_tendency = 100
 
 player_weight_min = 150
 player_weight_max = 270
@@ -226,8 +228,7 @@ position_starting_attributes = {
 # Description: For attributes & badge prices
 # Work in progress!
 attribute_prices = {
-    "0-59": {"range": range(0, 60), "base": 40, "primary": 10, "secondary": 20},
-    "60-70": {"range": range(60, 71), "base": 40, "primary": 10, "secondary": 20},
+    "0-70": {"range": range(0, 71), "base": 40, "primary": 10, "secondary": 20},
     "71-80": {"range": range(71, 81), "base": 100, "primary": 25, "secondary": 50},
     "81-86": {"range": range(81, 87), "base": 200, "primary": 50, "secondary": 100},
     "87-93": {"range": range(87, 94), "base": 400, "primary": 100, "secondary": 200},
@@ -563,6 +564,107 @@ initial_hotzones = {
     "Inside Right": False,
     "Inside Center": False,
 }
+initial_tendencies = {
+    "STEP_THROUGH_SHOT_TENDENCY": 0,
+    "SHOT_UNDER_BASKET_TENDENCY": 0,
+    "SHOT_CLOSE_TENDENCY": 0,
+    "SHOT_CLOSE_LEFT_TENDENCY": 0,
+    "SHOT_CLOSE_MIDDLE_TENDENCY": 0,
+    "SHOT_CLOSE_RIGHT_TENDENCY": 0,
+    "SHOT_MID-RANGE_TENDENCY": 0,
+    "SPOT_UP_SHOT_MID-RANGE_TENDENCY": 0,
+    "OFF_SCREEN_SHOT_MID-RANGE_TENDENCY": 0,
+    "SHOT_MID_LEFT_TENDENCY": 0,
+    "SHOT_MID_LEFT-CENTER_TENDENCY": 0,
+    "SHOT_MID_CENTER_TENDENCY": 0,
+    "SHOT_MID_RIGHT-CENTER_TENDENCY": 0,
+    "SHOT_MID_RIGHT_TENDENCY": 0,
+    "SHOT_THREE_TENDENCY": 0,
+    "SPOT_UP_SHOT_THREE_TENDENCY": 0,
+    "OFF_SCREEN_SHOT_THREE_TENDENCY": 0,
+    "SHOT_THREE_LEFT_TENDENCY": 0,
+    "SHOT_THREE_LEFT-CENTER_TENDENCY": 0,
+    "SHOT_THREE_CENTER_TENDENCY": 0,
+    "SHOT_THREE_RIGHT-CENTER_TENDENCY": 0,
+    "SHOT_THREE_RIGHT_TENDENCY": 0,
+    "CONTESTED_JUMPER_THREE_TENDENCY": 0,
+    "CONTESTED_JUMPER_MID-RANGE_TENDENCY": 0,
+    "STEPBACK_JUMPER_THREE_TENDENCY": 0,
+    "STEPBACK_JUMPER_MID-RANGE_TENDENCY": 0,
+    "SPIN_JUMPER_TENDENCY": 0,
+    "TRANSITION_PULL_UP_THREE_TENDENCY": 0,
+    "DRIVE_PULL_UP_THREE_TENDENCY": 0,
+    "DRIVE_PULL_UP_MID-RANGE_TENDENCY": 0,
+    "USE_GLASS_TENDENCY": 0,
+    "DRIVING_LAYUP_TENDENCY": 0,
+    "STANDING_DUNK_TENDENCY": 0,
+    "DRIVING_DUNK_TENDENCY": 0,
+    "FLASHY_DUNK_TENDENCY": 0,
+    "ALLEY-OOP_TENDENCY": 0,
+    "PUTBACK_TENDENCY": 0,
+    "CRASH_TENDENCY": 0,
+    "SPIN_LAYUP_TENDENCY": 0,
+    "HOP_STEP_LAYUP_TENDENCY": 0,
+    "EURO_STEP_LAYUP_TENDENCY": 0,
+    "FLOATER_TENDENCY": 0,
+    "TRIPLE_THREAT_PUMP_FAKE_TENDENCY": 0,
+    "TRIPLE_THREAT_JAB_STEP_TENDENCY": 0,
+    "TRIPLE_THREAT_IDLE_TENDENCY": 0,
+    "TRIPLE_THREAT_SHOOT_TENDENCY": 0,
+    "SETUP_WITH_SIZEUP_TENDENCY": 0,
+    "SETUP_WITH_HESITATION_TENDENCY": 0,
+    "NO_SETUP_DRIBBLE_TENDENCY": 0,
+    "DRIVE_TENDENCY": 0,
+    "SPOT_UP_DRIVE_TENDENCY": 0,
+    "OFF_SCREEN_DRIVE_TENDENCY": 0,
+    "DRIVE_RIGHT_TENDENCY": 0,
+    "DRIVE_CROSSOVER_TENDENCY": 0,
+    "DRIVE_SPIN_TENDENCY": 0,
+    "DRIVING_STEP_BACK_TENDENCY": 0,
+    "DRIVING_HALF_SPIN_TENDENCY": 0,
+    "DRIVING_DOUBLE_CROSSOVER_TENDENCY": 0,
+    "DRIVING_BEHIND_THE_BACK_TENDENCY": 0,
+    "DRIVING_DRIBBLE_HESITATION_TENDENCY": 0,
+    "DRIVING_IN_AND_OUT_TENDENCY": 0,
+    "NO_DRIVING_DRIBBLE_MOVE_TENDENCY": 0,
+    "ATTACK_STRONG_ON_DRIVE_TENDENCY": 0,
+    "DISH_TO_OPEN_MAN_TENDENCY": 0,
+    "FLASHY_PASS_TENDENCY": 0,
+    "ALLEY-OOP_PASS_TENDENCY": 0,
+    "POST_UP_TENDENCY": 0,
+    "POST_SHIMMY_SHOT_TENDENCY": 0,
+    "POST_FACE_UP_TENDENCY": 0,
+    "POST_BACK_DOWN_TENDENCY": 0,
+    "POST_AGGRESSIVE_BACKDOWN_TENDENCY": 0,
+    "SHOOT_FROM_POST_TENDENCY": 0,
+    "POST_HOOK_LEFT_TENDENCY": 0,
+    "POST_HOOK_RIGHT_TENDENCY": 0,
+    "POST_FADE_LEFT_TENDENCY": 0,
+    "POST_FADE_RIGHT_TENDENCY": 0,
+    "POST_UP_AND_UNDER_TENDENCY": 0,
+    "POST_HOP_SHOT_TENDENCY": 0,
+    "POST_STEP_BACK_SHOT_TENDENCY": 0,
+    "POST_DRIVE_TENDENCY": 0,
+    "POST_SPIN_TENDENCY": 0,
+    "POST_DROP_STEP_TENDENCY": 0,
+    "POST_HOP_STEP_TENDENCY": 0,
+    "SHOT_TENDENCY": 0,
+    "TOUCHES_TENDENCY": 0,
+    "ROLL_VS._POP_TENDENCY": 0,
+    "TRANSITION_SPOT_UP_TENDENCY": 0,
+    "ISO_VS._ELITE_DEFENDER_TENDENCY": 0,
+    "ISO_VS._GOOD_DEFENDER_TENDENCY": 0,
+    "ISO_VS._AVERAGE_DEFENDER_TENDENCY": 0,
+    "ISO_VS._POOR_DEFENDER_TENDENCY": 0,
+    "PLAY_DISCIPLINE_TENDENCY": 0,
+    "PASS_INTERCEPTION_TENDENCY": 0,
+    "TAKE_CHARGE_TENDENCY": 0,
+    "ON-BALL_STEAL_TENDENCY": 0,
+    "CONTEST_SHOT_TENDENCY": 0,
+    "BLOCK_SHOT_TENDENCY": 0,
+    "FOUL_TENDENCY": 0,
+    "HARD_FOUL_TENDENCY": 0,
+}
 initial_picks = {}
 initial_team_logo = "https://cdn.simplystamps.com/media/catalog/product/5/8/5802-n-a-stock-stamp-hcb.png"
 
@@ -660,6 +762,8 @@ attribute_categories = {
         "Passing Vision",
         "Passing Accuracy",
         "Offensive Consistency",
+        "Hustle",
+        "Intangibles",
     ],
     "physical": [
         "Speed",
@@ -689,10 +793,10 @@ badge_categories = {
         "Slithery",
     ],
     "shooting": [
-        "Agent 3",
+        "Agent Threes",
         "Amped",
         "Blinders",
-        "Catch and Shoot",
+        "Catch And Shoot",
         "Claymore",
         "Corner Specialist",
         "Deadeye",
@@ -730,7 +834,7 @@ badge_categories = {
         "Killer Combos",
         "Dimer",
         "Floor General",
-        "Handles for Days",
+        "Handles For Days",
         "Hyperdrive",
         "Mismatch Expert",
         "Needle Threader",
@@ -767,6 +871,10 @@ def get_default_limits():
 
 def get_default_hotzones():
     return initial_hotzones
+
+
+def get_default_tendencies():
+    return initial_tendencies
 
 
 def get_default_picks():

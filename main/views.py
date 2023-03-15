@@ -21,8 +21,10 @@ from .league import config as league_config
 
 # Custom packages
 import copy
+import json
 from .league.player import upgrade as hoops_player_upgrade
 from .league.player import create as hoops_player_create
+from .league.player import export as hoops_player_export
 from .league.extra import convert as hoops_extra_convert
 
 # .ENV file import
@@ -136,21 +138,16 @@ def upgrade_player(request, id):
             return redirect(upgrade_player, id=id)
     else:
         # Combine attributes & badges + convert to Django form format
-        prefill_info = dict(player.attributes, **player.badges)
-        prefill_info = hoops_extra_convert.format_dict_for_django_forms(prefill_info)
+        prefill_info = dict(player.attributes, **player.badges, **player.tendencies)
         # Convert primary & secondary attributes to Django form format
-        js_primary_attributes = hoops_extra_convert.format_list_for_django_forms(
-            league_config.archetype_attribute_bonuses[player.primary_archetype]
-        )
-        js_secondary_attributes = hoops_extra_convert.format_list_for_django_forms(
-            league_config.archetype_attribute_bonuses[player.secondary_archetype]
-        )
-        js_trait_one_badges = hoops_extra_convert.format_list_for_django_forms(
-            league_config.trait_badge_unlocks[player.trait_one]
-        )
-        js_trait_two_badges = hoops_extra_convert.format_list_for_django_forms(
-            league_config.trait_badge_unlocks[player.trait_two]
-        )
+        js_primary_attributes = league_config.archetype_attribute_bonuses[
+            player.primary_archetype
+        ]
+        js_secondary_attributes = league_config.archetype_attribute_bonuses[
+            player.secondary_archetype
+        ]
+        js_trait_one_badges = league_config.trait_badge_unlocks[player.trait_one]
+        js_trait_two_badges = league_config.trait_badge_unlocks[player.trait_two]
         # Have to remove the 'range' function from attribute prices or javascript shits the bed
         js_attribute_prices = copy.deepcopy(league_config.attribute_prices)
         for _, v in js_attribute_prices.items():
@@ -182,6 +179,8 @@ def upgrade_player(request, id):
             "shooting_badges": league_config.badge_categories["shooting"],
             "playmaking_badges": league_config.badge_categories["playmaking"],
             "defense_badges": league_config.badge_categories["defense"],
+            # Tendency categories
+            "initial_tendencies": league_config.initial_tendencies,
         }
         return render(request, "main/players/upgrade.html", context)
 
@@ -255,3 +254,23 @@ def teams(request):
         "teams": Team.objects.all(),
     }
     return render(request, "main/teams/teams.html", context)
+
+
+def upgrades_pending(request):
+    # Collect user & player information
+    user = request.user
+    if not user.can_update_players:
+        return HttpResponse("Sorry, you don't have permission to view this page!")
+    else:
+        # Get the user's pending upgrades
+        upgrades = Player.objects.filter(upgrades_pending=True)
+        files = {}
+        # Iterate through the players who have pending upgrades
+        for player in upgrades:
+            game_file = hoops_player_export.export_player(player)
+            json_dump = json.dumps(game_file, indent=4)
+            files[f"({player.id}) {player.first_name} {player.last_name}"] = json_dump
+            player.upgrades_pending = False
+            player.save()
+        # Return the pending upgrades page
+        return render(request, "main/players/pending.html", {"files": files})

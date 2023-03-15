@@ -18,3 +18,10 @@ def format_list_for_django_forms(list):
     step_1 = [x.lower() for x in list]
     step_2 = [x.replace(" ", "_") for x in step_1]
     return step_2
+
+
+def format_dict_for_game(dictionary):
+    dictionary = copy.deepcopy(dictionary)
+    step_1 = {k.upper(): v for k, v in dictionary.items()}
+    step_2 = {k.replace(" ", "_"): v for k, v in step_1.items()}
+    return step_2

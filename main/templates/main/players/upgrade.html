@@ -69,7 +69,7 @@
             <div class="mt-2 row">
                 <!-- finishing attributes -->
                 <div class="col-md-6 col-xl-3 mb-4">
-                    <div class="card shadow border-start-primary py-2" style="height: 685px;">
+                    <div style="height: 685px;">
                         <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
                             <div class="row align-items-center no-gutters">
                                 <div class="col me-2">
@@ -79,7 +79,7 @@
                                     <div class="text-dark h5 mb-0" style="margin-top: -6px;">
                                         {% for field in upgrade_player_form %} 
                                             {% if field.label in finishing_attributes %}         
-                                                <span class="ml-0" style="font-size: 11px; text-decoration: none; text-transform: capitalize;">
+                                                <span class="ml-0" style="font-size: 10px; text-decoration: none; text-transform: capitalize;">
                                                     {% if field.name in primary_attributes %}
                                                     <span class="fw-bold text-success" style="font-size: 10px; margin-right: 2px;">PRIMARY </span>
                                                     {% elif field.name in secondary_attributes %}
@@ -89,7 +89,7 @@
                                                     {% endif %}
                                                     {{ field.label }}
                                                 </span>                                         
-                                                {{ field|addclass:"form-control form-control-sm mt-1 attributeUpgrade" }}
+                                                {{ field|addclass:"form-control form-control-sm mt-1 mb-1 attributeUpgrade" }}
                                                 {{ field.errors }}
                                             {% endif %}
                                         {% endfor %}
@@ -101,7 +101,7 @@
                 </div>
                 <!-- shooting attributes -->
                 <div class="col-md-6 col-xl-3 mb-4">
-                    <div class="card shadow border-start-primary py-2" style="height: 685px;">
+                    <div style="height: 685px;">
                         <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
                             <div class="row align-items-center no-gutters">
                                 <div class="col me-2">
@@ -133,7 +133,7 @@
                 </div>
                 <!-- playmaking attributes -->
                 <div class="col-md-6 col-xl-3 mb-4">
-                    <div class="card shadow border-start-primary py-2" style="height: 685px;">
+                    <div style="height: 685px;">
                         <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
                             <div class="row align-items-center no-gutters">
                                 <div class="col me-2">
@@ -165,7 +165,7 @@
                 </div>
                 <!-- defensive attributes -->
                 <div class="col-md-6 col-xl-3 mb-4">
-                    <div class="card shadow border-start-primary py-2" style="height: 685px;">
+                    <div style="height: 685px;">
                         <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
                             <div class="row align-items-center no-gutters">
                                 <div class="col me-2">
@@ -201,7 +201,7 @@
             <div class="mt-2 row">
                 <!-- finishing badges -->
                 <div class="col-md-6 col-xl-3 mb-4">
-                    <div class="card shadow border-start-primary py-2" style="height: 1030px;">
+                    <div style="height: 1030px;">
                         <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
                             <div class="row align-items-center no-gutters">
                                 <div class="col me-2">
@@ -233,7 +233,7 @@
                 </div>
                 <!-- shootings badges -->
                 <div class="col-md-6 col-xl-3 mb-4">
-                    <div class="card shadow border-start-primary py-2" style="height: 1030px;">
+                    <div style="height: 1030px;">
                         <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
                             <div class="row align-items-center no-gutters">
                                 <div class="col me-2">
@@ -265,7 +265,7 @@
                 </div>
                 <!-- playmaking badges -->
                 <div class="col-md-6 col-xl-3 mb-4">
-                    <div class="card shadow border-start-primary py-2" style="height: 1030px;">
+                    <div style="height: 1030px;">
                         <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
                             <div class="row align-items-center no-gutters">
                                 <div class="col me-2">
@@ -297,7 +297,7 @@
                 </div>
                 <!-- defensive badges -->
                 <div class="col-md-6 col-xl-3 mb-4">
-                    <div class="card shadow border-start-primary py-2" style="height: 1030px;">
+                    <div style="height: 1030px;">
                         <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
                             <div class="row align-items-center no-gutters">
                                 <div class="col me-2">
@@ -327,6 +327,37 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- tendencies -->
+                <div class="col-md-12 col-xl-12 mb-4">
+                    <div style="height: 1420px;">
+                        <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col me-2">
+                                    <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                        <span class="text-dark" style="font-size: 12px;">Tendencies</span>
+                                    </div><hr>
+                                    <div class="container">
+                                        <div class="row">
+                                            {% for field in upgrade_player_form %} 
+                                                {% if field.label in initial_tendencies %}     
+                                                    <div class="col-md-3">
+                                                        <div class="text-dark h5 mb-0" style="margin-top: -6px;">
+                                                            <span class="ml-0 mt-1 mb-1" style="font-size: 10px; text-decoration: none; text-transform: capitalize;">{{ field.label }}</span>    
+                                                            {{ field.errors }}
+                                                            {{ field|addclass:"form-control form-control-sm mt-1 tendencyUpgrade" }}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </form>

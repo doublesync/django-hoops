@@ -20,6 +20,7 @@ class DiscordUser(models.Model):
     locale = models.CharField(max_length=100)
     mfa_enabled = models.BooleanField()
     last_login = models.DateTimeField(null=True)
+    can_update_players = models.BooleanField(default=False)
     # Discord User Methods
     def is_authenticated(self, request):
         return True
@@ -80,6 +81,7 @@ class Player(models.Model):
     attributes = models.JSONField(default=league_config.get_default_attributes)
     badges = models.JSONField(default=league_config.get_default_badges)
     hotzones = models.JSONField(default=league_config.get_default_hotzones)
+    tendencies = models.JSONField(default=league_config.get_default_tendencies)
     # Player Currencies
     primary_currency = models.PositiveBigIntegerField(
         name="cash", default=league_config.primary_currency_start

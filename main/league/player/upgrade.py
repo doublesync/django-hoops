@@ -59,16 +59,17 @@ def badgeCost(player, badge, currentValue, futureValue):
 def formatAndValidate(player, cleanedFormData):
     # Format the cleaned form data (so it works with the database)
     formatFormData = cleanedFormData.copy()
-    formatFormData = {k.title(): v for k, v in formatFormData.items()}
-    formatFormData = {k.replace("_", " "): v for k, v in formatFormData.items()}
+    # formatFormData = {k.title(): v for k, v in formatFormData.items()}
+    # formatFormData = {k.replace("_", " "): v for k, v in formatFormData.items()}
     # Initialize the upgrade data (will be returned to upgrade the player with)
     # Basically, we'll just be adding the values that were changed and are valid to this dictionary
-    upgradeData = {"attributes": {}, "badges": {}}
+    upgradeData = {"attributes": {}, "badges": {}, "tendencies": {}}
     error = ""
     # Define some player variables
     trait_badge_unlocks = league_config.trait_badge_unlocks
     trait_one_badges = trait_badge_unlocks[player.trait_one]
     trait_two_badges = trait_badge_unlocks[player.trait_two]
+    banned_tendencies = ["TOUCHES_TENDENCY"]
     # Filter out values that are under minimum, over maximum or equal to current value
     for k, v in formatFormData.items():
         # Type cast the value to an integer
@@ -129,6 +130,22 @@ def formatAndValidate(player, cleanedFormData):
                 "old": currentValue,
                 "new": v,
             }
+        # If the key is a tendency
+        if k in player.tendencies:
+            # Initialize the values
+            currentValue = player.tendencies[k]
+            # Cases
+            if k in banned_tendencies:
+                if v > currentValue:
+                    error = f"❌ {k} cannot be changed."
+                    break
+            # Add the value to the ugprade data
+            upgradeData["tendencies"][k] = {
+                "cost": v - player.tendencies[k],
+                "old": player.tendencies[k],
+                "new": v,
+            }
+
     # Return the upgrade data
     return [upgradeData, error]
 
@@ -136,7 +153,6 @@ def formatAndValidate(player, cleanedFormData):
 def createUpgrade(player, cleanedFormData):
     # Format the form data
     formatResponse = formatAndValidate(player, cleanedFormData)
-    print(formatResponse)
     upgradeData = formatResponse[0]
     upgradeError = formatResponse[1]
     # Check if there were any errors
@@ -148,6 +164,8 @@ def createUpgrade(player, cleanedFormData):
     for k, v in upgradeData["attributes"].items():
         totalCost += v["cost"]
     for k, v in upgradeData["badges"].items():
+        totalCost += v["cost"]
+    for k, v in upgradeData["tendencies"].items():
         totalCost += v["cost"]
     # Return if cost is below zero, or player doesn't have enough cash
     if totalCost <= 0:
@@ -167,6 +185,8 @@ def createUpgrade(player, cleanedFormData):
                 player.attributes[k] = v["new"]
         for k, v in upgradeData["badges"].items():
             player.badges[k] = v["new"]
+        for k, v in upgradeData["tendencies"].items():
+            player.tendencies[k] = v["new"]
         # Add the totalCost to spent & add history list log
         currentTime = datetime.datetime.now()
         timestamp = currentTime.strftime("%Y-%m-%d | %H:%M:%S")
@@ -178,6 +198,7 @@ def createUpgrade(player, cleanedFormData):
                 "timestamp": timestamp,
             }
         )
+        player.upgrades_pending = True
         # Save the player & history lists
         player.save()
         player.history_list.save()

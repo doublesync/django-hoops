@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load main_filters %}
+
+{% block content %}
+
+    <div class="container mt-5 mb-5">
+        {% if files %}
+            {% for tag, file in files.items %}
+            <button id="{{ tag }}" type="button" class="copyJSON btn btn-primary btn-sm" onClick="clipboard(this.id)">Copy: {{ tag }}</button>
+            <hr>
+            <p id="json_{{ tag }}" class="file" style="font-size: 6px;">{{ file }}</p>
+            {% endfor %}
+        {% else %}
+            <p>😊 No files found.</p>
+        {% endif %}
+    </div>
+
+    <script src="{% static 'main/js/players/copyJSON.js' %}"></script>
+
+{% endblock %}

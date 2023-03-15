@@ -1,6 +1,9 @@
 from .models import Player
 from .league.player import upgrade
+from .league.player import export
 from .league import config as league_config
+
+import json
 
 
 def time_to_max(position, reach_value):
@@ -90,3 +93,8 @@ def badge_upg_test():
     p = Player.objects.get(pk=2)
     upg = upgrade.badgeCost(p, "Blinders", 0, 1)
     print(f"Total Cost: {upg}")
+
+
+def export_test():
+    p = Player.objects.get(pk=2)
+    export.export_player(p)

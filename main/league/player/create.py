@@ -59,6 +59,7 @@ def createPlayer(user, formData):
         # Customs
         first_name=formData["first_name"],
         last_name=formData["last_name"],
+        cyberface=formData["cyberface"],
         weight=formData["weight"],
         height=formData["height"],
         primary_position=formData["primary_position"],
