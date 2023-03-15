@@ -119,8 +119,9 @@ def formatAndValidate(player, cleanedFormData):
                 error = f"❌ {k} ({v}) is greater than the maximum value."
                 break
             if v < currentValue:  # Upgrade value is less/equal to current value
-                error = f"❌ {k} ({v}) is less to the current value."
-                break
+                if v > 0:
+                    error = f"❌ {k} ({v}) is less than the current value."
+                    break
             if v == currentValue:
                 continue
             # Add the value to the upgrade data

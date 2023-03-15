@@ -151,11 +151,11 @@ mod_tools_badges = {
 
 # Cases that don't follow the standard format, need to be manually formatted
 formatting_cases = {
-    "Drop Stepper": "DROP-STEPPER",
-    "Agent Threes": "AGENT_3",
-    "Catch And Shoot": "CATCH_SHOOT",
-    "Slippery Off Ball": "SLIPPERY_OFF-BALL",
-    "Off Ball Pest": "OFF-BALL_PEST",
+    "DROP_STEPPER": "DROP-STEPPER",
+    "AGENT_THREES": "AGENT_3",
+    "CATCH_AND_SHOOT": "CATCH_SHOOT",
+    "SLIPPERY_OFF_BALL": "SLIPPERY_OFF-BALL",
+    "OFF_BALL_PEST": "OFF-BALL_PEST",
 }
 # Formats database position to game position
 format_position = {"PG": "0", "SG": "1", "SF": "2", "PF": "3", "C": "4"}
@@ -211,17 +211,17 @@ def export_player(player):
 
     # Set the player's badges
     def set_badges():
-        # First, format the manual cases
-        for case, fix in formatting_cases.items():
-            if case in database_badges:
-                val = database_badges[case]
-                game_file[2]["data"][fix] = val
         # Second, format the badges
         game_file[2]["data"] = extra_converters.format_dict_for_game(database_badges)
         # Finally, format the badge values
         for badge, value in game_file[2]["data"].items():
-            if not badge in formatting_cases:
-                game_file[2]["data"][badge] = str(value)
+            game_file[2]["data"][badge] = str(value)
+        # First, format the manual cases
+        for case, fix in formatting_cases.items():
+            if case in game_file[2]["data"]:
+                val = database_badges[case]
+                del game_file[2]["data"][case]
+                game_file[2]["data"][fix] = val
 
     # Set the player's hotzones
     def set_hotzones():
