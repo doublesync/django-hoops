@@ -219,7 +219,7 @@ def export_player(player):
         # First, format the manual cases
         for case, fix in formatting_cases.items():
             if case in game_file[2]["data"]:
-                val = database_badges[case]
+                val = game_file[2]["data"][case]
                 del game_file[2]["data"][case]
                 game_file[2]["data"][fix] = val
 
