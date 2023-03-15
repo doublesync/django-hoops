@@ -110,6 +110,7 @@ def player(request, id):
         "defense_badges": league_config.badge_categories["defense"],
         # Precalled methods
         "height_in_feet": hoops_extra_convert.convert_to_height(plr.height),
+        "file": hoops_player_export.export_player(plr),
     }
     return render(request, "main/players/player.html", context)
 

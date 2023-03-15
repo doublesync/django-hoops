@@ -1,12 +1,19 @@
 {% extends 'main/base.html' %}
+{% load static %}
+{% load main_filters %}
 
 {% block content %}
 
     <div class="container-fluid" style="padding: 25px;">
         <h2 class="text-uppercase fw-bold mb-3 mt-3" style="text-align: center;">{{ player.first_name}} {{ player.last_name}}</h2>
         <p style="text-align: center;">
+            <!-- Upgrade & upgrade logs -->
             <a class="btn btn-success btn-sm" href="{% url 'upgrade_player' player.id %}">Upgrade player</a>
             <a class="btn btn-success btn-sm" href="{% url 'upgrade_logs' player.id %}">Upgrade history</a>
+            <!-- Player file -->
+            <button id="file" type="button" class="copyJSON btn btn-primary btn-sm" onClick="clipboard(this.id)">Copy File</button>
+            <p id="json_file" class="file" style="font-size: 6px; display: none;">{{ file }}</p>
+            <!-- Upgrades pending? -->
             {% if player.upgrades_pending %}
                 <p class="fw-bold text-danger text-center">Pending upgrades</p>
             {% else %}
@@ -248,5 +255,7 @@
             <hr>
         </div>
     </div>
+
+    <script src="{% static 'main/js/players/copyJSON.js' %}"></script>
 
 {% endblock %}
