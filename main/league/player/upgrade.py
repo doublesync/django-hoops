@@ -3,6 +3,7 @@ from ...league import config as league_config
 
 # Python imports
 import datetime
+import json
 
 # Upgrade methods
 
@@ -87,11 +88,6 @@ def formatAndValidate(player, cleanedFormData):
             if v > maximumValue:  # Upgrade value is greater than maximum value
                 error = f"❌ {k} ({v}) value is greater than the maximum value."
                 break
-            if v < currentValue:  # Upgrade value is less/equal to current value
-                error = f"❌ {k} ({v}) value is less than the current value."
-                break
-            if v == currentValue:
-                continue
             # Add the value to the upgrade data
             upgradeCost = attributeCost(player, k, currentValue, v)
             upgradeData["attributes"][k] = {
@@ -118,12 +114,6 @@ def formatAndValidate(player, cleanedFormData):
             if v > maximumValue:  # Upgrade value is greater than maximum value
                 error = f"❌ {k} ({v}) is greater than the maximum value."
                 break
-            if v < currentValue:  # Upgrade value is less/equal to current value
-                if v > 0:
-                    error = f"❌ {k} ({v}) is less than the current value."
-                    break
-            if v == currentValue:
-                continue
             # Add the value to the upgrade data
             upgradeCost = badgeCost(player, k, currentValue, v)
             upgradeData["badges"][k] = {
@@ -135,11 +125,15 @@ def formatAndValidate(player, cleanedFormData):
         if k in player.tendencies:
             # Initialize the values
             currentValue = player.tendencies[k]
+            maximumValue = league_config.max_tendency
             # Cases
             if k in banned_tendencies:
                 if v > currentValue:
                     error = f"❌ {k} cannot be changed."
                     break
+            if v > maximumValue:
+                error = f"❌ {k} is greater than the maximum value."
+                break
             # Add the value to the ugprade data
             upgradeData["tendencies"][k] = {
                 "cost": v - player.tendencies[k],
