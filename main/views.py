@@ -130,7 +130,21 @@ def upgrade_player(request, id):
     if request.method == "POST":
         form = UpgradeForm(request.POST)
         if form.is_valid():
-            response = hoops_player_upgrade.createUpgrade(player, form.cleaned_data)
+            # Remove unchanged attributes
+            changed_data = {}
+            cleaned_data = form.cleaned_data
+            for k, v in cleaned_data.items():
+                if k in player.attributes:
+                    if int(v) > player.attributes[k]:
+                        changed_data[k] = v
+                elif k in player.badges:
+                    if int(v) > player.badges[k]:
+                        changed_data[k] = v
+                elif k in player.tendencies:
+                    if int(v) != player.tendencies[k]:
+                        changed_data[k] = v
+            # Attempt to upgrade the player
+            response = hoops_player_upgrade.createUpgrade(player, changed_data)
             messages.success(request, response)
             return redirect(upgrade_player, id=id)
         else:
