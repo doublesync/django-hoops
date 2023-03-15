@@ -182,7 +182,7 @@ const updatePrice = function() {
         const value = badgeCart[name][0];
         const cost = badgeCart[name][1];
         let listItem = document.createElement("li");
-        listItem.innerText = `($${cost}) ${badgeEmojis[value]} ${name}`;
+        listItem.innerText = `($${cost}) x${value} ${name}`;
         listItem.className = "list-group-item";
         cartList.appendChild(listItem);
     });
