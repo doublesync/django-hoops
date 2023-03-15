@@ -131,6 +131,7 @@ def upgrade_player(request, id):
         form = UpgradeForm(request.POST)
         if form.is_valid():
             # Remove unchanged attributes
+            # So nothing is upgraded if the user doesn't change anything
             changed_data = {}
             cleaned_data = form.cleaned_data
             for k, v in cleaned_data.items():
