@@ -38,7 +38,7 @@ cashLeft.innerText = cash;
 
 // attribute price tiers
 attributePriceRanges = {
-    "60-70": [0, 70],
+    "0-70": [0, 70],
     "71-80": [71, 80],
     "81-86": [81, 86],
     "87-93": [87, 93],
@@ -69,6 +69,8 @@ const calculateAttributePrice = function() {
                         } else if (secondaryAttributes.includes(currentIndex.name)) {
                             cost += attributePrices[tier]["secondary"];
                         } else {
+                            // console.log(attributePrices)
+                            console.log(attributePrices[tier])
                             cost += attributePrices[tier]["base"];
                         }
                     }
