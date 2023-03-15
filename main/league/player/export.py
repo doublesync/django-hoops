@@ -215,13 +215,13 @@ def export_player(player):
         for case, fix in formatting_cases.items():
             if case in database_badges:
                 val = database_badges[case]
-                del database_badges[case]
-                database_badges[fix] = val
+                game_file[2]["data"][fix] = val
         # Second, format the badges
         game_file[2]["data"] = extra_converters.format_dict_for_game(database_badges)
         # Finally, format the badge values
         for badge, value in game_file[2]["data"].items():
-            game_file[2]["data"][badge] = str(value)
+            if not badge in formatting_cases:
+                game_file[2]["data"][badge] = str(value)
 
     # Set the player's hotzones
     def set_hotzones():
