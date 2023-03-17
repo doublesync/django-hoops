@@ -136,7 +136,7 @@ def formatAndValidate(player, cleanedFormData):
                 break
             # Add the value to the ugprade data
             upgradeData["tendencies"][k] = {
-                "cost": v - player.tendencies[k],
+                "cost": 0,
                 "old": player.tendencies[k],
                 "new": v,
             }
@@ -162,8 +162,8 @@ def createUpgrade(player, cleanedFormData):
         totalCost += v["cost"]
     for k, v in upgradeData["tendencies"].items():
         totalCost += v["cost"]
-    # Return if cost is below zero, or player doesn't have enough cash
-    if totalCost <= 0:
+    # Return if cost is below zero & no tendencies were upgraded, or player doesn't have enough cash
+    if totalCost <= 0 and not upgradeData["tendencies"]:
         return "😕 Nothing to upgrade!"
     if player.cash < totalCost:
         return "❌ You don't have enough cash for this upgrade!"
