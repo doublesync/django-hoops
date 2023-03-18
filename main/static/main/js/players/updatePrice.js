@@ -137,7 +137,7 @@ const calculateTendencyPrice = function() {
         let timesUpgraded = Number(futureLevel) - Number(currentLevel)
         // recalculate the price
         if (Number(futureLevel) > currentLevel) {
-            cost = timesUpgraded;
+            cost = 0;
             price += cost;
             cart[currentIndex.name] = [timesUpgraded, cost];
         }
