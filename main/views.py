@@ -17,11 +17,14 @@ from .forms import UpgradeForm
 
 # Custom imports
 from .discord import auth as discord_auth
+from .discord import webhooks as discord_webhooks
 from .league import config as league_config
 
 # Custom packages
 import copy
 import json
+import datetime
+
 from .league.player import upgrade as hoops_player_upgrade
 from .league.player import create as hoops_player_create
 from .league.player import export as hoops_player_export
@@ -73,6 +76,7 @@ def login_discord_redirect(request):
         # Create the discord user
         discord_user = authenticate(request, user=user)
         discord_user = list(discord_user).pop()
+        print(guilds)
         # Finally, log the user in
         django_login(request, discord_user, backend="main.authorize.DiscordBackend")
     except:
@@ -148,6 +152,12 @@ def upgrade_player(request, id):
             # Attempt to upgrade the player
             response = hoops_player_upgrade.createUpgrade(player, changed_data)
             messages.success(request, response)
+            # Send a webhook to Discord
+            discord_webhooks.send_webhook(
+                title="Player Upgrade",
+                message=f"**{player.first_name} {player.last_name}** has been upgraded. [View logs?](https://hoopscord.com/logs/upgrades/{player.id})",
+            )
+            # Return to the player page
             return redirect(upgrade_player, id=id)
         else:
             messages.error(request, form.errors)
@@ -217,6 +227,12 @@ def create_player(request):
             # If the form is valid, and the player creation succeeded, redirect to the player page
             if success == True:
                 playerObject = hoops_player_create.createPlayer(user, form.cleaned_data)
+                # Create a discord webhook
+                discord_webhooks.send_webhook(
+                    title="Player Creation",
+                    message=f"**{playerObject.first_name} {playerObject.last_name}** has been created. [View profile?](https://hoopscord.com/player/{playerObject.id})",
+                )
+                # Redirect to the player page
                 return redirect(player, id=playerObject.id)
             else:
                 messages.error(request, status)
@@ -270,6 +286,41 @@ def teams(request):
         "teams": Team.objects.all(),
     }
     return render(request, "main/teams/teams.html", context)
+
+
+def trade(request):
+    # Get the user
+    user = request.user
+    # Check if the user is a GM
+    try:
+        team = Team.objects.get(manager=user)
+    except Team.DoesNotExist:
+        return HttpResponse("Sorry, you don't have permission to view this page!")
+    # Create the context
+    context = {
+        "title": "Trade",
+        "my_team": team,
+        "my_roster": team.player_set.all(),
+    }
+    return render(request, "main/teams/trade.html", context)
+
+
+def daily_reward(request):
+    # Get the current date
+    user = request.user
+    # Get the last date the daily rewards were given out
+    last_reward = user.last_reward
+    # If the daily rewards haven't been given out today, give them out
+    if not last_reward:
+        # Give the user their daily rewards
+        # Update the user's last reward date
+        pass
+    else:
+        # Check if the last reward was given out today
+        # If it was, return an error
+        # If it wasn't, give the user their daily rewards
+        # and update the user's last reward date
+        pass
 
 
 def upgrades_pending(request):
