@@ -155,7 +155,7 @@ def upgrade_player(request, id):
             # Send a webhook to Discord
             discord_webhooks.send_webhook(
                 title="Player Upgrade",
-                message=f"**{player.first_name} {player.last_name}** has been upgraded. [View logs?](https://hoopscord.com/logs/upgrades/{player.id})",
+                message=f"**{player.first_name} {player.last_name}** has attempted an upgrade. [View logs?](https://hoopscord.com/logs/upgrades/{player.id})\n```{response}```",
             )
             # Return to the player page
             return redirect(upgrade_player, id=id)
