@@ -73,14 +73,30 @@ def login_discord_redirect(request):
         info = discord_auth.exchange_code(code)
         user = info[0]
         guilds = info[1]
-        # Create the discord user
-        discord_user = authenticate(request, user=user)
-        discord_user = list(discord_user).pop()
-        print(guilds)
-        # Finally, log the user in
-        django_login(request, discord_user, backend="main.authorize.DiscordBackend")
+        isInGuild = False
+        # Check if the user is in the server
+        for guild in guilds:
+            if guild["id"] == os.environ.get("HOOPS_GUILD_ID"):
+                isInGuild = True
+                break
+            else:
+                print(f"{guild['name']} ({guild['id']})")
+        # If the user is in the discord, create the user on the website
+        if isInGuild:
+            # Create the discord user
+            discord_user = authenticate(request, user=user)
+            discord_user = list(discord_user).pop()
+            # Finally, log the user in
+            django_login(request, discord_user, backend="main.authorize.DiscordBackend")
+            # Send a success message
+            messages.error(request, "You have successfully logged in!")
+        else:
+            # If the user isn't in the discord, redirect them to the home page with an error
+            messages.error(request, "You aren't in the hoopsim discord server!")
     except:
-        pass
+        # Sometimes the user will be redirected to this page without a code
+        messages.error(request, "Something went wrong while logging you in, try again!")
+    # Redirect the user to the home page
     return redirect(home)
 
 

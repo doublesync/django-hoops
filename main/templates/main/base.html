@@ -27,6 +27,15 @@
                 </div>
             </div>
         </nav>
+        <!-- Messages -->
+        {% if messages %}
+            <div class="alert alert-warning" role="alert">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <!-- Block content -->
         {% block content %}{% endblock %}
         <script src="{% static 'main/bootstrap/js/bootstrap.min.js' %}"></script>
     </body>
