@@ -79,8 +79,6 @@ def login_discord_redirect(request):
             if guild["id"] == os.environ.get("HOOPS_GUILD_ID"):
                 isInGuild = True
                 break
-            else:
-                print(f"{guild['name']} ({guild['id']})")
         # If the user is in the discord, create the user on the website
         if isInGuild:
             # Create the discord user
@@ -357,3 +355,36 @@ def upgrades_pending(request):
             player.save()
         # Return the pending upgrades page
         return render(request, "main/players/pending.html", {"files": files})
+
+
+def archetype_traits(request):
+    context = {
+        "title": "Archetypes & Traits",
+        "starting": league_config.position_starting_attributes,
+        "archetypes": league_config.archetype_attribute_bonuses,
+        "traits": league_config.trait_badge_unlocks,
+    }
+    return render(request, "main/players/archetype-traits.html", context)
+
+
+def build_info(request, tag):
+    print(tag)
+    context = {
+        "title": "Archetypes & Traits",
+        "use_key_and_value": False,
+    }
+    # Check if the tag is in the list of position starting attributes
+    if tag in league_config.position_starting_attributes:
+        context["header"] = tag
+        context["info"] = league_config.position_starting_attributes[tag]
+        context["use_key_and_value"] = True
+    # Check if the tag is in archetype attribute bonuses
+    elif tag in league_config.archetype_attribute_bonuses:
+        context["header"] = tag.upper()
+        context["info"] = league_config.archetype_attribute_bonuses[tag]
+    # Check if the tag is in trait badge unlocks
+    elif tag in league_config.trait_badge_unlocks:
+        context["header"] = tag.upper()
+        context["info"] = league_config.trait_badge_unlocks[tag]
+    # Return the build info page
+    return render(request, "main/players/build-info.html", context)

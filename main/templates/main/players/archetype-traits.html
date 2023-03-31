@@ -1,0 +1,65 @@
+{% extends 'main/base.html' %}
+{% load main_filters %}
+
+{% block content %}
+    <div class="container mt-5">
+        <!-- Starting attributes -->
+        <h1>Starting Attributes</h1>
+        <p>Attributes that you start with depending on your position.</p>
+        <div class="container mb-2">
+            <div class="row">
+                <div class="col-md-12">
+                    <div>
+                        <a href="{% url 'build_info' 'PG' %}">Point Guard</a><br>
+                        <a href="{% url 'build_info' 'SG' %}">Shooting Guard</a><br>
+                        <a href="{% url 'build_info' 'SF' %}">Small Forward</a><br>
+                        <a href="{% url 'build_info' 'PF' %}">Power Forward</a><br>
+                        <a href="{% url 'build_info' 'C' %}">Center</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Archetype attributes -->
+        <h1>Archetype Attributes</h1>
+        <p>Your archetype will raise your starting attributes and cost less in the long-run.</p>
+        <div class="container mb-2">
+            <div class="row">
+                <div class="col-md-12">
+                    <div>
+                        <a href="{% url 'build_info' 'Shooter' %}">Shooter</a><br>
+                        <a href="{% url 'build_info' 'Slasher' %}">Slasher</a><br>
+                        <a href="{% url 'build_info' 'Playmaker' %}">Playmaker</a><br>
+                        <a href="{% url 'build_info' 'Post Scorer' %}">Post Scorer</a><br>
+                        <a href="{% url 'build_info' 'Rebounder' %}">Rebounder</a><br>
+                        <a href="{% url 'build_info' 'Perimeter Defender' %}">Perimeter Defender</a><br>
+                        <a href="{% url 'build_info' 'Interior Defender' %}">Interior Defender</a><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Trait badges -->
+        <h1>Trait Badges</h1>
+        <p>Badges relevant to your archetype will be cheaper in the long-run.</p>
+        <div class="container mb-2">
+            <div class="row">
+                <div class="col-md-12">
+                    <div>
+                        <a href="{% url 'build_info' 'Movement Shooter' %}">Movement Shooter</a><br>
+                        <a href="{% url 'build_info' '3PT Shooter' %}">3PT Shooter</a><br>
+                        <a href="{% url 'build_info' 'Midrange Menace' %}">Midrange Menace</a><br>
+                        <a href="{% url 'build_info' 'Finesse Finisher' %}">Finesse Finisher</a><br>
+                        <a href="{% url 'build_info' 'Fierce Finisher' %}">Fierce Finisher</a><br>
+                        <a href="{% url 'build_info' 'Ankle Snatcher' %}">Ankle Snatcher</a><br>
+                        <a href="{% url 'build_info' 'Passing Maestro' %}">Passing Maestro</a><br>
+                        <a href="{% url 'build_info' 'Rebound Hound' %}">Rebound Hound</a><br>
+                        <a href="{% url 'build_info' 'Interior Anchor' %}">Interior Anchor</a><br>
+                        <a href="{% url 'build_info' 'Perimeter Lockdown' %}">Perimeter Lockdown</a><br>
+                        <a href="{% url 'build_info' 'Post-Up Powerhouse' %}">Post-Up Powerhouse</a><br>
+                        <a href="{% url 'build_info' 'Dribble Driver' %}">Dribble Driver</a><br>
+                        <a href="{% url 'build_info' 'Post-Up Conductor' %}">Post-Up Conductor</a><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

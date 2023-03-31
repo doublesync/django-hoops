@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+{% load main_filters %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>{{ header }}</h1>
+        <hr>
+        <div class="row">
+            {% if use_key_and_value %}
+                {% for k, v in info.items %} 
+                    <div class="col-md-3">
+                        <p>{{ v }} <b>{{ k }}</b></p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                {% for i in info %}
+                    <div class="col-md-12">
+                        <p>{{ i }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
