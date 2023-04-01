@@ -10,6 +10,7 @@ from .models import DiscordUser
 from .models import Player
 from .models import HistoryList
 from .models import Team
+from .models import Coupon
 
 # Override the default JSONField widget with the JSONEditor widget
 class MyAdmin(admin.ModelAdmin):
@@ -23,3 +24,4 @@ admin.site.register(DiscordUser, MyAdmin)
 admin.site.register(Player, MyAdmin)
 admin.site.register(HistoryList, MyAdmin)
 admin.site.register(Team, MyAdmin)
+admin.site.register(Coupon, MyAdmin)

@@ -121,3 +121,13 @@ class Team(models.Model):
     # Team Methods
     def __str__(self):
         return f"{self.name}"
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=16, unique=True)
+    amount = models.PositiveBigIntegerField()
+    one_use = models.BooleanField(default=False)
+    used = models.BooleanField(default=False)
+    # Coupon Methods
+    def __str__(self):
+        return f"{self.code}"

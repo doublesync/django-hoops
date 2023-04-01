@@ -1,0 +1,33 @@
+ 
+ {% extends 'main/base.html' %}
+
+ {% block content %}
+    <div class="container mt-5">
+        <div class="row .payment-dialog-row">
+            <div class="col-12 col-md-4 offset-md-4">
+                <div class="card credit-card-box">
+                    <div class="card-header">
+                        <h3><span class="panel-title-text">Redeem Coupon</span></h3>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            {% csrf_token %}
+                            <div class="row">
+                                <b><p id="coupon-result" class="mt-1" style="font-size:12px;">Enter a coupon code to receive prizes!</p></b>
+                                <div class="col-7">
+                                    <div class="form-group mb-3"><label class="form-label" for="coupon">Coupon Code</label><input id="coupon" name="coupon" class="form-control" type="tel" required placeholder="Enter coupon code" /></div>
+                                </div>
+                                <div class="col-5 pull-right">
+                                    <div class="form-group mb-3"><label class="form-label" for="id">ID</label><input id="id" name="id" class="form-control" type="tel" required placeholder="Enter identity" /></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12"><button class="btn btn-success btn-lg d-block w-100" type="submit" hx-post="/coupons/redeem/" hx-trigger="click delay:200ms" hx-target="#coupon-result" hx-swap="outerHTML" onkeydown="return event.key != 'Enter';">Redeem</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

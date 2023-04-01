@@ -13,6 +13,7 @@ from django.template.loader import render_to_string
 # Model imports
 from .models import Player
 from .models import Team
+from .models import Coupon
 
 # Form imports
 from .forms import PlayerForm
@@ -171,6 +172,7 @@ def upgrade_player(request, id):
             messages.success(request, response)
             # Send a webhook to Discord
             discord_webhooks.send_webhook(
+                url="upgrade",
                 title="Player Upgrade",
                 message=f"**{player.first_name} {player.last_name}** has attempted an upgrade. [View logs?](https://hoopscord.com/logs/upgrades/{player.id})\n```{response}```",
             )
@@ -246,6 +248,7 @@ def create_player(request):
                 playerObject = hoops_player_create.createPlayer(user, form.cleaned_data)
                 # Create a discord webhook
                 discord_webhooks.send_webhook(
+                    url="creation",
                     title="Player Creation",
                     message=f"**{playerObject.first_name} {playerObject.last_name}** has been created. [View profile?](https://hoopscord.com/player/{playerObject.id})",
                 )
@@ -405,6 +408,13 @@ def build_info(request, tag):
     return render(request, "main/players/build-info.html", context)
 
 
+def coupons(request):
+    context = {
+        "title": "Coupons",
+    }
+    return render(request, "main/league/coupons.html", context)
+
+
 # Check views
 def check_player_search(request):
     if request.method == "POST":
@@ -444,3 +454,57 @@ def check_team_search(request):
             return HttpResponse(html)
     else:
         return HttpResponse("Invalid request!")
+
+
+def check_coupon_code(request):
+    if request.method == "POST":
+        # Get ID & coupon code
+        id = request.POST.get("id")
+        code = request.POST.get("coupon")
+        coupon = Coupon.objects.filter(code=code).first()
+        # Check if ID & coupon exist
+        if not id or not coupon:
+            return HttpResponse(
+                "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>Invalid coupon code or identity!</p>"
+            )
+        # Get user & player
+        user = request.user
+        player = Player.objects.filter(id=id).first()
+        # Check if ID & coupon exist
+        if not player or not player.discord_user == user:
+            return HttpResponse(
+                "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>You don't own this player!</p>"
+            )
+        history_list = player.history_list.history
+        # Check if used_coupons exists, if it doesn't create it
+        if not "used_coupons" in history_list:
+            history_list["used_coupons"] = []
+        used_coupons = history_list["used_coupons"]
+        # Check if the coupon code has already been used
+        if coupon.code in used_coupons:
+            return HttpResponse(
+                "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>Coupon code already used!</p>"
+            )
+        # Check if the coupon code is one_use
+        if coupon.one_use and coupon.used:
+            return HttpResponse(
+                "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>Coupon code already used!</p>"
+            )
+        # Mark coupon as used & add player cash
+        used_coupons.append(coupon.code)
+        player.cash += coupon.amount
+        coupon.used = True
+        # Save the player & history list
+        coupon.save()
+        player.save()
+        player.history_list.save()
+        # Send a success webhook
+        discord_webhooks.send_webhook(
+            url="coupon",
+            title="Coupon",
+            message=f"{player.first_name} {player.last_name} successfully redeemed a coupon code worth ${coupon.amount}!",
+        )
+        # Return the success message
+        return HttpResponse(
+            "<p id='coupon-result' class='mt-2 text-success' style='font-size:12px;'>Coupon code successfully redeemed!</p>"
+        )

@@ -426,10 +426,6 @@ archetype_attribute_bonuses = {
     "Interior Defender": ["Interior Defense", "Block", "Help Defense Iq"],
 }
 
-# Description: Configurations for cap space
-
-cap_space = 0
-
 # Description: Initials for models
 
 initial_attributes = {
@@ -537,6 +533,7 @@ initial_history = {
     "upgrade_logs": [],
     "contract_logs": [],
     "trade_logs": [],
+    "used_coupons": [],
 }
 initial_settings = {
     "test": False,
