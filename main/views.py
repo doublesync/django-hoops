@@ -6,6 +6,9 @@ from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.template.loader import render_to_string
 
 # Model imports
 from .models import Player
@@ -261,8 +264,14 @@ def create_player(request):
 def players(request):
     context = {
         "title": "Players",
-        "players": Player.objects.all(),
     }
+    # Get the league players
+    league_players = Player.objects.all()
+    # Paginate the league players
+    paginator = Paginator(league_players, 10)
+    page_number = request.GET.get("page")
+    context["page"] = paginator.get_page(page_number)
+    # Return the players page
     return render(request, "main/players/players.html", context)
 
 
@@ -388,3 +397,25 @@ def build_info(request, tag):
         context["info"] = league_config.trait_badge_unlocks[tag]
     # Return the build info page
     return render(request, "main/players/build-info.html", context)
+
+
+# Check views
+def check_player_search(request):
+    if request.method == "POST":
+        search = request.POST.get("search")
+        if search:
+            # Check for players based on first and last name
+            players = Player.objects.filter(
+                Q(first_name__icontains=search) | Q(last_name__icontains=search)
+            )
+            # Check if there were any players found
+            if not players:
+                return HttpResponse("<p class='text-danger'>No players found!</p>")
+            # Render the player list fragment to string
+            html = render_to_string(
+                "main/ajax/player_list_fragment.html", {"page": players}
+            )
+            # Return the player list fragment
+            return HttpResponse(html)
+    else:
+        return HttpResponse("Invalid request!")

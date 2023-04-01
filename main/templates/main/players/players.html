@@ -7,9 +7,12 @@
             <div class="row h-100">
                 <div class="col-md-10 col-xl-8 text-center d-flex d-sm-flex d-md-flex justify-content-center align-items-center mx-auto justify-content-md-start align-items-md-center justify-content-xl-center">
                     <div>
-                        <h2 class="text-uppercase fw-bold mb-3">PLAYERS</h2>
-                        <p class="mb-4">Welcome to our players page, this is where you can view each player individually.</p>
-                        <input type="search" placeholder="Search players" class="form-control"></input>
+                        <form>
+                            {% csrf_token %}
+                            <h2 class="text-uppercase fw-bold mb-3">PLAYERS</h2>
+                            <p class="mb-4">Welcome to our players page, this is where you can view each player individually.</p>
+                            <input type="search" name="search" placeholder="Search players" class="form-control" hx-post="/players/search/" hx-trigger="keyup delay:200ms" hx-target="#search-results" hx-swap="innerHTML" hx-cache="false" hx-indicator="#loading" onkeydown="return event.key != 'Enter';"></input>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -17,18 +20,26 @@
     </section>
 
     <div class="container">
-        <div class="row">
-            {% for player in players %}
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">[{{ player.id }}] {{ player.first_name }} {{ player.last_name }}</h4>
-                            <h6 class="text-muted card-subtitle mb-2">{{ player.current_team }}</h6><a class="card-link" href="{% url 'player' player.id %}" ">View players page</a>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+        <div id="loading" class="d-none">
+            <i class="fa fa-spinner fa-spin"></i> Loading...
         </div>
+        <div class="row" id="search-results">
+            {% include 'main/ajax/player_list_fragment.html' with page=page %}
+        </div>
+    </div>
+
+    <div class="container mt-2">
+        <ul class="pagination">
+            {% if page.has_previous %} 
+                <li class="page-item"><a class="page-link" aria-label="Previous" href="?page={{ page.previous_page_number }}"><span aria-hidden="true">Back</span></a></li>
+            {% endif %}
+            {% for page in page.paginator.page_range %}
+                <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+            {% endfor %}
+            {% if page.has_next %}
+                <li class="page-item"><a class="page-link" aria-label="Next" href="?page={{ page.next_page_number }}"><span aria-hidden="true">Next</span></a></li>
+            {% endif %}
+        </ul>
     </div>
 
 {% endblock %}

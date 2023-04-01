@@ -38,4 +38,10 @@ urlpatterns = [
     path(
         route="upgrades/pending/", view=views.upgrades_pending, name="upgrades_pending"
     ),
+    # Check PATHS
+    path(
+        route="players/search/",
+        view=views.check_player_search,
+        name="check_player_search",
+    ),
 ]
