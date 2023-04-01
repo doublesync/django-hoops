@@ -174,7 +174,7 @@ def upgrade_player(request, id):
             discord_webhooks.send_webhook(
                 url="upgrade",
                 title="Player Upgrade",
-                message=f"**{player.first_name} {player.last_name}** has attempted an upgrade. [View logs?](https://hoopscord.com/logs/upgrades/{player.id})\n```{response}```",
+                message=f"**{player.first_name} {player.last_name}** has attempted an upgrade. [View logs?](https://hoopsim.com/logs/upgrades/{player.id})\n```{response}```",
             )
             # Return to the player page
             return redirect(upgrade_player, id=id)
@@ -250,7 +250,7 @@ def create_player(request):
                 discord_webhooks.send_webhook(
                     url="creation",
                     title="Player Creation",
-                    message=f"**{playerObject.first_name} {playerObject.last_name}** has been created. [View profile?](https://hoopscord.com/player/{playerObject.id})",
+                    message=f"**{playerObject.first_name} {playerObject.last_name}** has been created. [View profile?](https://hoopsim.com/player/{playerObject.id})",
                 )
                 # Redirect to the player page
                 return redirect(player, id=playerObject.id)
