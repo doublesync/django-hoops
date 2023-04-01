@@ -408,6 +408,7 @@ def build_info(request, tag):
     return render(request, "main/players/build-info.html", context)
 
 
+@login_required(login_url="/login/discord/")
 def coupons(request):
     context = {
         "title": "Coupons",
