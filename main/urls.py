@@ -44,4 +44,5 @@ urlpatterns = [
         view=views.check_player_search,
         name="check_player_search",
     ),
+    path(route="teams/search/", view=views.check_team_search, name="check_team_search"),
 ]

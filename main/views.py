@@ -306,8 +306,14 @@ def team(request, id):
 def teams(request):
     context = {
         "title": "Teams",
-        "teams": Team.objects.all(),
     }
+    # Get the league teams
+    league_teams = Team.objects.all()
+    # Paginate the league teams
+    paginator = Paginator(league_teams, 8)
+    page_number = request.GET.get("page")
+    context["page"] = paginator.get_page(page_number)
+    # Return the players page
     return render(request, "main/teams/teams.html", context)
 
 
@@ -414,6 +420,25 @@ def check_player_search(request):
             # Render the player list fragment to string
             html = render_to_string(
                 "main/ajax/player_list_fragment.html", {"page": players}
+            )
+            # Return the player list fragment
+            return HttpResponse(html)
+    else:
+        return HttpResponse("Invalid request!")
+
+
+def check_team_search(request):
+    if request.method == "POST":
+        search = request.POST.get("search")
+        if search:
+            # Check for teams based on name
+            teams = Team.objects.filter(name__icontains=search)
+            # Check if there were any teams found
+            if not teams:
+                return HttpResponse("<p class='text-danger'>No teams found!</p>")
+            # Render the player list fragment to string
+            html = render_to_string(
+                "main/ajax/team_list_fragment.html", {"page": teams}
             )
             # Return the player list fragment
             return HttpResponse(html)

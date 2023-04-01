@@ -1,0 +1,10 @@
+{% for team in page %}
+<div class="col-md-3">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">{{ team.name }}</h4>
+            <a class="card-link" href="{% url 'team' team.id %}" ">View teams page</a>
+        </div>
+    </div>
+</div>
+{% endfor %}
