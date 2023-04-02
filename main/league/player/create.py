@@ -27,26 +27,26 @@ def validatePlayerCreation(user, formData):
     if (int(formData["height"])) < (
         min_max_heights[formData["primary_position"]]["min"]
     ):
-        return "❌ You are trying to make a player under the minimum height."
+        return [False, "❌ You are trying to make a player under the minimum height."]
     if (int(formData["height"])) > (
         min_max_heights[formData["primary_position"]]["max"]
     ):
-        return "❌ You are trying to make a player over the maximum height."
+        return [False, "❌ You are trying to make a player over the maximum height."]
     if (int(formData["weight"])) < (
         min_max_weights[formData["primary_position"]]["min"]
     ):
-        return "❌ You are trying to make a player under the minimum weight."
+        return [False, "❌ You are trying to make a player under the minimum weight."]
     if (int(formData["weight"])) > (
         min_max_weights[formData["primary_position"]]["max"]
     ):
-        return "❌ You are trying to make a player over the maximum weight."
+        return [False, "❌ You are trying to make a player over the maximum weight."]
     # Check if the user is trying to make a player with duplicate traits
     selected_traits = [
         formData["trait_one"],
         formData["trait_two"],
     ]
     if len(selected_traits) != len(set(selected_traits)):
-        return "❌ You are trying to make a player with duplicate traits."
+        return [False, "❌ You are trying to make a player with duplicate traits."]
     # If everything is good, create the player
     return [True, None]
 

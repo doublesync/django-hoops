@@ -104,6 +104,7 @@ def login_discord_redirect(request):
 
 def logout(request):
     django_logout(request)
+    messages.error(request, "You have successfully logged out!")
     return redirect("/")
 
 
@@ -253,8 +254,10 @@ def create_player(request):
                     message=f"**{playerObject.first_name} {playerObject.last_name}** has been created. [View profile?](https://hoopsim.com/player/{playerObject.id})",
                 )
                 # Redirect to the player page
+                messages.success(request, "Player created successfully!")
                 return redirect(player, id=playerObject.id)
             else:
+                print(success, status)
                 messages.error(request, status)
                 return redirect(create_player)
         # If the form is invalid, or the player creation failed, redirect to the create player page
