@@ -22,14 +22,7 @@ urlpatterns = [
     path(route="player/create/", view=views.create_player, name="create_player"),
     path(route="players/", view=views.players, name="players"),
     path(route="logs/upgrades/<int:id>/", view=views.upgrade_logs, name="upgrade_logs"),
-    path(
-        route="players/archetype-traits/",
-        view=views.archetype_traits,
-        name="archetype_traits",
-    ),
-    path(
-        route="players/build-info/<str:tag>/", view=views.build_info, name="build_info"
-    ),
+    path(route="players/builder/", view=views.mock_builder, name="mock_builder"),
     # Team PATHS
     path(route="team/<int:id>/", view=views.team, name="team"),
     path(route="teams/", view=views.teams, name="teams"),
@@ -48,5 +41,10 @@ urlpatterns = [
     path(route="teams/search/", view=views.check_team_search, name="check_team_search"),
     path(
         route="coupons/redeem/", view=views.check_coupon_code, name="check_coupon_code"
+    ),
+    path(
+        route="players/attributes/",
+        view=views.check_starting_attributes,
+        name="check_starting_attributes",
     ),
 ]

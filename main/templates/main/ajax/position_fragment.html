@@ -1,0 +1,30 @@
+<div>
+    <p>Attributes relevant to your <span class="text-success"><b>primary</b></span> and <span class="text-primary"><b>secondary</b></span> archetypes will cost considerably less to upgrade.</p>
+    {% for k, v in primary_attributes.items %}
+        <div class="col-md-3">
+            <b><span class="text-success">[P]</span></b> <b>{{ v }}</b> {{ k }} 
+        </div>
+    {% endfor %}
+    {% for k, v in secondary_attributes.items %}
+        <div class="col-md-3">
+            <b><span class="text-primary">[S]</span></b> <b>{{ v }}</b> {{ k }} 
+        </div>
+    {% endfor %}
+    {% for k, v in base_attributes.items %}
+        <div class="col-md-3">
+            <b>{{ v }}</b> {{ k }} 
+        </div>
+    {% endfor %}
+</div>
+<div class="mt-2 mb-5">
+    <p>Badges relevant to your <span class="text-success"><b>primary</b></span> and <span class="text-primary"><b>secondary</b></span> traits will cost considerably less to upgrade and can be upgraded further.
+    {% for badge, type in badges.items %}
+        <div class="col-md-3">
+            {% if type == "[P]" %} 
+                <b><span class="text-success">{{ type }}</span></b> {{ badge }}
+            {% elif type == "[S]" %}
+                <b><span class="text-primary">{{ type }}</span></b> {{ badge }}
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>

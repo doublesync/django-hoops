@@ -3,22 +3,61 @@
 
 {% block content %}
     <div class="container mt-5">
-        <h1>{{ header }}</h1>
+        <!-- HTMX live updater/changer -->
+        <h1 class="mb-3">Mock Builder</h1>
+        <form>
+            {% csrf_token %}
+            <!-- Position label -->
+            <select class="form-select mb-1" name="position">
+                {% for tuple in position_choices %}
+                    <option value="{{ tuple.0 }}">{{ tuple.1 }}</option>
+                {% endfor %}
+            </select>
+            <!-- Height selector -->
+            <select class="form-select mb-1" name="height">
+                {% for tuple in height_choices %}
+                    <option value="{{ tuple.0 }}">{{ tuple.1 }}</option>
+                {% endfor %}
+            </select>
+            <!-- Weight selector -->
+            <input type="number" name="weight" class="form-control mb-2" value="150" min="150" max="270"/>
+            <!-- Primary archetype selector -->
+            <select name="archetype1" class="form-select mb-1">
+                {% for tuple in archetype_choices %}
+                    <option value="{{ tuple.0 }}">{{ tuple.1 }}</option>
+                {% endfor %}
+            </select>
+            <!-- Secondary archetype selector -->
+            <select name="archetype2" class="form-select mb-1">
+                {% for tuple in archetype_choices %}
+                    <option value="{{ tuple.0 }}">{{ tuple.1 }}</option>
+                {% endfor %}
+            </select>
+            <!-- Primary trait selector -->
+            <select name="trait1" class="form-select mb-1">
+                {% for tuple in trait_choices %}
+                    <option value="{{ tuple.0 }}">{{ tuple.1 }}</option>
+                {% endfor %}
+            </select>
+            <!-- Secondary trait selector -->
+            <select name="trait2" class="form-select mb-1">
+                {% for tuple in trait_choices %}
+                    <option value="{{ tuple.0 }}">{{ tuple.1 }}</option>
+                {% endfor %}
+            </select>
+            <!-- Submit button -->
+            <button style="width: 100%; display: block;" class="mt-1 btn btn-success" hx-post="/players/attributes/" hx-trigger="click" hx-target="#position-results" hx-swap="innerHTML">Submit</button>
+        </form>
+        <!-- Position starting attributes -->
         <hr>
         <div class="row">
-            {% if use_key_and_value %}
-                {% for k, v in info.items %} 
-                    <div class="col-md-3">
-                        <p>{{ v }} <b>{{ k }}</b></p>
-                    </div>
-                {% endfor %}
-            {% else %}
-                {% for i in info %}
-                    <div class="col-md-12">
-                        <p>{{ i }}</p>
-                    </div>
-                {% endfor %}
-            {% endif %}
+            <div id="position-results">
+                {% if not welcome_message %}
+                    {% include 'main/ajax/position_fragment.html' %}
+                {% else %}
+                    <p>Hey there, welcome to the mock player builder! To get started, select a position, height, weight, archetypes, and traits.</p>
+                {% endif %}
+            </div>
         </div>
-    </div>
+    </div>  
 {% endblock %}

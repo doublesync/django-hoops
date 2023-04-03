@@ -7,11 +7,16 @@ start_attribute = league_config.start_attribute
 position_attributes = league_config.position_starting_attributes
 
 # Finds the correct attribute limits for the player
-def setStartingPhysicals(player):
+def setStartingPhysicals(player, mock=False):
     # Find the player details
-    height = int(player.height)
-    weight = int(player.weight)
-    position = player.primary_position
+    if not mock:
+        height = int(player.height)
+        weight = int(player.weight)
+        position = player.primary_position
+    else:
+        height = player["height"]
+        weight = player["weight"]
+        position = player["primary_position"]
     # Find height & weight multipliers
     minimum_height = min_max_heights[position]["min"]
     minimum_weight = min_max_weights[position]["min"]
@@ -23,10 +28,17 @@ def setStartingPhysicals(player):
     strength_start = position_attributes[position]["Strength"]
     acceleration_start = position_attributes[position]["Acceleration"]
     # Update the player's physicals
-    player.attributes["Speed"] = speed_start - (int(3 * height_mult))
-    player.attributes["Speed With Ball"] = speed_start - (int(3 * height_mult))
-    player.attributes["Vertical"] = vertical_start - int(height_mult)
-    player.attributes["Strength"] = strength_start + int(weight_mult)
-    player.attributes["Acceleration"] = acceleration_start - int(weight_mult)
+    if not mock:
+        player.attributes["Speed"] = speed_start - (int(3 * height_mult))
+        player.attributes["Speed With Ball"] = speed_start - (int(3 * height_mult))
+        player.attributes["Vertical"] = vertical_start - int(height_mult)
+        player.attributes["Strength"] = strength_start + int(weight_mult)
+        player.attributes["Acceleration"] = acceleration_start - int(weight_mult)
+    else:
+        player["attributes"]["Speed"] = speed_start - (int(3 * height_mult))
+        player["attributes"]["Speed With Ball"] = speed_start - (int(3 * height_mult))
+        player["attributes"]["Vertical"] = vertical_start - int(height_mult)
+        player["attributes"]["Strength"] = strength_start + int(weight_mult)
+        player["attributes"]["Acceleration"] = acceleration_start - int(weight_mult)
     # Return the updated player
     return player

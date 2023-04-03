@@ -31,6 +31,7 @@ import datetime
 
 from .league.player import upgrade as hoops_player_upgrade
 from .league.player import create as hoops_player_create
+from .league.player import physicals as hoops_player_physicals
 from .league.player import export as hoops_player_export
 from .league.extra import convert as hoops_extra_convert
 
@@ -378,35 +379,17 @@ def upgrades_pending(request):
         return render(request, "main/players/pending.html", {"files": files})
 
 
-def archetype_traits(request):
-    context = {
-        "title": "Archetypes & Traits",
-        "starting": league_config.position_starting_attributes,
-        "archetypes": league_config.archetype_attribute_bonuses,
-        "traits": league_config.trait_badge_unlocks,
-    }
-    return render(request, "main/players/archetype-traits.html", context)
-
-
-def build_info(request, tag):
-    print(tag)
-    context = {
-        "title": "Archetypes & Traits",
-        "use_key_and_value": False,
-    }
+def mock_builder(request):
     # Check if the tag is in the list of position starting attributes
-    if tag in league_config.position_starting_attributes:
-        context["header"] = tag
-        context["info"] = league_config.position_starting_attributes[tag]
-        context["use_key_and_value"] = True
-    # Check if the tag is in archetype attribute bonuses
-    elif tag in league_config.archetype_attribute_bonuses:
-        context["header"] = tag.upper()
-        context["info"] = league_config.archetype_attribute_bonuses[tag]
-    # Check if the tag is in trait badge unlocks
-    elif tag in league_config.trait_badge_unlocks:
-        context["header"] = tag.upper()
-        context["info"] = league_config.trait_badge_unlocks[tag]
+    context = {
+        "title": "Archetypes & Traits",
+        "info": league_config.position_starting_attributes["PG"],
+        "height_choices": league_config.height_choices,
+        "archetype_choices": league_config.archetype_choices,
+        "position_choices": league_config.position_choices,
+        "trait_choices": league_config.trait_choices,
+        "welcome_message": True,
+    }
     # Return the build info page
     return render(request, "main/players/build-info.html", context)
 
@@ -512,3 +495,91 @@ def check_coupon_code(request):
         return HttpResponse(
             "<p id='coupon-result' class='mt-2 text-success' style='font-size:12px;'>Coupon code successfully redeemed!</p>"
         )
+
+
+def check_starting_attributes(request):
+    if request.method == "POST":
+        # Get the form data
+        position = request.POST.get("position")
+        height = request.POST.get("height")
+        weight = request.POST.get("weight")
+        primary_archetype = request.POST.get("archetype1")
+        secondary_archetype = request.POST.get("archetype2")
+        trait1 = request.POST.get("trait1")
+        trait2 = request.POST.get("trait2")
+        # Define some variables
+        height_limits = league_config.min_max_heights[position]
+        weight_limits = league_config.min_max_weights[position]
+        convert_height = hoops_extra_convert.convert_to_height
+        # Check some validations first
+        if not weight:
+            return HttpResponse("❌ Weight is required!")
+        if int(height) > height_limits["max"] or int(height) < height_limits["min"]:
+            return HttpResponse(
+                f"❌ Height must be between {convert_height(height_limits['min'])} and {convert_height(height_limits['max'])}!",
+            )
+        if int(weight) > weight_limits["max"] or int(weight) < weight_limits["min"]:
+            return HttpResponse(
+                f"❌ Weight must be between {weight_limits['min']} and {weight_limits['max']}!",
+            )
+        if trait1 == trait2:
+            return HttpResponse("❌ Traits cannot be the same!")
+        # Check what the starting attributes would be
+        starting_attributes = {
+            "height": int(height),
+            "weight": int(weight),
+            "primary_position": position,
+            "attributes": copy.deepcopy(
+                league_config.position_starting_attributes[position]
+            ),
+        }
+        mock_player = hoops_player_physicals.setStartingPhysicals(
+            starting_attributes, mock=True
+        )
+        player_attributes = mock_player["attributes"]
+        # Add archetype bonuses
+        primary_list = league_config.archetype_attribute_bonuses[primary_archetype]
+        secondary_list = league_config.archetype_attribute_bonuses[secondary_archetype]
+        for attribute in primary_list:
+            player_attributes[attribute] += league_config.archetype_primary_bonus
+        for attribute in secondary_list:
+            player_attributes[attribute] += league_config.archetype_secondary_bonus
+        # Format the attributes with primary/secondary/base tags
+        mock_player_attributes = {"primary": {}, "secondary": {}, "base": {}}
+        for attribute in player_attributes:
+            if attribute in primary_list:
+                mock_player_attributes["primary"][attribute] = player_attributes[
+                    attribute
+                ]
+            elif attribute in secondary_list:
+                mock_player_attributes["secondary"][attribute] = player_attributes[
+                    attribute
+                ]
+            else:
+                mock_player_attributes["base"][attribute] = player_attributes[attribute]
+        # Add trait bonuses
+        mock_player_badges = {}
+        trait1_list = league_config.trait_badge_unlocks[trait1]
+        trait2_list = league_config.trait_badge_unlocks[trait2]
+        for badge in trait1_list:
+            mock_player_badges[badge] = "[P]"
+        for badge in trait2_list:
+            mock_player_badges[badge] = "[S]"
+        # Return the starting attributes
+        context = {
+            "title": "Archetypes & Traits",
+            "header": position,
+            "height_choices": league_config.height_choices,
+            "primary_attributes": mock_player_attributes["primary"],
+            "secondary_attributes": mock_player_attributes["secondary"],
+            "base_attributes": mock_player_attributes["base"],
+            "badges": mock_player_badges,
+            "archetype_choices": league_config.archetype_choices,
+            "position_choices": league_config.position_choices,
+            "trait_choices": league_config.trait_choices,
+            "welcome_message": False,
+        }
+        html = render_to_string("main/ajax/position_fragment.html", context)
+        return HttpResponse(html)
+    else:
+        return HttpResponse("Invalid request!")
