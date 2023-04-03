@@ -1,7 +1,7 @@
 # Title : League configuration file
 # Description : A configuration file for the league.
 
-max_players = 100
+max_players = 1
 primary_currency_start = 1000
 
 start_attribute = 0
