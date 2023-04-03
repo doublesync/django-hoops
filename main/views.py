@@ -399,7 +399,16 @@ def coupons(request):
     context = {
         "title": "Coupons",
     }
-    return render(request, "main/league/coupons.html", context)
+    user = request.user
+    # Get the user's players
+    players = Player.objects.filter(discord_user=user)
+    if players:
+        # Add list of players to context
+        context["player_list"] = players
+        # Return the coupons page
+        return render(request, "main/league/coupons.html", context)
+    else:
+        return HttpResponse("You don't have any players!")
 
 
 # Check views
@@ -446,7 +455,7 @@ def check_team_search(request):
 def check_coupon_code(request):
     if request.method == "POST":
         # Get ID & coupon code
-        id = request.POST.get("id")
+        id = int(request.POST.get("id"))
         code = request.POST.get("coupon")
         coupon = Coupon.objects.filter(code=code).first()
         # Check if ID & coupon exist
