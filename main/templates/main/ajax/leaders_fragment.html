@@ -1,0 +1,22 @@
+<!-- Create a responsive bootstrap table that shows the players -->
+{% load main_filters %}
+{% if leaders %}
+    <table class="table table-striped table-hover table-responsive">
+        <thead>
+            <tr>
+                <th scope="col" style="text-transform: capitalize;">Player</th>
+                <th scope="col" style="text-transform: capitalize;">{{ field }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in leaders %}
+                <tr>
+                    <td style="text-transform: capitalize;">{{ player.first_name }} {{ player.last_name }}</td>
+                    <td>{{ player|getattr:field }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p class="mt-4">Search <span class="text-success"><b>results</b></span> will appear here.</p>
+{% endif %}

@@ -641,3 +641,17 @@ def check_upgrade_validation(request):
             return HttpResponse(response)
         else:
             return HttpResponse("❌ Invalid form data!")
+
+
+def check_player_leaders(request):
+    # Get the form data
+    field = request.POST.get("field")
+    # Get the player leaders for this field
+    leaders = Player.objects.order_by(f"-{field}")[:10]
+    # Create context & send back
+    context = {
+        "leaders": leaders,
+        "field": field,
+    }
+    html = render_to_string("main/ajax/leaders_fragment.html", context)
+    return HttpResponse(html)

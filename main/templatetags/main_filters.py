@@ -16,3 +16,8 @@ def addid(value, arg):
 @register.filter(name="addplaceholder")
 def addplaceholder(value, arg):
     return value.as_widget(attrs={"placeholder": arg})
+
+
+@register.filter(name="getattr")
+def get_attribute(obj, attr):
+    return getattr(obj, attr)

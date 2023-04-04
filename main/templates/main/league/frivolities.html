@@ -1,32 +1,48 @@
-  {% extends 'main/base.html' %}
-
- {% block content %}
-    <div class="container mt-5">
-        <div class="container border outline-dark mt-2 mb-2 p-5" id="position-counts">
-            <h2 class="mt-2 mb-2">Demographic</h2><hr class="mt-1 mb-1">
-            <p class="mt-0 mb-0">Total Players<br>{{ position_counts.Total }}</p><hr class="mt-1 mb-1">
-            <p class="mt-0 mb-0">Point Guard<br>{{ position_counts.PG }}</p>
-            <p class="mt-0 mb-0">Shooting Guard<br>{{ position_counts.SG }}</p>
-            <p class="mt-0 mb-0">Small Forward<br>{{ position_counts.SF }}</p>
-            <p class="mt-0 mb-0">Power Forward<br>{{ position_counts.PF }}</p>
-            <p class="mt-0 mb-2">Center<br>{{ position_counts.C }}</p><hr class="mt-1 mb-1">
-            <h3 class="mt-2 mb-2">Custom search</h3><hr class="mt-1 mb-1">
-            <form>
-                {% csrf_token %}
-                <label for="type">Search position counts based on player types.</label>
-                <select class="form-select mt-2 mb-2" name="position" hx-post="/positions/count/" hx-trigger="change" hx-target="#count-results" hx-swap="innerHTML">
-                    <option name="PG" value="PG">Point Guard</option>
-                    <option name="SG" value="SG">Shooting Guard</option>
-                    <option name="SF" value="SF">Small Forward</option>
-                    <option name="PF" value="PF">Power Forward</option>
-                    <option name="C" value="C">Center</option>
-                </select>
-                <select class="form-select mt-2 mb-1" name="type" hx-post="/positions/count/" hx-trigger="change" hx-target="#count-results" hx-swap="innerHTML">
-                    <option name="unsigned" value="unsigned">Unsigned players</option>
-                    <option name="signed" value="signed">Signed players</option>
-                </select><hr>
-            </form>
-            <p class="mt-2" id="count-results">Seach <span class="text-success"><b>results</b></span> will appear here.</p>
+{% extends 'main/base.html' %}
+{% load main_filters %}
+{% block content %}
+<div class="container mt-5">
+    <div class="container border outline-dark mt-2 mb-2 p-5" id="position-counts">
+        <h2 class="mt-2 mb-2">Demographic</h2><hr class="mt-1 mb-1">
+        <p class="mt-0 mb-0">Total Players<br>{{ position_counts.Total }}</p><hr class="mt-1 mb-1">
+        <p class="mt-0 mb-0">Point Guard<br>{{ position_counts.PG }}</p>
+        <p class="mt-0 mb-0">Shooting Guard<br>{{ position_counts.SG }}</p>
+        <p class="mt-0 mb-0">Small Forward<br>{{ position_counts.SF }}</p>
+        <p class="mt-0 mb-0">Power Forward<br>{{ position_counts.PF }}</p>
+        <p class="mt-0 mb-2">Center<br>{{ position_counts.C }}</p><hr class="mt-2 mb-2">
+        <form>
+            {% csrf_token %}
+            <label for="type">Search position counts based on player types.</label>
+            <select class="form-select mt-2 mb-2" name="position" hx-post="/positions/count/" hx-trigger="change" hx-target="#count-results" hx-swap="innerHTML">
+                <option name="PG" value="PG">Point Guard</option>
+                <option name="SG" value="SG">Shooting Guard</option>
+                <option name="SF" value="SF">Small Forward</option>
+                <option name="PF" value="PF">Power Forward</option>
+                <option name="C" value="C">Center</option>
+            </select>
+            <select class="form-select mt-2 mb-1" name="type" hx-post="/positions/count/" hx-trigger="change" hx-target="#count-results" hx-swap="innerHTML">
+                <option name="unsigned" value="unsigned">Unsigned players</option>
+                <option name="signed" value="signed">Signed players</option>
+            </select>
+        </form>
+        <p class="mt-4" id="count-results"></p>
+    </div>
+</div>
+<div class="container mt-2 mb-5">
+    <div class="container border outline-dark mt-2 mb-2 p-5" id="field-leaders">
+        <h2>Leaders</h2>
+        <form>
+            {% csrf_token %}
+            <label for="type">Search position counts based on player fields.</label>
+            <select class="form-select mt-2 mb-2" name="field" hx-post="/players/leaders/" hx-trigger="change" hx-target="#leader-results" hx-swap="innerHTML">
+                <option value="spent">Spent</option>
+                <option value="salary">Salary</option>
+                <option value="cash">Cash</option>
+            </select>
+        </form>
+        <div class="mt-4" id="leader-results">
+            {% include 'main/ajax/leaders_fragment.html' %}
         </div>
     </div>
+</div>
 {% endblock %}

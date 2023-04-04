@@ -58,4 +58,9 @@ urlpatterns = [
         view=views.check_upgrade_validation,
         name="check_upgrade_validation",
     ),
+    path(
+        route="players/leaders/",
+        view=views.check_player_leaders,
+        name="check_player_leaders",
+    ),
 ]
