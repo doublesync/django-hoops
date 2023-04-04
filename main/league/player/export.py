@@ -150,7 +150,11 @@ mod_tools_badges = {
 }
 
 # Cases that don't follow the standard format, need to be manually formatted
-formatting_cases = {
+attribute_formatting_cases = {
+    "THREE_POINT_SHOT": "3PT_SHOT",
+    "MID_RANGE_SHOT": "MID-RANGE_SHOT",
+}
+badge_formatting_cases = {
     "DROP_STEPPER": "DROP-STEPPER",
     "AGENT_THREES": "AGENT_3",
     "CATCH_AND_SHOOT": "CATCH_SHOOT",
@@ -208,6 +212,12 @@ def export_player(player):
         # Finally, format the attribute values
         for attribute, value in game_file[1]["data"].items():
             game_file[1]["data"][attribute] = str(extra_converters.game_friendly(value))
+        # Format the manual cases
+        for case, fix in attribute_formatting_cases.items():
+            if case in game_file[1]["data"]:
+                val = game_file[1]["data"][case]
+                del game_file[1]["data"][case]
+                game_file[1]["data"][fix] = val
 
     # Set the player's badges
     def set_badges():
@@ -216,8 +226,8 @@ def export_player(player):
         # Finally, format the badge values
         for badge, value in game_file[2]["data"].items():
             game_file[2]["data"][badge] = str(value)
-        # First, format the manual cases
-        for case, fix in formatting_cases.items():
+        # Format the manual cases
+        for case, fix in badge_formatting_cases.items():
             if case in game_file[2]["data"]:
                 val = game_file[2]["data"][case]
                 del game_file[2]["data"][case]
