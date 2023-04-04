@@ -26,7 +26,6 @@ min_max_heights = {
     "PF": {"min": 78, "max": 82},
     "C": {"min": 80, "max": 84},
 }
-
 min_max_weights = {
     "PG": {"min": 150, "max": 250},
     "SG": {"min": 155, "max": 255},
@@ -269,6 +268,7 @@ badge_prices = {
         "trait_two": 125,
     },
 }
+banned_tendencies = ["TOUCHES_TENDENCY"]
 
 # Description: For player traits (traits unlock badges)
 # Description: Players not have duplicate traits, they can have duplicate archetypes though.
