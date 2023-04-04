@@ -560,10 +560,12 @@ def check_starting_attributes(request):
                 mock_player_attributes["primary"][attribute] = player_attributes[
                     attribute
                 ]
+                continue
             elif attribute in secondary_list:
                 mock_player_attributes["secondary"][attribute] = player_attributes[
                     attribute
                 ]
+                continue
             else:
                 mock_player_attributes["base"][attribute] = player_attributes[attribute]
         # Add trait bonuses
@@ -573,7 +575,9 @@ def check_starting_attributes(request):
         for badge in trait1_list:
             mock_player_badges[badge] = "[P]"
         for badge in trait2_list:
-            mock_player_badges[badge] = "[S]"
+            # We don't want overlapping badges to be marked as secondary if they are also primary
+            if not badge in trait1_list:
+                mock_player_badges[badge] = "[S]"
         # Return the starting attributes
         context = {
             "title": "Archetypes & Traits",

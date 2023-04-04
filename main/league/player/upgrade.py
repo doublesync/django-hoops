@@ -27,6 +27,7 @@ def attributeCost(player, attribute, currentValue, futureValue):
                     continue
                 elif attribute in secondary_attributes:
                     total_price += tier["secondary"]
+                    continue
                 else:
                     total_price += tier["base"]
     # Return the upgrade cost
