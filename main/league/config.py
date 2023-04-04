@@ -39,6 +39,8 @@ min_max_weights = {
 
 position_starting_attributes = {
     "PG": {
+        "Pick Roll Defensive Iq": 60,
+        "Shot Contest": 60,
         "Driving Layup": 65,
         "Post Fadeaway": 45,
         "Post Hook": 45,
@@ -74,6 +76,8 @@ position_starting_attributes = {
         "Speed With Ball": 94,
         "Vertical": 95,
         "Intangibles": 60,
+        "Pick Roll Defensive Iq": 60,
+        "Shot Contest": 60,
     },
     "SG": {
         "Driving Layup": 65,
@@ -111,6 +115,8 @@ position_starting_attributes = {
         "Speed With Ball": 92,
         "Vertical": 90,
         "Intangibles": 60,
+        "Pick Roll Defensive Iq": 60,
+        "Shot Contest": 60,
     },
     "SF": {
         "Driving Layup": 55,
@@ -148,6 +154,8 @@ position_starting_attributes = {
         "Speed With Ball": 88,
         "Vertical": 80,
         "Intangibles": 60,
+        "Pick Roll Defensive Iq": 60,
+        "Shot Contest": 60,
     },
     "PF": {
         "Driving Layup": 45,
@@ -185,6 +193,8 @@ position_starting_attributes = {
         "Speed With Ball": 78,
         "Vertical": 70,
         "Intangibles": 60,
+        "Pick Roll Defensive Iq": 60,
+        "Shot Contest": 60,
     },
     "C": {
         "Driving Layup": 45,
@@ -222,6 +232,8 @@ position_starting_attributes = {
         "Speed With Ball": 70,
         "Vertical": 60,
         "Intangibles": 60,
+        "Pick Roll Defensive Iq": 60,
+        "Shot Contest": 60,
     },
 }
 
@@ -458,6 +470,8 @@ initial_attributes = {
     "Help Defense Iq": start_attribute,
     "Pass Perception": start_attribute,
     "Defensive Consistency": start_attribute,
+    "Pick Roll Defensive Iq": start_attribute,
+    "Shot Contest": start_attribute,
     "Speed": start_attribute,
     "Acceleration": start_attribute,
     "Strength": start_attribute,
@@ -751,6 +765,8 @@ attribute_categories = {
         "Defensive Consistency",
         "Help Defense Iq",
         "Pass Perception",
+        "Pick Roll Defensive Iq",
+        "Shot Contest",
     ],
     "playmaking": [
         "Hands",

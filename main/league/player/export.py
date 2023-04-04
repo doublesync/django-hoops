@@ -154,6 +154,9 @@ attribute_formatting_cases = {
     "THREE_POINT_SHOT": "3PT_SHOT",
     "MID_RANGE_SHOT": "MID-RANGE_SHOT",
     "HELP_DEFENSE_IQ": "HELP_DEFENSIVE_IQ",
+    "POST_MOVES": "POST_CONTROL",
+    "CLOSE_SHOT": "SHOT_CLOSE",
+    "PICK_ROLL_DEFENSIVE_IQ": "PICK_AND_ROLL_DEFENSIVE_IQ",
 }
 badge_formatting_cases = {
     "DROP_STEPPER": "DROP-STEPPER",
