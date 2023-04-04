@@ -31,6 +31,7 @@ urlpatterns = [
     path(
         route="upgrades/pending/", view=views.upgrades_pending, name="upgrades_pending"
     ),
+    path(route="frivolities/", view=views.frivolities, name="frivolities"),
     path(route="coupons/", view=views.coupons, name="coupons"),
     # Check PATHS
     path(
@@ -46,5 +47,10 @@ urlpatterns = [
         route="players/attributes/",
         view=views.check_starting_attributes,
         name="check_starting_attributes",
+    ),
+    path(
+        route="positions/count/",
+        view=views.check_position_count,
+        name="check_position_count",
     ),
 ]

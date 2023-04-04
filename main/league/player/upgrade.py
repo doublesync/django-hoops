@@ -128,7 +128,7 @@ def formatAndValidate(player, cleanedFormData):
             currentValue = player.tendencies[k]
             maximumValue = league_config.max_tendency
             # Cases
-            if k in banned_tendencies:
+            if k in league_config.banned_tendencies:
                 if v > currentValue:
                     error = f"❌ {k} cannot be changed."
                     break

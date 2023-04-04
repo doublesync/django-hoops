@@ -411,6 +411,23 @@ def coupons(request):
         return HttpResponse("You don't have any players!")
 
 
+def frivolities(request):
+    context = {
+        "title": "Frivolities",
+    }
+    # Find out how many total players, then how many in each position there are
+    context["position_counts"] = {
+        "Total": Player.objects.count(),
+        "PG": Player.objects.filter(primary_position="PG").count(),
+        "SG": Player.objects.filter(primary_position="SG").count(),
+        "SF": Player.objects.filter(primary_position="SF").count(),
+        "PF": Player.objects.filter(primary_position="PF").count(),
+        "C": Player.objects.filter(primary_position="C").count(),
+    }
+    # Return the frivolities page
+    return render(request, "main/league/frivolities.html", context)
+
+
 # Check views
 def check_player_search(request):
     if request.method == "POST":
@@ -594,5 +611,29 @@ def check_starting_attributes(request):
         }
         html = render_to_string("main/ajax/position_fragment.html", context)
         return HttpResponse(html)
+    else:
+        return HttpResponse("Invalid request!")
+
+
+def check_position_count(request):
+    if request.method == "POST":
+        # Get the form data
+        position = request.POST.get("position")
+        player_type = request.POST.get("type")
+        # Initialize the position position count
+        position_count = 0
+        # Get the position count
+        if player_type == "unsigned":
+            position_count = Player.objects.filter(
+                current_team=None, primary_position=position
+            ).count()
+        elif player_type == "signed":
+            position_count = Player.objects.filter(
+                current_team__isnull=False, primary_position=position
+            ).count()
+        # Return the position count
+        return HttpResponse(
+            f"There are <b>{position_count}</b> players that play at this position."
+        )
     else:
         return HttpResponse("Invalid request!")
