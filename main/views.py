@@ -144,92 +144,58 @@ def upgrade_player(request, id):
     # Collect user & player information
     user = request.user
     # Check if the player exists
-    try:
-        player = Player.objects.get(pk=id)
-    except Player.DoesNotExist:
+    player = Player.objects.get(pk=id)
+    if not player:
         return HttpResponse("Sorry, this player doesn't exist!")
     # Check if the user has permission to upgrade this player
     if not player.discord_user == user:
         return HttpResponse("Sorry, you don't have permission to upgrade this player!")
-    # Process the request (if it's a POST request)
-    if request.method == "POST":
-        form = UpgradeForm(request.POST)
-        if form.is_valid():
-            # Remove unchanged attributes
-            # So nothing is upgraded if the user doesn't change anything
-            changed_data = {}
-            cleaned_data = form.cleaned_data
-            for k, v in cleaned_data.items():
-                if k in player.attributes:
-                    if int(v) > player.attributes[k]:
-                        changed_data[k] = v
-                elif k in player.badges:
-                    if int(v) > player.badges[k]:
-                        changed_data[k] = v
-                elif k in player.tendencies:
-                    if int(v) != player.tendencies[k]:
-                        changed_data[k] = v
-            # Attempt to upgrade the player
-            response = hoops_player_upgrade.createUpgrade(player, changed_data)
-            messages.success(request, response)
-            # Send a webhook to Discord
-            discord_webhooks.send_webhook(
-                url="upgrade",
-                title="Player Upgrade",
-                message=f"**{player.first_name} {player.last_name}** has attempted an upgrade. [View logs?](https://hoopsim.com/logs/upgrades/{player.id})\n```{response}```",
-            )
-            # Return to the player page
-            return redirect(upgrade_player, id=id)
-        else:
-            messages.error(request, form.errors)
-            return redirect(upgrade_player, id=id)
-    else:
-        # Combine attributes & badges + convert to Django form format
-        prefill_info = dict(player.attributes, **player.badges, **player.tendencies)
-        # Convert primary & secondary attributes to Django form format
-        js_primary_attributes = league_config.archetype_attribute_bonuses[
-            player.primary_archetype
-        ]
-        js_secondary_attributes = league_config.archetype_attribute_bonuses[
-            player.secondary_archetype
-        ]
-        js_trait_one_badges = league_config.trait_badge_unlocks[player.trait_one]
-        js_trait_two_badges = league_config.trait_badge_unlocks[player.trait_two]
-        # Have to remove the 'range' function from attribute prices or javascript shits the bed
-        js_attribute_prices = copy.deepcopy(league_config.attribute_prices)
-        for _, v in js_attribute_prices.items():
-            v["range"] = 0
-        # Initialize the context
-        context = {
-            # Context items
-            "title": "Upgrade Player",
-            "player": player,
-            "upgrade_player_form": UpgradeForm(initial=prefill_info),
-            # Badges & attributes
-            "badge_attributes": prefill_info,
-            "badge_prices": league_config.badge_prices,
-            "attribute_prices": js_attribute_prices,
-            "attribute_bonuses": league_config.archetype_attribute_bonuses,
-            "primary_attributes": js_primary_attributes,
-            "secondary_attributes": js_secondary_attributes,
-            # Traits
-            "trait_one_badges": js_trait_one_badges,
-            "trait_two_badges": js_trait_two_badges,
-            # Attribute categories
-            "finishing_attributes": league_config.attribute_categories["finishing"],
-            "shooting_attributes": league_config.attribute_categories["shooting"],
-            "playmaking_attributes": league_config.attribute_categories["playmaking"],
-            "defense_attributes": league_config.attribute_categories["defense"],
-            "physical_attributes": league_config.attribute_categories["physical"],
-            # Badge categories
-            "finishing_badges": league_config.badge_categories["finishing"],
-            "shooting_badges": league_config.badge_categories["shooting"],
-            "playmaking_badges": league_config.badge_categories["playmaking"],
-            "defense_badges": league_config.badge_categories["defense"],
-            # Tendency categories
-            "initial_tendencies": league_config.initial_tendencies,
-        }
-        return render(request, "main/players/upgrade.html", context)
+    # Combine attributes & badges + convert to Django form format
+    prefill_info = dict(player.attributes, **player.badges, **player.tendencies)
+    # Convert primary & secondary attributes to Django form format
+    js_primary_attributes = league_config.archetype_attribute_bonuses[
+        player.primary_archetype
+    ]
+    js_secondary_attributes = league_config.archetype_attribute_bonuses[
+        player.secondary_archetype
+    ]
+    js_trait_one_badges = league_config.trait_badge_unlocks[player.trait_one]
+    js_trait_two_badges = league_config.trait_badge_unlocks[player.trait_two]
+    # Have to remove the 'range' function from attribute prices or javascript shits the bed
+    js_attribute_prices = copy.deepcopy(league_config.attribute_prices)
+    for _, v in js_attribute_prices.items():
+        v["range"] = 0
+    # Initialize the context
+    context = {
+        # Context items
+        "title": "Upgrade Player",
+        "player": player,
+        "upgrade_player_form": UpgradeForm(initial=prefill_info),
+        # Badges & attributes
+        "badge_attributes": prefill_info,
+        "badge_prices": league_config.badge_prices,
+        "attribute_prices": js_attribute_prices,
+        "attribute_bonuses": league_config.archetype_attribute_bonuses,
+        "primary_attributes": js_primary_attributes,
+        "secondary_attributes": js_secondary_attributes,
+        # Traits
+        "trait_one_badges": js_trait_one_badges,
+        "trait_two_badges": js_trait_two_badges,
+        # Attribute categories
+        "finishing_attributes": league_config.attribute_categories["finishing"],
+        "shooting_attributes": league_config.attribute_categories["shooting"],
+        "playmaking_attributes": league_config.attribute_categories["playmaking"],
+        "defense_attributes": league_config.attribute_categories["defense"],
+        "physical_attributes": league_config.attribute_categories["physical"],
+        # Badge categories
+        "finishing_badges": league_config.badge_categories["finishing"],
+        "shooting_badges": league_config.badge_categories["shooting"],
+        "playmaking_badges": league_config.badge_categories["playmaking"],
+        "defense_badges": league_config.badge_categories["defense"],
+        # Tendency categories
+        "initial_tendencies": league_config.initial_tendencies,
+    }
+    return render(request, "main/players/upgrade.html", context)
 
 
 @login_required(login_url="/login/discord/")
@@ -637,3 +603,41 @@ def check_position_count(request):
         )
     else:
         return HttpResponse("Invalid request!")
+
+
+def check_upgrade_validation(request):
+    if request.method == "POST":
+        # Find the player
+        id = request.POST.get("id")
+        player = Player.objects.get(id=id)
+        if not player:
+            return HttpResponse("❌ Player not found!")
+        # Check the form data
+        form = UpgradeForm(request.POST)
+        if form.is_valid():
+            # Remove unchanged attributes
+            # So nothing is upgraded if the user doesn't change anything
+            changed_data = {}
+            cleaned_data = form.cleaned_data
+            for k, v in cleaned_data.items():
+                if k in player.attributes:
+                    if int(v) > player.attributes[k]:
+                        changed_data[k] = v
+                elif k in player.badges:
+                    if int(v) > player.badges[k]:
+                        changed_data[k] = v
+                elif k in player.tendencies:
+                    if int(v) != player.tendencies[k]:
+                        changed_data[k] = v
+            # Attempt to upgrade the player
+            response = hoops_player_upgrade.createUpgrade(player, changed_data)
+            # Send a webhook to Discord
+            discord_webhooks.send_webhook(
+                url="upgrade",
+                title="Player Upgrade",
+                message=f"**{player.first_name} {player.last_name}** has attempted an upgrade. [View logs?](https://hoopsim.com/logs/upgrades/{player.id})\n```{response}```",
+            )
+            # Return to the player page
+            return HttpResponse(response)
+        else:
+            return HttpResponse("❌ Invalid form data!")

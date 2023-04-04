@@ -14,6 +14,8 @@
 
             {% csrf_token %}
 
+            <input name="id" type="hidden" value="{{ player.id }}">
+
             <!-- cart/price details -->
             <div class="card mt-5">
                 <div class="card-header">
@@ -46,22 +48,17 @@
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                                <input type="submit" value="Purchase" id="submitButton" class="btn btn-success btn-sm">
+                                <input type="submit" value="Purchase" id="submitButton" class="btn btn-success btn-sm" hx-post="/upgrades/validate/" data-bs-dismiss="modal" hx-trigger="click" hx-target="#upgrade-result" hx-swap="innerHTML" hx-include="[name='id']">
                                 <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
                             </div>
                             </div>
                         </div>
                       </div>
                     <!-- Errors & Messages -->
-                    {{ upgrade_player_form.non_field_errors }}
-                    {% if messages %}
-                        <hr>
-                        <div class="container">
-                            {% for message in messages %}
-                                <span  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </span><br>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    <hr>
+                    <div class="container">
+                        <span id="upgrade-result">😊 Welcome to the upgrade page!</span>
+                    </div>
                 </div>
             </div>
         

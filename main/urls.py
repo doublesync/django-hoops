@@ -53,4 +53,9 @@ urlpatterns = [
         view=views.check_position_count,
         name="check_position_count",
     ),
+    path(
+        route="upgrades/validate/",
+        view=views.check_upgrade_validation,
+        name="check_upgrade_validation",
+    ),
 ]

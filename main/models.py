@@ -79,11 +79,6 @@ class Player(models.Model):
         choices=league_config.trait_choices,
         default=league_config.trait_choices[0][0],
     )
-    # Attributes, Badges, & Hotzones
-    attributes = models.JSONField(default=league_config.get_default_attributes)
-    badges = models.JSONField(default=league_config.get_default_badges)
-    hotzones = models.JSONField(default=league_config.get_default_hotzones)
-    tendencies = models.JSONField(default=league_config.get_default_tendencies)
     # Player Currencies
     primary_currency = models.PositiveBigIntegerField(
         name="cash", default=league_config.primary_currency_start
@@ -96,9 +91,14 @@ class Player(models.Model):
         "Team", blank=True, null=True, on_delete=models.CASCADE
     )
     history_list = models.ForeignKey("HistoryList", on_delete=models.CASCADE)
+    years_played = models.SmallIntegerField(default=1)
     upgrades_pending = models.BooleanField(default=False)
     free_agent = models.BooleanField(default=True)
-    years_played = models.SmallIntegerField(default=1)
+    # Attributes, Badges, & Hotzones
+    attributes = models.JSONField(default=league_config.get_default_attributes)
+    badges = models.JSONField(default=league_config.get_default_badges)
+    hotzones = models.JSONField(default=league_config.get_default_hotzones)
+    tendencies = models.JSONField(default=league_config.get_default_tendencies)
     # Player Methods
     def __str__(self):
         return f"[{self.id}] {self.first_name} {self.last_name}"
