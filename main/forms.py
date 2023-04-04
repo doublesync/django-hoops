@@ -58,6 +58,10 @@ class UpgradeForm(forms.Form):
             )
         # For each key in tendencies, create integerfield
         for key in league_config.initial_tendencies:
+            # If players cannot change this tendency, skip
+            if key in league_config.banned_tendencies:
+                continue
+            # If players can change this tendency, create field
             self.fields[key] = forms.IntegerField(
                 label=key,
                 min_value=league_config.min_tendency,
