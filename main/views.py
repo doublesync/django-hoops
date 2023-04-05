@@ -680,6 +680,8 @@ def check_meta_leaders(request):
                 leaders[player.trait_two] = [0, 1]
             else:
                 leaders[player.trait_two][1] += 1
+    # Order the leaders dictionary before sending
+    leaders = dict(sorted(leaders.items(), key=lambda item: item[1][0], reverse=True))
     # Create context & send back
     context = {
         "leaders": leaders,
