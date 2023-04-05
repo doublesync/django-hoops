@@ -11,7 +11,7 @@
         <tbody>
             {% for player in leaders %}
                 <tr>
-                    <td style="text-transform: capitalize;">{{ player.first_name }} {{ player.last_name }}</td>
+                    <td style="text-transform: capitalize;"><a style="text-decoration: none;" href="{% url 'player' player.id %}">{{ player.first_name }} {{ player.last_name }}</a></td>
                     <td>{{ player|getattr:field }}</td>
                 </tr>
             {% endfor %}
