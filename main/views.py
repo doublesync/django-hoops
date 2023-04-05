@@ -659,10 +659,13 @@ def check_player_leaders(request):
 def check_meta_leaders(request):
     # Get the form data
     meta = request.POST.get("meta")
+
     # Calculate player using each meta
     leaders = {}
-    for player in Player.objects.all():
-        if meta == "archetypes":
+    players = Player.objects.all()
+    total_players = len(players)
+    for player in players:
+        if meta == "archetype":
             if not player.primary_archetype in leaders:
                 leaders[player.primary_archetype] = [1, 0]
             else:
@@ -671,7 +674,7 @@ def check_meta_leaders(request):
                 leaders[player.secondary_archetype] = [0, 1]
             else:
                 leaders[player.secondary_archetype][1] += 1
-        elif meta == "traits":
+        elif meta == "trait":
             if not player.trait_one in leaders:
                 leaders[player.trait_one] = [1, 0]
             else:
@@ -680,6 +683,16 @@ def check_meta_leaders(request):
                 leaders[player.trait_two] = [0, 1]
             else:
                 leaders[player.trait_two][1] += 1
+        elif meta == "height":
+            height = hoops_extra_convert.convert_to_height(player.height)
+            if not height in leaders:
+                leaders[height] = [1, 0]
+            else:
+                leaders[height][0] += 1
+    # Add percentage to each meta (based on total players)
+    for m in leaders:
+        leaders[m].append(f"{leaders[m][0]}/{total_players}")
+        leaders[m].append(f"{leaders[m][1]}/{total_players}")
     # Order the leaders dictionary before sending
     leaders = dict(sorted(leaders.items(), key=lambda item: item[1][0], reverse=True))
     # Create context & send back

@@ -13,8 +13,8 @@
             {% for meta, count in leaders.items %}
                 <tr>
                     <td style="text-transform: capitalize;">{{ meta }}</td>
-                    <td>{{ count.0 }}</td>
-                    <td>{{ count.1 }}</td>
+                    <td>{{ count.0 }} <span style="font-size: 12px;"><b>({{ count.2 }})</b></span></td>
+                    <td>{{ count.1 }} <span style="font-size: 12px;"><b>({{ count.3 }})</b></span></td>
                 </tr>
             {% endfor %}
         </tbody>
