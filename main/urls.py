@@ -63,4 +63,9 @@ urlpatterns = [
         view=views.check_player_leaders,
         name="check_player_leaders",
     ),
+    path(
+        route="metas/leaders/",
+        view=views.check_meta_leaders,
+        name="check_meta_leaders",
+    ),
 ]

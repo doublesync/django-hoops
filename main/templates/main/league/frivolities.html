@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
 {% load main_filters %}
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
     <div class="container border outline-dark mt-2 mb-2 p-5" id="position-counts">
         <h2 class="mt-2 mb-2">Demographic</h2><hr class="mt-1 mb-1">
         <p class="mt-0 mb-0">Total Players<br>{{ position_counts.Total }}</p><hr class="mt-1 mb-1">
@@ -9,7 +9,13 @@
         <p class="mt-0 mb-0">Shooting Guard<br>{{ position_counts.SG }}</p>
         <p class="mt-0 mb-0">Small Forward<br>{{ position_counts.SF }}</p>
         <p class="mt-0 mb-0">Power Forward<br>{{ position_counts.PF }}</p>
-        <p class="mt-0 mb-2">Center<br>{{ position_counts.C }}</p><hr class="mt-2 mb-2">
+        <p class="mt-0 mb-2">Center<br>{{ position_counts.C }}</p>
+    </div>
+</div>
+
+<div class="container mt-2 mb-5">
+    <div class="container border outline-dark mt-2 mb-2 p-5" id="custom-search">
+        <h2>Custom Search</h2>
         <form>
             {% csrf_token %}
             <label for="type">Search position counts based on player types.</label>
@@ -43,6 +49,24 @@
         <div class="mt-4" id="leader-results">
             {% include 'main/ajax/leaders_fragment.html' %}
         </div>
+    </div>
+</div>
+<div class="container mt-2 mb-5">
+    <div class="container border outline-dark mt-2 mb-2 p-5" id="field-leaders">
+        <h2>Meta Trends</h2>
+        <p>What's turning into a <b class="text-success">meta</b> around the league.</p>
+        <form>
+            {% csrf_token %}
+            <!-- dropdown -->
+            <select class="form-select mt-2 mb-2" name="meta" hx-post="/metas/leaders/" hx-trigger="change" hx-target="#meta-results" hx-swap="innerHTML">
+                <option value="archetypes">Archetypes</option>
+                <option value="traits">Traits</option>
+            </select>
+            <!-- results -->
+            <div class="mt-4" id="meta-results">
+                {% include 'main/ajax/meta_fragment.html' %}
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}

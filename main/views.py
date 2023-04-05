@@ -655,3 +655,37 @@ def check_player_leaders(request):
     }
     html = render_to_string("main/ajax/leaders_fragment.html", context)
     return HttpResponse(html)
+
+
+def check_meta_leaders(request):
+    # Get the form data
+    meta = request.POST.get("meta")
+    # Calculate player using each meta
+    leaders = {}
+    for player in Player.objects.all():
+        if meta == "archetypes":
+            if not player.primary_archetype in leaders:
+                leaders[player.primary_archetype] = [1, 0]
+            else:
+                leaders[player.primary_archetype][0] += 1
+            if not player.secondary_archetype in leaders:
+                leaders[player.secondary_archetype] = [0, 1]
+            else:
+                leaders[player.secondary_archetype][1] += 1
+        elif meta == "traits":
+            if not player.trait_one in leaders:
+                leaders[player.trait_one] = [1, 0]
+            else:
+                leaders[player.trait_one][0] += 1
+            if not player.trait_two in leaders:
+                leaders[player.trait_two] = [0, 1]
+            else:
+                leaders[player.trait_two][1] += 1
+    # Create context & send back
+    context = {
+        "leaders": leaders,
+        "meta_name": meta,
+        "leaders": leaders,
+    }
+    html = render_to_string("main/ajax/meta_fragment.html", context)
+    return HttpResponse(html)
