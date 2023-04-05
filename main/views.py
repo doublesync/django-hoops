@@ -224,7 +224,6 @@ def create_player(request):
                 messages.success(request, "Player created successfully!")
                 return redirect(player, id=playerObject.id)
             else:
-                print(success, status)
                 messages.error(request, status)
                 return redirect(create_player)
         # If the form is invalid, or the player creation failed, redirect to the create player page
