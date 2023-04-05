@@ -23,7 +23,7 @@ def validatePlayerCreation(user, formData):
     # Check if the user has reached the max number of players
     if playerCount(user) >= max_players:
         return [False, "❌ You have reached the max number of players."]
-    # Check if the user is trying to make a player with a height or weight that is not allowed
+    # Check if the user is trying to make a player with a height or weight that is not allowed (primary position)
     if (int(formData["height"])) < (
         min_max_heights[formData["primary_position"]]["min"]
     ):
@@ -38,6 +38,23 @@ def validatePlayerCreation(user, formData):
         return [False, "❌ You are trying to make a player under the minimum weight."]
     if (int(formData["weight"])) > (
         min_max_weights[formData["primary_position"]]["max"]
+    ):
+        return [False, "❌ You are trying to make a player over the maximum weight."]
+    # Check if the user is trying to make a player with a height or weight that is not allowed (secondary position)
+    if (int(formData["height"])) < (
+        min_max_heights[formData["secondary_position"]]["min"]
+    ):
+        return [False, "❌ You are trying to make a player under the minimum height."]
+    if (int(formData["height"])) > (
+        min_max_heights[formData["secondary_position"]]["max"]
+    ):
+        return [False, "❌ You are trying to make a player over the maximum height."]
+    if (int(formData["weight"])) < (
+        min_max_weights[formData["secondary_position"]]["min"]
+    ):
+        return [False, "❌ You are trying to make a player under the minimum weight."]
+    if (int(formData["weight"])) > (
+        min_max_weights[formData["secondary_position"]]["max"]
     ):
         return [False, "❌ You are trying to make a player over the maximum weight."]
     # Check if the user is trying to make a player with duplicate traits
