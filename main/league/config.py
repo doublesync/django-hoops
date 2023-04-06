@@ -379,6 +379,7 @@ trait_badge_unlocks = {
         "Interceptor",
         "Menace",
         "Off Ball Pest",
+        "Pick Dodger",
     ],
     "Post-Up Powerhouse": [
         "Backdown Punisher",
