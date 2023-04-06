@@ -41,6 +41,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 # Create your views here.
 def home(request):
     current_user = request.user
@@ -391,6 +392,60 @@ def frivolities(request):
     }
     # Return the frivolities page
     return render(request, "main/league/frivolities.html", context)
+
+
+# Cash views
+def add_player_cash(request):
+    if request.method == "POST":
+        user = request.user
+        if user.can_update_players:
+            # Get the player and amount
+            id = request.POST.get("id")
+            amount = request.POST.get("amount")
+            # Get the player
+            player = Player.objects.get(pk=id)
+            # Add the cash to the player's account
+            if player.cash + int(amount) > league_config.primary_currency_max:
+                messages.error(
+                    request,
+                    f"A player can only have ${league_config.primary_currency_max} cash.",
+                )
+                return redirect("player", id=id)
+            else:
+                # Add the player's cash
+                player.cash += int(amount)
+                player.save()
+                # Return the updated cash
+                messages.success(request, f"Cash added, player now has ${player.cash}!")
+                return redirect("player", id=id)
+    else:
+        messages.error(request, "Something went wrong!")
+        return redirect("player", id=id)
+
+
+def take_player_cash(request):
+    if request.method == "POST":
+        user = request.user
+        if user.can_update_players:
+            # Get the player and amount
+            id = request.POST.get("id")
+            amount = request.POST.get("amount")
+            # Get the player
+            player = Player.objects.get(pk=id)
+            # Take the cash from the player's account
+            if player.cash - int(amount) < 0:
+                messages.error(request, "A player cannot have negative cash.")
+                return redirect("player", id=id)
+            else:
+                # Add the player's cash
+                player.cash -= int(amount)
+                player.save()
+                # Return the updated cash
+                messages.success(request, f"Cash taken, player now has ${player.cash}!")
+                return redirect("player", id=id)
+    else:
+        messages.error(request, "Something went wrong!")
+        return redirect("player", id=id)
 
 
 # Check views

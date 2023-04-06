@@ -19,17 +19,75 @@
             {% else %}
                 <p class="fw-bold text-success text-center">No pending upgrades</p>
             {% endif %}
-        <p>
+        </p>
+    </div>
+    
+    <hr>
+
+    <div class="container-fluid" style="padding: 25px;">
+        <!-- Add form to pay player if user.can_update_players -->
+        {% if user.can_update_players %}
+            <div class="container">
+                <div class="row">
+                    <!-- Pay players -->
+                    <div class="col-6 mb-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><span class="panel-title-text">Add Cash</span></h3>
+                            </div>
+                            <div class="card-body">
+                                <form action="{% url 'add_player_cash' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id" value="{{ player.id }}">
+                                    <div class="row">
+                                        <div class="col-12 mb-2">
+                                            <!-- Text area for coupon codes -->
+                                            <input name="amount" class="form-control" type="text" required placeholder="Enter cash amount"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12"><button class="btn btn-success btn-sm d-block w-100" type="submit" onkeydown="return event.key != 'Enter';">Add cash</button></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fine players -->
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><span class="panel-title-text">Take Cash</span></h3>
+                            </div>
+                            <div class="card-body">
+                                <form action="{% url 'take_player_cash' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id" value="{{ player.id }}">
+                                    <div class="row">
+                                        <div class="col-12 mb-2">
+                                            <!-- Text area for coupon codes -->
+                                            <input name="amount" class="form-control" type="text" required placeholder="Enter cash amount"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12"><button class="btn btn-danger btn-sm d-block w-100" type="submit" onkeydown="return event.key != 'Enter';">Take cash</button></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
 
     <div class="container-fluid mb-5" style="padding: 100px; padding-top: 0px; padding-bottom: 10px;">
-        <hr>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-2">
-                    <p><b>Full Name</b></p><hr>
-                    <p>{{ player.first_name }} {{ player.last_name }}</p>
-                </div>
+                <hr>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p><b>Full Name</b></p><hr>
+                            <p>{{ player.first_name }} {{ player.last_name }}</p>
+                        </div>
                 <div class="col-md-2">
                     <p><b>Height</b></p><hr>
                     <p>{{ height_in_feet }}</p>
@@ -54,16 +112,15 @@
                 <p class="mb-0"><b>Trait 1:</b> {{ player.trait_one }}</p>
                 <p class="mb-0"><b>Trait 2:</b> {{ player.trait_two }}</p>
                 {% if player.primary_archetype != player.secondary_archetype %}
-                    <p class="mb-0"><b>Archetypes:</b> {{ player.primary_archetype }} {{ player.secondary_archetype }}</p>
+                <p class="mb-0"><b>Archetypes:</b> {{ player.primary_archetype }} {{ player.secondary_archetype }}</p>
                 {% else %}
-                    <p class="mb-0"><b>Archetype:</b> {{ player.primary_archetype }}</p>
+                <p class="mb-0"><b>Archetype:</b> {{ player.primary_archetype }}</p>
                 {% endif %}
                 <p class="mb-0"><b>Creator:</b> {{ player.discord_user.discord_tag }}</p>
             </div>
         </div>
         <hr>
     </div>
-    
 
     <div class="container-fluid" style="padding: 100px; padding-top: 0px; padding-bottom: 10px;">
 

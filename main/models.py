@@ -7,6 +7,7 @@ from .managers import DiscordAuthorizationManager
 from .league import config as league_config
 from .league.extra import convert as league_converters
 
+
 # Player & User Models
 class DiscordUser(models.Model):
     # Custom Manager
@@ -23,6 +24,7 @@ class DiscordUser(models.Model):
     last_reward = models.DateTimeField(null=True)
     # Permissions
     can_update_players = models.BooleanField(default=False)
+
     # Discord User Methods
     def is_authenticated(self, request):
         return True
@@ -99,6 +101,7 @@ class Player(models.Model):
     badges = models.JSONField(default=league_config.get_default_badges)
     hotzones = models.JSONField(default=league_config.get_default_hotzones)
     tendencies = models.JSONField(default=league_config.get_default_tendencies)
+
     # Player Methods
     def __str__(self):
         return f"[{self.id}] {self.first_name} {self.last_name}"
@@ -118,6 +121,7 @@ class Team(models.Model):
     # Relationships
     manager = models.ForeignKey("DiscordUser", on_delete=models.CASCADE)
     history_list = models.ForeignKey("HistoryList", on_delete=models.CASCADE)
+
     # Team Methods
     def __str__(self):
         return f"{self.name}"
@@ -128,6 +132,7 @@ class Coupon(models.Model):
     amount = models.PositiveBigIntegerField()
     one_use = models.BooleanField(default=False)
     used = models.BooleanField(default=False)
+
     # Coupon Methods
     def __str__(self):
         return f"{self.code}"
