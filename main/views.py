@@ -504,7 +504,9 @@ def check_player_search(request):
         if search:
             # Check for players based on first and last name
             players = Player.objects.filter(
-                Q(first_name__icontains=search) | Q(last_name__icontains=search)
+                Q(first_name__icontains=search)
+                | Q(last_name__icontains=search)
+                | Q(discord_user__discord_tag__icontains=search)
             )
             # Check if there were any players found
             if not players:
