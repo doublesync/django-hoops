@@ -415,6 +415,12 @@ def add_player_cash(request):
                 # Add the player's cash
                 player.cash += int(amount)
                 player.save()
+                # Send a webhook message
+                discord_webhooks.send_webhook(
+                    url="cash",
+                    title="Cash Added",
+                    message=f"**{user.discord_tag}** added **${amount}** to {player.first_name} {player.last_name}'s account.",
+                )
                 # Return the updated cash
                 messages.success(request, f"Cash added, player now has ${player.cash}!")
                 return redirect("player", id=id)
@@ -440,6 +446,12 @@ def take_player_cash(request):
                 # Add the player's cash
                 player.cash -= int(amount)
                 player.save()
+                # Send a webhook message
+                discord_webhooks.send_webhook(
+                    url="cash",
+                    title="Cash Taken",
+                    message=f"**{user.discord_tag}** took **${amount}** from {player.first_name} {player.last_name}'s account.",
+                )
                 # Return the updated cash
                 messages.success(request, f"Cash taken, player now has ${player.cash}!")
                 return redirect("player", id=id)
