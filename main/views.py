@@ -394,7 +394,7 @@ def frivolities(request):
     return render(request, "main/league/frivolities.html", context)
 
 
-# Cash views
+# Reloadable form views
 def add_player_cash(request):
     if request.method == "POST":
         user = request.user
@@ -457,6 +457,41 @@ def take_player_cash(request):
                 return redirect("player", id=id)
     else:
         messages.error(request, "Something went wrong!")
+        return redirect("player", id=id)
+
+
+def update_player_vitals(request, id):
+    if request.method == "POST":
+        # Get some form values/data
+        user = request.user
+        player = Player.objects.get(pk=id)
+        jersey = request.POST.get("jersey")
+        cyberface = request.POST.get("cyberface")
+        # Some form validations
+        if not player.discord_user == user:
+            messages.error(request, "You do not have permission to do that!")
+            return redirect("player", id=id)
+        if not jersey or not cyberface:
+            messages.error(request, "Please fill out all fields!")
+            return redirect("player", id=id)
+        if int(jersey) > 99 or int(jersey) < 0:
+            messages.error(request, "Please enter a valid jersey number! (0-99)")
+            return redirect("player", id=id)
+        if player.jersey_number == int(jersey) and player.cyberface == int(cyberface):
+            messages.error(request, "No changes were made!")
+            return redirect("player", id=id)
+        # Update the player's vitals
+        player.jersey_number = jersey
+        player.cyberface = cyberface
+        player.save()
+        # Send a webhook message
+        discord_webhooks.send_webhook(
+            url="upgrade",
+            title="Vital Update",
+            message=f"**{user.discord_tag}** updated {player.first_name} {player.last_name}'s vitals.",
+        )
+        # Return the updated vitals
+        messages.success(request, "Player vitals updated!")
         return redirect("player", id=id)
 
 

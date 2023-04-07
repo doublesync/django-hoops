@@ -23,6 +23,11 @@ urlpatterns = [
     path(route="players/", view=views.players, name="players"),
     path(route="logs/upgrades/<int:id>/", view=views.upgrade_logs, name="upgrade_logs"),
     path(route="players/builder/", view=views.mock_builder, name="mock_builder"),
+    path(
+        route="players/vitals/update/<int:id>/",
+        view=views.update_player_vitals,
+        name="update_player_vitals",
+    ),
     # Player Cash PATHS
     path(route="player/cash/add/", view=views.add_player_cash, name="add_player_cash"),
     path(
