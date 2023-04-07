@@ -41,12 +41,13 @@
                                     <input type="hidden" name="id" value="{{ player.id }}">
                                     <div class="row">
                                         <div class="col-12 mb-2">
-                                            <!-- Text area for coupon codes -->
-                                            <input name="amount" class="form-control" type="text" required placeholder="Enter cash amount"/>
+                                            <!-- Text area for adding cash -->
+                                            <input name="amount" class="form-control mb-1" type="number" required placeholder="Enter cash amount"/>
+                                            <input name="reason" class="form-control" type="text" required placeholder="Enter reason"/>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12"><button class="btn btn-success btn-sm d-block w-100" type="submit" onkeydown="return event.key != 'Enter';">Add cash</button></div>
+                                        <div class="col-12"><button class="btn btn-success btn-sm d-block w-100" type="submit">Add cash</button></div>
                                     </div>
                                 </form>
                             </div>
@@ -64,12 +65,13 @@
                                     <input type="hidden" name="id" value="{{ player.id }}">
                                     <div class="row">
                                         <div class="col-12 mb-2">
-                                            <!-- Text area for coupon codes -->
-                                            <input name="amount" class="form-control" type="text" required placeholder="Enter cash amount"/>
+                                            <!-- Text area for adding cash -->
+                                            <input name="amount" class="form-control mb-1" type="number" required placeholder="Enter cash amount"/>
+                                            <input name="reason" class="form-control" type="text" required placeholder="Enter reason"/>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12"><button class="btn btn-danger btn-sm d-block w-100" type="submit" onkeydown="return event.key != 'Enter';">Take cash</button></div>
+                                        <div class="col-12"><button class="btn btn-danger btn-sm d-block w-100" type="submit">Take cash</button></div>
                                     </div>
                                 </form>
                             </div>

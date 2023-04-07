@@ -402,6 +402,7 @@ def add_player_cash(request):
             # Get the player and amount
             id = request.POST.get("id")
             amount = request.POST.get("amount")
+            reason = request.POST.get("reason")
             # Get the player
             player = Player.objects.get(pk=id)
             # Add the cash to the player's account
@@ -419,7 +420,7 @@ def add_player_cash(request):
                 discord_webhooks.send_webhook(
                     url="cash",
                     title="Cash Added",
-                    message=f"**{user.discord_tag}** added **${amount}** to {player.first_name} {player.last_name}'s account.",
+                    message=f"**{user.discord_tag}** added **${amount}** to {player.first_name} {player.last_name}'s account.\n```{reason}```",
                 )
                 # Return the updated cash
                 messages.success(request, f"Cash added, player now has ${player.cash}!")
@@ -436,6 +437,7 @@ def take_player_cash(request):
             # Get the player and amount
             id = request.POST.get("id")
             amount = request.POST.get("amount")
+            reason = request.POST.get("reason")
             # Get the player
             player = Player.objects.get(pk=id)
             # Take the cash from the player's account
@@ -450,7 +452,7 @@ def take_player_cash(request):
                 discord_webhooks.send_webhook(
                     url="cash",
                     title="Cash Taken",
-                    message=f"**{user.discord_tag}** took **${amount}** from {player.first_name} {player.last_name}'s account.",
+                    message=f"**{user.discord_tag}** took **${amount}** from {player.first_name} {player.last_name}'s account.\n```{reason}```",
                 )
                 # Return the updated cash
                 messages.success(request, f"Cash taken, player now has ${player.cash}!")
