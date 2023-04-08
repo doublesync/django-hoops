@@ -245,7 +245,8 @@ def export_player(player):
     def set_tendencies():
         # We don't need to format these, they are already formatted
         # We do, however, need to convert the values to strings
-        if player.use_game_tendencies:
+        # In other words, if the player is using website/database tendencies
+        if not player.use_game_tendencies:
             for tendency, value in database_tendencies.items():
                 game_file[4]["data"][tendency] = str(value)
 
