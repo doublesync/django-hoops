@@ -509,6 +509,11 @@ def update_player_vitals(request, id):
         if int(jersey) > 99 or int(jersey) < 0:
             messages.error(request, "Please enter a valid jersey number! (0-99)")
             return redirect("player", id=id)
+        # Check if int(cyberface) exists in database
+        if Player.objects.filter(cyberface=int(cyberface)).exists():
+            if int(cyberface) != 1:
+                messages.error(request, "That cyberface already exists!")
+                return redirect("player", id=id)
         # Check if changes were made (vitals & playstyles)
         if (
             player.jersey_number == int(jersey)

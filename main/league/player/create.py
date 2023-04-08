@@ -64,6 +64,13 @@ def validatePlayerCreation(user, formData):
     ]
     if len(selected_traits) != len(set(selected_traits)):
         return [False, "❌ You are trying to make a player with duplicate traits."]
+    # Check if the user is trying to make a player with an existing cyberface
+    if Player.objects.filter(cyberface=formData["cyberface"]).exists():
+        if int(formData["cyberface"]) != 1:
+            return [
+                False,
+                "❌ You are trying to make a player with an existing cyberface.",
+            ]
     # If everything is good, create the player
     return [True, None]
 
