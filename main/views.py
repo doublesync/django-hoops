@@ -469,22 +469,34 @@ def update_player_vitals(request, id):
         player = Player.objects.get(pk=id)
         jersey = request.POST.get("jersey")
         cyberface = request.POST.get("cyberface")
+        use_game = request.POST.get("use_game")
         # Some form validations
         if not player.discord_user == user:
             messages.error(request, "You do not have permission to do that!")
             return redirect("player", id=id)
-        if not jersey or not cyberface:
+        if not jersey or not cyberface or not use_game:
             messages.error(request, "Please fill out all fields!")
             return redirect("player", id=id)
         if int(jersey) > 99 or int(jersey) < 0:
             messages.error(request, "Please enter a valid jersey number! (0-99)")
             return redirect("player", id=id)
-        if player.jersey_number == int(jersey) and player.cyberface == int(cyberface):
+        if (
+            player.jersey_number == int(jersey)
+            and player.cyberface == int(cyberface)
+            and str(player.use_game_tendencies) == use_game
+        ):
             messages.error(request, "No changes were made!")
             return redirect("player", id=id)
-        # Update the player's vitals
-        player.jersey_number = jersey
-        player.cyberface = cyberface
+        # Update the player's vitals (if changed)
+        if player.jersey_number != int(jersey):
+            player.jersey_number = int(jersey)
+        if player.cyberface != int(cyberface):
+            player.cyberface = cyberface
+        if str(player.use_game_tendencies) != use_game:
+            if use_game == "True":
+                player.use_game_tendencies = True
+            else:
+                player.use_game_tendencies = False
         player.save()
         # Send a webhook message
         discord_webhooks.send_webhook(

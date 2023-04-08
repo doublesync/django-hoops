@@ -96,6 +96,7 @@ class Player(models.Model):
     years_played = models.SmallIntegerField(default=1)
     upgrades_pending = models.BooleanField(default=False)
     free_agent = models.BooleanField(default=True)
+    use_game_tendencies = models.BooleanField(default=True)
     # Attributes, Badges, & Hotzones
     attributes = models.JSONField(default=league_config.get_default_attributes)
     badges = models.JSONField(default=league_config.get_default_badges)

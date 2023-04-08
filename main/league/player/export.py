@@ -189,6 +189,7 @@ def export_player(player):
     database_tendencies = player.tendencies
     # Create the player's in game attributes
     game_file = copy.deepcopy(json_template)
+
     # Set the player's vitals
     def set_vitals():
         game_file[0]["data"]["FIRSTNAME"] = str(player.first_name)
@@ -203,8 +204,7 @@ def export_player(player):
         game_file[0]["data"]["NUMBER"] = str(player.jersey_number)
         try:
             game_file[0]["data"]["BIRTHYEAR"] = format_age[0][player.years_played]
-        except Exception as e:
-            print(e)
+        except Exception:
             game_file[0]["data"]["BIRTHYEAR"] = "1989"
 
     # Set the player's attributes
@@ -245,8 +245,9 @@ def export_player(player):
     def set_tendencies():
         # We don't need to format these, they are already formatted
         # We do, however, need to convert the values to strings
-        for tendency, value in database_tendencies.items():
-            game_file[4]["data"][tendency] = str(value)
+        if player.use_game_tendencies:
+            for tendency, value in database_tendencies.items():
+                game_file[4]["data"][tendency] = str(value)
 
     # Call the sub functions
     set_vitals()
