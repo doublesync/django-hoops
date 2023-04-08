@@ -38,6 +38,11 @@ json_template = [
         "tab": "TENDENCIES",
         "data": {},
     },
+    {
+        "module": "PLAYER",
+        "tab": "SIGNATURE",
+        "data": {},
+    },
 ]
 
 mod_tools_attributes = {
@@ -250,11 +255,24 @@ def export_player(player):
             for tendency, value in database_tendencies.items():
                 game_file[4]["data"][tendency] = str(value)
 
+    def set_statics():
+        # Define some variables
+        statics = player.statics
+        playstyles = statics["playstyles"]
+        # Vital statics -- technically these aren't static, but whatever
+        game_file[0]["data"]["PLAY_TYPE_1"] = playstyles["playstyle1"]
+        game_file[0]["data"]["PLAY_TYPE_2"] = playstyles["playstyle2"]
+        game_file[0]["data"]["PLAY_TYPE_3"] = playstyles["playstyle3"]
+        game_file[0]["data"]["PLAY_TYPE_4"] = playstyles["playstyle4"]
+        # Signature statics
+        game_file[5]["data"]["RELEASE_TIMING"] = "2"
+
     # Call the sub functions
     set_vitals()
     set_attributes()
     set_badges()
     set_hotzones()
     set_tendencies()
+    set_statics()
     # Return the player's file
     return game_file

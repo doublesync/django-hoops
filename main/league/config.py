@@ -442,6 +442,14 @@ archetype_attribute_bonuses = {
 
 # Description: Initials for models
 
+initial_statics = {
+    "playstyles": {
+        "playstyle1": "0",
+        "playstyle2": "0",
+        "playstyle3": "0",
+        "playstyle4": "0",
+    }
+}
 initial_attributes = {
     "Driving Layup": start_attribute,
     "Standing Dunk": start_attribute,
@@ -861,7 +869,30 @@ badge_categories = {
     ],
 }
 
+# Description: Playstyles
+playstyles = {
+    "0": "None",
+    "1": "Isolation",
+    "2": "Isolation Point",
+    "3": "Isolation Wing",
+    "4": "P&R Ball Handler",
+    "5": "P&R Point",
+    "6": "P&R Wing",
+    "7": "P&R Roll Man",
+    "8": "Post Up Low",
+    "9": "Post Up High",
+    "10": "Guard Post Up",
+    "11": "Cutter",
+    "12": "Handoff",
+    "13": "Midrange",
+    "14": "3PT",
+}
+
 # Description: Initials methods for models
+
+
+def get_default_statics():
+    return initial_statics
 
 
 def get_default_attributes():

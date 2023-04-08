@@ -98,6 +98,7 @@ class Player(models.Model):
     free_agent = models.BooleanField(default=True)
     use_game_tendencies = models.BooleanField(default=True)
     # Attributes, Badges, & Hotzones
+    statics = models.JSONField(default=league_config.get_default_statics)
     attributes = models.JSONField(default=league_config.get_default_attributes)
     badges = models.JSONField(default=league_config.get_default_badges)
     hotzones = models.JSONField(default=league_config.get_default_hotzones)

@@ -132,6 +132,52 @@
                                         {% endif %}
                                     </select>
                                 </div>
+                                <br>
+                                <!-- Play styles -->
+                                <div class="col-md-2">
+                                    <p><b>Play Style #1</b></p><hr>
+                                    <select class="form-select mb-2" name="playstyle1" style="width: 50%">
+                                        <option value="{{ playstyle1.1 }}">{{ playstyle1.0 }}</option>
+                                        {% for i, playstyle in playstyles.items %}
+                                            {% if not playstyle == playstyle1.0 %}
+                                                <option value="{{ i }}">{{ playstyle }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <p><b>Play Style #2</b></p><hr>
+                                    <select class="form-select mb-2" name="playstyle2" style="width: 50%">
+                                        <option value="{{ playstyle2.1 }}">{{ playstyle2.0 }}</option>
+                                        {% for i, playstyle in playstyles.items %}
+                                            {% if not playstyle == playstyle2.0 %}
+                                                <option value="{{ i }}">{{ playstyle }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <p><b>Play Style #3</b></p><hr>
+                                    <select class="form-select mb-2" name="playstyle3" style="width: 50%">
+                                        <option value="{{ playstyle3.1 }}">{{ playstyle3.0 }}</option>
+                                        {% for i, playstyle in playstyles.items %}
+                                            {% if not playstyle == playstyle3.0 %}
+                                                <option value="{{ i }}">{{ playstyle }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <p><b>Play Style #4</b></p><hr>
+                                    <select class="form-select mb-2" name="playstyle4" style="width: 50%">
+                                        <option value="{{ playstyle4.1 }}">{{ playstyle4.0 }}</option>
+                                        {% for i, playstyle in playstyles.items %}
+                                            {% if not playstyle == playstyle4.0 %}
+                                                <option value="{{ i }}">{{ playstyle }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
                             <button class="btn btn-success btn-sm mt-2" type="submit" onkeydown="return event.key != 'Enter';">Update</button>
                         </form>
@@ -147,6 +193,22 @@
                         <div class="col-md-2">
                             <p><b>Use Game Tendencies</b></p><hr>
                             <p>{{ player.use_game_tendencies }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><b>Play Style #1</b></p><hr>
+                            <p>{{ playstyle1.0 }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><b>Play Style #2</b></p><hr>
+                            <p>{{ playstyle2.0 }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><b>Play Style #3</b></p><hr>
+                            <p>{{ playstyle3.0 }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><b>Play Style #4</b></p><hr>
+                            <p>{{ playstyle4.0 }}</p>
                         </div>
                     {% endif %}
                 </div>

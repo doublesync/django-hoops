@@ -133,6 +133,24 @@ def player(request, id):
         "shooting_badges": league_config.badge_categories["shooting"],
         "playmaking_badges": league_config.badge_categories["playmaking"],
         "defense_badges": league_config.badge_categories["defense"],
+        # Playstyles
+        "playstyles": league_config.playstyles,
+        "playstyle1": [
+            league_config.playstyles[plr.statics["playstyles"]["playstyle1"]],
+            plr.statics["playstyles"]["playstyle1"],
+        ],
+        "playstyle2": [
+            league_config.playstyles[plr.statics["playstyles"]["playstyle2"]],
+            plr.statics["playstyles"]["playstyle2"],
+        ],
+        "playstyle3": [
+            league_config.playstyles[plr.statics["playstyles"]["playstyle3"]],
+            plr.statics["playstyles"]["playstyle3"],
+        ],
+        "playstyle4": [
+            league_config.playstyles[plr.statics["playstyles"]["playstyle4"]],
+            plr.statics["playstyles"]["playstyle4"],
+        ],
         # Precalled methods
         "height_in_feet": hoops_extra_convert.convert_to_height(plr.height),
         "file": json.dumps(hoops_player_export.export_player(plr), indent=4),
@@ -467,25 +485,46 @@ def update_player_vitals(request, id):
         # Get some form values/data
         user = request.user
         player = Player.objects.get(pk=id)
+        # Vitals
         jersey = request.POST.get("jersey")
         cyberface = request.POST.get("cyberface")
         use_game = request.POST.get("use_game")
+        # Playstyles
+        playstyle1 = request.POST.get("playstyle1")
+        playstyle2 = request.POST.get("playstyle2")
+        playstyle3 = request.POST.get("playstyle3")
+        playstyle4 = request.POST.get("playstyle4")
+        # Database playstyles
+        db_playstyle1 = player.statics["playstyles"]["playstyle1"]
+        db_playstyle2 = player.statics["playstyles"]["playstyle2"]
+        db_playstyle3 = player.statics["playstyles"]["playstyle3"]
+        db_playstyle4 = player.statics["playstyles"]["playstyle4"]
         # Some form validations
         if not player.discord_user == user:
             messages.error(request, "You do not have permission to do that!")
             return redirect("player", id=id)
-        if not jersey or not cyberface or not use_game:
+        if not jersey or not cyberface:
             messages.error(request, "Please fill out all fields!")
             return redirect("player", id=id)
         if int(jersey) > 99 or int(jersey) < 0:
             messages.error(request, "Please enter a valid jersey number! (0-99)")
             return redirect("player", id=id)
+        # Check if changes were made (vitals & playstyles)
         if (
             player.jersey_number == int(jersey)
             and player.cyberface == int(cyberface)
             and str(player.use_game_tendencies) == use_game
+            and playstyle1 == db_playstyle1
+            and playstyle2 == db_playstyle2
+            and playstyle3 == db_playstyle3
+            and playstyle4 == db_playstyle4
         ):
             messages.error(request, "No changes were made!")
+            return redirect("player", id=id)
+        # Check if there are duplicate playstyles
+        playstyle_list = [playstyle1, playstyle2, playstyle3, playstyle4]
+        if len(playstyle_list) != len(set(playstyle_list)):
+            messages.error(request, "You cannot have duplicate playstyles!")
             return redirect("player", id=id)
         # Update the player's vitals (if changed)
         if player.jersey_number != int(jersey):
@@ -497,6 +536,15 @@ def update_player_vitals(request, id):
                 player.use_game_tendencies = True
             else:
                 player.use_game_tendencies = False
+        # Update the player's play-styles (if changed)
+        if playstyle1 != db_playstyle1 and playstyle1:
+            player.statics["playstyles"]["playstyle1"] = playstyle1
+        if playstyle2 != db_playstyle2 and playstyle2:
+            player.statics["playstyles"]["playstyle2"] = playstyle2
+        if playstyle3 != db_playstyle3 and playstyle3:
+            player.statics["playstyles"]["playstyle3"] = playstyle3
+        if playstyle4 != db_playstyle4 and playstyle4:
+            player.statics["playstyles"]["playstyle4"] = playstyle4
         player.save()
         # Send a webhook message
         discord_webhooks.send_webhook(
