@@ -512,7 +512,7 @@ def update_player_vitals(request, id):
             return redirect("player", id=id)
         # Check if int(cyberface) exists in database
         if Player.objects.filter(cyberface=int(cyberface)).exists():
-            if int(cyberface) != 1:
+            if int(cyberface) != 1 and int(cyberface) != player.cyberface:
                 messages.error(request, "That cyberface already exists!")
                 return redirect("player", id=id)
         # Check if changes were made (vitals & playstyles)
