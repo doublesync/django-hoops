@@ -7,9 +7,15 @@
     <div class="container mt-5 mb-5">
         {% if files %}
             {% for tag, file in files.items %}
-            <button id="{{ tag }}" type="button" class="copyJSON btn btn-primary btn-sm" onClick="clipboard(this.id)">Copy: {{ tag }}</button>
+            <p>{{ tag }}</p>
+            <button id="{{ tag }}" type="button" class="copyJSON btn btn-primary btn-sm" onClick="clipboard(this.id)" style="width:300px;">Copy File</button>
+            <form>
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ tag.1 }}">
+                <button type="button" id="reset-button" class="btn btn-success btn-sm mt-2" style="width:300px;" hx-post="/players/pending/update/" hx-trigger="click" hx-target="#reset-button" hx-throttle="1000" hx-swap="outerHTML">Reset Pending Upgrades</button>
+            </form>
             <hr>
-            <p id="json_{{ tag }}" class="file" style="font-size: 6px;">{{ file }}</p>
+            <p style="display: none;" id="json_{{ tag }}" class="file" style="font-size: 6px;">{{ file.0 }}</p>
             {% endfor %}
         {% else %}
             <p>😊 No files found.</p>

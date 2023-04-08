@@ -356,9 +356,10 @@ def upgrades_pending(request):
         for player in upgrades:
             game_file = hoops_player_export.export_player(player)
             json_dump = json.dumps(game_file, indent=4)
-            files[f"({player.id}) {player.first_name} {player.last_name}"] = json_dump
-            player.upgrades_pending = False
-            player.save()
+            files[f"({player.id}) {player.first_name} {player.last_name}"] = [
+                json_dump,
+                player.id,
+            ]
         # Return the pending upgrades page
         return render(request, "main/players/pending.html", {"files": files})
 
@@ -560,6 +561,23 @@ def update_player_vitals(request, id):
         # Return the updated vitals
         messages.success(request, "Player vitals updated!")
         return redirect("player", id=id)
+
+
+def update_player_pending_upgrades(request):
+    if request.method == "POST":
+        user = request.user
+        if user.can_update_players:
+            id = request.POST.get("id")
+            player = Player.objects.get(pk=int(id))
+            # Get the player's pending upgrades
+            player.upgrades_pending = False
+            player.save()
+            # Send a webhook message
+            return HttpResponse(
+                "<p class='mt-2'>✅ Removed player from pending upgrades!</p>"
+            )
+    else:
+        return HttpResponse("Invalid request!")
 
 
 # Check views

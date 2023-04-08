@@ -28,6 +28,11 @@ urlpatterns = [
         view=views.update_player_vitals,
         name="update_player_vitals",
     ),
+    path(
+        route="players/pending/update/",
+        view=views.update_player_pending_upgrades,
+        name="update_player_pending_upgrades",
+    ),
     # Player Cash PATHS
     path(route="player/cash/add/", view=views.add_player_cash, name="add_player_cash"),
     path(
