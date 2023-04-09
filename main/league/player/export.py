@@ -154,6 +154,8 @@ mod_tools_badges = {
     "REBOUND_CHASER": "0",
 }
 
+ignore_tendencies = ["TOUCHES_TENDENCY"]
+
 # Cases that don't follow the standard format, need to be manually formatted
 attribute_formatting_cases = {
     "THREE_POINT_SHOT": "3PT_SHOT",
@@ -267,6 +269,12 @@ def export_player(player):
         # Signature statics
         game_file[5]["data"]["RELEASE_TIMING"] = "2"
 
+    def set_ignores():
+        # Tendencies
+        for tendency in ignore_tendencies:
+            if tendency in game_file[4]["data"]:
+                del game_file[4]["data"][tendency]
+
     # Call the sub functions
     set_vitals()
     set_attributes()
@@ -274,5 +282,6 @@ def export_player(player):
     set_hotzones()
     set_tendencies()
     set_statics()
+    set_ignores()
     # Return the player's file
     return game_file
