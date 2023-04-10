@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load main_filters %}
+{% load mathfilters %}
+
+{% block content %}
+    <!-- headers -->
+    <div class="container py-4 py-xl-5">
+        <div class="row mb-0">
+            <div class="col-md-8 col-xl-6 text-center mx-auto">
+                <h2>{{ name }}</h2>
+                <p>CASH LOGS</p>
+            </div>
+        </div>
+    </div>
+    <!-- content -->
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <!-- every log gets an accordion -->
+                {% if logs|length > 0 %}
+                    {% for log in logs %}
+                        <div id="accordion-{{ forloop.counter }}" class="accordion mb-1" role="tablist">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" role="tab"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-{{ forloop.counter }} .item-1" aria-expanded="true" aria-controls="accordion-{{ forloop.counter }} .item-1">${{ log.amount }} | {{ log.date }}</button></h2>
+                                <div class="accordion-collapse collapse item-1" role="tabpanel" data-bs-parent="#accordion-{{ forloop.counter }}">
+                                    <div class="accordion-body">
+                                        <span class="form-control mb-0 mt-0"><b>Date: </b>{{ log.date }}</span><br>
+                                        <span class="form-control mb-0 mt-0"><b>Giver: </b>{{ log.giver }}</span><br>
+                                        <span class="form-control mb-0 mt-0"><b>Amount: </b>{{ log.amount }}</span><br>
+                                        <span class="form-control mb-0 mt-0"><b>Reason: </b>{{ log.reason }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="container py-4 py-xl-5">
+                        <div class="row mb-0">
+                            <div class="col-md-8 col-xl-6 text-center mx-auto">
+                                <h3>😮 NO CASH LOGS FOUND</h3>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

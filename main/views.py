@@ -281,9 +281,8 @@ def players(request):
 
 def upgrade_logs(request, id):
     # Check if the player exists
-    try:
-        player = Player.objects.get(pk=id)
-    except Player.DoesNotExist:
+    player = Player.objects.get(pk=id)
+    if not player:
         return HttpResponse("Sorry, this player doesn't exist!")
     # Get the upgrade logs
     logs = player.history_list.history["upgrade_logs"]
@@ -294,6 +293,23 @@ def upgrade_logs(request, id):
             "logs": logs,
         }
         return render(request, "main/players/history.html", context)
+    else:
+        return HttpResponse("Sorry, this player doesn't exist!")
+
+
+def cash_logs(request, id):
+    # Check if the player exists
+    player = Player.objects.get(pk=id)
+    if not player:
+        return HttpResponse("Sorry, this player doesn't exist!")
+    # Get the upgrade logs
+    logs = Transaction.objects.filter(player=player)
+    if player:
+        context = {
+            "name": f"{player.first_name} {player.last_name}",
+            "logs": logs,
+        }
+        return render(request, "main/players/cash_history.html", context)
     else:
         return HttpResponse("Sorry, this player doesn't exist!")
 
