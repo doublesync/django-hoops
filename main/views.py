@@ -569,6 +569,8 @@ def update_player_pending_upgrades(request):
         if user.can_update_players:
             id = request.POST.get("id")
             player = Player.objects.get(pk=int(id))
+            if not player:
+                return HttpResponse(f"Player not found! {id}")
             # Get the player's pending upgrades
             player.upgrades_pending = False
             player.save()
