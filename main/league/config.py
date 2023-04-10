@@ -436,8 +436,14 @@ archetype_attribute_bonuses = {
         "Steal",
         "Pass Perception",
         "Help Defense Iq",
+        "Shot Contest",
     ],
-    "Interior Defender": ["Interior Defense", "Block", "Help Defense Iq"],
+    "Interior Defender": [
+        "Interior Defense",
+        "Block",
+        "Help Defense Iq",
+        "Shot Contest",
+    ],
 }
 
 # Description: Initials for models
