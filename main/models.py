@@ -150,6 +150,7 @@ class Transaction(models.Model):
 
 class Coupon(models.Model):
     code = models.CharField(max_length=16, unique=True)
+    name = models.CharField(max_length=16, default="Default Coupon")
     amount = models.PositiveBigIntegerField()
     one_use = models.BooleanField(default=False)
     used = models.BooleanField(default=False)

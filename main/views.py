@@ -720,7 +720,7 @@ def check_coupon_code(request):
         discord_webhooks.send_webhook(
             url="coupon",
             title="Coupon",
-            message=f"{player.first_name} {player.last_name} successfully redeemed a coupon code worth ${coupon.amount}!",
+            message=f"{player.first_name} {player.last_name} successfully redeemed a coupon code worth ${coupon.amount}!\n```✅ Coupon: {coupon.name}```",
         )
         # Return the success message
         return HttpResponse(
