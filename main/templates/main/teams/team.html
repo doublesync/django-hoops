@@ -8,7 +8,8 @@
     <div class="container ">
         <!-- Team logo with static height and width -->
         <img src="{{ team.logo }}" alt="Team logo" class="img-fluid mb-4" style="height: 200px; width: 200px; display: block; margin-left: auto; margin-right: auto;">
-        <p class="mb-4" style="text-align: center;">Welcome to the <b>{{ team.name }}</b> team page!</p>
+        <p class="mb-2" style="text-align: center;">Welcome to the <b>{{ team.name }}</b> team page!</p>
+        <p class="mb-2" style="text-align: center;"><b>General Manager<br></b>{{ team.manager }}</p>
         <p style="text-align: center;">{% for player in team.player_set.all %}<a href="{% url 'player' player.id %}">{{ player.first_name }} {{ player.last_name }}</a> | {% endfor %}</p>
     </div>
 
