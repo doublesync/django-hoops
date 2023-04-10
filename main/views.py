@@ -302,8 +302,11 @@ def cash_logs(request, id):
     player = Player.objects.get(pk=id)
     if not player:
         return HttpResponse("Sorry, this player doesn't exist!")
-    # Get the upgrade logs
-    logs = Transaction.objects.filter(player=player)
+    # Get the upgrade logs if date is not older than two weeks
+    one_week_ago = timezone.now() - datetime.timedelta(days=7)
+    logs = Transaction.objects.filter(player=player, date__gte=one_week_ago).order_by(
+        "-date"
+    )
     if player:
         context = {
             "name": f"{player.first_name} {player.last_name}",

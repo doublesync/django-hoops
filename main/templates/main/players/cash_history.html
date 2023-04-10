@@ -25,10 +25,11 @@
                                 <h2 class="accordion-header" role="tab"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-{{ forloop.counter }} .item-1" aria-expanded="true" aria-controls="accordion-{{ forloop.counter }} .item-1">${{ log.amount }} | {{ log.date }}</button></h2>
                                 <div class="accordion-collapse collapse item-1" role="tabpanel" data-bs-parent="#accordion-{{ forloop.counter }}">
                                     <div class="accordion-body">
-                                        <span class="form-control mb-0 mt-0"><b>Date: </b>{{ log.date }}</span><br>
-                                        <span class="form-control mb-0 mt-0"><b>Giver: </b>{{ log.giver }}</span><br>
-                                        <span class="form-control mb-0 mt-0"><b>Amount: </b>{{ log.amount }}</span><br>
-                                        <span class="form-control mb-0 mt-0"><b>Reason: </b>{{ log.reason }}</span>
+                                        <span class="form-control mb-1 mt-0"><b>Date: </b>{{ log.date }}</span>
+                                        <span class="form-control mb-1 mt-0"><b>Giver: </b>{{ log.giver }}</span>
+                                        <span class="form-control mb-1 mt-0"><b>Amount: </b>{{ log.amount }}</span>
+                                        <span class="form-control mb-1 mt-0"><b>Reason: </b>{{ log.reason }}</span>
+                                        <span class="form-control mb-1 mt-0"><b>Type: </b>{{ log.transaction_type }}</span><br>
                                     </div>
                                 </div>
                             </div>
