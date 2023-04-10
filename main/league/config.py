@@ -744,6 +744,11 @@ trait_choices = [
     ("Dribble Driver", "Dribble Driver"),
     ("Post-Up Conductor", "Post-Up Conductor"),
 ]
+transaction_type_choices = [
+    ("cash_taken", "Cash Taken"),
+    ("cash_given", "Cash Given"),
+    ("paycheck", "Paycheck"),
+]
 
 # Description: Categories for .html pages
 

@@ -9,11 +9,13 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.template.loader import render_to_string
+from django.utils import timezone
 
 # Model imports
 from .models import Player
 from .models import Team
 from .models import Coupon
+from .models import Transaction
 
 # Form imports
 from .forms import PlayerForm
@@ -112,10 +114,19 @@ def logout(request):
 
 def player(request, id):
     # Check if the player exists
-    try:
-        plr = Player.objects.get(pk=id)
-    except Player.DoesNotExist:
+    plr = Player.objects.get(pk=id)
+    if not plr:
         return HttpResponse("Sorry, this player doesn't exist!")
+    # Get transaction history & total earnings in past week (cash_taken, cash_given, paycheck)
+    transactions = Transaction.objects.filter(player=plr)
+    week_earnings = 0
+    # If date is in the past week, add/subtract to/from week_earnings
+    for t in transactions:
+        if t.date > timezone.now() - datetime.timedelta(days=7):
+            if t.transaction_type == "cash_taken":
+                week_earnings -= t.amount
+            elif t.transaction_type == "cash_given":
+                week_earnings += t.amount
     # Initialize the context
     context = {
         # Page information
@@ -154,6 +165,8 @@ def player(request, id):
         # Precalled methods
         "height_in_feet": hoops_extra_convert.convert_to_height(plr.height),
         "file": json.dumps(hoops_player_export.export_player(plr), indent=4),
+        # Transaction history
+        "week_earnings": week_earnings,
     }
     return render(request, "main/players/player.html", context)
 
@@ -424,6 +437,7 @@ def add_player_cash(request):
             reason = request.POST.get("reason")
             # Get the player
             player = Player.objects.get(pk=id)
+            history_list = player.history_list.history
             # Add the cash to the player's account
             if player.cash + int(amount) > league_config.primary_currency_max:
                 messages.error(
@@ -434,7 +448,18 @@ def add_player_cash(request):
             else:
                 # Add the player's cash
                 player.cash += int(amount)
+                # Add new transaction (Transaction)
+                transaction = Transaction(
+                    transaction_type="cash_given",
+                    amount=amount,
+                    reason=reason,
+                    giver=user,
+                    player=player,
+                    date=timezone.now(),
+                )
+                # Save the player & transaction
                 player.save()
+                transaction.save()
                 # Send a webhook message
                 discord_webhooks.send_webhook(
                     url="cash",
@@ -466,7 +491,18 @@ def take_player_cash(request):
             else:
                 # Add the player's cash
                 player.cash -= int(amount)
+                # Add new transaction (Transaction)
+                transaction = Transaction(
+                    transaction_type="cash_taken",
+                    amount=amount,
+                    reason=reason,
+                    giver=user,
+                    player=player,
+                    date=timezone.now(),
+                )
+                # Save the player & transaction
                 player.save()
+                transaction.save()
                 # Send a webhook message
                 discord_webhooks.send_webhook(
                     url="cash",

@@ -129,6 +129,25 @@ class Team(models.Model):
         return f"{self.name}"
 
 
+class Transaction(models.Model):
+    # Transaction Model
+    transaction_type = models.CharField(
+        max_length=16,
+        choices=league_config.transaction_type_choices,
+        default=league_config.transaction_type_choices[0][0],
+    )
+    amount = models.PositiveBigIntegerField()
+    reason = models.CharField(max_length=100, blank=True)
+    # Relationships
+    giver = models.ForeignKey("DiscordUser", on_delete=models.CASCADE)
+    player = models.ForeignKey("Player", on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=False)
+
+    # Transaction Methods
+    def __str__(self):
+        return f"{self.transaction_type}: {self.amount}"
+
+
 class Coupon(models.Model):
     code = models.CharField(max_length=16, unique=True)
     amount = models.PositiveBigIntegerField()
