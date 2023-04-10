@@ -4,16 +4,18 @@
 
 {% block content %}
 
-    <div class="container mt-5 mb-5">
+    <div class="container mt-5 mb-2">
+        <form>
+            {% csrf_token %}
+            <button type="button" class="btn btn-success btn-sm mt-2" style="width:300px;" hx-post="/players/pending/update/" hx-trigger="click" hx-target="#pending-results" hx-throttle="1000" hx-swap="innerHTML">Clear All</button>
+        </form>
+    </div>
+
+    <div id="pending-results" class="container mt-5 mb-5">
         {% if files %}
             {% for tag, file in files.items %}
             <p>{{ tag }}</p>
             <button id="{{ tag }}" type="button" class="copyJSON btn btn-primary btn-sm" onClick="clipboard(this.id)" style="width:300px;">Copy File</button>
-            <form>
-                {% csrf_token %}
-                <input type="hidden" name="id" value="{{ tag.1 }}">
-                <button type="button" id="reset-button-{{ tag }}" class="btn btn-success btn-sm mt-2" style="width:300px;" hx-post="/players/pending/update/" hx-trigger="click" hx-target="#reset-button-{{ tag }}" hx-throttle="1000" hx-swap="outerHTML">Reset Pending Upgrades</button>
-            </form>
             <hr>
             <p style="display: none;" id="json_{{ tag }}" class="file" style="font-size: 6px;">{{ file.0 }}</p>
             {% endfor %}

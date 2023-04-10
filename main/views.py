@@ -567,17 +567,11 @@ def update_player_pending_upgrades(request):
     if request.method == "POST":
         user = request.user
         if user.can_update_players:
-            id = request.POST.get("id")
-            player = Player.objects.get(pk=int(id))
-            if not player:
-                return HttpResponse(f"Player not found! {id}")
-            # Get the player's pending upgrades
-            player.upgrades_pending = False
-            player.save()
-            # Send a webhook message
-            return HttpResponse(
-                "<p class='mt-2'>✅ Removed player from pending upgrades!</p>"
-            )
+            pending_players = Player.objects.filter(upgrades_pending=True)
+            for player in pending_players:
+                player.upgrades_pending = False
+                player.save()
+            return HttpResponse("✅ Success!")
     else:
         return HttpResponse("Invalid request!")
 
