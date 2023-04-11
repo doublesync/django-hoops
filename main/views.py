@@ -1189,12 +1189,30 @@ def check_finalize_trade(request):
                     player_object = Player.objects.get(id=player[0])
                     player_object.current_team = sender
                     player_object.save()
+                # Send discord webhook
+                discord_webhooks.send_webhook(
+                    url="trade",
+                    title="✅ Trade Finalized",
+                    message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}```",
+                )
             else:
                 # Delete the trade & redirect to the trade_panel page
                 trade_object.delete()
+                # Send discord webhook
+                discord_webhooks.send_webhook(
+                    url="trade",
+                    title="❌ Trade Vetoed",
+                    message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}```",
+                )
         elif decision == "decline":
             # Delete the trade & redirect to the trade_panel page
             trade_object.delete()
+            # Send discord webhook
+            discord_webhooks.send_webhook(
+                url="trade",
+                title="❌ Trade Vetoed",
+                message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}```",
+            )
         # Reload trade list fragment
         context = {
             "title": "Trade Panel",
