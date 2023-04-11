@@ -1,0 +1,21 @@
+<div id="other-team" class="col-6">
+    {% if other_team %}
+        <label class="mb-2 fw-bold">({{ other_team.abbrev }}) {{ other_team.name }}</label><br>
+    {% else %}
+        <label class="mb-2 fw-bold">Select a team</label><br>
+    {% endif %}
+    <select class="mb-1 form-control" name="other_team" hx-post="/teams/roster/" hx-trigger="change" hx-target="#other-team" hx-swap="outerHTML"><br>
+        <option value="{{ other_team.id }}" selected>{{ other_team.name }}</option>
+        {% for team in teams %}
+            {% if not team.id == other_team.id and not team.id == user_team.id %}
+                <option value="{{ team.id }}">{{ team.name }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <select class="form-control" name="other_team_players" multiple>
+        {% for player in other_team.player_set.all %}
+            <option value="{{ player.id }}">(${{ player.salary }}) {{ player.first_name }} {{ player.last_name }}</option>
+        {% endfor %}
+    </select>
+    <hr>
+</div>

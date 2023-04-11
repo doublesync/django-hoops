@@ -1,0 +1,38 @@
+{% for trade in pending_trades %}
+<!-- Make a card -->
+<div class="card mt-2">
+    <div class="card-body">
+        <p class="card-text">
+            The <a href="{% url 'team' trade.receiver.id %}">{{ trade.receiver.name }}</a>
+            accepted a trade offer from <a href="{% url 'team' trade.sender.id %}">{{ trade.sender.name }}</a>.
+        </p>
+        <p class="card-text">
+            <b>{{ trade.receiver }}</b> receives<br>
+            {% for player in trade.offer.user_players %}
+                (${{ player.2 }}) <a href="{% url 'player' player.0 %}">{{ player.1 }}</a><br>
+            {% endfor %}
+        </p>
+        <p class="card-text">
+            <b>{{ trade.sender }}</b> receives<br>
+            {% for player in trade.offer.other_players %}
+                (${{ player.2 }}) <a href="{% url 'player' player.0 %}">{{ player.1 }}</a><br>
+            {% endfor %}
+        </p>
+        <p class="card-text">
+            <form>
+                {% csrf_token %}
+                <input type="hidden" name="trade_id" value="{{ trade.id }}">
+                <!-- Radio group (accept or decline) -->
+                <div class="form-check mt-0 mb-2">
+                    <input type="radio" id="accept" name="decision" value="accept">
+                    <label for="accept">Accept</label><br>
+                    <input type="radio" id="decline" name="decision" value="decline">
+                    <label for="decline">Decline</label><br>
+                    <hr>
+                </div>
+                <input type="submit" value="Confirm Decision" class="btn btn-primary" hx-post="/team/trade/finalize/" hx-trigger="click" hx-target="#trade-status" hx-swap="innerHTML"/>
+            </form>
+        </p>
+    </div>
+</div>
+{% endfor %}

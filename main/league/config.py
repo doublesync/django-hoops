@@ -18,6 +18,9 @@ max_tendency = 100
 player_weight_min = 150
 player_weight_max = 270
 
+# Description: For cap space
+hard_cap = 1200
+
 # Description: For height & weight limits
 
 min_max_heights = {
@@ -693,6 +696,7 @@ initial_tendencies = {
     "HARD_FOUL_TENDENCY": 0,
 }
 initial_picks = {}
+initial_trade_offer = {}
 initial_team_logo = "https://cdn.simplystamps.com/media/catalog/product/5/8/5802-n-a-stock-stamp-hcb.png"
 
 # Description: Choices & labels for player forms
@@ -936,3 +940,7 @@ def get_default_tendencies():
 
 def get_default_picks():
     return initial_picks
+
+
+def get_default_trade_offer():
+    return initial_trade_offer

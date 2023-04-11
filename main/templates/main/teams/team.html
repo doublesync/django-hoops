@@ -11,6 +11,10 @@
         <p class="mb-2" style="text-align: center;">Welcome to the <b>{{ team.name }}</b> team page!</p>
         <p class="mb-2" style="text-align: center;"><b>General Manager<br></b>{{ team.manager }}</p>
         <p style="text-align: center;">{% for player in team.player_set.all %}<a href="{% url 'player' player.id %}">{{ player.first_name }} {{ player.last_name }}</a> | {% endfor %}</p>
+        <!-- Make trades button -->
+        <div class="text-center">
+            <a href="{% url 'trade' %}" class="btn btn-primary">Make Trades</a>
+        </div>
     </div>
 
 {% endblock %}

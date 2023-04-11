@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+    <section class="py-4 py-xl-5">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-md-10 col-xl-8 text-center d-flex d-sm-flex d-md-flex justify-content-center align-items-center mx-auto justify-content-md-start align-items-md-center justify-content-xl-center">
+                    <div>
+                        <form>
+                            {% csrf_token %}
+                            <h2 class="text-uppercase fw-bold mb-3">TRADES</h2>
+                            <p class="mb-4">Welcome to the trade panel, this is where you can accept/veto trades.</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div class="row" id="trade-status">
+            {% include 'main/ajax/trade_list_fragment.html' %}
+        </div>
+    </div>
+
+{% endblock %}

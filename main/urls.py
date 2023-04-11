@@ -43,6 +43,26 @@ urlpatterns = [
     path(route="team/<int:id>/", view=views.team, name="team"),
     path(route="teams/", view=views.teams, name="teams"),
     path(route="team/trade/", view=views.trade, name="trade"),
+    path(
+        route="team/trade/accept/<int:id>/",
+        view=views.accept_trade,
+        name="accept_trade",
+    ),
+    path(
+        route="team/trade/decline/<int:id>/",
+        view=views.decline_trade,
+        name="decline_trade",
+    ),
+    path(
+        route="trades/panel/",
+        view=views.trade_panel,
+        name="trade_panel",
+    ),
+    path(
+        route="team/trade/finalize/",
+        view=views.check_finalize_trade,
+        name="check_finalize_trade",
+    ),
     # Misc PATHS
     path(
         route="upgrades/pending/", view=views.upgrades_pending, name="upgrades_pending"
@@ -83,5 +103,15 @@ urlpatterns = [
         route="metas/leaders/",
         view=views.check_meta_leaders,
         name="check_meta_leaders",
+    ),
+    path(
+        route="teams/roster/",
+        view=views.check_team_roster,
+        name="check_team_roster",
+    ),
+    path(
+        route="teams/trade/",
+        view=views.check_trade_validation,
+        name="check_trade_validation",
     ),
 ]

@@ -3,5 +3,141 @@
 {% load main_filters %}
 
 {% block content %}
+    <!-- Trade machine -->
+    <div class="container mt-5">
+        <h1>Trade Players</h1>
+        <p id="trade-status">Trade players between teams.</p>
+        <form>
+            {% csrf_token %}
+            <div class="row">
+                <!-- The user's team -->
+                <div class="col-6">
+                    <label class="mb-2 fw-bold">({{ user_team.abbrev }}) {{ user_team.name }}</label><br>
+                    <select class="mb-1 form-control" name="user_team"><br>
+                        <option value="{{ user_team.id }}" selected>{{ user_team.name }}</option>
+                    </select>
+                    <select class="form-control" name="user_team_players" multiple>
+                        {% for player in user_team.player_set.all %}
+                            <option value="{{ player.id }}">(${{ player.salary }}) {{ player.first_name }} {{ player.last_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <hr>
+                </div>
+                <!-- Trading with's team -->
+                {% include 'main/ajax/trade_team_fragment.html' %}
+            </div>
+            <!-- Continue/False-Submit Button -->
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal">
+                Send Trade
+            </button>
+            <!-- Confirmation Modal -->
+            <div class="modal" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Confirm Trade Offer</h4>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <p class="mb-4">Are you sure you want to send this trade offer?</p>
+                        </div>
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <input type="submit" value="Send Trade" class="btn btn-success btn-sm" data-bs-dismiss="modal" hx-post="/teams/trade/" hx-trigger="click" hx-target="#trade-status" hx-swap="innerHTML">
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Received trades -->
+    <div class="container mt-5">
+        <h1>Received Trades</h1>
+        <p>Trades being sent to you from other teams.</p>
+        {% for trade in received_trades %}
+            <!-- Make a card -->
+            <div class="card mt-2">
+                <div class="card-body">
+                    <p class="card-text">
+                        The <a href="{% url 'team' trade.sender.id %}">{{ trade.sender.name }}</a>
+                        sent you a trade offer.
+                    </p>
+                    <p class="card-text">
+                        <b>{{ trade.receiver.name }}</b> receives<br>
+                        {% for player in trade.offer.user_players %}
+                             (${{ player.2 }}) <a href="{% url 'player' player.0 %}">{{ player.1 }}</a><br>
+                        {% endfor %}
+                    </p>
+                    <p class="card-text">
+                        <b>{{ trade.sender.name }}</b> receives<br>
+                        {% for player in trade.offer.other_players %}
+                             (${{ player.2 }}) <a href="{% url 'player' player.0 %}">{{ player.1 }}</a><br>
+                        {% endfor %}
+                    </p>
+                    {% csrf_token %}
+                    <p class="card-text">
+                        <a href="{% url 'accept_trade' trade.id %}" class="btn btn-success btn-sm">Accept</a>
+                        <a href="{% url 'decline_trade' trade.id %}" class="btn btn-danger btn-sm">Decline</a>
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- Sent trades -->
+    <div class="container mt-5">
+        <h1>Sent Trades</h1>
+        <p>Trades you have to sent to other teams.</p>
+        {% for trade in sent_trades %}
+            <!-- Make a card -->
+            <div class="card mt-2">
+                <div class="card-body">
+                    <p class="card-text">
+                        You sent a trade to the <a href="{% url 'team' trade.receiver.id %}">{{ trade.receiver.name }}</a>
+                    </p>
+                    <p class="card-text">
+                        <b>{{ trade.receiver.name }}</b> receives<br>
+                        {% for player in trade.offer.user_players %}
+                            (${{ player.2 }}) <a href="{% url 'player' player.0 %}">{{ player.1 }}</a><br>
+                        {% endfor %}
+                    </p>
+                    <p class="card-text">
+                        <b>{{ trade.sender.name }}</b> receives<br>
+                        {% for player in trade.offer.other_players %}
+                            (${{ player.2 }}) <a href="{% url 'player' player.0 %}">{{ player.1 }}</a><br>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- Accepted trades -->
+    <div class="container mt-5 mb-5">
+        <h1>Accepted Trades</h1>
+        <p>These trades will pend until we approve them.</p>
+        {% for trade in accepted_trades %}
+            <!-- Make a card -->
+            <div class="card mt-2">
+                <div class="card-body">
+                    <p class="card-text">
+                        You sent a trade to the <a href="{% url 'team' trade.receiver.id %}">{{ trade.receiver.name }}</a>
+                    </p>
+                    <p class="card-text">
+                        <b>{{ trade.receiver.name }}</b> receives<br>
+                        {% for player in trade.offer.user_players %}
+                            (${{ player.2 }}) <a href="{% url 'player' player.0 %}">{{ player.1 }}</a><br>
+                        {% endfor %}
+                    </p>
+                    <p class="card-text">
+                        <b>{{ trade.sender.name }}</b> receives<br>
+                        {% for player in trade.offer.other_players %}
+                            (${{ player.2 }}) <a href="{% url 'player' player.0 %}">{{ player.1 }}</a><br>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div> 
 
 {% endblock %}

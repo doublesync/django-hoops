@@ -24,6 +24,7 @@ class DiscordUser(models.Model):
     last_reward = models.DateTimeField(null=True)
     # Permissions
     can_update_players = models.BooleanField(default=False)
+    can_approve_trades = models.BooleanField(default=False)
 
     # Discord User Methods
     def is_authenticated(self, request):
@@ -129,6 +130,7 @@ class Team(models.Model):
         return f"{self.name}"
 
 
+# Currency Transaction Models
 class Transaction(models.Model):
     # Transaction Model
     transaction_type = models.CharField(
@@ -146,6 +148,24 @@ class Transaction(models.Model):
     # Transaction Methods
     def __str__(self):
         return f"{self.transaction_type}: {self.amount}"
+
+
+# Trade Models
+class TradeOffer(models.Model):
+    # Trade Offer Model
+    offer = models.JSONField(default=league_config.get_default_trade_offer)
+    accepted = models.BooleanField(default=False)
+    approved = models.BooleanField(default=False)
+    finalized = models.BooleanField(default=False)
+    # Relationships
+    sender = models.ForeignKey("Team", on_delete=models.CASCADE, related_name="sender")
+    receiver = models.ForeignKey(
+        "Team", on_delete=models.CASCADE, related_name="receiver"
+    )
+
+    # Trade Offer Methods
+    def __str__(self):
+        return f"{self.sender} -> {self.receiver}"
 
 
 class Coupon(models.Model):

@@ -179,6 +179,10 @@
                                 {% if current_user.can_update_players %}
                                     <a class="fw-bold"href="{% url 'upgrades_pending' %}" style="font-size: 10px; text-decoration: none;">Export Pending Upgrades</a><br>
                                 {% endif %}
+                                {% if current_user.can_approve_trades %}
+                                    <a class="fw-bold"href="{% url 'trade_panel' %}" style="font-size: 10px; text-decoration: none;">Trade Panel</a><br>
+                                {% endif %}
+                                <a class="fw-bold"href="{% url 'trade' %}" style="font-size: 10px; text-decoration: none;">Trade Machine</a><br>
                             </div>
                         </div>
                     </div>

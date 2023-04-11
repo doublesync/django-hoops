@@ -16,6 +16,7 @@ from .models import Player
 from .models import Team
 from .models import Coupon
 from .models import Transaction
+from .models import TradeOffer
 
 # Form imports
 from .forms import PlayerForm
@@ -36,6 +37,7 @@ from .league.player import create as hoops_player_create
 from .league.player import physicals as hoops_player_physicals
 from .league.player import export as hoops_player_export
 from .league.extra import convert as hoops_extra_convert
+from .league.teams import trade as hoops_team_trade
 
 # .ENV file import
 import os, json
@@ -344,17 +346,101 @@ def trade(request):
     # Get the user
     user = request.user
     # Check if the user is a GM
-    try:
-        team = Team.objects.get(manager=user)
-    except Team.DoesNotExist:
+    # Get first team user owns
+    team = Team.objects.get(manager=user)
+    if not team:
         return HttpResponse("Sorry, you don't have permission to view this page!")
+    # Get sent & received trades (that are pending)
+    sent_trades = TradeOffer.objects.filter(
+        sender=team, accepted=False, finalized=False
+    )
+    received_trades = TradeOffer.objects.filter(
+        receiver=team, accepted=False, finalized=False
+    )
+    # Trades that have been accepted (but not finalized)
+    accepted_trades = TradeOffer.objects.filter(
+        Q(sender=team) | Q(receiver=team), accepted=True, finalized=False
+    )
     # Create the context
     context = {
         "title": "Trade",
-        "my_team": team,
-        "my_roster": team.player_set.all(),
+        "user_team": team,
+        "teams": Team.objects.all(),
+        "sent_trades": sent_trades,
+        "received_trades": received_trades,
+        "accepted_trades": accepted_trades,
     }
     return render(request, "main/teams/trade.html", context)
+
+
+def accept_trade(request, id):
+    # Get some form data
+    user = request.user
+    # Get trade details
+    trade_object = TradeOffer.objects.get(id=id)
+    sender = trade_object.sender
+    receiver = trade_object.receiver
+    # Check if the user is a GM
+    if not receiver.manager == user:
+        messages.error(request, "❌ You don't have permission to accept this trade!")
+        return redirect(home)
+    # Check if user is sender
+    if sender.manager == user:
+        messages.error(request, "❌ You can't accept your own trade!")
+        return redirect(trade)
+    # Check if the trade is pending
+    if trade_object.accepted == True:
+        messages.error(request, "❌ This trade has already been accepted!")
+        return redirect(trade)
+    # Check if the trade is finalized
+    if trade_object.finalized == True:
+        messages.error(request, "❌ This trade has already been finalized!")
+        return redirect(trade)
+    # Accept the trade
+    trade_object.accepted = True
+    trade_object.save()
+    # Redirect to the trade page
+    messages.success(
+        request, f"✅ Your trade has been accepted - we will finalize it soon!"
+    )
+    return redirect(trade)
+
+
+def decline_trade(request, id):
+    if request.method == "POST":
+        # Get some form data
+        user = request.user
+        # Get trade details
+        trade_object = TradeOffer.objects.get(id=id)
+        receiver = trade_object.receiver
+        # Check if the user is a GM
+        if not receiver.manager == user:
+            messages.error(request, "❌ You don't have permission to accept this trade!")
+            return redirect(home)
+        if trade_object.finalized == True:
+            messages.error(request, "❌ This trade has already been finalized!")
+            return redirect(trade)
+        # Delete the trade & redirect to the trade page
+        trade_object.delete()
+        messages.success(request, "✅ You have declined this trade!")
+        return redirect(trade)
+
+
+def trade_panel(request):
+    # Get the user
+    user = request.user
+    # Check if user can approve trades
+    if not user.can_approve_trades:
+        return HttpResponse("Sorry, you don't have permission to view this page!")
+    # Get pending trades
+    pending_trades = TradeOffer.objects.filter(accepted=True, finalized=False)
+    # Create the context
+    context = {
+        "title": "Trade Panel",
+        "pending_trades": pending_trades,
+    }
+    # Return the trade panel page
+    return render(request, "main/teams/trade_panel.html", context)
 
 
 def daily_reward(request):
@@ -943,3 +1029,178 @@ def check_meta_leaders(request):
     }
     html = render_to_string("main/ajax/meta_fragment.html", context)
     return HttpResponse(html)
+
+
+def check_team_roster(request):
+    if request.method == "POST":
+        # Get the form data
+        other_team = request.POST.get("other_team")
+        # Get the team roster
+        user_team_object = Team.objects.get(manager=request.user)
+        other_team_object = Team.objects.get(id=other_team)
+        # Send roster back
+        context = {
+            "title": "Trade",
+            "user_team": user_team_object,
+            "other_team": other_team_object,
+            "teams": Team.objects.all(),
+        }
+        html = render_to_string("main/ajax/trade_team_fragment.html", context)
+        return HttpResponse(html)
+
+
+def check_trade_validation(request):
+    # Get the form data
+    user = request.user
+    user_team_id = request.POST.get("user_team")
+    other_team_id = request.POST.get("other_team")
+    user_team_ids = request.POST.getlist("user_team_players")
+    other_team_ids = request.POST.getlist("other_team_players")
+    # Validate the form data
+    if not user_team_id or not other_team_id:
+        return HttpResponse("❌ Invalid team data!")
+    if not user_team_ids or not other_team_ids:
+        return HttpResponse("❌ Invalid player data!")
+    # Get the teams
+    user_team = Team.objects.get(id=user_team_id)
+    other_team = Team.objects.get(id=other_team_id)
+    # Get the players
+    user_team_players = Player.objects.filter(id__in=user_team_ids)
+    other_team_players = Player.objects.filter(id__in=other_team_ids)
+    # Check if the user is the manager of the user team
+    if user_team.manager != user:
+        return HttpResponse(f"❌ You are not the manager of the {user_team.name}!")
+    # Check if the user team players exist
+    if not user_team_players or not other_team_players:
+        return HttpResponse("❌ Players weren't found!")
+    # Check if the trade is valid
+    trade_players = {
+        "user_team": user_team_players,
+        "other_team": other_team_players,
+    }
+    response = hoops_team_trade.validate_trade(
+        user_team, other_team, trade_players, league_config.hard_cap
+    )
+    status = response[0]
+    message = response[1]
+    # Send back the response
+    if status:
+        # Check if a trade already exists between these teams
+        existing_trade = TradeOffer.objects.filter(
+            sender=user_team, receiver=other_team, finalized=False
+        ).first()
+        if existing_trade:
+            return HttpResponse(f"❌ A trade already exists between these teams!")
+        # Create a trade object
+        offer = {"user_players": [], "other_players": []}
+        for player in user_team_players:
+            offer["user_players"].append(
+                [
+                    int(player.id),
+                    f"{player.first_name} {player.last_name}",
+                    player.salary,
+                ]
+            )
+        for player in other_team_players:
+            offer["other_players"].append(
+                [
+                    int(player.id),
+                    f"{player.first_name} {player.last_name}",
+                    player.salary,
+                ]
+            )
+        trade_object = TradeOffer(
+            offer=offer,
+            sender=user_team,
+            receiver=other_team,
+        )  # Accepted, approved, and finalized will be set to False by default
+        trade_object.save()
+        # Return the response
+        return HttpResponse(f"{message}<br>✅ Trade sent.")
+    else:
+        return HttpResponse(f"{message}")
+
+
+def check_finalize_trade(request):
+    if request.method == "POST":
+        # Get some form data
+        user = request.user
+        decision = request.POST.get("decision")
+        trade_id = request.POST.get("trade_id")
+        # If user can approve trades
+        if not user.can_approve_trades:
+            return HttpResponse("Sorry, you don't have permission to view this page!")
+        # Get trade details
+        trade_object = TradeOffer.objects.get(id=int(trade_id))
+        sender = trade_object.sender
+        receiver = trade_object.receiver
+        # Validate trade
+        if trade_object.finalized:
+            messages.error(
+                request,
+                f"❌ Trade between {sender.name} and {receiver.name} has already been finalized!",
+            )
+        # Check if the trade is pending
+        if decision == "accept":
+            # Check if the trade is valid
+            user_players = Player.objects.filter(current_team=sender)
+            other_players = Player.objects.filter(current_team=receiver)
+            trade_players = {
+                "user_team": [],
+                "other_team": [],
+            }
+            # Make sure players are on original teams (easier to do here than in the validate_trade function)
+            for player in user_players:
+                for p in trade_object.offer["other_players"]:
+                    if player.id == p[0]:
+                        trade_object.delete()
+                        return HttpResponse(
+                            f"❌ {player.first_name} {player.last_name} is no longer on the {sender.name}!"
+                        )
+                else:
+                    trade_players["user_team"].append(player)
+            for player in other_players:
+                for p in trade_object.offer["user_players"]:
+                    if player.id == p[0]:
+                        trade_object.delete()
+                        return HttpResponse(
+                            f"❌ {player.first_name} {player.last_name} is no longer on the {receiver.name}!"
+                        )
+                else:
+                    trade_players["other_team"].append(player)
+            # Check if the trade is valid
+            response = hoops_team_trade.validate_trade(
+                sender, receiver, trade_players, league_config.hard_cap
+            )
+            status = response[0]
+            # If the trade is valid
+            if status:
+                # Finalize the trade
+                trade_object.accepted = True
+                trade_object.approved = True
+                trade_object.finalized = True
+                trade_object.save()
+                # Send players to new teams
+                for player in trade_object.offer["user_players"]:
+                    player_object = Player.objects.get(id=player[0])
+                    player_object.current_team = receiver
+                    player_object.save()
+                for player in trade_object.offer["other_players"]:
+                    player_object = Player.objects.get(id=player[0])
+                    player_object.current_team = sender
+                    player_object.save()
+            else:
+                # Delete the trade & redirect to the trade_panel page
+                trade_object.delete()
+        elif decision == "decline":
+            # Delete the trade & redirect to the trade_panel page
+            trade_object.delete()
+        # Reload trade list fragment
+        context = {
+            "title": "Trade Panel",
+            "pending_upgrades": TradeOffer.objects.filter(
+                accepted=True, finalized=False
+            ),
+        }
+        html = render_to_string("main/ajax/trade_list_fragment.html", context)
+        return HttpResponse(html)
