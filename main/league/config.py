@@ -435,7 +435,6 @@ archetype_attribute_bonuses = {
     "Rebounder": ["Offensive Rebound", "Defensive Rebound"],
     "Perimeter Defender": [
         "Perimeter Defense",
-        "Lateral Quickness",
         "Steal",
         "Pass Perception",
         "Help Defense Iq",
@@ -786,7 +785,6 @@ attribute_categories = {
         "Perimeter Defense",
         "Block",
         "Steal",
-        "Lateral Quickness",
         "Defensive Consistency",
         "Help Defense Iq",
         "Pass Perception",
@@ -809,6 +807,7 @@ attribute_categories = {
         "Vertical",
         "Strength",
         "Speed With Ball",
+        "Lateral Quickness",
     ],
 }
 badge_categories = {
