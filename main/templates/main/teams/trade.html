@@ -16,6 +16,7 @@
                     <select class="mb-1 form-control" name="user_team"><br>
                         <option value="{{ user_team.id }}" selected>{{ user_team.name }}</option>
                     </select>
+                    <input type="text" class="form-control mb-1" name="notes" placeholder="Notes (picks, extra information)">
                     <select class="form-control" name="user_team_players" multiple>
                         {% for player in user_team.player_set.all %}
                             <option value="{{ player.id }}">(${{ player.salary }}) {{ player.first_name }} {{ player.last_name }}</option>

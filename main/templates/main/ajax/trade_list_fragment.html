@@ -19,6 +19,10 @@
             {% endfor %}
         </p>
         <p class="card-text">
+            <b>Notes</b><br>
+            {{ trade.notes }}
+        </p>
+        <p class="card-text">
             <form>
                 {% csrf_token %}
                 <input type="hidden" name="trade_id" value="{{ trade.id }}">

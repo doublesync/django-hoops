@@ -1054,6 +1054,7 @@ def check_trade_validation(request):
     user = request.user
     user_team_id = request.POST.get("user_team")
     other_team_id = request.POST.get("other_team")
+    notes = request.POST.get("notes")
     user_team_ids = request.POST.getlist("user_team_players")
     other_team_ids = request.POST.getlist("other_team_players")
     # Validate the form data
@@ -1113,6 +1114,7 @@ def check_trade_validation(request):
             offer=offer,
             sender=user_team,
             receiver=other_team,
+            notes=notes,
         )  # Accepted, approved, and finalized will be set to False by default
         trade_object.save()
         # Return the response
@@ -1193,7 +1195,7 @@ def check_finalize_trade(request):
                 discord_webhooks.send_webhook(
                     url="trade",
                     title="✅ Trade Finalized",
-                    message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}```",
+                    message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}```\n{trade_object.notes}",
                 )
             else:
                 # Delete the trade & redirect to the trade_panel page
@@ -1202,7 +1204,7 @@ def check_finalize_trade(request):
                 discord_webhooks.send_webhook(
                     url="trade",
                     title="❌ Trade Vetoed",
-                    message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}```",
+                    message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}```\n{trade_object.notes}",
                 )
         elif decision == "decline":
             # Delete the trade & redirect to the trade_panel page

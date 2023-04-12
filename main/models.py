@@ -157,6 +157,7 @@ class TradeOffer(models.Model):
     accepted = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
     finalized = models.BooleanField(default=False)
+    notes = models.CharField(max_length=100, blank=True)
     # Relationships
     sender = models.ForeignKey("Team", on_delete=models.CASCADE, related_name="sender")
     receiver = models.ForeignKey(
