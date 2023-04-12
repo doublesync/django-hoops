@@ -105,6 +105,11 @@ urlpatterns = [
         name="check_meta_leaders",
     ),
     path(
+        route="attributes/leaders/",
+        view=views.check_attribute_leaders,
+        name="check_attribute_leaders",
+    ),
+    path(
         route="teams/roster/",
         view=views.check_team_roster,
         name="check_team_roster",

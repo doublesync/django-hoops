@@ -17,8 +17,6 @@ def validate_trade(user_team, other_team, trade_players, hard_cap):
             user_team_cap += player.salary
         else:
             other_team_cap += player.salary
-    print("user_team_cap", user_team_cap)
-    print("other_team_cap", other_team_cap)
     # Validate post-trade cap
     if user_team_cap > hard_cap or other_team_cap > hard_cap:
         return [False, f"❌ Trade would exceed hard cap. (${hard_cap})"]

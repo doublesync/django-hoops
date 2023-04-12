@@ -36,7 +36,7 @@
 </div>
 <div class="container mt-2 mb-5">
     <div class="container border outline-dark mt-2 mb-2 p-5" id="field-leaders">
-        <h2>Leaders</h2>
+        <h2>Currency Leaders</h2>
         <form>
             {% csrf_token %}
             <label for="type">Search position counts based on player fields.</label>
@@ -66,6 +66,25 @@
             <!-- results -->
             <div class="mt-4" id="meta-results">
                 {% include 'main/ajax/meta_fragment.html' %}
+            </div>
+        </form>
+    </div>
+</div>
+<div class="container mt-2 mb-5">
+    <div class="container border outline-dark mt-2 mb-2 p-5" id="field-leaders">
+        <h2>Attribute Leaders</h2>
+        <p>Who the leaders for <b class="text-success">attributes</b> are around the league.</p>
+        <form>
+            {% csrf_token %}
+            <!-- dropdown -->
+            <select class="form-select mt-2 mb-2" name="attribute" hx-post="/attributes/leaders/" hx-trigger="change" hx-target="#attribute-leader-results" hx-swap="innerHTML">
+                {% for name, value in initial_attributes.items %}
+                    <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+            </select>
+            <!-- results -->
+            <div class="mt-4" id="attribute-leader-results">
+                {% include 'main/ajax/attribute_leaders_fragment.html' %}
             </div>
         </form>
     </div>

@@ -21,3 +21,8 @@ def addplaceholder(value, arg):
 @register.filter(name="getattr")
 def get_attribute(obj, attr):
     return getattr(obj, attr)
+
+
+@register.filter(name="getvalue")
+def get_value(obj, key):
+    return obj[key]

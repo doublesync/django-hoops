@@ -517,6 +517,7 @@ def coupons(request):
 def frivolities(request):
     context = {
         "title": "Frivolities",
+        "initial_attributes": league_config.initial_attributes,
     }
     # Find out how many total players, then how many in each position there are
     context["position_counts"] = {
@@ -969,66 +970,85 @@ def check_upgrade_validation(request):
 
 
 def check_player_leaders(request):
-    # Get the form data
-    field = request.POST.get("field")
-    # Get the player leaders for this field
-    leaders = Player.objects.order_by(f"-{field}")[:10]
-    # Create context & send back
-    context = {
-        "leaders": leaders,
-        "field": field,
-    }
-    html = render_to_string("main/ajax/leaders_fragment.html", context)
-    return HttpResponse(html)
+    if request.method == "POST":
+        # Get the form data
+        field = request.POST.get("field")
+        # Get the player leaders for this field
+        leaders = Player.objects.order_by(f"-{field}")[:10]
+        # Create context & send back
+        context = {
+            "leaders": leaders,
+            "field": field,
+        }
+        html = render_to_string("main/ajax/leaders_fragment.html", context)
+        return HttpResponse(html)
 
 
 def check_meta_leaders(request):
-    # Get the form data
-    meta = request.POST.get("meta")
+    if request.method == "POST":
+        # Get the form data
+        meta = request.POST.get("meta")
 
-    # Calculate player using each meta
-    leaders = {}
-    players = Player.objects.all()
-    total_players = len(players)
-    for player in players:
-        if meta == "archetype":
-            if not player.primary_archetype in leaders:
-                leaders[player.primary_archetype] = [1, 0]
-            else:
-                leaders[player.primary_archetype][0] += 1
-            if not player.secondary_archetype in leaders:
-                leaders[player.secondary_archetype] = [0, 1]
-            else:
-                leaders[player.secondary_archetype][1] += 1
-        elif meta == "trait":
-            if not player.trait_one in leaders:
-                leaders[player.trait_one] = [1, 0]
-            else:
-                leaders[player.trait_one][0] += 1
-            if not player.trait_two in leaders:
-                leaders[player.trait_two] = [0, 1]
-            else:
-                leaders[player.trait_two][1] += 1
-        elif meta == "height":
-            height = hoops_extra_convert.convert_to_height(player.height)
-            if not height in leaders:
-                leaders[height] = [1, 0]
-            else:
-                leaders[height][0] += 1
-    # Add percentage to each meta (based on total players)
-    for m in leaders:
-        leaders[m].append(f"{leaders[m][0]}/{total_players}")
-        leaders[m].append(f"{leaders[m][1]}/{total_players}")
-    # Order the leaders dictionary before sending
-    leaders = dict(sorted(leaders.items(), key=lambda item: item[1][0], reverse=True))
-    # Create context & send back
-    context = {
-        "leaders": leaders,
-        "meta_name": meta,
-        "leaders": leaders,
-    }
-    html = render_to_string("main/ajax/meta_fragment.html", context)
-    return HttpResponse(html)
+        # Calculate player using each meta
+        leaders = {}
+        players = Player.objects.all()
+        total_players = len(players)
+        for player in players:
+            if meta == "archetype":
+                if not player.primary_archetype in leaders:
+                    leaders[player.primary_archetype] = [1, 0]
+                else:
+                    leaders[player.primary_archetype][0] += 1
+                if not player.secondary_archetype in leaders:
+                    leaders[player.secondary_archetype] = [0, 1]
+                else:
+                    leaders[player.secondary_archetype][1] += 1
+            elif meta == "trait":
+                if not player.trait_one in leaders:
+                    leaders[player.trait_one] = [1, 0]
+                else:
+                    leaders[player.trait_one][0] += 1
+                if not player.trait_two in leaders:
+                    leaders[player.trait_two] = [0, 1]
+                else:
+                    leaders[player.trait_two][1] += 1
+            elif meta == "height":
+                height = hoops_extra_convert.convert_to_height(player.height)
+                if not height in leaders:
+                    leaders[height] = [1, 0]
+                else:
+                    leaders[height][0] += 1
+        # Add percentage to each meta (based on total players)
+        for m in leaders:
+            leaders[m].append(f"{leaders[m][0]}/{total_players}")
+            leaders[m].append(f"{leaders[m][1]}/{total_players}")
+        # Order the leaders dictionary before sending
+        leaders = dict(
+            sorted(leaders.items(), key=lambda item: item[1][0], reverse=True)
+        )
+        # Create context & send back
+        context = {
+            "leaders": leaders,
+            "meta_name": meta,
+            "leaders": leaders,
+        }
+        html = render_to_string("main/ajax/meta_fragment.html", context)
+        return HttpResponse(html)
+
+
+def check_attribute_leaders(request):
+    if request.method == "POST":
+        # Get the form data
+        attribute = request.POST.get("attribute")
+        # Get the attribute leaders for this field
+        leaders = Player.objects.order_by(f"-attributes__{attribute}")[:10]
+        # Create context & send back
+        context = {
+            "attribute_leaders": leaders,
+            "attribute": attribute,
+        }
+        html = render_to_string("main/ajax/attribute_leaders_fragment.html", context)
+        return HttpResponse(html)
 
 
 def check_team_roster(request):
