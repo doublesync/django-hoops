@@ -407,23 +407,22 @@ def accept_trade(request, id):
 
 
 def decline_trade(request, id):
-    if request.method == "POST":
-        # Get some form data
-        user = request.user
-        # Get trade details
-        trade_object = TradeOffer.objects.get(id=id)
-        receiver = trade_object.receiver
-        # Check if the user is a GM
-        if not receiver.manager == user:
-            messages.error(request, "❌ You don't have permission to accept this trade!")
-            return redirect(home)
-        if trade_object.finalized == True:
-            messages.error(request, "❌ This trade has already been finalized!")
-            return redirect(trade)
-        # Delete the trade & redirect to the trade page
-        trade_object.delete()
-        messages.success(request, "✅ You have declined this trade!")
+    # Get some form data
+    user = request.user
+    # Get trade details
+    trade_object = TradeOffer.objects.get(id=id)
+    receiver = trade_object.receiver
+    # Check if the user is a GM
+    if not receiver.manager == user:
+        messages.error(request, "❌ You don't have permission to accept this trade!")
+        return redirect(home)
+    if trade_object.finalized == True:
+        messages.error(request, "❌ This trade has already been finalized!")
         return redirect(trade)
+    # Delete the trade & redirect to the trade page
+    trade_object.delete()
+    messages.success(request, "✅ You have declined this trade!")
+    return redirect(trade)
 
 
 def trade_panel(request):
