@@ -53,23 +53,24 @@ load_dotenv()
 def home(request):
     # Get the current user
     current_user = request.user
-    # Count notifications
-    notifications = Notification.objects.filter(
-        discord_user=current_user, read=False
-    ).count()
     # Create the context
     context = {
         "title": "Home",
         "current_user": current_user,
         "players": [],
-        "notifications": notifications,
+        "notifications": None,
     }
     # Send players to home page
     if current_user.is_authenticated:
         try:
             players = Player.objects.filter(discord_user=current_user)
+            # Add players to the context
             for p in players:
                 context["players"].append(p)
+            # Count notifications
+            context["notifications"] = Notification.objects.filter(
+                discord_user=current_user, read=False
+            ).count()
         except ValueError:
             # If the user is still signed into an administration account
             redirect(logout)
