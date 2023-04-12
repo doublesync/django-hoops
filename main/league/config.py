@@ -411,6 +411,7 @@ trait_badge_unlocks = {
 # Description: For player archetypes
 # Description: The player is first given starting attributes of zero, thenthey are set to the starting attributes depending on position.
 # Description: Then, depending on the player's chosen archetype, archetype additions are added to the starting attributes.
+#
 
 archetype_primary_bonus = 10  # Primary archetypes add (+10) to the chosen attributes
 archetype_secondary_bonus = 5  # Secondary archetypes add (+5) to the chosen attributes
