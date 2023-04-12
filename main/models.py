@@ -169,6 +169,7 @@ class TradeOffer(models.Model):
         return f"{self.sender} -> {self.receiver}"
 
 
+# Coupon Models
 class Coupon(models.Model):
     code = models.CharField(max_length=16, unique=True)
     name = models.CharField(max_length=16, default="Default Coupon")
@@ -179,3 +180,14 @@ class Coupon(models.Model):
     # Coupon Methods
     def __str__(self):
         return f"{self.code}"
+
+
+# Notification Models
+class Notification(models.Model):
+    # Notifcation Model
+    title = models.CharField(max_length=32, default="Notification")
+    message = models.CharField(max_length=100, default="Content")
+    read = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now_add=False)
+    # Relationships
+    discord_user = models.ForeignKey("DiscordUser", on_delete=models.CASCADE)

@@ -119,4 +119,15 @@ urlpatterns = [
         view=views.check_trade_validation,
         name="check_trade_validation",
     ),
+    path(
+        route="notifications/mark/read/",
+        view=views.check_read_notification,
+        name="check_read_notification",
+    ),
+    # User PATHS
+    path(
+        route="user/notifications/<int:id>/",
+        view=views.notifications,
+        name="notifications",
+    ),
 ]

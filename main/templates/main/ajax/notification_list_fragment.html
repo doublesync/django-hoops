@@ -1,0 +1,17 @@
+{% for notification in notifications %}
+{% if not notification.read %}
+    <div class="card mb-4 col-12">
+        <div class="card-body">
+            <p class="card-text">
+                <!-- Notification stuff -->
+                <p class="fw-bold">{{ notification.title }}</p>
+                <p>{{ notification.message }}</p>
+                <p>{{ notification.date }}</p>
+                <!-- Mark as read -->
+                <input type="hidden" name="notification_id" value="{{ notification.id }}">
+                <button type="submit" class="btn btn-primary btn-sm" style="width: 100%; display: block;" hx-post="/notifications/mark/read/" hx-trigger="click" hx-target="#noti-status" hx-swap="innerHTML">Mark as read</button>
+            </p>
+        </div>
+    </div>
+{% endif %}
+{% endfor %}

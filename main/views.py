@@ -17,6 +17,8 @@ from .models import Team
 from .models import Coupon
 from .models import Transaction
 from .models import TradeOffer
+from .models import DiscordUser
+from .models import Notification
 
 # Form imports
 from .forms import PlayerForm
@@ -38,6 +40,7 @@ from .league.player import physicals as hoops_player_physicals
 from .league.player import export as hoops_player_export
 from .league.extra import convert as hoops_extra_convert
 from .league.teams import trade as hoops_team_trade
+from .league.user import notify as hoops_user_notify
 
 # .ENV file import
 import os, json
@@ -48,11 +51,18 @@ load_dotenv()
 
 # Create your views here.
 def home(request):
+    # Get the current user
     current_user = request.user
+    # Count notifications
+    notifications = Notification.objects.filter(
+        discord_user=current_user, read=False
+    ).count()
+    # Create the context
     context = {
         "title": "Home",
         "current_user": current_user,
         "players": [],
+        "notifications": notifications,
     }
     # Send players to home page
     if current_user.is_authenticated:
@@ -411,6 +421,7 @@ def decline_trade(request, id):
     user = request.user
     # Get trade details
     trade_object = TradeOffer.objects.get(id=id)
+    sender = trade_object.sender
     receiver = trade_object.receiver
     # Check if the user is a GM
     if not receiver.manager == user:
@@ -421,6 +432,13 @@ def decline_trade(request, id):
         return redirect(trade)
     # Delete the trade & redirect to the trade page
     trade_object.delete()
+    # Send a webhook
+    discord_webhooks.send_webhook(
+        url="trade",
+        title="❌ Trade Vetoed",
+        message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}```",
+    )
+    # Return the trade page
     messages.success(request, "✅ You have declined this trade!")
     return redirect(trade)
 
@@ -494,6 +512,25 @@ def mock_builder(request):
     }
     # Return the build info page
     return render(request, "main/players/build-info.html", context)
+
+
+def notifications(request, id):
+    # Get the user
+    user = request.user
+    # Get the player
+    discord_user = DiscordUser.objects.get(id=user.id)
+    # Check if the user is the player's manager
+    if not discord_user == user:
+        return HttpResponse("Sorry, you don't have permission to view this page!")
+    # Get the player's notifications
+    notifications = Notification.objects.filter(discord_user=user)
+    # Create the context
+    context = {
+        "title": "Notifications",
+        "notifications": notifications,
+    }
+    # Return the notifications page
+    return render(request, "main/users/notifications.html", context)
 
 
 @login_required(login_url="/login/discord/")
@@ -1242,4 +1279,25 @@ def check_finalize_trade(request):
             ),
         }
         html = render_to_string("main/ajax/trade_list_fragment.html", context)
+        return HttpResponse(html)
+
+
+def check_read_notification(request):
+    # Get some form data
+    user = request.user
+    notification_id = request.POST.get("notification_id")
+    # Get the notification
+    notification = Notification.objects.get(id=int(notification_id))
+    # Check if the user is the receiver
+    if notification.discord_user == user:
+        # Mark the notification as read
+        notification.read = True
+        notification.save()
+        # Create the context
+        context = {
+            "title": "Notifications",
+            "notifications": Notification.objects.filter(discord_user=user),
+        }
+        # Return the fragment
+        html = render_to_string("main/ajax/notification_list_fragment.html", context)
         return HttpResponse(html)

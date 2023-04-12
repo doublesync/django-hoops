@@ -13,6 +13,7 @@ from .models import Team
 from .models import Coupon
 from .models import Transaction
 from .models import TradeOffer
+from .models import Notification
 
 
 # Override the default JSONField widget with the JSONEditor widget
@@ -30,3 +31,4 @@ admin.site.register(Team, MyAdmin)
 admin.site.register(Coupon, MyAdmin)
 admin.site.register(Transaction, MyAdmin)
 admin.site.register(TradeOffer, MyAdmin)
+admin.site.register(Notification, MyAdmin)
