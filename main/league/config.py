@@ -349,6 +349,7 @@ trait_badge_unlocks = {
         "Mismatch Expert",
         "Quick First Step",
         "Unpluckable",
+        "Ankle Breaker",
     ],
     "Passing Maestro": [
         "Bail Out",
