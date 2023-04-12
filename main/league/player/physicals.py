@@ -35,13 +35,13 @@ def setStartingPhysicals(player, mock=False):
         player.attributes["Vertical"] = vertical_start - int(height_mult)
         player.attributes["Strength"] = strength_start + int(weight_mult)
         player.attributes["Acceleration"] = acceleration_start - int(weight_mult)
-        player.attributes["Lateral Quickness"] = player.attributes["Acceleration"]
+        player.attributes["Lateral Quickness"] = player.attributes["Speed"]
     else:
         player["attributes"]["Speed"] = speed_start - (int(3 * height_mult))
         player["attributes"]["Speed With Ball"] = speed_start - (int(3 * height_mult))
         player["attributes"]["Vertical"] = vertical_start - int(height_mult)
         player["attributes"]["Strength"] = strength_start + int(weight_mult)
         player["attributes"]["Acceleration"] = acceleration_start - int(weight_mult)
-        player["attributes"]["Lateral Quickness"] = player["attributes"]["Acceleration"]
+        player["attributes"]["Lateral Quickness"] = player["attributes"]["Speed"]
     # Return the updated player
     return player
