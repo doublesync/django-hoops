@@ -71,7 +71,6 @@ def formatAndValidate(player, cleanedFormData):
     trait_badge_unlocks = league_config.trait_badge_unlocks
     trait_one_badges = trait_badge_unlocks[player.trait_one]
     trait_two_badges = trait_badge_unlocks[player.trait_two]
-    banned_tendencies = ["TOUCHES_TENDENCY"]
     # Filter out values that are under minimum, over maximum or equal to current value
     for k, v in formatFormData.items():
         # Type cast the value to an integer
@@ -132,8 +131,12 @@ def formatAndValidate(player, cleanedFormData):
                 if v > currentValue:
                     error = f"❌ {k} cannot be changed."
                     break
+            if k in league_config.max_tendencies:
+                if v > league_config.max_tendencies[k]:
+                    error = f"❌ {k} is greater than the maximum value. ({league_config.max_tendencies[k]})"
+                    break
             if v > maximumValue:
-                error = f"❌ {k} is greater than the maximum value."
+                error = f"❌ {k} is greater than the maximum value. ({maximumValue})"
                 break
             # Add the value to the ugprade data
             upgradeData["tendencies"][k] = {

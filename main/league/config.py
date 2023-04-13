@@ -273,6 +273,10 @@ badge_prices = {
     },
 }
 banned_tendencies = ["TOUCHES_TENDENCY"]
+max_tendencies = {
+    "ON-BALL_STEAL_TENDENCY": 75,
+    "BLOCK_SHOT_TENDENCY": 75,
+}
 
 # Description: For player traits (traits unlock badges)
 # Description: Players not have duplicate traits, they can have duplicate archetypes though.

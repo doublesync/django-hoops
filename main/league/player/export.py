@@ -257,6 +257,7 @@ def export_player(player):
             for tendency, value in database_tendencies.items():
                 game_file[4]["data"][tendency] = str(value)
 
+    # Set the player's statics
     def set_statics():
         # Define some variables
         statics = player.statics
@@ -269,6 +270,7 @@ def export_player(player):
         # Signature statics
         game_file[5]["data"]["RELEASE_TIMING"] = "2"
 
+    # Set the player's ignores
     def set_ignores():
         # Tendencies
         for tendency in ignore_tendencies:
