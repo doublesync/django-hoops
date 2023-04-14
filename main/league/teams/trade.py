@@ -1,6 +1,3 @@
-# A function to create a trade offer
-
-
 # A function to validate a trade offer
 def validate_trade(user_team, other_team, trade_players, hard_cap):
     # Define cap variables
@@ -27,6 +24,12 @@ def validate_trade(user_team, other_team, trade_players, hard_cap):
     return [True, "✅ Trade is valid."]
 
 
-# a function to accept a trade offer
-
-# a function to reject a trade offer
+# A function to find salary cap
+def get_total_salary(team):
+    # Define cap variables
+    cap = 0
+    # Validate post-trade caps
+    for player in team.player_set.all():
+        cap += player.salary
+    # Return cap
+    return cap

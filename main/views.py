@@ -332,9 +332,12 @@ def cash_logs(request, id):
 
 def team(request, id):
     team_object = Team.objects.get(pk=id)
+    total_salary = hoops_team_trade.get_total_salary(team_object)
     context = {
         "title": team_object.name,
         "team": team_object,
+        "total_salary": total_salary,
+        "hard_cap": league_config.hard_cap,
     }
     return render(request, "main/teams/team.html", context)
 
