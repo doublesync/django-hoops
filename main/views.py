@@ -283,7 +283,7 @@ def players(request):
         "title": "Players",
     }
     # Get the league players
-    league_players = Player.objects.all()
+    league_players = Player.objects.order_by("id")
     # Paginate the league players
     paginator = Paginator(league_players, 10)
     page_number = request.GET.get("page")
@@ -344,7 +344,7 @@ def teams(request):
         "title": "Teams",
     }
     # Get the league teams
-    league_teams = Team.objects.all()
+    league_teams = Team.objects.order_by("id")
     # Paginate the league teams
     paginator = Paginator(league_teams, 8)
     page_number = request.GET.get("page")
