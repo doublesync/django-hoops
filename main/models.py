@@ -117,10 +117,14 @@ class HistoryList(models.Model):
 
 # Team & Statistic Models
 class Team(models.Model):
+    # Team Model
     name = models.CharField(max_length=32)
     logo = models.CharField(max_length=100, default=league_config.initial_team_logo)
     abbrev = models.CharField(max_length=3)
-    picks = models.JSONField(default=league_config.get_default_picks)
+    picks = models.JSONField(
+        default=league_config.get_default_picks, blank=True, null=True
+    )
+    plays_in_main_league = models.BooleanField(default=True)
     # Relationships
     manager = models.ForeignKey("DiscordUser", on_delete=models.CASCADE)
     history_list = models.ForeignKey("HistoryList", on_delete=models.CASCADE)

@@ -20,6 +20,9 @@ def validate_trade(user_team, other_team, trade_players, hard_cap):
     # Validate post-trade cap
     if user_team_cap > hard_cap or other_team_cap > hard_cap:
         return [False, f"❌ Trade would exceed hard cap. (${hard_cap})"]
+    # Validate team plays in main league
+    if user_team.plays_in_main_league != other_team.plays_in_main_league:
+        return [False, "❌ Teams must play in the same league."]
     # Validate post-trade cap
     return [True, "✅ Trade is valid."]
 

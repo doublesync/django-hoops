@@ -1104,6 +1104,8 @@ def check_team_roster(request):
         }
         html = render_to_string("main/ajax/trade_team_fragment.html", context)
         return HttpResponse(html)
+    else:
+        return HttpResponse("❌ Invalid request!")
 
 
 def check_trade_validation(request):
