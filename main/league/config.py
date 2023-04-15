@@ -397,6 +397,7 @@ trait_badge_unlocks = {
         "Fearless Finisher",
         "Masher",
         "Rise Up",
+        "Bully",
     ],
     "Dribble Driver": [
         "Clamp Breaker",
