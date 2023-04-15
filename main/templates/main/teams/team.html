@@ -8,7 +8,7 @@
     <div class="container ">
         <!-- Team logo with static height and width -->
         <img src="{{ team.logo }}" alt="Team logo" class="img-fluid mb-4" style="height: 200px; width: 200px; display: block; margin-left: auto; margin-right: auto;">
-        <p class="mb-2" style="text-align: center;"><b>{% if team.plays_in_main_league %}Main League{% else %}Developmental League{% endif %}<br></b></p>
+        <p class="mb-2" style="text-align: center;"><b>{% if team.plays_in_main_league %}Division 1{% else %}Division 2{% endif %}<br></b></p>
         <p class="mb-2" style="text-align: center;">Welcome to the <b>{{ team.name }}</b> team page!</p>
         <p class="mb-2" style="text-align: center;"><b>General Manager<br></b>{{ team.manager }}</p>
         <p class="mb-2" style="text-align: center;"><b>Total Salary<br></b>${{ total_salary }} / ${{ hard_cap }}</p>
