@@ -1311,8 +1311,8 @@ def check_daily_reward(request):
     if not last_reward or timezone.now() - last_reward > timedelta(days=1):
         # Give all of the user's players their daily rewards (salary)
         for player in user.player_set.all():
-            rewards_given += f"✅ {player.first_name} {player.last_name} was given ${player.salary} <b>(${player.cash})</b><br>"
             player.cash += player.salary
+            rewards_given += f"✅ {player.first_name} {player.last_name} was given ${player.salary} <b>(${player.cash})</b><br>"
             player.save()
         # Update the last_reward date
         user.last_reward = timezone.now()
