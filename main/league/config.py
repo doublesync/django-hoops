@@ -772,6 +772,7 @@ contract_option_choices = [
     ("No Option", "No Option"),
     ("Team Option", "Team Option"),
     ("Player Option", "Player Option"),
+    ("Restricted Free Agent", "Restricted Free Agent"),
 ]
 contract_benefit_choices = [
     ("No Benefits", "No Benefits"),
