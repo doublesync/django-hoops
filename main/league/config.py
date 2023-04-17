@@ -18,6 +18,9 @@ max_tendency = 100
 player_weight_min = 150
 player_weight_max = 270
 
+# Description: For league related model fields
+max_contract_season = 3
+
 # Description: For cap space
 hard_cap = 1200
 
@@ -764,6 +767,17 @@ transaction_type_choices = [
     ("cash_taken", "Cash Taken"),
     ("cash_given", "Cash Given"),
     ("paycheck", "Paycheck"),
+]
+contract_option_choices = [
+    ("No Option", "No Option"),
+    ("Team Option", "Team Option"),
+    ("Player Option", "Player Option"),
+]
+contract_benefit_choices = [
+    ("No Benefits", "No Benefits"),
+    ("No Trade Clause", "No Trade Clause"),
+    ("No Cut Clause", "No Cut Clause"),
+    ("No Trade Clause + No Cut Clause", "No Trade Clause + No Cut Clause"),
 ]
 
 # Description: Categories for .html pages

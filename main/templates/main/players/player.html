@@ -22,7 +22,7 @@
             {% endif %}
         </p>
     </div>
-    
+
     <hr>
 
     <div class="container-fluid" style="padding: 25px;">
@@ -223,7 +223,13 @@
                 <p class="mb-0"><b>Archetype:</b> {{ player.primary_archetype }}</p>
                 {% endif %}
                 <p class="mb-0"><b>Creator:</b> {{ player.discord_user.discord_tag }}</p>
-                <p class="mb-0"><b>Week Earnings:</b> ${{ week_earnings }}</p>
+                <p><b>Week Earnings:</b> ${{ week_earnings }}</p>
+                <!-- Contract details -->
+                <hr>
+                <p class="mb-0"><b>Contract Salary:</b> ${{ player.salary }}</p>
+                <p class="mb-0"><b>Contract Expires:</b> <i></i> Season {{ player.contract_ends_after }}</p>
+                <p class="mb-0"><b>Contract Option:</b> {{ player.contract_option }}</p>
+                <p class="mb-0"><b>Contract Benefits:</b> {{ player.contract_benefits }}</p>
             </div>
         </div>
         <hr>

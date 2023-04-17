@@ -88,6 +88,18 @@ class Player(models.Model):
     )
     salary = models.PositiveBigIntegerField(name="salary", default=0)
     spent = models.PositiveBigIntegerField(name="spent", default=0)
+    # Player Contract Details
+    contract_ends_after = models.SmallIntegerField(default=1)
+    contract_option = models.CharField(
+        max_length=54,
+        choices=league_config.contract_option_choices,
+        default=league_config.contract_option_choices[0][0],
+    )
+    contract_benefits = models.CharField(
+        max_length=54,
+        choices=league_config.contract_benefit_choices,
+        default=league_config.contract_benefit_choices[0][0],
+    )
     # Relationships
     discord_user = models.ForeignKey("DiscordUser", on_delete=models.CASCADE)
     current_team = models.ForeignKey(
