@@ -33,6 +33,7 @@ from .league import config as league_config
 import copy
 import json
 import datetime
+from datetime import timedelta
 
 from .league.player import upgrade as hoops_player_upgrade
 from .league.player import create as hoops_player_create
@@ -464,24 +465,6 @@ def trade_panel(request):
     return render(request, "main/teams/trade_panel.html", context)
 
 
-def daily_reward(request):
-    # Get the current date
-    user = request.user
-    # Get the last date the daily rewards were given out
-    last_reward = user.last_reward
-    # If the daily rewards haven't been given out today, give them out
-    if not last_reward:
-        # Give the user their daily rewards
-        # Update the user's last reward date
-        pass
-    else:
-        # Check if the last reward was given out today
-        # If it was, return an error
-        # If it wasn't, give the user their daily rewards
-        # and update the user's last reward date
-        pass
-
-
 def upgrades_pending(request):
     # Collect user & player information
     user = request.user
@@ -570,6 +553,15 @@ def frivolities(request):
     }
     # Return the frivolities page
     return render(request, "main/league/frivolities.html", context)
+
+
+def daily_rewards(request):
+    # Create the context
+    context = {
+        "title": "Daily Rewards",
+    }
+    # Return the daily rewards page
+    return render(request, "main/users/daily_rewards.html", context)
 
 
 # Reloadable form views
@@ -1307,3 +1299,41 @@ def check_read_notification(request):
         # Return the fragment
         html = render_to_string("main/ajax/notification_list_fragment.html", context)
         return HttpResponse(html)
+
+
+def check_daily_reward(request):
+    # Get the current date
+    user = request.user
+    # Get the last date the daily rewards were given out
+    last_reward = user.last_reward
+    rewards_given = ""
+    # If the daily rewards haven't been given out today, give them out
+    if not last_reward or timezone.now() - last_reward > timedelta(days=1):
+        # Give all of the user's players their daily rewards (salary)
+        for player in user.player_set.all():
+            rewards_given += f"✅ {player.first_name} {player.last_name} was given ${player.salary} <b>(${player.cash})</b><br>"
+            player.cash += player.salary
+            player.save()
+        # Update the last_reward date
+        user.last_reward = timezone.now()
+        user.save()
+        # Return a discord webhook
+        discord_webhooks.send_webhook(
+            url="cash",
+            title="✅ Daily Rewards",
+            message=f"{user.discord_tag} has collected their daily rewards!",
+        )
+        # Return http response
+        return HttpResponse(rewards_given)
+    else:
+        # Return http response (tell them how much time is left)
+        time_left = last_reward + timedelta(days=1) - timezone.now()
+        real_time = f"{time_left.seconds // 3600}:{time_left.seconds % 3600 // 60}:{time_left.seconds % 60}"
+        discord_webhooks.send_webhook(
+            url="cash",
+            title="❌ Daily Rewards",
+            message=f"**{user.discord_tag}** has **{real_time}** before they can claim their daily rewards!",
+        )
+        return HttpResponse(
+            f"❌ You must wait <b>{real_time}</b> before you can claim your daily rewards!"
+        )

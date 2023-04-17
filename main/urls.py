@@ -39,6 +39,11 @@ urlpatterns = [
     path(
         route="player/cash/take/", view=views.take_player_cash, name="take_player_cash"
     ),
+    path(
+        route="player/daily/reward/collect/",
+        view=views.daily_rewards,
+        name="daily_rewards",
+    ),
     # Team PATHS
     path(route="team/<int:id>/", view=views.team, name="team"),
     path(route="teams/", view=views.teams, name="teams"),
@@ -123,6 +128,11 @@ urlpatterns = [
         route="notifications/mark/read/",
         view=views.check_read_notification,
         name="check_read_notification",
+    ),
+    path(
+        route="player/daily/reward/",
+        view=views.check_daily_reward,
+        name="check_daily_reward",
     ),
     # User PATHS
     path(
