@@ -539,6 +539,7 @@ initial_badges = {
     "Slippery Off Ball": start_badge,
     "Space Creator": start_badge,
     "Volume Shooter": start_badge,
+    "Clutch Shooter": start_badge,
     "Ankle Breaker": start_badge,
     "Bail Out": start_badge,
     "Break Starter": start_badge,
@@ -867,6 +868,7 @@ badge_categories = {
         "Slippery Off Ball",
         "Space Creator",
         "Volume Shooter",
+        "Clutch Shooter",
     ],
     "defense": [
         "Anchor",
