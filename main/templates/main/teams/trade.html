@@ -70,7 +70,7 @@
                         {% for player in trade.offer.user_players %}
                              (${{ player.2 }}) <a href="{% url 'player' player.0 %}">{{ player.1 }}</a><br>
                         {% endfor %}
-                        {{ trade.notes }}
+                        <b>Notes:</b> {{ trade.notes }}
                     </p>
                     <p class="card-text">
                         <b>{{ trade.sender.name }}</b> receives<br>
@@ -103,7 +103,7 @@
                         {% for player in trade.offer.user_players %}
                             (${{ player.2 }}) <a href="{% url 'player' player.0 %}">{{ player.1 }}</a><br>
                         {% endfor %}
-                        {{ trade.notes }}
+                        <b>Notes:</b> {{ trade.notes }}
                     </p>
                     <p class="card-text">
                         <b>{{ trade.sender.name }}</b> receives<br>
@@ -131,7 +131,7 @@
                         {% for player in trade.offer.user_players %}
                             (${{ player.2 }}) <a href="{% url 'player' player.0 %}">{{ player.1 }}</a><br>
                         {% endfor %}
-                        {{ trade.notes }}
+                        <b>Notes:</b> {{ trade.notes }}
                     </p>
                     <p class="card-text">
                         <b>{{ trade.sender.name }}</b> receives<br>
