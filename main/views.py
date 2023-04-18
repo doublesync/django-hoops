@@ -1332,7 +1332,7 @@ def check_daily_reward(request):
     last_reward = user.last_reward
     rewards_given = ""
     # Check if user is on a team
-    if not user.team:
+    if not user.current_team:
         return HttpResponse("❌ You are not on a team!")
     # If the daily rewards haven't been given out today, give them out
     if not last_reward or timezone.now() - last_reward > timedelta(days=1):
