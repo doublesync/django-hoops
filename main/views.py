@@ -1353,11 +1353,6 @@ def check_daily_reward(request):
         # Return http response (tell them how much time is left)
         time_left = last_reward + timedelta(days=1) - timezone.now()
         real_time = f"{time_left.seconds // 3600}:{time_left.seconds % 3600 // 60}:{time_left.seconds % 60}"
-        discord_webhooks.send_webhook(
-            url="cash",
-            title="❌ Daily Rewards",
-            message=f"**{user.discord_tag}** has **{real_time}** before they can claim their daily rewards!",
-        )
         return HttpResponse(
             f"❌ You must wait <b>{real_time}</b> before you can claim your daily rewards!"
         )
