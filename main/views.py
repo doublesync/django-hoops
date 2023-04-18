@@ -454,7 +454,7 @@ def decline_trade(request, id):
     discord_webhooks.send_webhook(
         url="trade",
         title="❌ Trade Declined",
-        message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}\n{trade_object.notes}```",
+        message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}```\n{trade_object.notes}",
     )
     # Return the trade page
     messages.success(request, "✅ You have declined this trade!")
@@ -1262,7 +1262,7 @@ def check_finalize_trade(request):
                 discord_webhooks.send_webhook(
                     url="trade",
                     title="✅ Trade Finalized",
-                    message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}\n{trade_object.notes}```",
+                    message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}```\n{trade_object.notes}",
                 )
             else:
                 # Delete the trade & redirect to the trade_panel page
@@ -1271,7 +1271,7 @@ def check_finalize_trade(request):
                 discord_webhooks.send_webhook(
                     url="trade",
                     title="❌ Trade Vetoed",
-                    message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}\n{trade_object.notes}```",
+                    message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}```\n{trade_object.notes}",
                 )
         elif decision == "decline":
             # Delete the trade & redirect to the trade_panel page
@@ -1280,7 +1280,7 @@ def check_finalize_trade(request):
             discord_webhooks.send_webhook(
                 url="trade",
                 title="❌ Trade Vetoed",
-                message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}\n{trade_object.notes}```",
+                message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}```\n{trade_object.notes}",
             )
         # Reload trade list fragment
         context = {
