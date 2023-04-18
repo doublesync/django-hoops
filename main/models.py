@@ -83,7 +83,7 @@ class Player(models.Model):
         default=league_config.trait_choices[0][0],
     )
     # Player Currencies
-    primary_currency = models.PositiveBigIntegerField(
+    primary_currency = models.BigIntegerField(
         name="cash", default=league_config.primary_currency_start
     )
     salary = models.PositiveBigIntegerField(name="salary", default=0)

@@ -636,33 +636,28 @@ def take_player_cash(request):
             # Get the player
             player = Player.objects.get(pk=id)
             # Take the cash from the player's account
-            if player.cash - int(amount) < 0:
-                messages.error(request, "A player cannot have negative cash.")
-                return redirect("player", id=id)
-            else:
-                # Add the player's cash
-                player.cash -= int(amount)
-                # Add new transaction (Transaction)
-                transaction = Transaction(
-                    transaction_type="cash_taken",
-                    amount=amount,
-                    reason=reason,
-                    giver=user,
-                    player=player,
-                    date=timezone.now(),
-                )
-                # Save the player & transaction
-                player.save()
-                transaction.save()
-                # Send a webhook message
-                discord_webhooks.send_webhook(
-                    url="cash",
-                    title="Cash Taken",
-                    message=f"**{user.discord_tag}** took **${amount}** from {player.first_name} {player.last_name}'s account.\n```{reason}```",
-                )
-                # Return the updated cash
-                messages.success(request, f"Cash taken, player now has ${player.cash}!")
-                return redirect("player", id=id)
+            player.cash -= int(amount)
+            # Add new transaction (Transaction)
+            transaction = Transaction(
+                transaction_type="cash_taken",
+                amount=amount,
+                reason=reason,
+                giver=user,
+                player=player,
+                date=timezone.now(),
+            )
+            # Save the player & transaction
+            player.save()
+            transaction.save()
+            # Send a webhook message
+            discord_webhooks.send_webhook(
+                url="cash",
+                title="Cash Taken",
+                message=f"**{user.discord_tag}** took **${amount}** from {player.first_name} {player.last_name}'s account.\n```{reason}```",
+            )
+            # Return the updated cash
+            messages.success(request, f"Cash taken, player now has ${player.cash}!")
+            return redirect("player", id=id)
     else:
         messages.error(request, "Something went wrong!")
         return redirect("player", id=id)
