@@ -442,7 +442,7 @@ def decline_trade(request, id):
     sender = trade_object.sender
     receiver = trade_object.receiver
     # Check if the user is a GM
-    if not receiver.manager == user:
+    if not receiver.manager == user and not sender.manager == user:
         messages.error(request, "❌ You don't have permission to accept this trade!")
         return redirect(home)
     if trade_object.finalized == True:
@@ -451,9 +451,10 @@ def decline_trade(request, id):
     # Delete the trade & redirect to the trade page
     trade_object.delete()
     # Send a webhook
+    decline_type = "Declined" if receiver.manager == user else "Withdrawn"
     discord_webhooks.send_webhook(
         url="trade",
-        title="❌ Trade Declined",
+        title=f"❌ Trade {decline_type}",
         message=f"**{sender.name}** received\n```{' + '.join([p[1] for p in trade_object.offer['other_players']])}```\n**{receiver.name}** receives\n```{' + '.join([p[1] for p in trade_object.offer['user_players']])}```\n{trade_object.notes}",
     )
     # Return the trade page

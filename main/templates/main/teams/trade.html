@@ -111,6 +111,9 @@
                             (${{ player.2 }}) <a href="{% url 'player' player.0 %}">{{ player.1 }}</a><br>
                         {% endfor %}
                     </p>
+                    <p class="card-text">
+                        <a href="{% url 'decline_trade' trade.id %}" class="btn btn-danger btn-sm">Withdraw Offer</a>
+                    </p>
                 </div>
             </div>
         {% endfor %}
