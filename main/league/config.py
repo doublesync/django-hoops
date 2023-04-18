@@ -4,6 +4,7 @@
 max_players = 1
 primary_currency_start = 1000
 primary_currency_max = 100000
+max_weekly_earnings = 1500
 
 start_attribute = 0
 start_badge = 0

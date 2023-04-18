@@ -588,7 +588,23 @@ def add_player_cash(request):
             reason = request.POST.get("reason")
             # Get the player
             player = Player.objects.get(pk=id)
-            history_list = player.history_list.history
+            # Get transaction history & total earnings in past week (cash_taken, cash_given, paycheck)
+            transactions = Transaction.objects.filter(player=player)
+            week_earnings = 0
+            # If date is in the past week, add/subtract to/from week_earnings
+            for t in transactions:
+                if t.date > timezone.now() - datetime.timedelta(days=7):
+                    if t.transaction_type == "cash_taken":
+                        week_earnings -= t.amount
+                    elif t.transaction_type == "cash_given":
+                        week_earnings += t.amount
+            # Check if week earnings are over maximum weekly earnings
+            if week_earnings + int(amount) > league_config.max_weekly_earnings:
+                messages.error(
+                    request,
+                    f"A player can only earn ${league_config.max_weekly_earnings} in a week.",
+                )
+                return redirect("player", id=id)
             # Add the cash to the player's account
             if player.cash + int(amount) > league_config.primary_currency_max:
                 messages.error(
