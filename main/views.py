@@ -1331,16 +1331,18 @@ def check_daily_reward(request):
     # Get the last date the daily rewards were given out
     last_reward = user.last_reward
     rewards_given = ""
-    # Check if user is on a team
-    if not user.current_team:
-        return HttpResponse("❌ You are not on a team!")
     # If the daily rewards haven't been given out today, give them out
     if not last_reward or timezone.now() - last_reward > timedelta(days=1):
         # Give all of the user's players their daily rewards (salary)
         for player in user.player_set.all():
-            player.cash += player.salary
-            rewards_given += f"✅ {player.first_name} {player.last_name} was given ${player.salary} <b>(${player.cash})</b><br>"
-            player.save()
+            if player.current_team:
+                player.cash += player.salary
+                rewards_given += f"✅ {player.first_name} {player.last_name} was given ${player.salary} <b>(${player.cash})</b><br>"
+                player.save()
+            else:
+                rewards_given += (
+                    f"❌ {player.first_name} {player.last_name} is not on a team!<br>"
+                )
         # Update the last_reward date
         user.last_reward = timezone.now()
         user.save()
