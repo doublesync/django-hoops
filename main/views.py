@@ -72,6 +72,19 @@ def home(request):
             context["notifications"] = Notification.objects.filter(
                 discord_user=current_user, read=False
             ).count()
+            # Check if the user manages a team
+            team = Team.objects.filter(manager=current_user).first()
+            # If user manages a team, check for pending trade offers
+            if team:
+                # Check for pending trade offers
+                pending_trades = TradeOffer.objects.filter(
+                    Q(sender=team) | Q(receiver=team), accepted=False
+                )
+                if pending_trades:
+                    messages.success(
+                        request,
+                        "You have pending trades! Visit the trade machine to check them out.",
+                    )
         except ValueError:
             # If the user is still signed into an administration account
             redirect(logout)
