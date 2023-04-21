@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.db.models import Sum
 from django.template.loader import render_to_string
 from django.utils import timezone
 
@@ -347,10 +348,15 @@ def cash_logs(request, id):
 def team(request, id):
     team_object = Team.objects.get(pk=id)
     total_salary = hoops_team_trade.get_total_salary(team_object)
+    # Filter players by the team, and get sum of salary
+    spent_list = Player.objects.filter(current_team=team_object).aggregate(
+        total=Sum("spent")
+    )
     context = {
         "title": team_object.name,
         "team": team_object,
         "total_salary": total_salary,
+        "total_spent": spent_list["total"],
         "hard_cap": league_config.hard_cap,
     }
     return render(request, "main/teams/team.html", context)
