@@ -107,6 +107,11 @@
                     <p><b>Team</b></p><hr>
                     <p>{{ player.current_team.abbrev }}</p>
                 </div>
+                <div class="col-md-2">
+                    <p><b>Spent</b></p><hr>
+                    <p>${{ player.spent }}</p>
+                </div>
+                <!-- Editable player details -->
                 <div class="row mb-3">
                     <!-- Editable by player owner -->
                     {% if player.discord_user == user %}
@@ -232,7 +237,6 @@
                 <p class="mb-0"><b>Contract Benefits:</b> {{ player.contract_benefits }}</p>
             </div>
         </div>
-        <hr>
     </div>
 
     <div class="container-fluid" style="padding: 100px; padding-top: 0px; padding-bottom: 10px;">
