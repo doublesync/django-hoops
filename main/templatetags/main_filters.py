@@ -1,4 +1,5 @@
 from django import template
+from ..league.extra import convert as league_converters
 
 register = template.Library()
 
@@ -26,3 +27,8 @@ def get_attribute(obj, attr):
 @register.filter(name="getvalue")
 def get_value(obj, key):
     return obj[key]
+
+
+@register.filter(name="americanheight")
+def american_height(value):
+    return league_converters.convert_to_height(value)

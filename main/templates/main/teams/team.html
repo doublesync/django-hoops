@@ -1,26 +1,48 @@
 {% extends 'main/base.html' %}
-
+{% load main_filters %}
 {% block content %}
-
-    <h2 class="text-uppercase fw-bold mb-3 mt-3" style="text-align: center;">{{ team.name }}</h2>
-    <!-- Container that puts item in middle -->
-
-    <div class="container ">
-        <!-- Team logo with static height and width -->
-        <img src="{{ team.logo }}" alt="Team logo" class="img-fluid mb-4" style="height: 200px; width: 200px; display: block; margin-left: auto; margin-right: auto;">
-        <p class="mb-2" style="text-align: center;"><b>{% if team.plays_in_main_league %}Division 1{% else %}Division 2{% endif %}<br></b></p>
-        <p class="mb-2" style="text-align: center;">Welcome to the <b>{{ team.name }}</b> team page!</p>
-        <p class="mb-2" style="text-align: center;"><b>General Manager<br></b>{{ team.manager }}</p>
-        <p class="mb-2" style="text-align: center;"><b>Total Salary<br></b>${{ total_salary }} / ${{ hard_cap }}</p>
-        <p style="text-align: center;">
-            {% for player in team.player_set.all %}
-                <a href="{% url 'player' player.id %}">{{ player.first_name }} {{ player.last_name }}</a> (${{ player.spent }} spent) <br>
-            {% endfor %}
-        </p>
-        <!-- Make trades button -->
-        <div class="text-center">
-            <a href="{% url 'trade' %}" class="btn btn-primary">Make Trades</a>
-        </div>
+<!-- Container that puts item in middle -->
+<div class="container">
+    <!-- Team logo with static height and width -->
+    <img src="{{ team.logo }}" alt="Team logo" class="img-fluid mb-4" style="height: 200px; width: 200px; display: block; margin-left: auto; margin-right: auto;">
+    <h2 class="mb-2" style="text-align: left;"><b>{% if team.plays_in_main_league %}Division 1{% else %}Division 2{% endif %}<br></b></h2>
+    <p>{{ team.name }}</p><hr>
+    <p class="mb-2" style="text-align: left;"><b>General Manager<br></b>{{ team.manager }}</p><hr>
+    <p class="mb-2" style="text-align: left;"><b>Total Salary<br></b>${{ total_salary }} / ${{ hard_cap }}</p><hr>
+    <!-- Salary cap table -->
+    <div class="container mt-5 mb-5">
+        <h2 class="fw-bold">Salary Breakdown</h2>
+        <table class="table table-striped table-hover table-responsive">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Salary</th>
+                    <th scope="col">Spent</th>
+                    <th scope="col">Height</th>
+                    <th scope="col">Weight</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Make a row for each player -->
+                {% for player in team.player_set.all %}
+                    <tr>
+                        <td><a href="{% url 'player' player.id %}">{{ player.first_name }} {{ player.last_name }}</a></td>
+                        <td>${{ player.salary }}</td>
+                        <td>${{ player.spent }}</td>
+                        <td>{{ player.height|americanheight }}</td>
+                        <td>{{ player.weight }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <!-- Make a table footer -->
+            <tfoot>
+                <tr>
+                    <td><b>Total</b></td>
+                    <td><b>${{ total_salary }}</b></td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
+</div>
 
 {% endblock %}
