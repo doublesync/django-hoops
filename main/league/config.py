@@ -540,6 +540,7 @@ initial_badges = {
     "Space Creator": start_badge,
     "Volume Shooter": start_badge,
     "Clutch Shooter": start_badge,
+    "Comeback Kid": start_badge,
     "Ankle Breaker": start_badge,
     "Bail Out": start_badge,
     "Break Starter": start_badge,
@@ -869,6 +870,7 @@ badge_categories = {
         "Space Creator",
         "Volume Shooter",
         "Clutch Shooter",
+        "Comeback Kid",
     ],
     "defense": [
         "Anchor",
