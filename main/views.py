@@ -593,6 +593,7 @@ def add_player_cash(request):
             id = request.POST.get("id")
             amount = request.POST.get("amount")
             reason = request.POST.get("reason")
+            bypass = request.POST.get("bypass")
             # Get the player
             player = Player.objects.get(pk=id)
             # Get transaction history & total earnings in past week (cash_taken, cash_given, paycheck)
@@ -606,7 +607,10 @@ def add_player_cash(request):
                     elif t.transaction_type == "cash_given":
                         week_earnings += t.amount
             # Check if week earnings are over maximum weekly earnings
-            if week_earnings + int(amount) > league_config.max_weekly_earnings:
+            if (
+                week_earnings + int(amount) > league_config.max_weekly_earnings
+                and not bypass
+            ):
                 messages.error(
                     request,
                     f"A player can only earn ${league_config.max_weekly_earnings} in a week.",
