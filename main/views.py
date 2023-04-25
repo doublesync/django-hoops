@@ -1339,7 +1339,8 @@ def check_daily_reward(request):
     last_reward = user.last_reward
     rewards_given = ""
     # If the daily rewards haven't been given out today, give them out
-    if not last_reward or timezone.now() - last_reward > timedelta(days=1):
+    # Instead of checking if it's been 24 hours, check if the day is different
+    if not last_reward or timezone.now().day != last_reward.day:
         # Give all of the user's players their daily rewards (salary)
         for player in user.player_set.all():
             if player.current_team:
@@ -1363,8 +1364,6 @@ def check_daily_reward(request):
         return HttpResponse(rewards_given)
     else:
         # Return http response (tell them how much time is left)
-        time_left = last_reward + timedelta(days=1) - timezone.now()
-        real_time = f"{time_left.seconds // 3600}:{time_left.seconds % 3600 // 60}:{time_left.seconds % 60}"
-        return HttpResponse(
-            f"❌ You must wait <b>{real_time}</b> before you can claim your daily rewards!"
-        )
+        # time_left = last_reward + timedelta(days=1) - timezone.now()
+        # real_time = f"{time_left.seconds // 3600}:{time_left.seconds % 3600 // 60}:{time_left.seconds % 60}"
+        return HttpResponse(f"❌ You can collect again starting at midnight!")
