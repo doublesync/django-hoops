@@ -627,17 +627,18 @@ def add_player_cash(request):
                 # Add the player's cash
                 player.cash += int(amount)
                 # Add new transaction (Transaction)
-                transaction = Transaction(
-                    transaction_type="cash_given",
-                    amount=amount,
-                    reason=reason,
-                    giver=user,
-                    player=player,
-                    date=timezone.now(),
-                )
+                if not bypass:
+                    transaction = Transaction(
+                        transaction_type="cash_given",
+                        amount=amount,
+                        reason=reason,
+                        giver=user,
+                        player=player,
+                        date=timezone.now(),
+                    )
+                    transaction.save()
                 # Save the player & transaction
                 player.save()
-                transaction.save()
                 # Send a webhook message
                 discord_webhooks.send_webhook(
                     url="cash",
