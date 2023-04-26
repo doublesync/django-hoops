@@ -1371,4 +1371,4 @@ def check_daily_reward(request):
         # Return http response (tell them how much time is left)
         # time_left = last_reward + timedelta(days=1) - timezone.now()
         # real_time = f"{time_left.seconds // 3600}:{time_left.seconds % 3600 // 60}:{time_left.seconds % 60}"
-        return HttpResponse(f"❌ You can collect again starting at midnight!")
+        return HttpResponse(f"❌ You can collect again tomorrow!")
