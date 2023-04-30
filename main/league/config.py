@@ -427,7 +427,13 @@ archetype_primary_bonus = 10  # Primary archetypes add (+10) to the chosen attri
 archetype_secondary_bonus = 5  # Secondary archetypes add (+5) to the chosen attributes
 archetype_attribute_bonuses = {
     "Shooter": ["Mid Range Shot", "Three Point Shot", "Free Throw", "Shot Iq"],
-    "Slasher": ["Driving Layup", "Draw Foul", "Standing Dunk", "Driving Dunk"],
+    "Slasher": [
+        "Driving Layup",
+        "Draw Foul",
+        "Standing Dunk",
+        "Driving Dunk",
+        "Close Shot",
+    ],
     "Playmaker": [
         "Draw Foul",
         "Ball Control",
