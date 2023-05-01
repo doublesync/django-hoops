@@ -5,6 +5,8 @@
 {% block content %}
 
     <div class="container-fluid" style="padding: 25px;">
+        <!-- Center image -->
+        <img class="img-fluid rounded" src="{{ player.headshot }}" style="height: 125px; width: 125px; display: block; margin-left: auto; margin-right: auto;" alt="Center">
         <h2 class="text-uppercase fw-bold mb-3 mt-3" style="text-align: center;">{{ player.first_name}} {{ player.last_name}}</h2>
         <p style="text-align: center;">
             <!-- Upgrade & upgrade logs -->
@@ -186,6 +188,12 @@
                                         {% endfor %}
                                     </select>
                                 </div>
+                                <!-- Headshot -->
+                                <div class="col-md-2">
+                                    <p><b>Headshot</b></p><hr>
+                                    <input name="headshot" class="form-control mb-2" type="text" style="width: 50%;" value="{{ player.headshot }}" placeholder="{{ player.headshot }}"/>
+                                </div>
+                                <!-- End of updateables -->
                             </div>
                             <button class="btn btn-success btn-sm mt-2" type="submit" onkeydown="return event.key != 'Enter';">Update</button>
                         </form>

@@ -700,6 +700,7 @@ def update_player_vitals(request, id):
         jersey = request.POST.get("jersey")
         cyberface = request.POST.get("cyberface")
         use_game = request.POST.get("use_game")
+        headshot = request.POST.get("headshot")
         # Playstyles
         playstyle1 = request.POST.get("playstyle1")
         playstyle2 = request.POST.get("playstyle2")
@@ -730,6 +731,7 @@ def update_player_vitals(request, id):
             player.jersey_number == int(jersey)
             and player.cyberface == int(cyberface)
             and str(player.use_game_tendencies) == use_game
+            and str(player.headshot) == headshot
             and playstyle1 == db_playstyle1
             and playstyle2 == db_playstyle2
             and playstyle3 == db_playstyle3
@@ -752,6 +754,8 @@ def update_player_vitals(request, id):
                 player.use_game_tendencies = True
             else:
                 player.use_game_tendencies = False
+        if str(player.headshot) != headshot:
+            player.headshot = headshot
         # Update the player's play-styles (if changed)
         if playstyle1 != db_playstyle1 and playstyle1:
             player.statics["playstyles"]["playstyle1"] = playstyle1
