@@ -716,6 +716,7 @@ initial_tendencies = {
 initial_picks = {}
 initial_trade_offer = {}
 initial_team_logo = "https://cdn.simplystamps.com/media/catalog/product/5/8/5802-n-a-stock-stamp-hcb.png"
+initial_headshot = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
 
 # Description: Choices & labels for player forms
 
@@ -788,6 +789,18 @@ contract_benefit_choices = [
     ("No Trade Clause", "No Trade Clause"),
     ("No Cut Clause", "No Cut Clause"),
     ("No Trade Clause + No Cut Clause", "No Trade Clause + No Cut Clause"),
+]
+award_name_choices = [
+    ("MVP", "MVP"),
+    ("DPOY", "DPOY"),
+    ("MIP", "MIP"),
+    ("ROY", "ROY"),
+    ("6MOY", "6MOY"),
+    ("AH1ST", "AH1ST"),
+    ("AH2ND", "AH2ND"),
+    ("D1ST", "D1ST"),
+    ("D2ND", "D2ND"),
+    ("KOTS", "KOTS"),
 ]
 
 # Description: Categories for .html pages

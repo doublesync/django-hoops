@@ -61,6 +61,11 @@ class Player(models.Model):
     jersey_number = models.IntegerField(
         default=0, validators=[MinValueValidator(0), MaxValueValidator(99)]
     )
+    headshot = models.CharField(
+        max_length=100,
+        default=league_config.initial_headshot,
+        blank=True,
+    )
     # Archetypes & Traits
     primary_archetype = models.CharField(
         max_length=36,
@@ -207,3 +212,21 @@ class Notification(models.Model):
     date = models.DateTimeField(auto_now_add=False)
     # Relationships
     discord_user = models.ForeignKey("DiscordUser", on_delete=models.CASCADE)
+
+
+# Award Models
+class Award(models.Model):
+    # Award Model
+    name = models.CharField(
+        max_length=5,
+        choices=league_config.award_name_choices,
+        default=league_config.award_name_choices[0][0],
+    )
+    description = models.CharField(max_length=16, default="Description")
+    # Relationships
+    player = models.ForeignKey("Player", on_delete=models.CASCADE)
+    season = models.PositiveSmallIntegerField(default=1)
+
+    # Award Methods
+    def __str__(self):
+        return f"S{self.season} - {self.name} - {self.player}"
