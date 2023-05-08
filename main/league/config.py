@@ -296,14 +296,14 @@ trait_badge_unlocks = {
         "Comeback Kid",
         "Deadeye",
         "Green Machine",
-        "Guard Up",
-        "Middy Magician",
+        # "Guard Up",
+        # "Middy Magician",
         "Slippery Off Ball",
         "Space Creator",
         "Volume Shooter",
-        "Ankle Breaker",
-        "Killer Combos",
-        "Mismatch Expert",
+        # "Ankle Breaker",
+        # "Killer Combos",
+        # "Mismatch Expert",
     ],
     "3PT Shooter": [
         "Blinders",
@@ -330,7 +330,7 @@ trait_badge_unlocks = {
         "Slippery Off Ball",
         "Space Creator",
         "Volume Shooter",
-        "Ankle Breaker",
+        # "Ankle Breaker",
     ],
     "Finesse Finisher": [
         "Acrobat",
@@ -339,6 +339,7 @@ trait_badge_unlocks = {
         "Limitless Takeoff",
         "Pro Touch",
         "Slithery",
+        "Mismatch Expert",
     ],
     "Fierce Finisher": [
         "Aerial Wizard",
@@ -348,6 +349,7 @@ trait_badge_unlocks = {
         "Masher",
         "Posterizer",
         "Rise Up",
+        "Mismatch Expert",
     ],
     "Ankle Snatcher": [
         "Clamp Breaker",
@@ -409,6 +411,7 @@ trait_badge_unlocks = {
         "Killer Combos",
         "Quick First Step",
         "Unpluckable",
+        "Mismatch Expert",
     ],
     "Post-Up Conductor": [
         "Dream Shake",
@@ -421,7 +424,6 @@ trait_badge_unlocks = {
 # Description: For player archetypes
 # Description: The player is first given starting attributes of zero, thenthey are set to the starting attributes depending on position.
 # Description: Then, depending on the player's chosen archetype, archetype additions are added to the starting attributes.
-#
 
 archetype_primary_bonus = 10  # Primary archetypes add (+10) to the chosen attributes
 archetype_secondary_bonus = 5  # Secondary archetypes add (+5) to the chosen attributes

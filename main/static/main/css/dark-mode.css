@@ -1,0 +1,27 @@
+body {
+    background-color: #111;
+    color: #fff;
+}
+
+.navbar-dark {
+    background-color: #222 !important;
+}
+
+.nav-link {
+    color: #fff !important;
+}
+
+.btn-primary {
+    background-color: #007bff !important;
+    border-color: #007bff !important;
+}
+
+.btn-primary:hover {
+    background-color: #0062cc !important;
+    border-color: #005cbf !important;
+}
+
+.alert-primary {
+    background-color: #222 !important;
+    color: #fff !important;
+}
