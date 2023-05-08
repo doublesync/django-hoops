@@ -297,7 +297,7 @@ trait_badge_unlocks = {
         "Deadeye",
         "Green Machine",
         # "Guard Up",
-        # "Middy Magician",
+        "Middy Magician",
         "Slippery Off Ball",
         "Space Creator",
         "Volume Shooter",
