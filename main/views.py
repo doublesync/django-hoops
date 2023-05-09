@@ -11,6 +11,7 @@ from django.db.models import Q
 from django.db.models import Sum
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.views import View
 
 # Model imports
 from .models import Player
@@ -1376,3 +1377,10 @@ def check_daily_reward(request):
         # time_left = last_reward + timedelta(days=1) - timezone.now()
         # real_time = f"{time_left.seconds // 3600}:{time_left.seconds % 3600 // 60}:{time_left.seconds % 60}"
         return HttpResponse(f"❌ You can collect again tomorrow!")
+
+
+# Ad views
+class ad_view(View):
+    def get(self, request, *args, **kwargs):
+        line = "google.com, pub-4085265783135188, DIRECT, f08c47fec0942fa0"
+        return HttpResponse(line)

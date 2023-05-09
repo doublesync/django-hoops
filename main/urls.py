@@ -140,4 +140,6 @@ urlpatterns = [
         view=views.notifications,
         name="notifications",
     ),
+    # Ad PATHS
+    path("ads.txt", views.ad_view.as_view()),
 ]
