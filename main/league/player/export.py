@@ -285,5 +285,6 @@ def export_player(player):
     set_tendencies()
     set_statics()
     set_ignores()
+
     # Return the player's file
     return game_file

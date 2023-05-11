@@ -643,7 +643,7 @@ def add_player_cash(request):
                 # Send a webhook message
                 discord_webhooks.send_webhook(
                     url="cash",
-                    title="Cash Added",
+                    title="Cash Added" if not bypass else "Cash Added (Bypassed)",
                     message=f"**{user.discord_tag}** added **${amount}** to {player.first_name} {player.last_name}'s account.\n```{reason}```",
                 )
                 # Return the updated cash
