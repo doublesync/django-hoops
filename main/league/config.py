@@ -808,6 +808,8 @@ award_name_choices = [
     ("FMVP", "FMVP"),
     ("ASG", "ASG"),
     ("ASGMVP", "ASGMVP"),
+    ("3PTWIN", "3PTWIN"),
+    ("DUNKWIN", "DUNKWIN"),
 ]
 
 # Description: Categories for .html pages

@@ -168,6 +168,8 @@ def player(request, id):
         "FMVP": [],
         "ASG": [],
         "ASGMVP": [],
+        "3PTWIN": [],
+        "DUNKWIN": [],
     }
     for a in awards_list:
         if a.name == "KOTS":
