@@ -1,0 +1,61 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load main_filters %}
+
+{% block content %}
+
+    <div class="container-fluid" style="padding: 25px;">
+        <!-- Weight change -->
+        <div class="card">
+            <div class="card-header">
+                <h3><span class="panel-title-text">Edit Weight</span></h3>
+            </div>
+            <div class="card-body">
+                <form>
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ player.id }}">
+                    <div class="row">
+                        <div class="col-12 mb-2">
+                            <!-- Add htmx shit here to update price, or use javascript -->
+                            <b><p class="text-dark mb-0">Price:</b> <span id="confirmationPrice">${{ price_per_pound }}/lb</span></p>
+                            <b><p class="text-dark mb-0">Status:</b> <span id="physicalResult">N/A</span></p><hr class="mb-3 mt-3">
+                            <p>Hit the gym and come out a new player!</p>
+                            <input name="weight" class="form-control mb-1" type="number" required placeholder="{{ player.weight }}"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- Continue/False-Submit Button -->
+                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">
+                                Change Weight
+                            </button>
+                        </div>
+                        <!-- Confirmation Modal -->
+                        <div class="modal" id="myModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <!-- Modal header -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Confirm Purchase</h4>
+                                    </div>
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                        <p class="mb-4">Are you sure you want to continue with this <b>physical change?</b></p>
+                                    </div>
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <input type="submit" value="Purchase" id="submitButton" class="btn btn-success btn-sm" hx-post="/player/weight/check/" data-bs-dismiss="modal" hx-trigger="click" hx-target="#physicalResult" hx-swap="innerHTML" hx-include="[name='id']">
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'main/js/players/copyJSON.js' %}"></script>
+
+{% endblock %}

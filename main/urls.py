@@ -34,6 +34,11 @@ urlpatterns = [
         view=views.update_player_pending_upgrades,
         name="update_player_pending_upgrades",
     ),
+    path(
+        route="player/physicals/edit/<int:id>/",
+        view=views.edit_physicals,
+        name="edit_physicals",
+    ),
     # Player Cash PATHS
     path(route="player/cash/add/", view=views.add_player_cash, name="add_player_cash"),
     path(
@@ -133,6 +138,11 @@ urlpatterns = [
         route="player/daily/reward/",
         view=views.check_daily_reward,
         name="check_daily_reward",
+    ),
+    path(
+        route="player/weight/check/",
+        view=views.check_weight_change,
+        name="check_weight_change",
     ),
     # User PATHS
     path(

@@ -101,7 +101,7 @@
                 </div>
                 <div class="col-md-2">
                     <p><b>Weight</b></p><hr>
-                    <p>{{ player.weight }}</p>
+                    <p>{{ player.weight }} <a href="{% url 'edit_physicals' player.id %}">Edit</a></p>
                 </div>
                 <div class="col-md-2">
                     <p><b>Position</b></p><hr>

@@ -246,6 +246,7 @@ position_starting_attributes = {
 
 # Description: For attributes & badge prices
 # Work in progress!
+price_per_pound = 15
 attribute_prices = {
     "0-70": {"range": range(0, 71), "base": 40, "primary": 10, "secondary": 20},
     "71-80": {"range": range(71, 81), "base": 100, "primary": 25, "secondary": 50},

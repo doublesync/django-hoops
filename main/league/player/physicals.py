@@ -45,3 +45,35 @@ def setStartingPhysicals(player, mock=False):
         player["attributes"]["Lateral Quickness"] = player["attributes"]["Speed"]
     # Return the updated player
     return player
+
+
+def updateWeight(player, new_weight):
+    # Find the player's minimum & maximum weight
+    price_per_pound = league_config.price_per_pound
+    price = abs((player.weight - new_weight) * price_per_pound)
+    max_weight = player.weight + 20
+    min_weight = player.weight - 20
+    pos_max_weight = min_max_weights[player.primary_position]["max"]
+    pos_min_weight = min_max_weights[player.primary_position]["min"]
+    # Validate the new weight based on max_weight & min_weight
+    if new_weight == player.weight:
+        return ["❌ New weight is the same as the current weight.", None]
+    if new_weight > max_weight:
+        return ["❌ New weight is too high.", None]
+    if new_weight < min_weight:
+        return ["❌ New weight is too low.", None]
+    # Validate the new weight based on the player's position
+    if new_weight > pos_max_weight:
+        return [f"❌ New weight is too high.", None]
+    if new_weight < pos_min_weight:
+        return [f"❌ New weight is too low.", None]
+    # Validate the player has enough cash
+    if player.cash < price:
+        return ["❌ Not enough cash.", None]
+    # Change the weight
+    player.weight = new_weight
+    player.cash -= price
+    # Update the player's physicals
+    player = setStartingPhysicals(player)
+    # Return the updated player
+    return [f"✅ Weight change to {new_weight} successful!", player]

@@ -585,6 +585,26 @@ def daily_rewards(request):
     return render(request, "main/users/daily_rewards.html", context)
 
 
+def edit_physicals(request, id):
+    # Get the user
+    user = request.user
+    player = Player.objects.get(pk=id)
+    # Check if the player exists
+    if not player:
+        return HttpResponse("Sorry, this player doesn't exist!")
+    # Check if the user is the player's manager
+    if not player.discord_user == user:
+        return HttpResponse("Sorry, you don't have permission to view this page!")
+    # Create the context
+    context = {
+        "title": "Edit Physicals",
+        "player": player,
+        "price_per_pound": league_config.price_per_pound,
+    }
+    # Return the edit physicals page
+    return render(request, "main/players/edit-physicals.html", context)
+
+
 # Reloadable form views
 def add_player_cash(request):
     if request.method == "POST":
@@ -1377,6 +1397,40 @@ def check_daily_reward(request):
         # time_left = last_reward + timedelta(days=1) - timezone.now()
         # real_time = f"{time_left.seconds // 3600}:{time_left.seconds % 3600 // 60}:{time_left.seconds % 60}"
         return HttpResponse(f"❌ You can collect again tomorrow!")
+
+
+def check_weight_change(request):
+    # Get the current user
+    user = request.user
+    # Get the form data
+    id = request.POST.get("id")
+    weight = request.POST.get("weight")
+    # Get the player
+    player = Player.objects.get(id=id)
+    # Check if the player & weight exist
+    if not weight:
+        return HttpResponse("❌ Weight is required!")
+    if not player:
+        return HttpResponse("❌ Player not found!")
+    # Check if the user is the player's manager
+    if not player.discord_user == user:
+        return HttpResponse("❌ You are not the manager of this player!")
+    # Get the player's current weight
+    response = hoops_player_physicals.updateWeight(player, int(weight))
+    status = response[0]
+    player = response[1]
+    # Save the player
+    if player:
+        # Save the player
+        player.save()
+        # Send a webhook message
+        discord_webhooks.send_webhook(
+            url="upgrade",
+            title="Weight Update",
+            message=f"**{user.discord_tag}** updated {player.first_name} {player.last_name}'s weight to **{weight}lbs.**\n```📊 Acceleration: {player.attributes['Acceleration']}\n📊 Strength: {player.attributes['Strength']}```",
+        )
+    # Return the response
+    return HttpResponse(status)
 
 
 # Ad views
