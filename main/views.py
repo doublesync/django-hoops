@@ -174,7 +174,6 @@ def player(request, id):
             pass
         else:
             awards[a.name].append(f"S{a.season}")
-    print(awards)
     # If date is in the past week, add/subtract to/from week_earnings
     for t in transactions:
         if t.date > timezone.now() - datetime.timedelta(days=7):
