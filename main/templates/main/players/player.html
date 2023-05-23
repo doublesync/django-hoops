@@ -245,6 +245,85 @@
                 <p class="mb-0"><b>Contract Expires:</b> <i></i> Season {{ player.contract_ends_after }}</p>
                 <p class="mb-0"><b>Contract Option:</b> {{ player.contract_option }}</p>
                 <p class="mb-0"><b>Contract Benefits:</b> {{ player.contract_benefits }}</p>
+                <!-- Award details -->
+                <hr class="mt-3">
+                <p class="mb-0">
+                    {% if awards.MVP %}
+                        🏆 <b>MVP:</b>
+                        {% for a in awards.MVP %}
+                            {{ a }} 
+                        {% endfor %}<br>
+                    {% endif %}
+                    {% if awards.DPOY %}
+                        🔏 <b>DPOY:</b>
+                        {% for a in awards.DPOY %}
+                            {{ a }} 
+                        {% endfor %}<br>
+                    {% endif %}
+                    {% if awards.MIP %}
+                        💹 <b>MIP:</b>
+                        {% for a in awards.MIP %}
+                            {{ a }} 
+                        {% endfor %}<br>
+                    {% endif %}
+                    {% if awards.ROY %}
+                        👦 <b>ROY:</b>
+                        {% for a in awards.ROY %}
+                            {{ a }} 
+                        {% endfor %}<br>
+                    {% endif %}
+                    {% if awards.AH1ST %}
+                        🏀 <b>AH1ST:</b>
+                        {% for a in awards.AH1ST %}
+                            {{ a }} 
+                        {% endfor %}<br>
+                    {% endif %}
+                    {% if awards.AH2ND %}
+                        🏀 <b>AH2ND:</b>
+                        {% for a in awards.AH2ND %}
+                            {{ a }} 
+                        {% endfor %}<br>
+                    {% endif %}
+                    {% if awards.D1ST %}
+                        🔒 <b>D1ST:</b>
+                        {% for a in awards.D1ST %}
+                            {{ a }} 
+                        {% endfor %}<br>
+                    {% endif %}
+                    {% if awards.D2ND %}
+                        🔒 <b>D2ND:</b>
+                        {% for a in awards.D2ND %}
+                            {{ a }} 
+                        {% endfor %}<br>
+                    {% endif %}
+                    {% if awards.KOTS %}
+                        👑 <b>KOTS:</b> x{{ awards.KOTS }}<br>
+                    {% endif %}
+                    {% if awards.RING %}
+                        💍 <b>RING:</b>
+                        {% for a in awards.RING %}
+                            {{ a }} 
+                        {% endfor %}<br>
+                    {% endif %}
+                    {% if awards.FMVP %}
+                        🌟 <b>FMVP:</b>
+                        {% for a in awards.FMVP %}
+                            {{ a }} 
+                        {% endfor %}<br>
+                    {% endif %}
+                    {% if awards.ASG %}
+                        ⭐ <b>ASG:</b>
+                        {% for a in awards.ASG %}
+                            {{ a }} 
+                        {% endfor %}<br>
+                    {% endif %}
+                    {% if awards.ASGMVP %}
+                        💫 <b>ASGMVP:</b>
+                        {% for a in awards.ASGMVP %}
+                            {{ a }} 
+                        {% endfor %}<br>
+                    {% endif %}
+                </p>
             </div>
         </div>
     </div>

@@ -218,7 +218,7 @@ class Notification(models.Model):
 class Award(models.Model):
     # Award Model
     name = models.CharField(
-        max_length=5,
+        max_length=6,
         choices=league_config.award_name_choices,
         default=league_config.award_name_choices[0][0],
     )

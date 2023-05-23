@@ -21,6 +21,7 @@ from .models import Transaction
 from .models import TradeOffer
 from .models import DiscordUser
 from .models import Notification
+from .models import Award
 
 # Form imports
 from .forms import PlayerForm
@@ -149,6 +150,31 @@ def player(request, id):
     # Get transaction history & total earnings in past week (cash_taken, cash_given, paycheck)
     transactions = Transaction.objects.filter(player=plr)
     week_earnings = 0
+    # Get awards for the player
+    awards_list = Award.objects.filter(player=plr)
+    # Get count of KOTS awrds
+    awards = {
+        "MVP": [],
+        "DPOY": [],
+        "ROY": [],
+        "6MOY": [],
+        "MIP": [],
+        "AH1ST": [],
+        "AH2ND": [],
+        "D1ST": [],
+        "D2ND": [],
+        "KOTS": awards_list.filter(name="KOTS").count(),
+        "RING": [],
+        "FMVP": [],
+        "ASG": [],
+        "ASGMVP": [],
+    }
+    for a in awards_list:
+        if a.name == "KOTS":
+            pass
+        else:
+            awards[a.name].append(f"S{a.season}")
+    print(awards)
     # If date is in the past week, add/subtract to/from week_earnings
     for t in transactions:
         if t.date > timezone.now() - datetime.timedelta(days=7):
@@ -191,6 +217,8 @@ def player(request, id):
             league_config.playstyles[plr.statics["playstyles"]["playstyle4"]],
             plr.statics["playstyles"]["playstyle4"],
         ],
+        # Awards
+        "awards": awards,
         # Precalled methods
         "height_in_feet": hoops_extra_convert.convert_to_height(plr.height),
         "file": json.dumps(hoops_player_export.export_player(plr), indent=4),

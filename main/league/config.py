@@ -804,6 +804,10 @@ award_name_choices = [
     ("D1ST", "D1ST"),
     ("D2ND", "D2ND"),
     ("KOTS", "KOTS"),
+    ("RING", "RING"),
+    ("FMVP", "FMVP"),
+    ("ASG", "ASG"),
+    ("ASGMVP", "ASGMVP"),
 ]
 
 # Description: Categories for .html pages
