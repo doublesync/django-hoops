@@ -3,7 +3,6 @@ from .league import config as league_config
 
 
 class PlayerForm(forms.Form):
-
     first_name = forms.CharField(label="First Name", max_length=16)
     last_name = forms.CharField(label="Last Name", max_length=16)
     cyberface = forms.IntegerField(label="Cyberface", min_value=0, max_value=40000)
@@ -34,6 +33,7 @@ class PlayerForm(forms.Form):
     trait_two = forms.ChoiceField(
         label="Trait Two", choices=league_config.trait_choices
     )
+    referral_code = forms.IntegerField(label="Referral Code", required=False)
 
 
 class UpgradeForm(forms.Form):

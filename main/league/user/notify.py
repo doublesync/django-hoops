@@ -4,5 +4,5 @@ from ...models import Notification
 
 
 def notify(user, message):
-    notification = Notification(user=user, message=message, date=timezone.now())
+    notification = Notification(discord_user=user, message=message, date=timezone.now())
     notification.save()

@@ -292,6 +292,7 @@ def upgrade_player(request, id):
 def create_player(request):
     # Collect user & player information
     user = request.user
+    referral_code = request.GET.get("referral_code")
     # Process the request (if it's a POST request)
     if request.method == "POST":
         form = PlayerForm(request.POST)
@@ -303,6 +304,8 @@ def create_player(request):
             status = response[1]
             # If the form is valid, and the player creation succeeded, redirect to the player page
             if success == True:
+                # Get referral code & player object
+                referral_code = form.cleaned_data["referral_code"]
                 playerObject = hoops_player_create.createPlayer(user, form.cleaned_data)
                 # Create a discord webhook
                 discord_webhooks.send_webhook(
@@ -310,6 +313,20 @@ def create_player(request):
                     title="Player Creation",
                     message=f"**{playerObject.first_name} {playerObject.last_name}** has been created. [View profile?](https://hoopsim.com/player/{playerObject.id})",
                 )
+                # Check referral code validity, reward player
+                if referral_code:
+                    refPlayer = Player.objects.get(pk=int(referral_code))
+                    if refPlayer:
+                        # Add cash to the player
+                        refPlayer.cash += league_config.referral_bonus
+                        playerObject.cash += league_config.referral_bonus
+                        refPlayer.save()
+                        playerObject.save()
+                        # Send & save the notification
+                        hoops_user_notify.notify(
+                            user=refPlayer.discord_user,
+                            message=f"{refPlayer.first_name} {refPlayer.last_name} received ${league_config.referral_bonus} for referring {playerObject.first_name} {playerObject.last_name} to the league!",
+                        )
                 # Redirect to the player page
                 messages.success(request, "Player created successfully!")
                 return redirect(player, id=playerObject.id)

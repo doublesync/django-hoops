@@ -19,6 +19,8 @@ max_tendency = 100
 player_weight_min = 150
 player_weight_max = 270
 
+referral_bonus = 100
+
 # Description: For league related model fields
 max_contract_season = 3
 
