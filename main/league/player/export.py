@@ -154,7 +154,13 @@ mod_tools_badges = {
     "REBOUND_CHASER": "0",
 }
 
-ignore_tendencies = ["TOUCHES_TENDENCY"]
+# Tendencies that are not added to the player's export file (same as banned_tendencies kinda)
+ignore_tendencies = ["TOUCHES_TENDENCY", "BLOCK_TENDENCY", "ON-BALL_STEAL_TENDENCY"]
+# Tendencies that are based upon the player's attribute values
+related_tendencies = [
+    ["Block", "BLOCK_TENDENCY"],
+    ["Steal", "ON-BALL_STEAL_TENDENCY"],
+]
 
 # Cases that don't follow the standard format, need to be manually formatted
 attribute_formatting_cases = {
@@ -277,6 +283,14 @@ def export_player(player):
             if tendency in game_file[4]["data"]:
                 del game_file[4]["data"][tendency]
 
+    # Set the player's related tendencies
+    def set_related():
+        # Define some variables
+        for set in related_tendencies:
+            related_attribute = database_attributes[set[0]]
+            related_tendency = set[1]
+            game_file[4]["data"][related_tendency] = str(related_attribute)
+
     # Call the sub functions
     set_vitals()
     set_attributes()
@@ -285,6 +299,7 @@ def export_player(player):
     set_tendencies()
     set_statics()
     set_ignores()
+    set_related()
 
     # Return the player's file
     return game_file
