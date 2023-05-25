@@ -106,7 +106,9 @@ class Player(models.Model):
         default=league_config.contract_benefit_choices[0][0],
     )
     # Relationships
-    discord_user = models.ForeignKey("DiscordUser", on_delete=models.CASCADE)
+    discord_user = models.ForeignKey(
+        "DiscordUser", blank=True, null=True, on_delete=models.CASCADE
+    )
     current_team = models.ForeignKey(
         "Team", blank=True, null=True, on_delete=models.CASCADE
     )
@@ -143,7 +145,9 @@ class Team(models.Model):
     )
     plays_in_main_league = models.BooleanField(default=True)
     # Relationships
-    manager = models.ForeignKey("DiscordUser", on_delete=models.CASCADE)
+    manager = models.ForeignKey(
+        "DiscordUser", blank=True, null=True, on_delete=models.CASCADE
+    )
     history_list = models.ForeignKey("HistoryList", on_delete=models.CASCADE)
 
     # Team Methods
