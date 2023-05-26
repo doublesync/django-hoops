@@ -20,6 +20,9 @@
                     <th scope="col">Spent</th>
                     <th scope="col">Height</th>
                     <th scope="col">Weight</th>
+                    <th scope="col">Expires</th>
+                    <th scope="col">Benefits</th>
+                    <th scope="col">Option/s</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,6 +34,9 @@
                         <td>${{ player.spent }}</td>
                         <td>{{ player.height|americanheight }}</td>
                         <td>{{ player.weight }}</td>
+                        <td>{{ player.contract_ends_after }}</td>
+                        <td>{{ player.contract_benefits }}</td>
+                        <td>{{ player.contract_option }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
