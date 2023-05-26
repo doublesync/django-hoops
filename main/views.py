@@ -1561,6 +1561,7 @@ def check_free_agent_search(request):
                 | Q(trait_one__icontains=search)
                 | Q(trait_two__icontains=search)
                 | Q(contract_option__icontains=search)
+                | Q(primary_position__icontains=search)
             )
             # Check if there were any players found
             if not results:
