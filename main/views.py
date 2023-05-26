@@ -362,7 +362,6 @@ def free_agents(request):
     free_agent_players = Player.objects.filter(
         Q(current_team=None) | Q(contract_ends_after=league_config.current_season)
     ).order_by("-spent")
-    context["free_agents"] = free_agent_players
     # Paginate the league players
     paginator = Paginator(free_agent_players, 10)
     page_number = request.GET.get("page")
