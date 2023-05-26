@@ -1495,6 +1495,35 @@ def check_weight_change(request):
     return HttpResponse(status)
 
 
+def check_free_agent_search(request):
+    if request.method == "POST":
+        search = request.POST.get("search")
+        if search:
+            # Check for players based on first and last name
+            results = Player.objects.filter(
+                Q(first_name__icontains=search)
+                | Q(last_name__icontains=search)
+                | Q(discord_user__discord_tag__icontains=search)
+                | Q(current_team__name__icontains=search)
+                | Q(primary_archetype__icontains=search)
+                | Q(secondary_archetype__icontains=search)
+                | Q(trait_one__icontains=search)
+                | Q(trait_two__icontains=search)
+                | Q(contract_option__icontains=search)
+            )
+            # Check if there were any players found
+            if not results:
+                return HttpResponse("<p class='text-danger'>No results found!</p>")
+            # Render the player list fragment to string
+            html = render_to_string(
+                "main/ajax/free_agent_list_fragment.html", {"page": results}
+            )
+            # Return the player list fragment
+            return HttpResponse(html)
+    else:
+        return HttpResponse("Invalid request!")
+
+
 # Ad views
 class ad_view(View):
     def get(self, request, *args, **kwargs):

@@ -1,0 +1,31 @@
+{% load main_filters %}
+{% for player in page %}
+    <tr>
+        <!-- User, name & age -->
+        <td style="text-transform: capitalize;"><a style="text-decoration: none;">{{ player.discord_user.discord_tag }}</a></td>
+        <td>{{ player.years_played|getage }}</td>
+        <td style="text-transform: capitalize;"><a style="text-decoration: none;" href="{% url 'player' player.id %}">{{ player.first_name }} {{ player.last_name }}</a></td>
+        <!-- Contract option shit -->
+        {% if player.contract_option == 'No Option' %}
+            <td class="fw-bold text-success" style="text-transform: capitalize;">UFA</td>
+        {% elif player.contract_option == 'Restricted Free Agent' %}
+            <td class="fw-bold text-danger" style="text-transform: capitalize;">RFA</td>
+        {% elif player.contract_option == 'Team Option' %}
+            <td class="fw-bold text-dark" style="text-transform: capitalize;">TO</td>
+        {% elif player.contract_option == 'Player Option' %}
+            <td class="fw-bold text-dark" style="text-transform: capitalize;">PO</td>
+        {% else %}
+            <td class="fw-bold text-dark" style="text-transform: capitalize;">{{ player.contract_option }}</td>
+        {% endif %}
+        <!-- Other important details -->
+        <td>{{ player.spent }}</td>
+        <td style="text-transform: capitalize;">{{ player.current_team }}</td>
+        <td>{{ player.salary }}</td>
+        <td>{{ player.height|americanheight }}</td>
+        <td>{{ player.weight }}</td>
+        <td>{{ player.primary_archetype }}</td>
+        <td>{{ player.secondary_archetype }}</td>
+        <td>{{ player.trait_one }}</td>
+        <td>{{ player.trait_two }}</td>
+    </tr>
+{% endfor %}

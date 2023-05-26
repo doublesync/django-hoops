@@ -145,6 +145,11 @@ urlpatterns = [
         view=views.check_weight_change,
         name="check_weight_change",
     ),
+    path(
+        route="players/free-agents/search/",
+        view=views.check_free_agent_search,
+        name="check_free_agent_search",
+    ),
     # User PATHS
     path(
         route="user/notifications/<int:id>/",
