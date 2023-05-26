@@ -1501,7 +1501,9 @@ def check_free_agent_search(request):
         if search:
             # Check for players based on first and last name
             results = Player.objects.filter(
-                Q(first_name__icontains=search)
+                Q(current_team=None) 
+                | Q(contract_ends_after=league_config.current_season)
+                | Q(first_name__icontains=search)
                 | Q(last_name__icontains=search)
                 | Q(discord_user__discord_tag__icontains=search)
                 | Q(current_team__name__icontains=search)
@@ -1510,7 +1512,7 @@ def check_free_agent_search(request):
                 | Q(trait_one__icontains=search)
                 | Q(trait_two__icontains=search)
                 | Q(contract_option__icontains=search)
-            )
+            ).order_by("-spent")
             # Check if there were any players found
             if not results:
                 return HttpResponse("<p class='text-danger'>No results found!</p>")
