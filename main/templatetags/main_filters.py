@@ -32,3 +32,8 @@ def get_value(obj, key):
 @register.filter(name="americanheight")
 def american_height(value):
     return league_converters.convert_to_height(value)
+
+
+@register.filter(name="getage")
+def get_age(value):
+    return league_converters.format_years_played(value)

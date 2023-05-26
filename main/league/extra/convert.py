@@ -1,9 +1,18 @@
 import copy
 
+from ..player import export as hoops_player_export
+
 game_friendly = lambda a: (a - 25) * 3
 user_friendly = lambda a: (a / 3) + 25
 
 convert_to_height = lambda x: str(int(x // 12)) + "'" + str(int(x % 12))
+convert_to_age = lambda x: str(2023 - x)
+
+
+def format_years_played(years_played):
+    format_age = hoops_player_export.format_age[0]
+    birth_year = format_age[int(years_played)]
+    return convert_to_age(int(birth_year))
 
 
 def format_dict_for_django_forms(dictionary):
