@@ -39,6 +39,7 @@ urlpatterns = [
         view=views.edit_physicals,
         name="edit_physicals",
     ),
+    path(route="players/free-agents/", view=views.free_agents, name="free_agents"),
     # Player Cash PATHS
     path(route="player/cash/add/", view=views.add_player_cash, name="add_player_cash"),
     path(
