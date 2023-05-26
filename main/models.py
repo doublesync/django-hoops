@@ -25,6 +25,8 @@ class DiscordUser(models.Model):
     # Permissions
     can_update_players = models.BooleanField(default=False)
     can_approve_trades = models.BooleanField(default=False)
+    # Player Slots
+    player_slots = models.SmallIntegerField(default=league_config.max_players)
 
     # Discord User Methods
     def is_authenticated(self, request):

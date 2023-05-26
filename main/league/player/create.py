@@ -21,7 +21,7 @@ def playerCount(user):
 
 def validatePlayerCreation(user, formData):
     # Check if the user has reached the max number of players
-    if playerCount(user) >= max_players:
+    if playerCount(user) >= user.player_slots:
         return [False, "❌ You have reached the max number of players."]
     # Check if the user is trying to make a player with a height or weight that is not allowed (primary position)
     if (int(formData["height"])) < (

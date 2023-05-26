@@ -7,23 +7,29 @@
             <div class="col-12 col-md-4 offset-md-4">
                 <div class="card">
                     <div class="card-header">
-                        <h3><span class="panel-title-text">Redeem Coupon</span></h3>
+                        <h3><span class="panel-title-text">Redeem Coupons & License Keys</span></h3>
                     </div>
                     <div class="card-body">
                         <form>
                             {% csrf_token %}
                             <div class="row">
-                                <b><p id="coupon-result" class="mt-1" style="font-size:12px;">Enter a coupon code to receive prizes!</p></b>
+                                <b><p id="coupon-result" class="mt-1" style="font-size:12px;">Enter coupon or key to receive prizes!</p></b>
                                 <div class="col-7">
                                     <!-- Add a select for player_list that shows all players -->
                                     <select class="form-select mb-2" name="id">
                                         {% for player in player_list %}
-                                            <option value="{{ player.id }}">{{ player.first_name }} {{ player.last_name }}</option>
+                                        <option value="{{ player.id }}">{{ player.first_name }} {{ player.last_name }}</option>
                                         {% endfor %}
                                     </select>
                                     <!-- Text area for coupon codes -->
                                     <div class="form-group mb-3">
-                                        <input id="coupon" name="coupon" class="form-control" type="text" required placeholder="Enter coupon code" />
+                                        <input id="coupon" name="coupon" class="form-control" type="text" required placeholder="coupon/key" />
+                                    </div>
+                                    <!-- Is license key -->
+                                    <div class="mt-0 mb-3">
+                                        <!-- Make checkbox -->
+                                        <input type="checkbox" id="is_license_key" name="is_license_key" value="True">
+                                        <label for="is_license_key">Redeem as license key?</label>
                                     </div>
                                 </div>
                             </div>

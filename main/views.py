@@ -35,7 +35,9 @@ from .league import config as league_config
 # Custom packages
 import copy
 import json
+import requests
 import datetime
+from requests.structures import CaseInsensitiveDict
 from datetime import timedelta
 
 from .league.player import upgrade as hoops_player_upgrade
@@ -919,13 +921,57 @@ def check_team_search(request):
 def check_coupon_code(request):
     if request.method == "POST":
         # Get ID & coupon code
+        user = request.user
         id = int(request.POST.get("id"))
-        code = request.POST.get("coupon")
+        code = request.POST.get("coupon").strip(" ")
+        is_license_key = request.POST.get("is_license_key")
         coupon = Coupon.objects.filter(code=code).first()
+        gumroad_url = "https://api.gumroad.com/v2/licenses/verify"
+        # Check if license key
+        if is_license_key == "True":
+            # Make a request to gumroad and check license key
+            headers = CaseInsensitiveDict()
+            headers["Content-Type"] = "application/x-www-form-urlencoded"
+            data = f"product_id=3ftUNsQh1naLCWNb2X73iA==&license_key={code}"
+            resp = requests.post(gumroad_url, headers=headers, data=data)
+            resp_json = resp.json()
+            uses = resp_json["uses"]
+            # Check if license key is valid
+            if uses > 1:
+                # If the license key has been used already
+                return HttpResponse(
+                    "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>License key has already been used!</p>"
+                )
+            else:
+                # If the user already has an extra player slot
+                if user.player_slots > (league_config.max_players + 1):
+                    return HttpResponse(
+                        "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>You cannot buy more than one extra player slot.</p>"
+                    )
+                else:
+                    # Add the extra player slot
+                    user.player_slots += 1
+                    user.save()
+                    # Send a webhook message
+                    discord_webhooks.send_webhook(
+                        url="coupon",
+                        title="License Key Redeemed",
+                        message=f"**{user.discord_tag}** added a player slot.\n```License Key: {code}```",
+                    )
+                    # Send a notification
+                    hoops_user_notify.notify(
+                        user=user,
+                        message="You have successfully added a player slot.",
+                    )
+                    # Return the success message
+                    return HttpResponse(
+                        "<p id='coupon-result' class='mt-2 text-success' style='font-size:12px;'>License key successfully redeemed!</p>"
+                    )
         # Check if ID & coupon exist
         if not id or not coupon:
+            # If the license key is not valid
             return HttpResponse(
-                "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>Invalid coupon code or identity!</p>"
+                "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>Invalid coupon code, license key or identity!</p>"
             )
         # Get user & player
         user = request.user
