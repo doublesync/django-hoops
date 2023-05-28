@@ -10,9 +10,9 @@
     <hr>
     <div class="mt-2 row">
         <!-- Discord IFrame -->
-        <div class="col-md-6 col-xl-3 mb-4">
+        <!-- <div class="col-md-6 col-xl-3 mb-4">
             <iframe src="https://discord.com/widget?id=1090416489766588499&theme=dark" height="400" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-        </div>
+        </div> -->
         <!-- Save Files -->
         <div class="col-md-6 col-xl-3 mb-4">
             <div class="card shadow border-start-primary py-2" style="height: 400px;">
@@ -20,9 +20,9 @@
                     <div class="row align-items-center no-gutters">
                         <div class="col me-2">
                             <div class="text-uppercase text-primary fw-bold text-xs mb-1">
-                                <span class="text-dark" style="font-size: 12px;">CAREERS</span>
+                                <span class="text-white" style="font-size: 12px;">CAREERS</span>
                             </div><hr>
-                            <div class="text-dark h5 mb-0" style="margin-top: -6px;">
+                            <div class="text-white h5 mb-0" style="margin-top: -6px;">
                                 {% if players %}
                                     {% for player in players %}
                                         <svg class="bi bi-person mr-0" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
@@ -78,9 +78,9 @@
                     <div class="row align-items-center no-gutters">
                         <div class="col me-2">
                             <div class="text-uppercase text-primary fw-bold text-xs mb-1">
-                                <span class="text-dark" style="font-size: 12px;">LEAGUE</span>
+                                <span class="text-white" style="font-size: 12px;">LEAGUE</span>
                             </div><hr>
-                            <div class="text-dark h5 mb-0" style="margin-top: -6px;">
+                            <div class="text-white h5 mb-0" style="margin-top: -6px;">
                                 <svg class="bi bi-people" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
                                     <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"></path>
                                 </svg>
@@ -124,9 +124,9 @@
                     <div class="row align-items-center no-gutters">
                         <div class="col me-2">
                             <div class="text-uppercase text-primary fw-bold text-xs mb-1">
-                                <span class="text-dark" style="font-size: 12px;">DOCS</span>
+                                <span class="text-white" style="font-size: 12px;">DOCS</span>
                             </div><hr>
-                            <div class="text-dark h5 mb-0" style="margin-top: -6px;">
+                            <div class="text-white h5 mb-0" style="margin-top: -6px;">
                                 <svg class="bi bi-activity" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" style="font-size: 15px;">
                                     <path fill-rule="evenodd" d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z"></path>
                                 </svg>
@@ -152,9 +152,9 @@
                     <div class="row align-items-center no-gutters">
                         <div class="col me-2">
                             <div class="text-uppercase text-primary fw-bold text-xs mb-1">
-                                <span class="text-dark" style="font-size: 12px;">Permissions</span>
+                                <span class="text-white" style="font-size: 12px;">Permissions</span>
                             </div><hr>
-                            <div class="text-dark h5 mb-0" style="margin-top: -6px;">
+                            <div class="text-white h5 mb-0" style="margin-top: -6px;">
                                 {% if current_user.can_update_players %}
                                     <a class="fw-bold"href="{% url 'upgrades_pending' %}" style="font-size: 10px; text-decoration: none;">Export Pending Upgrades</a><br>
                                 {% endif %}
