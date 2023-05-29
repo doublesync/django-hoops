@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="{% static 'main/fonts/ionicons.min.css' %}">
         <link rel="stylesheet" href="{% static 'main/css/Navbar-Right-Links-Dark-icons.css' %}">
         <link rel="stylesheet" href="{% static 'main/css/home-styles.css' %}">
-        <!-- <link rel="stylesheet" href="{% static 'main/css/dark-mode.css' %}"> -->
+        <link rel="stylesheet" href="{% static 'main/css/dark-mode.css' %}">
         <!-- Scripts -->
         <script src="{% static 'main/bootstrap/js/bootstrap.min.js' %}"></script>
         <!-- Dark mode css variant -->
@@ -24,17 +24,17 @@
     </head>
     <body>
         <nav class="navbar navbar-dark navbar-expand-md bg-dark py-3">
-            <div class="container"><a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}"><img class="rounded-circle" src="https://i.imgur.com/R9zJu3s.png" style="height:30px; width:30px; margin-right: 5px;"></i></span><span style="color: white !important;">HOOPSIM </span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-5"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="container"><a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}"><img class="rounded-circle" src="https://i.imgur.com/R9zJu3s.png" style="height:30px; width:30px; margin-right: 5px;"></i></span><span style="color: white ;">HOOPSIM </span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-5"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navcol-5">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a style="color: white !important;" class="nav-link" href="/">Home</a></li>
-                        <li class="nav-item"><a style="color: white !important;" class="nav-link" href="/players">Players</a></li>
-                        <li class="nav-item"><a style="color: white !important;" class="nav-link" href="/teams">Teams</a></li>
+                        <li class="nav-item"><a style="color: white ;" class="nav-link" href="/">Home</a></li>
+                        <li class="nav-item"><a style="color: white ;" class="nav-link" href="/players">Players</a></li>
+                        <li class="nav-item"><a style="color: white ;" class="nav-link" href="/teams">Teams</a></li>
                     </ul>
                     {% if current_user.is_authenticated != False %}
-                        <a style="color: white !important;" class="btn btn-primary btn-sm ms-md-2" role="button" href="/logout">Logout</a>
+                        <a style="color: white ;" class="btn btn-primary btn-sm ms-md-2" role="button" href="/logout">Logout</a>
                     {% else %}
-                        <a style="color: white !important;" class="btn btn-primary btn-sm ms-md-2" role="button" href="/login/discord">Login</a>
+                        <a style="color: white ;" class="btn btn-primary btn-sm ms-md-2" role="button" href="/login/discord">Login</a>
                     {% endif %}
                 </div>
             </div>
