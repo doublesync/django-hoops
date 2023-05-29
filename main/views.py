@@ -1511,9 +1511,6 @@ def check_daily_reward(request):
     # Get the last date the daily rewards were given out
     last_reward = user.last_reward
     rewards_given = ""
-    # Do not let people who have auto collect collect
-    if user.auto_collect_rewards:
-        return HttpResponse("❌ You have auto collect rewards enabled!")
     # If the daily rewards haven't been given out today, give them out
     # Instead of checking if it's been 24 hours, check if the day is different
     if not last_reward or timezone.now().day != last_reward.day:
