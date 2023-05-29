@@ -3,11 +3,12 @@
 
  {% block content %}
     <div class="container mt-5">
-        <div class="row .payment-dialog-row">
-            <div class="col-12 col-md-4 offset-md-4">
+        <div class="row">
+            <!-- Redeem Coupons -->
+            <div class="col-12 mb-1">
                 <div class="card">
                     <div class="card-header">
-                        <h3><span class="panel-title-text">Redeem Coupons & License Keys</span></h3>
+                        <h3><span class="panel-title-text">Coupons</span></h3>
                     </div>
                     <div class="card-body">
                         <form>
@@ -23,18 +24,37 @@
                                     </select>
                                     <!-- Text area for coupon codes -->
                                     <div class="form-group mb-3">
-                                        <input id="coupon" name="coupon" class="form-control" type="text" required placeholder="coupon/key" />
-                                    </div>
-                                    <!-- Is license key -->
-                                    <div class="mt-0 mb-3">
-                                        <!-- Make checkbox -->
-                                        <input type="checkbox" id="is_license_key" name="is_license_key" value="True">
-                                        <label for="is_license_key">Redeem as license key?</label>
+                                        <input id="coupon" name="coupon" class="form-control" type="text" required placeholder="Enter coupon code" />
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12"><button class="btn btn-success btn-lg d-block w-100" type="submit" hx-post="/coupons/redeem/" hx-trigger="click delay:200ms" hx-target="#coupon-result" hx-swap="outerHTML" onkeydown="return event.key != 'Enter';">Redeem</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Redeem License Keys -->
+            <div class="col-12 mt-1">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><span class="panel-title-text">License Keys</span></h3>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            {% csrf_token %}
+                            <div class="row">
+                                <b><p id="key-result" class="mt-1" style="font-size:12px;">Enter coupon or key to receive prizes!</p></b>
+                                <div class="col-7">
+                                    <!-- Text area for coupon codes -->
+                                    <div class="form-group mb-3">
+                                        <input id="key" name="key" class="form-control" type="text" required placeholder="Enter license key" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12"><button class="btn btn-success btn-lg d-block w-100" type="submit" hx-post="/keys/redeem/" hx-trigger="click delay:200ms" hx-target="#key-result" hx-swap="outerHTML" onkeydown="return event.key != 'Enter';">Redeem</button></div>
                             </div>
                         </form>
                     </div>

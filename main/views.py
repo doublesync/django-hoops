@@ -924,80 +924,7 @@ def check_coupon_code(request):
         user = request.user
         id = int(request.POST.get("id"))
         code = request.POST.get("coupon").strip(" ")
-        is_license_key = request.POST.get("is_license_key")
         coupon = Coupon.objects.filter(code=code).first()
-        gumroad_url = "https://api.gumroad.com/v2/licenses/verify"
-        # Check if license key
-        if is_license_key == "True":
-            # Make a request to gumroad and check license key
-            headers = CaseInsensitiveDict()
-            headers["Content-Type"] = "application/x-www-form-urlencoded"
-            player_slot_data = f"product_id=3ftUNsQh1naLCWNb2X73iA==&license_key={code}"
-            auto_collect_data = f"product_id=R8hRyQPvEYXVWHKzkSdGOQ==&license_key={code}"
-            product_datas = [player_slot_data, auto_collect_data]
-            current_data = player_slot_data
-            # Check if the license key is valid for each product
-            for data in product_datas:
-                current_data = data
-                resp = requests.post(gumroad_url, headers=headers, data=data)
-                # Check if status code is valid
-                if resp.status_code != 200:
-                    continue
-                else:
-                    resp_json = resp.json()
-                    uses = resp_json["uses"]
-                    if uses > 1:
-                        return HttpResponse(
-                            "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>License key already used!</p>"
-                        )
-                # If everything is fine, break the loop
-                break
-            # Check which product is being redeemed
-            if current_data == player_slot_data:
-                if user.player_slots > league_config.max_players:
-                    return HttpResponse(
-                        "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>You cannot buy more than one extra player slot.</p>"
-                    )
-                else:
-                    # Give the user rewards
-                    user.player_slots += 1
-                    user.save()
-                    # Send success messages
-                    discord_webhooks.send_webhook(
-                        url="coupon",
-                        title="License Key Redeemed",
-                        message=f"**{user.discord_tag}** added a player slot.\n```License Key: {code}```",
-                    )
-                    hoops_user_notify.notify(
-                        user=user,
-                        message="You have successfully added a player slot.",
-                    )
-                    return HttpResponse(
-                        "<p id='coupon-result' class='mt-2 text-success' style='font-size:12px;'>License key successfully redeemed!</p>"
-                    )
-            elif current_data == auto_collect_data:
-                # Give the user rewards
-                user.auto_collect_rewards = True
-                user.save()
-                # Send success messages
-                discord_webhooks.send_webhook(
-                    url="coupon",
-                    title="License Key Redeemed",
-                    message=f"**{user.discord_tag}** added auto collect rewards.\n```License Key: {code}```",
-                )
-                hoops_user_notify.notify(
-                    user=user,
-                    message="You have successfully added auto collect rewards.",
-                )
-                return HttpResponse(
-                    "<p id='coupon-result' class='mt-2 text-success' style='font-size:12px;'>License key successfully redeemed!</p>"
-                )
-            else:
-                print("CD:", current_data)
-                # If the license key is not valid at all
-                return HttpResponse(
-                    "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>Invalid license key!</p>"
-                )
         # Check if ID & coupon exist
         if not id or not coupon:
             # If the license key is not valid
@@ -1044,6 +971,83 @@ def check_coupon_code(request):
         # Return the success message
         return HttpResponse(
             "<p id='coupon-result' class='mt-2 text-success' style='font-size:12px;'>Coupon code successfully redeemed!</p>"
+        )
+
+
+def check_license_key(request):
+    # Get some form data
+    user = request.user
+    code = request.POST.get("key").strip(" ")
+    # Make a request to gumroad and check license key
+    gumroad_url = "https://api.gumroad.com/v2/licenses/verify"
+    headers = CaseInsensitiveDict()
+    headers["Content-Type"] = "application/x-www-form-urlencoded"
+    player_slot_data = f"product_id=3ftUNsQh1naLCWNb2X73iA==&license_key={code}"
+    auto_collect_data = f"product_id=R8hRyQPvEYXVWHKzkSdGOQ==&license_key={code}"
+    product_datas = [player_slot_data, auto_collect_data]
+    current_data = player_slot_data
+    has_valid_key = False
+    # Check if the license key is valid for each product
+    for data in product_datas:
+        current_data = data
+        resp = requests.post(gumroad_url, headers=headers, data=data)
+        # Check if status code is valid
+        if resp.status_code != 200:
+            continue
+        else:
+            resp_json = resp.json()
+            uses = resp_json["uses"]
+            if uses > 1:
+                return HttpResponse(
+                    "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>License key already used!</p>"
+                )
+            else:
+                has_valid_key = True
+                break
+    # Check if they have a valid key
+    if not has_valid_key:
+        return HttpResponse(
+            "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>Invalid license key!</p>"
+        )
+    # Check which product is being redeemed
+    if current_data == player_slot_data:
+        if user.player_slots > league_config.max_players:
+            return HttpResponse(
+                "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>You cannot buy more than one extra player slot.</p>"
+            )
+        else:
+            # Give the user rewards
+            user.player_slots += 1
+            user.save()
+            # Send success messages
+            discord_webhooks.send_webhook(
+                url="coupon",
+                title="License Key Redeemed",
+                message=f"**{user.discord_tag}** added a player slot.\n```License Key: {code}```",
+            )
+            hoops_user_notify.notify(
+                user=user,
+                message="You have successfully added a player slot.",
+            )
+            return HttpResponse(
+                "<p id='coupon-result' class='mt-2 text-success' style='font-size:12px;'>License key successfully redeemed!</p>"
+            )
+    elif current_data == auto_collect_data:
+        # Give the user rewards
+        user.auto_collect_rewards = True
+        user.save()
+        # Send success messages
+        discord_webhooks.send_webhook(
+            url="coupon",
+            title="License Key Redeemed",
+            message=f"**{user.discord_tag}** added auto collect rewards.\n```License Key: {code}```",
+        )
+        hoops_user_notify.notify(
+            user=user,
+            message="You have successfully added auto collect rewards.",
+        )
+        return HttpResponse(
+            "<p id='coupon-result' class='mt-2 text-success' style='font-size:12px;'>License key successfully redeemed!</p>"
         )
 
 

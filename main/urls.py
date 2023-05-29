@@ -91,6 +91,9 @@ urlpatterns = [
         route="coupons/redeem/", view=views.check_coupon_code, name="check_coupon_code"
     ),
     path(
+        route="keys/redeem/", view=views.check_license_key, name="check_license_key"
+    ),
+    path(
         route="players/attributes/",
         view=views.check_starting_attributes,
         name="check_starting_attributes",
