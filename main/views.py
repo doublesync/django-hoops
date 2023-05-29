@@ -952,10 +952,8 @@ def check_coupon_code(request):
                             "<p id='coupon-result' class='mt-2 text-danger' style='font-size:12px;'>License key already used!</p>"
                         )
                 # If everything is fine, break the loop
-                had_valid_code = True
-                print("CD:", current_data)
                 break
-            # Check which product is being used
+            # Check which product is being redeemed
             if current_data == player_slot_data:
                 if user.player_slots > league_config.max_players:
                     return HttpResponse(
