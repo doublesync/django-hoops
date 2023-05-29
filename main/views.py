@@ -936,7 +936,6 @@ def check_coupon_code(request):
             auto_collect_data = f"product_id=R8hRyQPvEYXVWHKzkSdGOQ==&license_key={code}"
             product_datas = [player_slot_data, auto_collect_data]
             current_data = player_slot_data
-            had_valid_code = False
             # Check if the license key is valid for each product
             for data in product_datas:
                 current_data = data
