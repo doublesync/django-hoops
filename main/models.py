@@ -211,10 +211,12 @@ class ContractOffer(models.Model):
         choices=league_config.contract_benefit_choices,
         default=league_config.contract_benefit_choices[0][0],
     )
-    accepted = models.BooleanField(default=False)
+    notes = models.CharField(max_length=100, blank=True, null=True, default="No notes.")
     # Relationships
     team = models.ForeignKey("Team", on_delete=models.CASCADE)
     player = models.ForeignKey("Player", on_delete=models.CASCADE)
+    # Boolean Fields
+    accepted = models.BooleanField(default=False)
 
     # Contract Offer Methods
     def __str__(self):

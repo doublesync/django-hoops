@@ -1623,6 +1623,7 @@ def check_contract_offer(request):
     salary = request.POST.get("salary")
     option = request.POST.get("option")
     benefits = request.POST.get("benefits")
+    notes = request.POST.get("notes")
     # Check if the user is a manager
     if not team:
         return HttpResponse("❌ You are not a manager!")
@@ -1640,6 +1641,7 @@ def check_contract_offer(request):
             salary=int(salary),
             option=option,
             benefits=benefits,
+            notes=notes,
         )
         return HttpResponse(response)
 
@@ -1666,6 +1668,7 @@ def check_contract_revoke(request):
             return HttpResponse("✅ Contract offer revoked!")
         else:
             return HttpResponse("❌ Contract offer not found!")
+
 
 # Ad views
 class ad_view(View):

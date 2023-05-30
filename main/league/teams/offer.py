@@ -1,7 +1,7 @@
 from ...models import ContractOffer
 from .. import config as league_config
 
-def createOffer(team, player, years, salary, option, benefits):
+def createOffer(team, player, years, salary, option, benefits, notes):
     # Check for existing offer
     existing_offer = ContractOffer.objects.filter(team=team, player=player)
     if existing_offer:
@@ -23,6 +23,7 @@ def createOffer(team, player, years, salary, option, benefits):
         salary=salary,
         option=option,
         benefits=benefits,
+        notes=notes,
     )
     offer.save()
     # Return success message
