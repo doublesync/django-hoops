@@ -3,35 +3,12 @@
 {% block content %}
     <div class="container-fluid mt-5 mb-5 p-5">
         <h1>Free Agents</h1>
+        <p id="offer-status">Offer status will appear here.</p>
         <form>
             {% csrf_token %}
             <input type="search" name="search" placeholder="Search fields" class="form-control mt-3 mb-2" style="width: 300px;" hx-post="/players/free-agents/search/" hx-trigger="keyup delay:200ms" hx-target="#search-results" hx-swap="innerHTML" onkeydown="return event.key != 'Enter';"></input>
         </form>
-        <table class="table table-striped table-hover table-responsive">
-            <!-- Table headers -->
-            <thead>
-                <tr>
-                    <th scope="col" style="text-transform: capitalize;">Owner</th>
-                    <th scope="col" style="text-transform: capitalize;">Age</th>
-                    <th scope="col" style="text-transform: capitalize;">Player</th>
-                    <th scope="type" style="text-transform: capitalize;">Type</th>
-                    <th scope="col" style="text-transform: capitalize;">Spent</th>
-                    <th scope="col" style="text-transform: capitalize;">Team</th>
-                    <th scope="col" style="text-transform: capitalize;">Salary</th>
-                    <th scope="col" style="text-transform: capitalize;">Position</th>
-                    <th scope="col" style="text-transform: capitalize;">Height</th>
-                    <th scope="col" style="text-transform: capitalize;">Weight</th>
-                    <th scope="col" style="text-transform: capitalize;">Archetype 1</th>
-                    <th scope="col" style="text-transform: capitalize;">Archetype 2</th>
-                    <th scope="col" style="text-transform: capitalize;">Trait 1</th>
-                    <th scope="col" style="text-transform: capitalize;">Trait 2</th>
-                </tr>
-            </thead>
-            <!-- Table data -->
-            <tbody id="search-results">
-                {% include 'main/ajax/free_agent_list_fragment.html' with page=page %}
-            </tbody>
-        </table>
+        {% include 'main/ajax/free_agent_list_fragment.html' with page=page %}
         <!-- Table pagination -->
         <div class="mt-2" style="padding: 0px;">
             <ul class="pagination">

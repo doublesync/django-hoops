@@ -196,6 +196,29 @@ class TradeOffer(models.Model):
     def __str__(self):
         return f"{self.sender} -> {self.receiver}"
 
+# Offer Models
+class ContractOffer(models.Model):
+    # Contract Offer Model
+    years = models.PositiveSmallIntegerField()
+    salary = models.PositiveBigIntegerField()
+    option = models.CharField(
+        max_length=54,
+        choices=league_config.contract_option_choices,
+        default=league_config.contract_option_choices[0][0],
+    )
+    benefits = models.CharField(
+        max_length=54,
+        choices=league_config.contract_benefit_choices,
+        default=league_config.contract_benefit_choices[0][0],
+    )
+    accepted = models.BooleanField(default=False)
+    # Relationships
+    team = models.ForeignKey("Team", on_delete=models.CASCADE)
+    player = models.ForeignKey("Player", on_delete=models.CASCADE)
+
+    # Contract Offer Methods
+    def __str__(self):
+        return f"{self.team.abbrev} -> {self.player.first_name} {self.player.last_name}"
 
 # Coupon Models
 class Coupon(models.Model):

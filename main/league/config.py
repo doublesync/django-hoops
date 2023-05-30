@@ -28,6 +28,10 @@ max_contract_season = 3
 
 # Description: For cap space
 hard_cap = 1200
+min_years = 1
+max_years = 3
+min_salary = 100
+max_salary = 600
 
 # Description: For height & weight limits
 

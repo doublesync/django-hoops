@@ -19,6 +19,7 @@ from .models import Team
 from .models import Coupon
 from .models import Transaction
 from .models import TradeOffer
+from .models import ContractOffer
 from .models import DiscordUser
 from .models import Notification
 from .models import Award
@@ -46,6 +47,7 @@ from .league.player import physicals as hoops_player_physicals
 from .league.player import export as hoops_player_export
 from .league.extra import convert as hoops_extra_convert
 from .league.teams import trade as hoops_team_trade
+from .league.teams import offer as hoops_team_offer
 from .league.user import notify as hoops_user_notify
 
 # .ENV file import
@@ -357,6 +359,12 @@ def players(request):
 
 
 def free_agents(request):
+    # Check if the user is a manager
+    user = request.user
+    team = Team.objects.filter(manager=user).first()
+    if not team:
+        return HttpResponse("Sorry, you don't have permission to view this page!")
+    # Create the context
     context = {
         "title": "Free Agents",
     }
@@ -1605,6 +1613,59 @@ def check_free_agent_search(request):
     else:
         return HttpResponse("Invalid request!")
 
+
+def check_contract_offer(request):
+    # Get some form data
+    id = request.POST.get("id")
+    user = request.user
+    team = Team.objects.get(manager=user)
+    years = request.POST.get("years")
+    salary = request.POST.get("salary")
+    option = request.POST.get("option")
+    benefits = request.POST.get("benefits")
+    # Check if the user is a manager
+    if not team:
+        return HttpResponse("❌ You are not a manager!")
+    # Get the player
+    player = Player.objects.get(id=id)
+    # Check if the player exists
+    if not player:
+        return HttpResponse("❌ Player not found!")
+    else:
+        # Create offer
+        response = hoops_team_offer.createOffer(
+            team=team,
+            player=player,
+            years=int(years),
+            salary=int(salary),
+            option=option,
+            benefits=benefits,
+        )
+        return HttpResponse(response)
+
+
+def check_contract_revoke(request):
+    # Get some form data
+    id = request.POST.get("id")
+    user = request.user
+    team = Team.objects.get(manager=user)
+    # Check if the user is a manager
+    if not team:
+        return HttpResponse("❌ You are not a manager!")
+    # Get the player
+    player = Player.objects.get(id=id)
+    # Check if the player exists
+    if not player:
+        return HttpResponse("❌ Player not found!")
+    else:
+        # Delete the offer
+        offer = ContractOffer.objects.filter(team=team, player=player).first()
+        print(offer, team, player)
+        if offer:
+            offer.delete()
+            return HttpResponse("✅ Contract offer revoked!")
+        else:
+            return HttpResponse("❌ Contract offer not found!")
 
 # Ad views
 class ad_view(View):

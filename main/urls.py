@@ -153,6 +153,8 @@ urlpatterns = [
         view=views.check_free_agent_search,
         name="check_free_agent_search",
     ),
+    path(route="contract/offer/", view=views.check_contract_offer, name="check_contract_offer"),
+    path(route="contract/revoke/", view=views.check_contract_revoke, name="check_contract_revoke"),
     # User PATHS
     path(
         route="user/notifications/<int:id>/",
