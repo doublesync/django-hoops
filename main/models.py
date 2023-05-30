@@ -108,6 +108,7 @@ class Player(models.Model):
         choices=league_config.contract_benefit_choices,
         default=league_config.contract_benefit_choices[0][0],
     )
+    contract_notes = models.CharField(max_length=100, blank=True, null=True)
     # Relationships
     discord_user = models.ForeignKey(
         "DiscordUser", blank=True, null=True, on_delete=models.CASCADE
@@ -196,6 +197,7 @@ class TradeOffer(models.Model):
     def __str__(self):
         return f"{self.sender} -> {self.receiver}"
 
+
 # Offer Models
 class ContractOffer(models.Model):
     # Contract Offer Model
@@ -221,6 +223,7 @@ class ContractOffer(models.Model):
     # Contract Offer Methods
     def __str__(self):
         return f"{self.team.abbrev} -> {self.player.first_name} {self.player.last_name}"
+
 
 # Coupon Models
 class Coupon(models.Model):
