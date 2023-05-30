@@ -35,11 +35,6 @@ class Command(BaseCommand):
                         self.style.SUCCESS(f"Successfully auto collected for {player.first_name} {player.last_name}")
                     )
                 else:
-                    # Notify the user
-                    hoops_user_notify.notify(
-                        user=discord_user,
-                        message=f"Attempted to auto-collect payments {player.first_name} {player.last_name}, but they have already collected their daily salary of ${player.salary}.",
-                    )
                     # Send error message
                     self.stdout.write(
                         self.style.ERROR(f"Successfully auto collected for {player.first_name} {player.last_name}")
