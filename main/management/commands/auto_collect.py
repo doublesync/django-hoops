@@ -37,5 +37,5 @@ class Command(BaseCommand):
                 else:
                     # Send error message
                     self.stdout.write(
-                        self.style.ERROR(f"Successfully auto collected for {player.first_name} {player.last_name}")
+                        self.style.ERROR(f"Failed to auto collected for {player.first_name} {player.last_name}")
                     )
