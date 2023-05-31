@@ -23,6 +23,7 @@
                     <th scope="col">Expires</th>
                     <th scope="col">Benefits</th>
                     <th scope="col">Option/s</th>
+                    <th scope="col">Rookie</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,6 +38,11 @@
                         <td>{{ player.contract_ends_after }}</td>
                         <td>{{ player.contract_benefits }}</td>
                         <td>{{ player.contract_option }}</td>
+                        {% if player.is_rookie %}
+                            <td>✅</td>
+                        {% else %}
+                            <td>❌</td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>
