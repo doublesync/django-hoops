@@ -1,3 +1,5 @@
+from .. import config as league_config
+
 # A function to validate a trade offer
 def validate_trade(user_team, other_team, trade_players, hard_cap):
     # Define cap variables
@@ -30,6 +32,9 @@ def get_total_salary(team):
     cap = 0
     # Validate post-trade caps
     for player in team.player_set.all():
-        cap += player.salary
+        if not player.is_rookie:
+            cap += player.salary
+        else:
+            cap += league_config.rookie_salary
     # Return cap
     return cap

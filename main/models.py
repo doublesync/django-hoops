@@ -121,6 +121,7 @@ class Player(models.Model):
     upgrades_pending = models.BooleanField(default=False)
     free_agent = models.BooleanField(default=True)
     use_game_tendencies = models.BooleanField(default=True)
+    is_rookie = models.BooleanField(default=False)
     # Attributes, Badges, & Hotzones
     statics = models.JSONField(default=league_config.get_default_statics)
     attributes = models.JSONField(default=league_config.get_default_attributes)
