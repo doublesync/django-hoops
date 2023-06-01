@@ -33,11 +33,11 @@ class Command(BaseCommand):
                         self.stdout.write(
                             self.style.SUCCESS(f"Successfully auto collected for {player.first_name} {player.last_name}")
                         )
+                        # Update the last reward date
+                        discord_user.last_reward = timezone.now()
+                        discord_user.save()
                     else:
                         # Send error message
                         self.stdout.write(
                             self.style.ERROR(f"Failed to auto collected for {player.first_name} {player.last_name}")
                         )
-                    # Update the last reward date
-                    discord_user.last_reward = timezone.now()
-                    discord_user.save()
