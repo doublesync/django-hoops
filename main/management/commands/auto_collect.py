@@ -12,14 +12,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Auto collect/pay these players
         league_users = DiscordUser.objects.all()
-        for user in league_users:
-            user_players = Player.objects.filter(discord_user=user)
-            for player in user_players:
-                discord_user = player.discord_user
-                if discord_user and discord_user.auto_collect_rewards:
-                    # Check if the player has been paid already
-                    last_reward = discord_user.last_reward
-                    if not last_reward or timezone.now().day != last_reward.day:
+        for discord_user in league_users:
+            # Check if the user has been paid already
+            last_reward = discord_user.last_reward
+            user_players = Player.objects.filter(discord_user=discord_user)
+            if not last_reward or timezone.now().day != last_reward.day:
+                for player in user_players:
+                    if discord_user and discord_user.auto_collect_rewards:
                         # Pay the player their rewards
                         player.cash += player.salary
                         player.save()
