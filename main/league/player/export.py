@@ -155,10 +155,10 @@ mod_tools_badges = {
 }
 
 # Tendencies that are not added to the player's export file (same as banned_tendencies kinda)
-ignore_tendencies = ["TOUCHES_TENDENCY", "BLOCK_TENDENCY", "ON-BALL_STEAL_TENDENCY"]
+ignore_tendencies = ["TOUCHES_TENDENCY", "BLOCK_SHOT_TENDENCY", "ON-BALL_STEAL_TENDENCY"]
 # Tendencies that are based upon the player's attribute values
 related_tendencies = [
-    ["Block", "BLOCK_TENDENCY"],
+    ["Block", "BLOCK_SHOT_TENDENCY"],
     ["Steal", "ON-BALL_STEAL_TENDENCY"],
 ]
 

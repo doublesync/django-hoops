@@ -286,7 +286,7 @@ badge_prices = {
         "trait_two": 125,
     },
 }
-banned_tendencies = ["TOUCHES_TENDENCY", "BLOCK_TENDENCY", "ON-BALL_STEAL_TENDENCY"]
+banned_tendencies = ["TOUCHES_TENDENCY", "BLOCK_SHOT_TENDENCY", "ON-BALL_STEAL_TENDENCY"]
 max_tendencies = {
     "ON-BALL_STEAL_TENDENCY": 75,
     "BLOCK_SHOT_TENDENCY": 75,
