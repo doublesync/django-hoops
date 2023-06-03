@@ -27,6 +27,7 @@ from .models import Award
 # Form imports
 from .forms import PlayerForm
 from .forms import UpgradeForm
+from .forms import StylesForm
 
 # Custom imports
 from .discord import auth as discord_auth
@@ -45,6 +46,7 @@ from .league.player import upgrade as hoops_player_upgrade
 from .league.player import create as hoops_player_create
 from .league.player import physicals as hoops_player_physicals
 from .league.player import export as hoops_player_export
+from .league.player import style as hoops_player_style
 from .league.extra import convert as hoops_extra_convert
 from .league.teams import trade as hoops_team_trade
 from .league.teams import offer as hoops_team_offer
@@ -675,6 +677,43 @@ def edit_physicals(request, id):
     }
     # Return the edit physicals page
     return render(request, "main/players/edit-physicals.html", context)
+
+
+def player_styles(request, id):
+    # Make sure player exists & user is players owner
+    player = Player.objects.get(pk=id)
+    if not player:
+        return HttpResponse("Sorry, this player doesn't exist!")
+    if not player.discord_user == request.user:
+        return HttpResponse("Sorry, you don't have permission to view this page!")
+    # Make sure the user has 'can_change_styles'
+    if not request.user.can_change_styles:
+        return HttpResponse("Sorry, this is paid feature. Visit the marketplace in discord to purchase it.")
+    # Create the context
+    context = {
+        "title": "Player Styles",
+        "player": Player.objects.get(pk=id),
+        "player_styles_form": StylesForm,
+    }
+    # Take the form data (post request)
+    if request.method == "POST":
+        # Get cleaned form data
+        form = StylesForm(request.POST)
+        if form.is_valid():
+            # Validate style choices
+            response = hoops_player_style.validate_styles(player, form.cleaned_data)
+            success = response[0]
+            status = response[1]
+            # If the form is valid
+            if success:
+                messages.success(request, status)
+            else:
+                messages.error(request, status)
+            # Redirect to the styles page
+            return redirect(player_styles, id=id)
+
+    # Return the player styles page
+    return render(request, "main/players/player-styles.html", context)
 
 
 # Reloadable form views

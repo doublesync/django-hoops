@@ -28,6 +28,7 @@ class DiscordUser(models.Model):
     # Player Slots
     player_slots = models.SmallIntegerField(default=league_config.max_players)
     auto_collect_rewards = models.BooleanField(default=False)
+    can_change_styles = models.BooleanField(default=False)
 
     # Discord User Methods
     def is_authenticated(self, request):
@@ -123,6 +124,7 @@ class Player(models.Model):
     use_game_tendencies = models.BooleanField(default=True)
     is_rookie = models.BooleanField(default=False)
     # Attributes, Badges, & Hotzones
+    styles = models.JSONField(default=league_config.get_default_styles)
     statics = models.JSONField(default=league_config.get_default_statics)
     attributes = models.JSONField(default=league_config.get_default_attributes)
     badges = models.JSONField(default=league_config.get_default_badges)

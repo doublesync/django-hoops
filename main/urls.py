@@ -40,6 +40,7 @@ urlpatterns = [
         name="edit_physicals",
     ),
     path(route="players/free-agents/", view=views.free_agents, name="free_agents"),
+    path(route="player/styles/<int:id>/", view=views.player_styles, name="player_styles"),
     # Player Cash PATHS
     path(route="player/cash/add/", view=views.add_player_cash, name="add_player_cash"),
     path(

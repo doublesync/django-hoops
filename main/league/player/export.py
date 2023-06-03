@@ -1,4 +1,5 @@
 from ..extra import convert as extra_converters
+from . import style as player_style
 import copy
 
 json_template = [
@@ -36,6 +37,16 @@ json_template = [
     {
         "module": "PLAYER",
         "tab": "TENDENCIES",
+        "data": {},
+    },
+    {
+        "module": "PLAYER",
+        "tab": "SHOES/GEAR",
+        "data": {},
+    },
+    {
+        "module": "PLAYER",
+        "tab": "ACCESSORIES",
         "data": {},
     },
     {
@@ -291,6 +302,20 @@ def export_player(player):
             related_tendency = set[1]
             game_file[4]["data"][related_tendency] = str(related_attribute)
 
+    
+    # Set the player's styles
+    def set_styles():
+        for style, data in player.styles.items():
+            print(data)
+            # Define some variables
+            style_category = data["category"]
+            style_value = data["value"]
+            # Check if the style is valid
+            style_categories = player_style.categories
+            if style_category in style_categories:
+                style_index = style_categories[style_category]["template_index"]
+                game_file[style_index]["data"][style] = style_value
+
     # Call the sub functions
     set_vitals()
     set_attributes()
@@ -300,6 +325,7 @@ def export_player(player):
     set_statics()
     set_ignores()
     set_related()
+    set_styles()
 
     # Return the player's file
     return game_file

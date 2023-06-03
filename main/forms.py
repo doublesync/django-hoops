@@ -1,6 +1,9 @@
+import json
 from django import forms
 from .league import config as league_config
 
+player_styles = open("main/league/looyh/styles.json")
+player_styles = json.load(player_styles)
 
 class PlayerForm(forms.Form):
     first_name = forms.CharField(label="First Name", max_length=16)
@@ -67,6 +70,17 @@ class UpgradeForm(forms.Form):
                 min_value=league_config.min_tendency,
                 max_value=league_config.max_tendency,
                 widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
+            )
+
+class StylesForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(StylesForm, self).__init__(*args, **kwargs)
+        for style, data in player_styles.items():
+            # Create the ChoiceField
+            self.fields[style] = forms.ChoiceField(
+                label=style,
+                choices=data["options"],
+                widget=forms.Select(),
             )
 
 

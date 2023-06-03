@@ -727,6 +727,7 @@ initial_tendencies = {
     "HARD_FOUL_TENDENCY": 0,
 }
 initial_picks = {}
+initial_styles = {}
 initial_trade_offer = {}
 initial_team_logo = "https://cdn.simplystamps.com/media/catalog/product/5/8/5802-n-a-stock-stamp-hcb.png"
 initial_headshot = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
@@ -1008,3 +1009,7 @@ def get_default_picks():
 
 def get_default_trade_offer():
     return initial_trade_offer
+
+
+def get_default_styles():
+    return initial_styles

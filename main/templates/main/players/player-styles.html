@@ -1,0 +1,74 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load main_filters %}
+
+{% block title %}
+    <!-- <link rel="stylesheet" href="{% static 'main/css/players/upgrade.css' %}"> -->
+{% endblock %}
+
+{% block content %}
+
+    <!-- upgrades -->
+    <div class="container">
+        <form action="/player/styles/{{ player.id }}/" method="post">
+
+            {% csrf_token %}
+
+            <input name="id" type="hidden" value="{{ player.id }}">
+
+            <div class="card mt-5 mb-3">
+                <div class="card-header">
+                    <h5 class="mb-0">Player Styles</h5>
+                    <p id="status" class="mb-0"></p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text mb-2">Change every single updateable vital, gear, accessory and signature in the player styles hub!</p>
+                    <!-- Continue/False-Submit Button -->
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">
+                        Equip Styles
+                    </button>
+                </div>
+                <!-- Confirmation Modal -->
+                <div class="modal" id="myModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <!-- Modal header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Confirm Purchase</h4>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <p class="mb-4"><b>Are you sure you want to continue with this style change?</b></p>
+                            <ul class="container list-group mt-2" id="cartList" style="list-style-type: none; padding: 0px; margin: 0px;">
+                            </ul>
+                        </div>
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <input type="submit" value="Purchase" class="btn btn-sm btn-primary" id="submitButton">
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <form action="/player/styles/{{ player.id }}" method="post">
+                    {% csrf_token %}
+                    <input name="id" type="hidden" value="{{ player.id }}">
+                    {% for field in player_styles_form %}
+                        <div class="col-6">
+                            {% if field.label in player.styles %}
+                                <input type="checkbox" name="{{ field.name }}" value="{{ field.value }}" disabled checked>
+                            {% endif %}
+                            {{ field.label }}
+                            {{ field|addclass:"form-control form-control-sm mt-2 mb-2 styleSelector" }}
+                        </div>
+                    {% endfor %}
+                </form>
+            </div>
+
+        </form>
+    </div>
+
+{% endblock %}
