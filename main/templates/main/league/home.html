@@ -31,6 +31,7 @@
                                         <a class="fw-bold ml-0" href="{% url 'player' player.id %}" style="font-size: 10px; text-decoration: none; text-transform: capitalize;">
                                             <span style="font-size: 8px;">({{ player.id }}) </span>
                                             {{ player.first_name }} {{ player.last_name }}
+                                            <a href="{% url 'player_styles' player.id %}" style="text-decoration: none;"><span style="font-size: 8px;" class="text-white">Edit Styles</span></a>
                                         </a><br>
                                     {% endfor %}
                                     <hr style="margin-bottom: 2px;">
