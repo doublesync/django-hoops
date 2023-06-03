@@ -124,7 +124,7 @@ class Player(models.Model):
     use_game_tendencies = models.BooleanField(default=True)
     is_rookie = models.BooleanField(default=False)
     # Attributes, Badges, & Hotzones
-    styles = models.JSONField(default=league_config.get_default_styles)
+    styles = models.JSONField(default=league_config.get_default_styles, blank=True)
     statics = models.JSONField(default=league_config.get_default_statics)
     attributes = models.JSONField(default=league_config.get_default_attributes)
     badges = models.JSONField(default=league_config.get_default_badges)
