@@ -1031,7 +1031,8 @@ def check_license_key(request):
     headers["Content-Type"] = "application/x-www-form-urlencoded"
     player_slot_data = f"product_id=3ftUNsQh1naLCWNb2X73iA==&license_key={code}"
     auto_collect_data = f"product_id=R8hRyQPvEYXVWHKzkSdGOQ==&license_key={code}"
-    product_datas = [player_slot_data, auto_collect_data]
+    style_editor_data = f"product_id=zMCiyt0G1r3s__FtACqSnw==&license_key={code}"
+    product_datas = [player_slot_data, auto_collect_data, style_editor_data]
     current_data = player_slot_data
     has_valid_key = False
     # Check if the license key is valid for each product
