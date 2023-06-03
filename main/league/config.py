@@ -378,6 +378,7 @@ trait_badge_unlocks = {
         "Floor General",
         "Needle Threader",
         "Special Delivery",
+        "Unpluckable",
     ],
     "Rebound Hound": [
         "Vice Grip",
