@@ -1097,6 +1097,23 @@ def check_license_key(request):
         return HttpResponse(
             "<p id='coupon-result' class='mt-2 text-success' style='font-size:12px;'>License key successfully redeemed!</p>"
         )
+    elif current_data == style_editor_data:
+        # Give the user rewards
+        user.can_change_styles = True
+        user.save()
+        # Send success messages
+        discord_webhooks.send_webhook(
+            url="coupon",
+            title="License Key Redeemed",
+            message=f"**{user.discord_tag}** added style editor.\n```License Key: {code}```",
+        )
+        hoops_user_notify.notify(
+            user=user,
+            message="You have successfully added style editor.",
+        )
+        return HttpResponse(
+            "<p id='coupon-result' class='mt-2 text-success' style='font-size:12px;'>License key successfully redeemed!</p>"
+        )
 
 
 def check_starting_attributes(request):
