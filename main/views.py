@@ -684,10 +684,10 @@ def player_styles(request, id):
     player = Player.objects.get(pk=id)
     if not player:
         return HttpResponse("Sorry, this player doesn't exist!")
-    if not player.discord_user == request.user:
+    if not player.discord_user == request.user and not request.user.can_update_styles:
         return HttpResponse("Sorry, you don't have permission to view this page!")
     # Make sure the user has 'can_change_styles'
-    if not request.user.can_change_styles:
+    if not request.user.can_change_styles or not request.user.can_update_styles:
         return HttpResponse("Sorry, this is paid feature. Visit the marketplace in discord to purchase it.")
     # Create the context
     context = {
@@ -706,8 +706,16 @@ def player_styles(request, id):
             status = response[1]
             # If the form is valid
             if success:
+                # Send success message
                 messages.success(request, status)
+                # Send discord webhook
+                discord_webhooks.send_webhook(
+                    url="style",
+                    title="Player Styles Updated",
+                    message=f"**{player.first_name} {player.last_name}**'s styles have been updated by **{request.user.discord_tag}**.\n```{status}```",
+                )
             else:
+                # Send error message
                 messages.error(request, status)
             # Redirect to the styles page
             return redirect(player_styles, id=id)

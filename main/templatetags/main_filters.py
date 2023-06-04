@@ -1,5 +1,6 @@
 from django import template
 from ..league.extra import convert as league_converters
+from ..league.player import style as player_style
 
 register = template.Library()
 
@@ -37,3 +38,8 @@ def american_height(value):
 @register.filter(name="getage")
 def get_age(value):
     return league_converters.format_years_played(value)
+
+@register.filter(name="getstyle")
+def get_style(obj, key):
+    response = get_value(obj, key)
+    return response["value"]
