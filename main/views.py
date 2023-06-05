@@ -681,13 +681,14 @@ def edit_physicals(request, id):
 
 def player_styles(request, id):
     # Make sure player exists & user is players owner
+    user = request.user
     player = Player.objects.get(pk=id)
     if not player:
         return HttpResponse("Sorry, this player doesn't exist!")
-    if not player.discord_user == request.user and not request.user.can_update_styles:
+    if not player.discord_user == user and not user.can_update_styles:
         return HttpResponse("Sorry, you don't have permission to view this page!")
     # Make sure the user has 'can_change_styles'
-    if not request.user.can_change_styles or not request.user.can_update_styles:
+    if not user.can_change_styles and not user.can_update_styles:
         return HttpResponse("Sorry, this is paid feature. Visit the marketplace in discord to purchase it.")
     # Create the context
     context = {
