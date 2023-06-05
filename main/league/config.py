@@ -469,12 +469,14 @@ archetype_attribute_bonuses = {
         "Pass Perception",
         "Help Defense Iq",
         "Shot Contest",
+        "Defensive Consistency",
     ],
     "Interior Defender": [
         "Interior Defense",
         "Block",
         "Help Defense Iq",
         "Shot Contest",
+        "Defensive Consistency",
     ],
 }
 
