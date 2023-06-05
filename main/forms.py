@@ -71,6 +71,14 @@ class UpgradeForm(forms.Form):
                 max_value=league_config.max_tendency,
                 widget=forms.NumberInput(attrs={"onchange": "updatePrice()"}),
             )
+        # For each key in hotzones, create choicefield
+        for key in league_config.initial_hotzones:
+            self.fields[key] = forms.ChoiceField(
+                label=key,
+                choices=league_config.hotzone_choices,
+                widget=forms.Select(attrs={"onchange": "updatePrice()"}),
+            )
+
 
 class StylesForm(forms.Form):
     def __init__(self, *args, **kwargs):

@@ -290,6 +290,7 @@ def upgrade_player(request, id):
         "defense_badges": league_config.badge_categories["defense"],
         # Tendency categories
         "initial_tendencies": league_config.initial_tendencies,
+        "initial_hotzones": league_config.initial_hotzones,
     }
     return render(request, "main/players/upgrade.html", context)
 

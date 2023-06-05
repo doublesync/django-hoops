@@ -255,6 +255,7 @@ position_starting_attributes = {
 
 # Description: For attributes & badge prices
 # Work in progress!
+hotzone_price = 250
 price_per_pound = 15
 attribute_prices = {
     "0-70": {"range": range(0, 71), "base": 40, "primary": 10, "secondary": 20},
@@ -822,6 +823,10 @@ award_name_choices = [
     ("ASGMVP", "ASGMVP"),
     ("3PTWIN", "3PTWIN"),
     ("DNKWIN", "DNKWIN"),
+]
+hotzone_choices = [
+    ("0", "None"),
+    ("1", "Equipped"),
 ]
 
 # Description: Categories for .html pages
