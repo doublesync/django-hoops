@@ -393,7 +393,6 @@ trait_badge_unlocks = {
         "Brick Wall",
         "Chase Down Artist",
         "Menace",
-        "Pick Dodger",
         "Pogo Stick",
         "Post Lockdown",
     ],
