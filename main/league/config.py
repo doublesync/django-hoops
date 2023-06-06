@@ -1,7 +1,12 @@
-# Title : League configuration file
-# Description : A configuration file for the league.
+# League Configuration
+# ------------------------------------------------
+# By: doublesync
+# ------------------------------------------------
+# This file contains the configuration for the
+# main league application.
+# ------------------------------------------------
 
-current_season = 1
+current_season = 2
 
 max_players = 1
 primary_currency_start = 1000

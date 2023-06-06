@@ -5,10 +5,9 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 # Custom imports
 from .managers import DiscordAuthorizationManager
 from .league import config as league_config
-from .league.extra import convert as league_converters
 
 
-# Player & User Models
+# DiscordUser Models
 class DiscordUser(models.Model):
     # Custom Manager
     objects = DiscordAuthorizationManager()
@@ -39,6 +38,7 @@ class DiscordUser(models.Model):
         return f"{self.discord_tag}"
 
 
+# Player Models
 class Player(models.Model):
     # Player Model
     first_name = models.CharField(default="Unknown", max_length=16)
