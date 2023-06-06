@@ -25,7 +25,7 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <input type="submit" value="Submit Stats" class="btn btn-primary btn-sm" data-bs-dismiss="modal" hx-post="{% url 'validate_game' %}" hx-trigger="click" hx-target="#status" hx-swap="innerHTML"> 
+                        <input type="submit" value="Submit Stats" class="btn btn-primary btn-sm" data-bs-dismiss="modal" hx-post="{% url 'stats:validate_game' %}" hx-trigger="click" hx-target="#status" hx-swap="innerHTML"> 
                         <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>

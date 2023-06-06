@@ -4,7 +4,7 @@
     <!-- Home team players -->
     <div id="home_team" class="col-6 mb-1">
         <p class="fw-bold">Home Team</p>
-        <select class="mb-1 form-control" name="home_team" hx-post="{% url 'check_stats_roster' %}" hx-trigger="change" hx-target="#team_container" hx-swap="outerHTML"><br>
+        <select class="mb-1 form-control" name="home_team" hx-post="{% url 'stats:check_stats_roster' %}" hx-trigger="change" hx-target="#team_container" hx-swap="outerHTML"><br>
             <option value="{{ home_team.id }}" selected>{{ home_team.name }}</option>
             {% for team in teams %}
                 {% if not team.id == home_team.id and not team.id == user_team.id %}
@@ -17,7 +17,7 @@
     <!-- Away team players -->
     <div id="away_team" class="col-6 mb-1">
         <p class="fw-bold">Away Team</p>
-        <select class="mb-1 form-control" name="away_team" hx-post="{% url 'check_stats_roster' %}" hx-trigger="change" hx-target="#team_container" hx-swap="outerHTML"><br>
+        <select class="mb-1 form-control" name="away_team" hx-post="{% url 'stats:check_stats_roster' %}" hx-trigger="change" hx-target="#team_container" hx-swap="outerHTML"><br>
             <option value="{{ away_team.id }}" selected>{{ away_team.name }}</option>
             {% for team in teams %}
                 {% if not team.id == away_team.id and not team.id == user_team.id %}
