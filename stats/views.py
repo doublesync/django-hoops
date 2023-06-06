@@ -9,6 +9,8 @@ from django.db.models import Sum
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.views import View
+from django.urls import reverse
+from django.db.utils import IntegrityError
 
 # Custom imports
 import json
@@ -21,7 +23,11 @@ from stats.models import Game
 
 # Actual view functions
 def index(request):
-    return HttpResponse("Hello, world. You're at the stats index.")
+    # Create the context
+    context = {
+        "recent_games": Game.objects.all().order_by("-day")[:8],
+    }
+    return render(request, "stats/viewing/view_home.html", context)
 
 def add_game(request):
     context = {
@@ -29,6 +35,17 @@ def add_game(request):
     }
     return render(request, "stats/editing/add_game.html", context)
 
+def view_game(request, id):
+    # Attempt to find the game
+    try:
+        game_viewing = Game.objects.get(id=id)
+    except:
+        return HttpResponse("❌ Game does not exist!")
+    # Create the context
+    context = {
+        "game": game_viewing,
+    }
+    return render(request, "stats/viewing/view_game.html", context)
 
 # HTMX check functions
 def check_stats_roster(request):
@@ -108,58 +125,64 @@ def validate_game(request):
             loser = home_team_object if home_score < away_score else away_team_object,
         )
         game.save()
-        # Create the statline objects for the home team
-        for id, stats in game_data["home"].items():
-            # Find some player information
-            id = int(id)
-            player = Player.objects.get(id=id)
-            # Create the statline
-            statline = Statline.objects.create(
-                rebounds=stats["reb"],
-                assists=stats["ast"],
-                steals=stats["stl"],
-                blocks=stats["blk"],
-                turnovers=stats["tov"],
-                field_goals_made=stats["fgm"],
-                field_goals_attempted=stats["fga"],
-                three_pointers_made=stats["3pm"],
-                three_pointers_attempted=stats["3pa"],
-                free_throws_made=stats["ftm"],
-                free_throws_attempted=stats["fta"],
-                offensive_rebounds=stats["oreb"],
-                personal_fouls=stats["fouls"],
-                game=game,
-                player=player,
-                team_at_time=home_team_object,
-            )
-            statline.save()
-        # Create the statline objects for the away team
-        for id, stats in game_data["away"].items():
-            # Find some player information
-            id = int(id)
-            player = Player.objects.get(id=id)
-            # Create the statline
-            statline = Statline.objects.create(
-                rebounds=stats["reb"],
-                assists=stats["ast"],
-                steals=stats["stl"],
-                blocks=stats["blk"],
-                turnovers=stats["tov"],
-                field_goals_made=stats["fgm"],
-                field_goals_attempted=stats["fga"],
-                three_pointers_made=stats["3pm"],
-                three_pointers_attempted=stats["3pa"],
-                free_throws_made=stats["ftm"],
-                free_throws_attempted=stats["fta"],
-                offensive_rebounds=stats["oreb"],
-                personal_fouls=stats["fouls"],
-                game=game,
-                player=player,
-                team_at_time=away_team_object,
-            )
-            statline.save()
+        try:
+            # Create the statline objects for the home team
+            for id, stats in game_data["home"].items():
+                # Find some player information
+                id = int(id)
+                player = Player.objects.get(id=id)
+                # Create the statline
+                statline = Statline.objects.create(
+                    rebounds=stats["reb"],
+                    assists=stats["ast"],
+                    steals=stats["stl"],
+                    blocks=stats["blk"],
+                    turnovers=stats["tov"],
+                    field_goals_made=stats["fgm"],
+                    field_goals_attempted=stats["fga"],
+                    three_pointers_made=stats["3pm"],
+                    three_pointers_attempted=stats["3pa"],
+                    free_throws_made=stats["ftm"],
+                    free_throws_attempted=stats["fta"],
+                    offensive_rebounds=stats["oreb"],
+                    personal_fouls=stats["fouls"],
+                    game=game,
+                    player=player,
+                    team_at_time=home_team_object,
+                )
+                statline.save()
+            # Create the statline objects for the away team
+            for id, stats in game_data["away"].items():
+                # Find some player information
+                id = int(id)
+                player = Player.objects.get(id=id)
+                # Create the statline
+                statline = Statline.objects.create(
+                    rebounds=stats["reb"],
+                    assists=stats["ast"],
+                    steals=stats["stl"],
+                    blocks=stats["blk"],
+                    turnovers=stats["tov"],
+                    field_goals_made=stats["fgm"],
+                    field_goals_attempted=stats["fga"],
+                    three_pointers_made=stats["3pm"],
+                    three_pointers_attempted=stats["3pa"],
+                    free_throws_made=stats["ftm"],
+                    free_throws_attempted=stats["fta"],
+                    offensive_rebounds=stats["oreb"],
+                    personal_fouls=stats["fouls"],
+                    game=game,
+                    player=player,
+                    team_at_time=away_team_object,
+                )
+                statline.save()
+        except IntegrityError:
+            # Delete the game object
+            game.delete()
+            # Return the error message
+            return HttpResponse("❌ You have a statistic that is too high!")
         # Return the success message (refresh page and clear form)
-        messages.success(request, "✅ Game added successfully!")
-        response = HttpResponse("")
-        response['HX-Refresh'] = 'true'
+        messages.success(request, f"✅ Game added successfully! [#{game.id}]")
+        response = HttpResponse()
+        response['HX-Redirect'] = reverse("view_game", args=[game.id])
         return response

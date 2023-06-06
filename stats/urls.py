@@ -1,11 +1,13 @@
 from django.urls import path
 from . import views
 
+app_name = 'stats'
 urlpatterns = []
 
 mainurls = [
     path('', views.index, name='index'),
     path('games/add/', views.add_game, name='add_game'),
+    path('games/view/<int:id>/', views.view_game, name='view_game')
 ]
 
 htmxurls = [

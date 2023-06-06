@@ -1,0 +1,24 @@
+{% extends 'stats/base.html' %}
+{% block content %}
+<!-- Add game page -->
+<div class="container mt-5">
+    <h1>Hoopsim Stats</h1>
+    <p id="status">Welcome to the Hoopsim Stats hub.</p>
+    <!-- Recent games -->
+    <div class="container">
+        <h2>All Games</h2>
+        <p>Feature coming soon</p>
+    </div>
+    <!-- Recent games -->
+    <div class="container">
+        <h2>Recent Games</h2>
+        {% for game in recent_games %} 
+        <!-- Make a card for each game -->
+        <div class="card mt-3 mb-3 p-3">
+            <td><a href="{% url 'stats:view_game' game.id %}">{{ game }}</a></td>
+            <p class="mb-0"><b>{{ game.winner.name }}</b> beat <b>{{ game.loser.name }}</b></p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
