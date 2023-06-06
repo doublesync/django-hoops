@@ -57,6 +57,7 @@ class Game(models.Model):
     date = models.DateField(auto_now_add=True)
     home_points = models.PositiveSmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(stats_config.max_team_points)])
     away_points = models.PositiveSmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(stats_config.max_team_points)])
+    game_type = models.CharField(max_length=3, choices=stats_config.game_types, default='R')
 
     # Relationships & other data
     season = models.PositiveSmallIntegerField(default=league_config.current_season)

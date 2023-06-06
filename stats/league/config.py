@@ -30,3 +30,14 @@ max_attempted = 40
 # These are the validations for the stats application.
 # ------------------------------------------------
 max_team_points = 120
+
+# Stat Choices
+# ------------------------------------------------
+# These are the choices for the stats application.
+# ------------------------------------------------
+game_types = [
+    ('PRE', 'Preseason'),
+    ('REG', 'Regular Season'),
+    ('PLY', 'Playoffs'),
+    ('FIN', 'Finals'),
+]
