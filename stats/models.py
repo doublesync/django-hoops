@@ -34,8 +34,11 @@ class Statline(models.Model):
 
     # Relationships & other data
     season = models.PositiveSmallIntegerField(default=league_config.current_season)
-    player = models.ForeignKey(Player, on_delete=models.CASCADE)
     game = models.ForeignKey('Game', on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    team_at_time = models.ForeignKey(Team, on_delete=models.CASCADE)
+
+    # "team_at_time" will enable us to track players who are traded mid-season
 
     # Overwritten save method
     def save(self, *args, **kwargs):

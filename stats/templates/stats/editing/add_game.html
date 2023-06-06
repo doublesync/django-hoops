@@ -1,0 +1,36 @@
+{% extends 'stats/base.html' %}
+{% block content %}
+<!-- Add game page -->
+<div class="container mt-5">
+    <h1>Add Game</h1>
+    <p id="status">Add a game to the stats website.</p>
+    <form>
+        <!-- CSRF token -->
+        {% csrf_token %}
+        <!-- Include team fragments -->
+        <div id="stat-container">
+            {% include 'stats/ajax/team_list_fragment.html' %}
+        <div>
+        <!-- Confirmation Modal -->
+        <div class="modal" id="submitModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Submit Game Stats</h4>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <p class="mb-4">Are you sure you want to submit this game stats?</p>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <input type="submit" value="Submit Stats" class="btn btn-primary btn-sm" data-bs-dismiss="modal" hx-post="{% url 'validate_game' %}" hx-trigger="click" hx-target="#status" hx-swap="innerHTML"> 
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
