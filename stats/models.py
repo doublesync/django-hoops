@@ -68,4 +68,4 @@ class Game(models.Model):
 
     # Overwritten str method
     def __str__(self):
-        return f"S{self.season} | {self.away} @ {self.home}"
+        return f"S{self.season}D{self.day} | {self.away} @ {self.home}"
