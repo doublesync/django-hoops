@@ -33,11 +33,14 @@
             <!-- Score data -->
             <div class="row">
                 <h2 class="mt-3 mb-3">Score Breakdown</h2>
-                <div class="col-6 mb-1">
-                    <input type="number" class="form-control" name="home_score" placeholder="{{ home_team.name }} score">
+                <div class="col-4 mb-1">
+                    <input type="number" class="form-control" name="home_score" placeholder="{{ home_team.abbrev }} score">
                 </div>
-                <div class="col-6 mb-1">
-                    <input type="number" class="form-control" name="away_score" placeholder="{{ away_team.name }} score">
+                <div class="col-4 mb-1">
+                    <input type="number" class="form-control" name="away_score" placeholder="{{ away_team.abbrev }} score">
+                </div>
+                <div class="col-4 mb-1">
+                    <input type="number" class="form-control" name="day" placeholder="Day #">
                 </div>
             </div>
             <!-- Home Team -->

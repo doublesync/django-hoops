@@ -53,11 +53,14 @@ class Statline(models.Model):
 class Game(models.Model):
 
     # Statline fields
+    # Add date field with auto_now_add=True and a default value
+    date = models.DateField(auto_now_add=True)
     home_points = models.PositiveSmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(stats_config.max_team_points)])
     away_points = models.PositiveSmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(stats_config.max_team_points)])
 
     # Relationships & other data
     season = models.PositiveSmallIntegerField(default=league_config.current_season)
+    day = models.PositiveSmallIntegerField(default=1)
     home = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home')
     away = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away')
     winner = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='winner')

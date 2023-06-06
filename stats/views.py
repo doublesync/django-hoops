@@ -55,6 +55,7 @@ def check_stats_roster(request):
 def validate_game(request):
     if request.method == "POST":
         # Get the form data
+        day = request.POST.get("day")
         home_team = request.POST.get("home_team")
         away_team = request.POST.get("away_team")
         home_score = request.POST.get("home_score")
@@ -65,6 +66,8 @@ def validate_game(request):
         }
         game_stats = ["reb", "ast", "stl", "blk", "tov", "fgm", "fga", "3pm", "3pa", "ftm", "fta", "oreb", "fouls"]
         # Validate both teams
+        if not day:
+            return HttpResponse("❌ Day is missing!")
         if not home_team or not away_team:
             return HttpResponse("❌ Home or away team does not exist!")
         if home_team == away_team:
@@ -96,6 +99,7 @@ def validate_game(request):
                 hps[stat] = int(value)
         # Create the game object
         game = Game.objects.create(
+            day=day,
             home=home_team_object,
             away=away_team_object,
             home_points=home_score,
