@@ -1,0 +1,28 @@
+{% extends 'stats/base.html' %}
+{% block content %}
+<!-- Add game page -->
+<div class="container mt-5">
+    <!-- Game title -->
+    <h1>Season {{ season_viewing.id }}</h1>
+    <!-- Day accordions -->
+    {% for day, day_data in season_viewing.days.items %}
+        <!-- Make rows of cards -->
+        <div class="row">
+            <!-- Day card -->
+            <div class="card mt-3 mb-3 p-3">
+                <h2>Day {{ day_data.id }}</h2>
+                <p>Day {{ day_data.id }} of S{{ season_viewing.id }}</p>
+                <!-- Game cards -->
+                <div class="card mt-3 mb-3 p-3">
+                    {% for game in day_data.games %}
+                        <p>
+                            <a href="{% url 'stats:view_game' game.id %}">View</a> |
+                            <b class="text-success">{{ game.data.winner }}</b> beat <b class="text-danger">{{ game.data.loser }}</b>
+                        </p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

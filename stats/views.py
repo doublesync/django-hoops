@@ -15,6 +15,12 @@ from django.db.utils import IntegrityError
 # Custom imports
 import json
 
+# Main imports
+from main.league import config as league_config
+
+# Stat imports
+from stats.league.stats import compile as stats_compile
+
 # Main application imports
 from main.models import Player
 from main.models import Team
@@ -25,10 +31,15 @@ from stats.models import Game
 def index(request):
     # Create the context
     context = {
+        "all_seasons": stats_compile.all_seasons(),
         "recent_games": Game.objects.all().order_by("-day")[:8],
+        "current_season": league_config.current_season,
     }
+    print(json.dumps(context["all_seasons"], indent=4))
     return render(request, "stats/viewing/view_home.html", context)
 
+
+# Game statistic functions
 def add_game(request):
     context = {
         "teams": Team.objects.all(),
@@ -46,6 +57,19 @@ def view_game(request, id):
         "game": game_viewing,
     }
     return render(request, "stats/viewing/view_game.html", context)
+
+def view_season(request, id):
+    # Attempt to find the season
+    try:
+        season_viewing = Game.objects.filter(season=id)
+    except:
+        return HttpResponse("❌ Season does not exist!")
+    # Create the context
+    context = {
+        "season": season_viewing,
+        "season_viewing": stats_compile.one_season(id),
+    }
+    return render(request, "stats/viewing/view_season.html", context)
 
 # HTMX check functions
 def check_stats_roster(request):
@@ -184,5 +208,5 @@ def validate_game(request):
         # Return the success message (refresh page and clear form)
         messages.success(request, f"✅ Game added successfully! [#{game.id}]")
         response = HttpResponse()
-        response['HX-Redirect'] = reverse("view_game", args=[game.id])
+        response['HX-Refresh'] = "true"
         return response
