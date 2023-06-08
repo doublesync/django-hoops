@@ -34,6 +34,10 @@ from .discord import auth as discord_auth
 from .discord import webhooks as discord_webhooks
 from .league import config as league_config
 
+# Stats imports
+from stats.league.stats import compile as stats_compile
+from stats.league.stats import calculate as stats_calculate
+
 # Custom packages
 import copy
 import json
@@ -189,6 +193,8 @@ def player(request, id):
                 week_earnings -= t.amount
             elif t.transaction_type == "cash_given":
                 week_earnings += t.amount
+    # Get the player's stats
+    player_career_stats = stats_compile.player_stats(player=plr, career=True, season=None)
     # Initialize the context
     context = {
         # Page information
@@ -231,6 +237,8 @@ def player(request, id):
         "file": json.dumps(hoops_player_export.export_player(plr), indent=4),
         # Transaction history
         "week_earnings": week_earnings,
+        # Player stats
+        "player_career_stats": player_career_stats,
     }
     return render(request, "main/players/player.html", context)
 

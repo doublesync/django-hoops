@@ -27,7 +27,7 @@ from main.models import Team
 from stats.models import Statline
 from stats.models import Game
 
-# Actual view functions
+# Index function
 def index(request):
     # Create the context
     context = {
@@ -37,7 +37,6 @@ def index(request):
     }
     # Get standing based on current_season
     return render(request, "stats/viewing/view_home.html", context)
-
 
 # Game statistic functions
 def add_game(request):
@@ -101,6 +100,7 @@ def validate_game(request):
         away_team = request.POST.get("away_team")
         home_score = request.POST.get("home_score")
         away_score = request.POST.get("away_score")
+        game_type = request.POST.get("game_type")
         game_data = {
             "home": {},
             "away": {},
@@ -147,6 +147,7 @@ def validate_game(request):
             away_points=away_score,
             winner = home_team_object if home_score > away_score else away_team_object,
             loser = home_team_object if home_score < away_score else away_team_object,
+            game_type = game_type,
         )
         game.save()
         try:
