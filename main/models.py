@@ -151,6 +151,7 @@ class Team(models.Model):
         default=league_config.get_default_picks, blank=True, null=True
     )
     plays_in_main_league = models.BooleanField(default=True)
+    show_on_lists = models.BooleanField(default=True)
     # Relationships
     manager = models.ForeignKey(
         "DiscordUser", blank=True, null=True, on_delete=models.CASCADE

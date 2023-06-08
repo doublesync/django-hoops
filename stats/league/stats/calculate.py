@@ -35,7 +35,8 @@ def get_games_behind(standings):
         if games_behind > 0:
             standings[team]["games_behind"] = games_behind
         else:
-            standings[team]["games_behind"] = "👑"
+            # Check if the team has played any games
+            standings[team]["games_behind"] = 0
     # Return the standings dictionary
     return standings
 
@@ -45,6 +46,9 @@ def get_standings(season):
     standings = {}
     all_teams = Team.objects.all()
     for team in all_teams:
+        # Check if team should show on lists
+        if not team.show_on_lists:
+            continue
         # Add the team to the standings dictionary
         standings[team.name] = {
             # Team data
