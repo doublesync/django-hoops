@@ -32,8 +32,7 @@
                                             <span style="font-size: 8px;">({{ player.id }}) </span>
                                             {{ player.first_name }} {{ player.last_name }}
                                             <ul class="mt-0 mb-0" style="list-style-type: none;">
-                                                <li class="mt-0 mb-0 ml-0"><a href="{% url 'player_styles' player.id %}" style="text-decoration: none;"><span style="font-size: 9px;" class="text-white">👔 Style Editor</span></a></li>
-                                                <li class="mt-0 mb-0 ml-0"><a href="{% url 'player_styles' player.id %}" style="text-decoration: none;"><span style="font-size: 9px;" class="text-white">🔥 Hotzone Hub</span></a></li>
+                                                <li class="mt-0 mb-0 ml-0"><a href="{% url 'player_styles' player.id %}" style="text-decoration: none;"><span style="font-size: 9px;" class="text-white">Style Editor</span></a></li>
                                             </ul>    
                                         </a><br>
                                     {% endfor %}
