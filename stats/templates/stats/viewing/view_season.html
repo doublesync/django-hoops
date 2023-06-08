@@ -16,8 +16,8 @@
                 <div class="card mt-3 mb-3 p-3">
                     {% for game in day_data.games %}
                         <p>
-                            <a href="{% url 'stats:view_game' game.id %}">View</a> |
-                            <b class="text-success">{{ game.data.winner }}</b> beat <b class="text-danger">{{ game.data.loser }}</b>
+                            <a href="{% url 'stats:view_game' game.id %}">View game</a> |
+                            <b class="text-success">{{ game.winner }}</b> beat <b class="text-danger">{{ game.loser }}</b> {{ game.winning_score }}-{{ game.losing_score}}
                         </p>
                     {% endfor %}
                 </div>

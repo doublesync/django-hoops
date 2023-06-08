@@ -33,9 +33,9 @@ def index(request):
     context = {
         "all_seasons": stats_compile.all_seasons(),
         "recent_games": Game.objects.all().order_by("-day")[:8],
-        "current_season": league_config.current_season,
+        "current_season": stats_compile.one_season(league_config.current_season),
     }
-    print(json.dumps(context["all_seasons"], indent=4))
+    # Get standing based on current_season
     return render(request, "stats/viewing/view_home.html", context)
 
 
