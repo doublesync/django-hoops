@@ -247,6 +247,7 @@ def sort_stats(request):
             index_to_use = "totals"
         elif sort_by in stats_config.advanced_sort_options:
             index_to_use = "advanced"
+        print("Index To Use: ", index_to_use)
         # Set 'index_to_use'
         # Sort the stats by the sort_by
         # Must make the sort_by options equivalent to the keys in the season_player_stats
