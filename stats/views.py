@@ -19,6 +19,7 @@ import json
 from main.league import config as league_config
 
 # Stat imports
+from stats.league import config as stats_config
 from stats.league.stats import compile as stats_compile
 
 # Main application imports
@@ -31,7 +32,7 @@ from stats.models import Game
 def index(request):
     # Create the context
     context = {
-        "all_seasons": stats_compile.all_seasons(),
+        "active_seasons": stats_config.active_seasons,
         "recent_games": Game.objects.all().order_by("-day")[:8],
         "current_season": stats_compile.one_season(league_config.current_season),
     }

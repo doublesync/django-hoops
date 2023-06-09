@@ -11,9 +11,9 @@
     <!-- Season viewer -->
     <div class="container">
         <h2>Season Viewer</h2>
-        {% for season, data in all_seasons.items %}
+        {% for season in active_seasons %}
             <div class="card mt-3 mb-3 p-3">
-                <td><a href="{% url 'stats:view_season' data.id %}">Season {{ data.id }}</a></td>
+                <td><a href="{% url 'stats:view_season' season %}">Season {{ season }}</a></td>
             </div>
         {% endfor %}
     </div>
