@@ -35,6 +35,7 @@ def index(request):
         "active_seasons": stats_config.active_seasons,
         "recent_games": Game.objects.all().order_by("-day")[:8],
         "current_season": stats_compile.one_season(league_config.current_season),
+        "season_id": league_config.current_season,
     }
     # Get standing based on current_season
     return render(request, "stats/viewing/view_home.html", context)
@@ -71,6 +72,22 @@ def view_season(request, id):
     }
     return render(request, "stats/viewing/view_season.html", context)
 
+def view_season_stats(request, id):
+    # Get the season stats
+    sorted_stats = stats_compile.all_player_stats(id)
+    sorted_stats = list(sorted_stats.items())
+    # Paginate sorted_stats
+    paginator = Paginator(sorted_stats, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    # Create the context
+    context = {
+        "season": id,
+        "sorted_stats": page_obj,
+        "sort_options": stats_config.average_sort_options,
+    }
+    return render(request, "stats/viewing/view_stats.html", context)
+
 # HTMX check functions
 def check_stats_roster(request):
     if request.method == "POST":
@@ -92,7 +109,7 @@ def check_stats_roster(request):
             return HttpResponse(html)
     else:
         return HttpResponse("❌ Invalid request!")
-    
+
 def validate_game(request):
     if request.method == "POST":
         # Get the form data
@@ -212,3 +229,60 @@ def validate_game(request):
         response = HttpResponse()
         response['HX-Refresh'] = "true"
         return response
+    
+def sort_stats(request):
+    # Make averages, totals, and advanced stats sortable
+    if request.method == "POST":
+        # Get the form data
+        season = request.POST.get("season")
+        sort_by = request.POST.get("sort_by")
+        # Validate both teams
+        if not sort_by or not season:
+            return HttpResponse("❌ Sort by or season is missing or wrong!")
+        # If everything is ok, find the sorted stats
+        season_player_stats = stats_compile.all_player_stats(int(season))
+        # Deciding which index to use
+        index_to_use = "averages"
+        if sort_by in stats_config.totals_sort_options:
+            index_to_use = "totals"
+        elif sort_by in stats_config.advanced_sort_options:
+            index_to_use = "advanced"
+        # Set 'index_to_use'
+        # Sort the stats by the sort_by
+        # Must make the sort_by options equivalent to the keys in the season_player_stats
+        sorted_stats = sorted(season_player_stats.values(), key=lambda x: x[index_to_use][sort_by], reverse=True)
+        sorted_stats = {player["id"]: player for player in sorted_stats}
+        sorted_stats = list(sorted_stats.items())
+        # Paginate sorted_stats
+        paginator = Paginator(sorted_stats, 15)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        # Send the sorted stats back
+        context = {
+            "index_to_use": index_to_use,
+            "sorted_stats": page_obj,
+            "sort_options": stats_config.sort_by_options[index_to_use],
+        }
+        html = render_to_string("stats/ajax/sort_stats_fragment.html", context)
+        # Return the sorted stats fragment
+        return HttpResponse(html)
+    else:
+        return HttpResponse("❌ Invalid request!")
+    
+def find_options(request):
+    if request.method == "POST":
+        # Get the form data
+        season = request.POST.get("season")
+        sort_type = request.POST.get("sort_type")
+        # Validate the sort type
+        if not sort_type or sort_type not in stats_config.sort_by_options:
+            return HttpResponse("❌ Sort type is missing or wrong!")
+        # If everything is ok, find the options
+        options = stats_config.sort_by_options[sort_type]
+        # Send the options back
+        context = {
+            "sort_options": options,
+        }
+        html = render_to_string("stats/ajax/sort_options_fragment.html", context)
+        # Return the options fragment
+        return HttpResponse(html)

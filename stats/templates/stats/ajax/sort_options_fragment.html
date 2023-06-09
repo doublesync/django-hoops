@@ -1,0 +1,6 @@
+<select name="sort_by" class="form-control mt-1" hx-post="{% url 'stats:sort_stats' %}" hx-trigger="click" hx-target="#sorted_stats_table" hx-swap="innerHTML" hx-include="[name='season']">
+    <option selected>Choose a sort option</option>
+    {% for sort_option in sort_options %}
+        <option>{{ sort_option }}</option>
+    {% endfor %}
+</select>

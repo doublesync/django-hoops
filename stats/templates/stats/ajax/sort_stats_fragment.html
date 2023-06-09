@@ -1,0 +1,47 @@
+<table class="table table-striped table-hover table-responsive">
+    <thead>
+        <tr>
+            <th scope="col" style="text-transform: capitalize;">PLAYER</th>
+            <th scope="col" style="text-transform: capitalize;">GP</th>
+            {% for header in sort_options %} 
+                <th scope="col">{{ header }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for player_data in sorted_stats %}
+            <tr>
+                <td>{{ player_data.1.name }}</td>
+                <td>{{ player_data.1.totals.GP }}</td>
+                {% if index_to_use == 'averages' %}
+                    <td>{{ player_data.1.averages.PPG }}</td>
+                    <td>{{ player_data.1.averages.RPG }}</td>
+                    <td>{{ player_data.1.averages.APG }}</td>
+                    <td>{{ player_data.1.averages.SPG }}</td>
+                    <td>{{ player_data.1.averages.BPG }}</td>
+                    <td>{{ player_data.1.averages.TPG }}</td>
+                    <td>{{ player_data.1.averages.FPG }}</td>
+                    <td>{{ player_data.1.averages.FGP }}</td>
+                    <td>{{ player_data.1.averages.3PP }}</td>
+                    <td>{{ player_data.1.averages.FTP }}</td>
+                {% elif index_to_use == 'totals' %}
+                    <td>{{ player_data.1.totals.PTS }}</td>
+                    <td>{{ player_data.1.totals.REB }}</td>
+                    <td>{{ player_data.1.totals.AST }}</td>
+                    <td>{{ player_data.1.totals.STL }}</td>
+                    <td>{{ player_data.1.totals.BLK }}</td>
+                    <td>{{ player_data.1.totals.TOV }}</td>
+                    <td>{{ player_data.1.totals.PF }}</td>
+                    <td>{{ player_data.1.totals.FGM }}</td>
+                    <td>{{ player_data.1.totals.FGA }}</td>
+                    <td>{{ player_data.1.totals.3PM }}</td>
+                    <td>{{ player_data.1.totals.3PA }}</td>
+                    <td>{{ player_data.1.totals.FTM }}</td>
+                    <td>{{ player_data.1.totals.FTA }}</td>
+                {% elif index_to_use == 'advanced' %}
+                    <td>{{ player_data.1.advanced.GMSC }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

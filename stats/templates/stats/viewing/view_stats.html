@@ -1,0 +1,31 @@
+{% extends 'stats/base.html' %}
+{% block content %}
+<!-- Add game page -->
+<div class="container mt-5">
+    <!-- Game title -->
+    <h1>Season {{ season }}</h1>
+    <!-- Sort types -->
+    <form>
+        {% csrf_token %}
+        <!-- Sort type chooser -->
+        <select name="sort_type" class="form-control mt-1" hx-post="{% url 'stats:find_options' %}" hx-trigger="click" hx-target="#sort_options" hx-swap="innerHTML">
+            <option value="averages">Averages</option>
+            <option value="totals">Totals</option>
+            <option value="advanced">Advanced</option>
+        </select>
+    </form>
+    <!-- Sort options -->
+    <form>
+        {% csrf_token %}
+        <input type="hidden" name="season" value="{{ season }}">
+        <!-- Sort option chooser -->
+        <div id="sort_options">
+            {% include 'stats/ajax/sort_options_fragment.html' %}
+        </div>
+    </form>
+    <!-- Sorted table fragment -->
+    <div id="sorted_stats_table" class="mt-2">
+        {% include 'stats/ajax/sort_stats_fragment.html' %}
+    </div>
+</div>
+{% endblock %}

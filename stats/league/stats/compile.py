@@ -70,9 +70,11 @@ def one_season(season):
     return season_dict
 
 # Compile one player and it's stats
-def player_stats(player, season, playoffs=False, career=False):
+def player_stats(player, season, playoffs=False, finals=False, career=False):
     # Create the player dictionary
     player_stats = {
+        "id": player.id,
+        "name": f"{player.first_name} {player.last_name}",
         "season": season,
         "averages": {},
         "advanced": {},
@@ -103,6 +105,9 @@ def player_stats(player, season, playoffs=False, career=False):
     elif playoffs:
         player_stats["season"] = season + " Playoffs"
         statlines = Statline.objects.filter(player=player, game__season=season, game__game_type="PLY")
+    elif finals:
+        player_stats["season"] = season + " Finals"
+        statlines = Statline.objects.filter(player=player, game__season=season, game__game_type="FIN")
     else:
         statlines = Statline.objects.filter(player=player, game__season=season, game__game_type="REG")
     # Check if the player has any statlines
@@ -162,6 +167,18 @@ def player_stats(player, season, playoffs=False, career=False):
         player_stats["advanced"]["GMSC"] = round(player_totals["GMSC"] / player_totals["GP"], 2)
     # Return the player dictionary
     return player_stats
+
+# Compile every player's stats
+def all_player_stats(season, playoffs=False, finals=False, career=False):
+    # Create the players dictionary
+    player_stats_dict = {}
+    # Find all of the players
+    players = Player.objects.all()
+    # Add each player's stats to the dictionary
+    for player in players:            
+        player_stats_dict[player.id] = player_stats(player=player, season=season, playoffs=playoffs, finals=finals, career=career)
+    # Return the players dictionary
+    return player_stats_dict
 
 # Compile one player's career stats
 def career_stats(player):

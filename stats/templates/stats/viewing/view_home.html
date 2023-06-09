@@ -1,4 +1,5 @@
 {% extends 'stats/base.html' %}
+{% load main_filters %}
 {% block content %}
 <!-- Add game page -->
 <div class="container mt-5">
@@ -14,6 +15,9 @@
         {% for season in active_seasons %}
             <div class="card mt-3 mb-3 p-3">
                 <td><a href="{% url 'stats:view_season' season %}">Season {{ season }}</a></td>
+                <ul style="list-style-type: none;">
+                    <li class="mt-1 mb-1"><a href="{% url 'stats:view_season_stats' season|int %}">View statistics</a></li>
+                </ul>
             </div>
         {% endfor %}
     </div>
