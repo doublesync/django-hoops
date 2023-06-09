@@ -195,7 +195,6 @@ def player(request, id):
                 week_earnings += t.amount
     # Get the player's stats
     player_career_stats = stats_compile.player_stats(player=plr, career=True, season=None)
-    print(json.dumps(player_career_stats, indent=4))
     # Initialize the context
     context = {
         # Page information

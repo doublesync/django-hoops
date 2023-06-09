@@ -48,13 +48,14 @@ def one_season(season):
             "id": game_adding.id,
             "home": game_adding.home.id,
             "away": game_adding.away.id,
-            "winning_score": game_adding.home_points,
-            "losing_score": game_adding.away_points,
+            "winning_score": winning_score,
+            "losing_score": losing_score,
             "winner": game_adding.winner.abbrev,
             "loser": game_adding.loser.abbrev,
         })
     # Find each game and add it to the season & day
-    for game in Game.objects.filter(season=season):
+    season_games = Game.objects.filter(season=season).order_by("day")
+    for game in season_games:
         if game.day not in season_dict["days"]:
             season_dict["days"][game.day] = {
                 "id": game.day,
