@@ -248,6 +248,8 @@ def sort_stats(request):
         elif sort_by in stats_config.advanced_sort_options:
             index_to_use = "advanced"
         print("Index To Use: ", index_to_use)
+        print("Sort By: ", sort_by)
+        print(json.dumps(season_player_stats, indent=4))
         # Set 'index_to_use'
         # Sort the stats by the sort_by
         # Must make the sort_by options equivalent to the keys in the season_player_stats
