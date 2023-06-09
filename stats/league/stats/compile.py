@@ -149,15 +149,15 @@ def player_stats(player, season, playoffs=False, career=False):
         if player_totals["FGA"] == 0 or player_totals["FGA"] == 0:
             player_stats["averages"]["FGP"] = 0
         else:
-            player_stats["averages"]["FGP"] = round(player_totals["FGM"] / player_totals["FGA"], 2) * 100
+            player_stats["averages"]["FGP"] = round(player_totals["FGM"] / player_totals["FGA"] * 100, 2)
         if player_totals["3PM"] == 0 or player_totals["3PA"] == 0:
             player_stats["averages"]["3PP"] = 0
         else:
-            player_stats["averages"]["3PP"] = round(player_totals["3PM"] / player_totals["3PA"], 2) * 100
+            player_stats["averages"]["3PP"] = round(player_totals["3PM"] / player_totals["3PA"] * 100, 2)
         if player_totals["FTA"] == 0 or player_totals["FTM"] == 0:
             player_stats["averages"]["FTP"] = 0
         else:
-            player_stats["averages"]["FTP"] = round(player_totals["FTM"] / player_totals["FTA"], 2) * 100
+            player_stats["averages"]["FTP"] = round(player_totals["FTM"] / player_totals["FTA"] * 100, 2)
         # Based on the totals, add the average advanced stats to the dictionary
         player_stats["advanced"]["GMSC"] = round(player_totals["GMSC"] / player_totals["GP"], 2)
     # Return the player dictionary

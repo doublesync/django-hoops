@@ -96,7 +96,7 @@ def get_standings(season):
             standings[team.name]["avg_points_for"] = round(standings[team.name]["points_for"] / (standings[team.name]["home_games"] + standings[team.name]["away_games"]), 2)
             standings[team.name]["avg_points_against"] = round(standings[team.name]["points_against"] / (standings[team.name]["home_games"] + standings[team.name]["away_games"]), 2)
             standings[team.name]["avg_points_diff"] = round(standings[team.name]["points_diff"] / (standings[team.name]["home_games"] + standings[team.name]["away_games"]), 2)
-            standings[team.name]["percentage"] = round(standings[team.name]["wins"] / (standings[team.name]["wins"] + standings[team.name]["losses"]), 2) * 100
+            standings[team.name]["percentage"] = round(standings[team.name]["wins"] / (standings[team.name]["wins"] + standings[team.name]["losses"]) * 100, 2)
         # Order the standings dictionary by wins
         standings = dict(sorted(standings.items(), key=lambda item: item[1]["wins"], reverse=True))
         # Calculate games behind for each team
