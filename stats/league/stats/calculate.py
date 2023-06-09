@@ -93,10 +93,10 @@ def get_standings(season):
                 standings[team.name]["points_against"] += game.home_points
                 standings[team.name]["points_diff"] += game.away_points - game.home_points
             # Calculate averages
-            standings[team.name]["avg_points_for"] = standings[team.name]["points_for"] / (standings[team.name]["home_games"] + standings[team.name]["away_games"])
-            standings[team.name]["avg_points_against"] = standings[team.name]["points_against"] / (standings[team.name]["home_games"] + standings[team.name]["away_games"])
-            standings[team.name]["avg_points_diff"] = standings[team.name]["points_diff"] / (standings[team.name]["home_games"] + standings[team.name]["away_games"])
-            standings[team.name]["percentage"] = round(standings[team.name]["wins"] / (standings[team.name]["wins"] + standings[team.name]["losses"]), 2)
+            standings[team.name]["avg_points_for"] = round(standings[team.name]["points_for"] / (standings[team.name]["home_games"] + standings[team.name]["away_games"]), 2)
+            standings[team.name]["avg_points_against"] = round(standings[team.name]["points_against"] / (standings[team.name]["home_games"] + standings[team.name]["away_games"]), 2)
+            standings[team.name]["avg_points_diff"] = round(standings[team.name]["points_diff"] / (standings[team.name]["home_games"] + standings[team.name]["away_games"]), 2)
+            standings[team.name]["percentage"] = round(standings[team.name]["wins"] / (standings[team.name]["wins"] + standings[team.name]["losses"]), 2) * 100
         # Order the standings dictionary by wins
         standings = dict(sorted(standings.items(), key=lambda item: item[1]["wins"], reverse=True))
         # Calculate games behind for each team
@@ -122,6 +122,6 @@ def get_game_score(line):
     DRB = line.defensive_rebounds
     PF = line.personal_fouls
     # Calculate the game score
-    game_score = PTS + 0.4 * FGM - 0.7 * FGA - 0.4*(FTA - FTM) + 0.7 * ORB + 0.3 * DRB + STL + 0.7 * AST + 0.7 * BLK - 0.4 * PF - TOV
+    game_score = round(PTS + 0.4 * FGM - 0.7 * FGA - 0.4*(FTA - FTM) + 0.7 * ORB + 0.3 * DRB + STL + 0.7 * AST + 0.7 * BLK - 0.4 * PF - TOV, 2)
     # Return the game score
     return game_score

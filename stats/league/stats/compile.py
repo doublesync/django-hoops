@@ -77,6 +77,22 @@ def player_stats(player, season, playoffs=False, career=False):
         "advanced": {},
         "totals": {
             "GP": 0,
+            "PTS": 0,
+            "REB": 0,
+            "OREB": 0,
+            "DREB": 0,
+            "AST": 0,
+            "STL": 0,
+            "BLK": 0,
+            "TOV": 0,
+            "FGM": 0,
+            "FGA": 0,
+            "3PM": 0,
+            "3PA": 0,
+            "FTM": 0,
+            "FTA": 0,
+            "PF": 0,
+            "GMSC": 0,
         },
     }
     # Find the player's statlines based on the season type
@@ -93,24 +109,24 @@ def player_stats(player, season, playoffs=False, career=False):
         # Add the player totals to the dictionary
         for line in statlines:
             # Add the statline totals to the dictionary
-            player_stats["totals"]["PTS"] = line.points
-            player_stats["totals"]["REB"] = line.rebounds
-            player_stats["totals"]["OREB"] = line.offensive_rebounds
-            player_stats["totals"]["DREB"] = line.defensive_rebounds
-            player_stats["totals"]["AST"] = line.assists
-            player_stats["totals"]["STL"] = line.steals
-            player_stats["totals"]["BLK"] = line.blocks
-            player_stats["totals"]["TOV"] = line.turnovers
-            player_stats["totals"]["FGM"] = line.field_goals_made
-            player_stats["totals"]["FGA"] = line.field_goals_attempted
-            player_stats["totals"]["3PM"] = line.three_pointers_made
-            player_stats["totals"]["3PA"] = line.three_pointers_attempted
-            player_stats["totals"]["FTM"] = line.free_throws_made
-            player_stats["totals"]["FTA"] = line.free_throws_attempted
-            player_stats["totals"]["PF"] = line.personal_fouls
             player_stats["totals"]["GP"] += 1
+            player_stats["totals"]["PTS"] += line.points
+            player_stats["totals"]["REB"] += line.rebounds
+            player_stats["totals"]["OREB"] += line.offensive_rebounds
+            player_stats["totals"]["DREB"] += line.defensive_rebounds
+            player_stats["totals"]["AST"] += line.assists
+            player_stats["totals"]["STL"] += line.steals
+            player_stats["totals"]["BLK"] += line.blocks
+            player_stats["totals"]["TOV"] += line.turnovers
+            player_stats["totals"]["FGM"] += line.field_goals_made
+            player_stats["totals"]["FGA"] += line.field_goals_attempted
+            player_stats["totals"]["3PM"] += line.three_pointers_made
+            player_stats["totals"]["3PA"] += line.three_pointers_attempted
+            player_stats["totals"]["FTM"] += line.free_throws_made
+            player_stats["totals"]["FTA"] += line.free_throws_attempted
+            player_stats["totals"]["PF"] += line.personal_fouls
             # Add the statline advanced stats to the dictionary
-            player_stats["totals"]["GMSC"] = stats_calculate.get_game_score(line)
+            player_stats["totals"]["GMSC"] += stats_calculate.get_game_score(line)
         # Based on the totals, add the averages to the dictionary
         player_totals = player_stats["totals"]
         player_stats["averages"]["PPG"] = round(player_totals["PTS"] / player_totals["GP"], 2)
@@ -132,15 +148,15 @@ def player_stats(player, season, playoffs=False, career=False):
         if player_totals["FGA"] == 0 or player_totals["FGA"] == 0:
             player_stats["averages"]["FGP"] = 0
         else:
-            player_stats["averages"]["FGP"] = round(player_totals["FGM"] / player_totals["FGA"], 2)
+            player_stats["averages"]["FGP"] = round(player_totals["FGM"] / player_totals["FGA"], 2) * 100
         if player_totals["3PM"] == 0 or player_totals["3PA"] == 0:
             player_stats["averages"]["3PP"] = 0
         else:
-            player_stats["averages"]["3PP"] = round(player_totals["3PM"] / player_totals["3PA"], 2)
+            player_stats["averages"]["3PP"] = round(player_totals["3PM"] / player_totals["3PA"], 2) * 100
         if player_totals["FTA"] == 0 or player_totals["FTM"] == 0:
             player_stats["averages"]["FTP"] = 0
         else:
-            player_stats["averages"]["FTP"] = round(player_totals["FTM"] / player_totals["FTA"], 2)
+            player_stats["averages"]["FTP"] = round(player_totals["FTM"] / player_totals["FTA"], 2) * 100
         # Based on the totals, add the average advanced stats to the dictionary
         player_stats["advanced"]["GMSC"] = round(player_totals["GMSC"] / player_totals["GP"], 2)
     # Return the player dictionary
