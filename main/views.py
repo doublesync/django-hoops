@@ -1736,7 +1736,6 @@ def check_contract_revoke(request):
     else:
         # Delete the offer
         offer = ContractOffer.objects.filter(team=team, player=player).first()
-        print(offer, team, player)
         if offer:
             offer.delete()
             return HttpResponse("✅ Contract offer revoked!")

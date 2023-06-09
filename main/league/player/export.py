@@ -306,7 +306,6 @@ def export_player(player):
     # Set the player's styles
     def set_styles():
         for style, data in player.styles.items():
-            print(data)
             # Define some variables
             style_category = data["category"]
             style_value = data["value"]
