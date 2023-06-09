@@ -43,3 +43,7 @@ def get_age(value):
 def get_style(obj, key):
     response = get_value(obj, key)
     return response["value"]
+
+@register.filter(name="int")
+def int_filter(value):
+    return int(value)
