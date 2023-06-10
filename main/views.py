@@ -1598,7 +1598,12 @@ def check_daily_reward(request):
     if not last_reward or timezone.now().day != last_reward.day:
         # Give all of the user's players their daily rewards (salary)
         for player in user.player_set.all():
-            player.cash += player.salary
+            # Add money to rostered player or free agent
+            if player.salary > league_config.free_agent_salary:
+                player.cash += player.salary
+            else:
+                player.cash += league_config.free_agent_salary
+            # Send a webhook message & save the player
             rewards_given += f"✅ {player.first_name} {player.last_name} was given ${player.salary} <b>(${player.cash})</b><br>"
             player.save()
         # Update the last_reward date

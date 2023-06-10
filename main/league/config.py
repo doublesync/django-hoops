@@ -38,6 +38,7 @@ max_years = 3
 min_salary = 100
 max_salary = 600
 rookie_salary = 100
+free_agent_salary = 60
 
 # Description: For height & weight limits
 
