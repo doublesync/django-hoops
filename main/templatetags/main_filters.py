@@ -47,3 +47,7 @@ def get_style(obj, key):
 @register.filter(name="int")
 def int_filter(value):
     return int(value)
+
+@register.filter(name="lengthinc")
+def lengthinc(value):
+    return len(value) + 1

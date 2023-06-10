@@ -71,52 +71,59 @@ def one_season(season):
 
 # Compile one player and it's stats
 def player_stats(player, season, playoffs=False, finals=False, career=False):
+    # Create the templates
+    averages_template = {
+        "PPG": 0,
+        "RPG": 0,
+        "OREB": 0,
+        "DREB": 0,
+        "APG": 0,
+        "SPG": 0,
+        "BPG": 0,
+        "TPG": 0,
+        "FPG": 0,
+        "FGM": 0,
+        "FGA": 0,
+        "3PM": 0,
+        "3PA": 0,
+        "FTM": 0,
+        "FTA": 0,
+        "FGP": 0,
+        "3PP": 0,
+        "FTP": 0,
+    }
+    advanced_template = {
+        "GMSC": 0,
+    }
+    totals_template = {
+        "GP": 0,
+        "PTS": 0,
+        "REB": 0,
+        "OREB": 0,
+        "DREB": 0,
+        "AST": 0,
+        "STL": 0,
+        "BLK": 0,
+        "TOV": 0,
+        "FGM": 0,
+        "FGA": 0,
+        "3PM": 0,
+        "3PA": 0,
+        "FTM": 0,
+        "FTA": 0,
+        "PF": 0,
+        "GMSC": 0,
+    }
     # Create the player dictionary
     player_stats = {
         "id": player.id,
         "name": f"{player.first_name} {player.last_name}",
         "season": season,
-        "averages": {
-            "PPG": 0,
-            "RPG": 0,
-            "OREB": 0,
-            "DREB": 0,
-            "APG": 0,
-            "SPG": 0,
-            "BPG": 0,
-            "TPG": 0,
-            "FPG": 0,
-            "FGM": 0,
-            "FGA": 0,
-            "3PM": 0,
-            "3PA": 0,
-            "FTM": 0,
-            "FTA": 0,
-            "FGP": 0,
-            "3PP": 0,
-            "FTP": 0,
-        },
-        "advanced": {
-            "GMSC": 0,
-        },
-        "totals": {
-            "GP": 0,
-            "PTS": 0,
-            "REB": 0,
-            "OREB": 0,
-            "DREB": 0,
-            "AST": 0,
-            "STL": 0,
-            "BLK": 0,
-            "TOV": 0,
-            "FGM": 0,
-            "FGA": 0,
-            "3PM": 0,
-            "3PA": 0,
-            "FTM": 0,
-            "FTA": 0,
-            "PF": 0,
-            "GMSC": 0,
+        "stats": {},
+        "full_year_stats": {
+            "averages": {},
+            "totals": {},
+            "advanced": {},
         },
     }
     # Find the player's statlines based on the season type
@@ -133,59 +140,90 @@ def player_stats(player, season, playoffs=False, finals=False, career=False):
         statlines = Statline.objects.filter(player=player, game__season=season, game__game_type="REG")
     # Check if the player has any statlines
     if len(statlines) > 0:
-        # Add the player totals to the dictionary
+        # Add the player totals to the dictionary (separate by teams)
         for line in statlines:
+            # Add team to the dictionary if it doesn't exist
+            team_abbrev = line.team_at_time.abbrev
+            if team_abbrev not in player_stats["stats"]:
+                player_stats["stats"][team_abbrev] = {
+                    "averages": averages_template,
+                    "advanced": advanced_template,
+                    "totals": totals_template,
+                }
             # Add the statline totals to the dictionary
-            player_stats["totals"]["GP"] += 1
-            player_stats["totals"]["PTS"] += line.points
-            player_stats["totals"]["REB"] += line.rebounds
-            player_stats["totals"]["OREB"] += line.offensive_rebounds
-            player_stats["totals"]["DREB"] += line.defensive_rebounds
-            player_stats["totals"]["AST"] += line.assists
-            player_stats["totals"]["STL"] += line.steals
-            player_stats["totals"]["BLK"] += line.blocks
-            player_stats["totals"]["TOV"] += line.turnovers
-            player_stats["totals"]["FGM"] += line.field_goals_made
-            player_stats["totals"]["FGA"] += line.field_goals_attempted
-            player_stats["totals"]["3PM"] += line.three_pointers_made
-            player_stats["totals"]["3PA"] += line.three_pointers_attempted
-            player_stats["totals"]["FTM"] += line.free_throws_made
-            player_stats["totals"]["FTA"] += line.free_throws_attempted
-            player_stats["totals"]["PF"] += line.personal_fouls
+            player_stats["stats"][team_abbrev]["totals"]["GP"] += 1
+            player_stats["stats"][team_abbrev]["totals"]["PTS"] += line.points
+            player_stats["stats"][team_abbrev]["totals"]["REB"] += line.rebounds
+            player_stats["stats"][team_abbrev]["totals"]["OREB"] += line.offensive_rebounds
+            player_stats["stats"][team_abbrev]["totals"]["DREB"] += line.defensive_rebounds
+            player_stats["stats"][team_abbrev]["totals"]["AST"] += line.assists
+            player_stats["stats"][team_abbrev]["totals"]["STL"] += line.steals
+            player_stats["stats"][team_abbrev]["totals"]["BLK"] += line.blocks
+            player_stats["stats"][team_abbrev]["totals"]["TOV"] += line.turnovers
+            player_stats["stats"][team_abbrev]["totals"]["FGM"] += line.field_goals_made
+            player_stats["stats"][team_abbrev]["totals"]["FGA"] += line.field_goals_attempted
+            player_stats["stats"][team_abbrev]["totals"]["3PM"] += line.three_pointers_made
+            player_stats["stats"][team_abbrev]["totals"]["3PA"] += line.three_pointers_attempted
+            player_stats["stats"][team_abbrev]["totals"]["FTM"] += line.free_throws_made
+            player_stats["stats"][team_abbrev]["totals"]["FTA"] += line.free_throws_attempted
+            player_stats["stats"][team_abbrev]["totals"]["PF"] += line.personal_fouls
             # Add the statline advanced stats to the dictionary
-            player_stats["totals"]["GMSC"] += stats_calculate.get_game_score(line)
+            player_stats["stats"][team_abbrev]["totals"]["GMSC"] += stats_calculate.get_game_score(line)
         # Based on the totals, add the averages to the dictionary
-        player_totals = player_stats["totals"]
-        player_stats["averages"]["PPG"] = round(player_totals["PTS"] / player_totals["GP"], 2)
-        player_stats["averages"]["RPG"] = round(player_totals["REB"] / player_totals["GP"], 2)
-        player_stats["averages"]["OREB"] = round(player_totals["OREB"] / player_totals["GP"], 2)
-        player_stats["averages"]["DREB"] = round(player_totals["DREB"] / player_totals["GP"], 2)
-        player_stats["averages"]["APG"] = round(player_totals["AST"] / player_totals["GP"], 2)
-        player_stats["averages"]["SPG"] = round(player_totals["STL"] / player_totals["GP"], 2)
-        player_stats["averages"]["BPG"] = round(player_totals["BLK"] / player_totals["GP"], 2)
-        player_stats["averages"]["TPG"] = round(player_totals["TOV"] / player_totals["GP"], 2)
-        player_stats["averages"]["FGM"] = round(player_totals["FGM"] / player_totals["GP"], 2)
-        player_stats["averages"]["FGA"] = round(player_totals["FGA"] / player_totals["GP"], 2)
-        player_stats["averages"]["3PM"] = round(player_totals["3PM"] / player_totals["GP"], 2)
-        player_stats["averages"]["3PA"] = round(player_totals["3PA"] / player_totals["GP"], 2)
-        player_stats["averages"]["FTM"] = round(player_totals["FTM"] / player_totals["GP"], 2)
-        player_stats["averages"]["FTA"] = round(player_totals["FTA"] / player_totals["GP"], 2)
-        player_stats["averages"]["FPG"] = round(player_totals["PF"] / player_totals["GP"], 2)
-        # Percentage stats may cause division by zero
-        if player_totals["FGA"] == 0 or player_totals["FGA"] == 0:
-            player_stats["averages"]["FGP"] = 0
-        else:
-            player_stats["averages"]["FGP"] = round(player_totals["FGM"] / player_totals["FGA"] * 100, 2)
-        if player_totals["3PM"] == 0 or player_totals["3PA"] == 0:
-            player_stats["averages"]["3PP"] = 0
-        else:
-            player_stats["averages"]["3PP"] = round(player_totals["3PM"] / player_totals["3PA"] * 100, 2)
-        if player_totals["FTA"] == 0 or player_totals["FTM"] == 0:
-            player_stats["averages"]["FTP"] = 0
-        else:
-            player_stats["averages"]["FTP"] = round(player_totals["FTM"] / player_totals["FTA"] * 100, 2)
-        # Based on the totals, add the average advanced stats to the dictionary
-        player_stats["advanced"]["GMSC"] = round(player_totals["GMSC"] / player_totals["GP"], 2)
+        for _, stats_on_team in player_stats["stats"].items():  
+            totals_on_team = stats_on_team["totals"]
+            stats_on_team["averages"]["PPG"] = round(totals_on_team["PTS"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["RPG"] = round(totals_on_team["REB"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["OREB"] = round(totals_on_team["OREB"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["DREB"] = round(totals_on_team["DREB"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["APG"] = round(totals_on_team["AST"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["SPG"] = round(totals_on_team["STL"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["BPG"] = round(totals_on_team["BLK"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["TPG"] = round(totals_on_team["TOV"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["FGM"] = round(totals_on_team["FGM"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["FGA"] = round(totals_on_team["FGA"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["3PM"] = round(totals_on_team["3PM"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["3PA"] = round(totals_on_team["3PA"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["FTM"] = round(totals_on_team["FTM"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["FTA"] = round(totals_on_team["FTA"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["FPG"] = round(totals_on_team["PF"] / totals_on_team["GP"], 2)
+            # Percentage stats may cause division by zero
+            if totals_on_team["FGA"] == 0 or totals_on_team["FGA"] == 0:
+                stats_on_team["averages"]["FGP"] = 0
+            else:
+                stats_on_team["averages"]["FGP"] = round(totals_on_team["FGM"] / totals_on_team["FGA"] * 100, 2)
+            if totals_on_team["3PM"] == 0 or totals_on_team["3PA"] == 0:
+                stats_on_team["averages"]["3PP"] = 0
+            else:
+                stats_on_team["averages"]["3PP"] = round(totals_on_team["3PM"] / totals_on_team["3PA"] * 100, 2)
+            if totals_on_team["FTA"] == 0 or totals_on_team["FTM"] == 0:
+                stats_on_team["averages"]["FTP"] = 0
+            else:
+                stats_on_team["averages"]["FTP"] = round(totals_on_team["FTM"] / totals_on_team["FTA"] * 100, 2)
+            # Based on the totals, add the average advanced stats to the dictionary
+            stats_on_team["advanced"]["GMSC"] = round(totals_on_team["GMSC"] / totals_on_team["GP"], 2)
+        # Combine the player's individual team stats into yearly stats
+        for _, stats_on_team in player_stats["stats"].items():
+            # Adding the averages to the full year stats
+            for stat, value in stats_on_team["averages"].items():
+                if stat not in player_stats["full_year_stats"]["averages"]:
+                    player_stats["full_year_stats"]["averages"][stat] = value
+                else:
+                    player_stats["full_year_stats"]["averages"][stat] += value
+            # Adding the totals to the full year stats
+            for stat, value in stats_on_team["totals"].items():
+                if stat not in player_stats["full_year_stats"]["totals"]:
+                    player_stats["full_year_stats"]["totals"][stat] = value
+                else:
+                    player_stats["full_year_stats"]["totals"][stat] += value
+            # Adding the advanced to the full year stats
+            for stat, value in stats_on_team["advanced"].items():
+                if stat not in player_stats["full_year_stats"]["advanced"]:
+                    player_stats["full_year_stats"]["advanced"][stat] = value
+                else:
+                    player_stats["full_year_stats"]["advanced"][stat] += value
+    # Set a 'length' attribute for template use
+    player_stats["length"] = len(player_stats["stats"])
     # Return the player dictionary
     return player_stats
 

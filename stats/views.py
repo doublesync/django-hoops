@@ -250,7 +250,7 @@ def sort_stats(request):
         # Set 'index_to_use'
         # Sort the stats by the sort_by
         # Must make the sort_by options equivalent to the keys in the season_player_stats
-        sorted_stats = sorted(season_player_stats.values(), key=lambda x: x[index_to_use][sort_by], reverse=True)
+        sorted_stats = sorted(season_player_stats.values(), key=lambda x: x["full_year_stats"][index_to_use][sort_by], reverse=True)
         sorted_stats = {player["id"]: player for player in sorted_stats}
         sorted_stats = list(sorted_stats.items())
         # Paginate sorted_stats
