@@ -9,6 +9,7 @@ from stats.league.stats import calculate as stats_calculate
 
 # Custom imports
 import json
+import copy
 
 
 # Compile all seasons and their days (and their games)
@@ -146,9 +147,9 @@ def player_stats(player, season, playoffs=False, finals=False, career=False):
             team_abbrev = line.team_at_time.abbrev
             if team_abbrev not in player_stats["stats"]:
                 player_stats["stats"][team_abbrev] = {
-                    "averages": averages_template,
-                    "advanced": advanced_template,
-                    "totals": totals_template,
+                    "averages": averages_template.copy(),
+                    "advanced": advanced_template.copy(),
+                    "totals": totals_template.copy(),
                 }
             # Add the statline totals to the dictionary
             player_stats["stats"][team_abbrev]["totals"]["GP"] += 1
@@ -210,6 +211,8 @@ def player_stats(player, season, playoffs=False, finals=False, career=False):
                     player_stats["full_year_stats"]["averages"][stat] = value
                 else:
                     player_stats["full_year_stats"]["averages"][stat] += value
+                    player_stats["full_year_stats"]["averages"][stat] /= 2
+                    player_stats["full_year_stats"]["averages"][stat] = round(player_stats["full_year_stats"]["averages"][stat], 2)
             # Adding the totals to the full year stats
             for stat, value in stats_on_team["totals"].items():
                 if stat not in player_stats["full_year_stats"]["totals"]:
@@ -222,8 +225,8 @@ def player_stats(player, season, playoffs=False, finals=False, career=False):
                     player_stats["full_year_stats"]["advanced"][stat] = value
                 else:
                     player_stats["full_year_stats"]["advanced"][stat] += value
-    # Set a 'length' attribute for template use
-    player_stats["length"] = len(player_stats["stats"])
+                    player_stats["full_year_stats"]["advanced"][stat] /= 2
+                    player_stats["full_year_stats"]["advanced"][stat] = round(player_stats["full_year_stats"]["advanced"][stat], 2)
     # Return the player dictionary
     return player_stats
 
