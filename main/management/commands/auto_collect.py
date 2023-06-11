@@ -1,6 +1,7 @@
 from django.utils import timezone
 from ...models import Player
 from ...models import DiscordUser
+from ...league import config as league_config
 from ...league.user import notify as hoops_user_notify
 from ...discord import webhooks as hoops_webhooks
 from django.core.management.base import BaseCommand, CommandError
@@ -20,7 +21,10 @@ class Command(BaseCommand):
                 for player in user_players:
                     if discord_user and discord_user.auto_collect_rewards:
                         # Pay the player their rewards
-                        player.cash += player.salary
+                        if player.salary >= league_config.free_agent_salary:
+                            player.cash += player.salary
+                        else:
+                            player.cash += league_config.free_agent_salary
                         player.save()
                         # Notify the user
                         hoops_user_notify.notify(
