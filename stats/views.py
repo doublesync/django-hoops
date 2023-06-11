@@ -156,6 +156,12 @@ def validate_game(request):
                 if not value:
                     return HttpResponse(f"❌ {away_player.first_name} {away_player.last_name} is missing {stat}!")
                 hps[stat] = int(value)
+        # Check if a game with the same teams and day exists (even if they are different home/away)
+        if Game.objects.filter(
+            Q(home=home_team_object, away=away_team_object, day=day) | 
+            Q(home=away_team_object, away=home_team_object, day=day)
+        ).exists():
+            return HttpResponse("❌ Game already exists!")
         # Create the game object
         game = Game.objects.create(
             day=day,
