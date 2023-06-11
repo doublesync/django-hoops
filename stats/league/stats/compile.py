@@ -180,68 +180,68 @@ def player_stats(player, season, playoffs=False, finals=False, career=False):
                     player_stats["full_year_stats"]["totals"][stat] += value
             # Update the averages for the team & full year stats
             totals_on_team = player_stats["stats"][team_at_time]["totals"]
-            stats_on_team["averages"]["PPG"] = round(totals_on_team["PTS"] / totals_on_team["GP"], 2)
-            stats_on_team["averages"]["RPG"] = round(totals_on_team["REB"] / totals_on_team["GP"], 2)
-            stats_on_team["averages"]["OREB"] = round(totals_on_team["OREB"] / totals_on_team["GP"], 2)
-            stats_on_team["averages"]["DREB"] = round(totals_on_team["DREB"] / totals_on_team["GP"], 2)
-            stats_on_team["averages"]["APG"] = round(totals_on_team["AST"] / totals_on_team["GP"], 2)
-            stats_on_team["averages"]["SPG"] = round(totals_on_team["STL"] / totals_on_team["GP"], 2)
-            stats_on_team["averages"]["BPG"] = round(totals_on_team["BLK"] / totals_on_team["GP"], 2)
-            stats_on_team["averages"]["TPG"] = round(totals_on_team["TOV"] / totals_on_team["GP"], 2)
-            stats_on_team["averages"]["FGM"] = round(totals_on_team["FGM"] / totals_on_team["GP"], 2)
-            stats_on_team["averages"]["FGA"] = round(totals_on_team["FGA"] / totals_on_team["GP"], 2)
-            stats_on_team["averages"]["3PM"] = round(totals_on_team["3PM"] / totals_on_team["GP"], 2)
-            stats_on_team["averages"]["3PA"] = round(totals_on_team["3PA"] / totals_on_team["GP"], 2)
-            stats_on_team["averages"]["FTM"] = round(totals_on_team["FTM"] / totals_on_team["GP"], 2)
-            stats_on_team["averages"]["FTA"] = round(totals_on_team["FTA"] / totals_on_team["GP"], 2)
-            stats_on_team["averages"]["FPG"] = round(totals_on_team["PF"] / totals_on_team["GP"], 2)
+            stats_on_team["averages"]["PPG"] = round(totals_on_team["PTS"] / totals_on_team["GP"], 1)
+            stats_on_team["averages"]["RPG"] = round(totals_on_team["REB"] / totals_on_team["GP"], 1)
+            stats_on_team["averages"]["OREB"] = round(totals_on_team["OREB"] / totals_on_team["GP"], 1)
+            stats_on_team["averages"]["DREB"] = round(totals_on_team["DREB"] / totals_on_team["GP"], 1)
+            stats_on_team["averages"]["APG"] = round(totals_on_team["AST"] / totals_on_team["GP"], 1)
+            stats_on_team["averages"]["SPG"] = round(totals_on_team["STL"] / totals_on_team["GP"], 1)
+            stats_on_team["averages"]["BPG"] = round(totals_on_team["BLK"] / totals_on_team["GP"], 1)
+            stats_on_team["averages"]["TPG"] = round(totals_on_team["TOV"] / totals_on_team["GP"], 1)
+            stats_on_team["averages"]["FGM"] = round(totals_on_team["FGM"] / totals_on_team["GP"], 1)
+            stats_on_team["averages"]["FGA"] = round(totals_on_team["FGA"] / totals_on_team["GP"], 1)
+            stats_on_team["averages"]["3PM"] = round(totals_on_team["3PM"] / totals_on_team["GP"], 1)
+            stats_on_team["averages"]["3PA"] = round(totals_on_team["3PA"] / totals_on_team["GP"], 1)
+            stats_on_team["averages"]["FTM"] = round(totals_on_team["FTM"] / totals_on_team["GP"], 1)
+            stats_on_team["averages"]["FTA"] = round(totals_on_team["FTA"] / totals_on_team["GP"], 1)
+            stats_on_team["averages"]["FPG"] = round(totals_on_team["PF"] / totals_on_team["GP"], 1)
             # Percentage stats may cause division by zero
             if totals_on_team["FGA"] == 0 or totals_on_team["FGA"] == 0:
                 stats_on_team["averages"]["FGP"] = 0
             else:
-                stats_on_team["averages"]["FGP"] = round(totals_on_team["FGM"] / totals_on_team["FGA"] * 100, 2)
+                stats_on_team["averages"]["FGP"] = round(totals_on_team["FGM"] / totals_on_team["FGA"] * 100, 1)
             if totals_on_team["3PM"] == 0 or totals_on_team["3PA"] == 0:
                 stats_on_team["averages"]["3PP"] = 0
             else:
-                stats_on_team["averages"]["3PP"] = round(totals_on_team["3PM"] / totals_on_team["3PA"] * 100, 2)
+                stats_on_team["averages"]["3PP"] = round(totals_on_team["3PM"] / totals_on_team["3PA"] * 100, 1)
             if totals_on_team["FTA"] == 0 or totals_on_team["FTM"] == 0:
                 stats_on_team["averages"]["FTP"] = 0
             else:
-                stats_on_team["averages"]["FTP"] = round(totals_on_team["FTM"] / totals_on_team["FTA"] * 100, 2)
+                stats_on_team["averages"]["FTP"] = round(totals_on_team["FTM"] / totals_on_team["FTA"] * 100, 1)
             # Based on the totals, add the average advanced stats to the dictionary
-            stats_on_team["advanced"]["GMSC"] = round(totals_on_team["GMSC"] / totals_on_team["GP"], 2)
+            stats_on_team["advanced"]["GMSC"] = round(totals_on_team["GMSC"] / totals_on_team["GP"], 1)
         # Update the averages for the full year stats
         totals_on_team = player_stats["full_year_stats"]["totals"]
-        player_stats["full_year_stats"]["averages"]["PPG"] = round(totals_on_team["PTS"] / totals_on_team["GP"], 2)
-        player_stats["full_year_stats"]["averages"]["RPG"] = round(totals_on_team["REB"] / totals_on_team["GP"], 2)
-        player_stats["full_year_stats"]["averages"]["OREB"] = round(totals_on_team["OREB"] / totals_on_team["GP"], 2)
-        player_stats["full_year_stats"]["averages"]["DREB"] = round(totals_on_team["DREB"] / totals_on_team["GP"], 2)
-        player_stats["full_year_stats"]["averages"]["APG"] = round(totals_on_team["AST"] / totals_on_team["GP"], 2)
-        player_stats["full_year_stats"]["averages"]["SPG"] = round(totals_on_team["STL"] / totals_on_team["GP"], 2)
-        player_stats["full_year_stats"]["averages"]["BPG"] = round(totals_on_team["BLK"] / totals_on_team["GP"], 2)
-        player_stats["full_year_stats"]["averages"]["TPG"] = round(totals_on_team["TOV"] / totals_on_team["GP"], 2)
-        player_stats["full_year_stats"]["averages"]["FGM"] = round(totals_on_team["FGM"] / totals_on_team["GP"], 2)
-        player_stats["full_year_stats"]["averages"]["FGA"] = round(totals_on_team["FGA"] / totals_on_team["GP"], 2)
-        player_stats["full_year_stats"]["averages"]["3PM"] = round(totals_on_team["3PM"] / totals_on_team["GP"], 2)
-        player_stats["full_year_stats"]["averages"]["3PA"] = round(totals_on_team["3PA"] / totals_on_team["GP"], 2)
-        player_stats["full_year_stats"]["averages"]["FTM"] = round(totals_on_team["FTM"] / totals_on_team["GP"], 2)
-        player_stats["full_year_stats"]["averages"]["FTA"] = round(totals_on_team["FTA"] / totals_on_team["GP"], 2)
-        player_stats["full_year_stats"]["averages"]["FPG"] = round(totals_on_team["PF"] / totals_on_team["GP"], 2)
+        player_stats["full_year_stats"]["averages"]["PPG"] = round(totals_on_team["PTS"] / totals_on_team["GP"], 1)
+        player_stats["full_year_stats"]["averages"]["RPG"] = round(totals_on_team["REB"] / totals_on_team["GP"], 1)
+        player_stats["full_year_stats"]["averages"]["OREB"] = round(totals_on_team["OREB"] / totals_on_team["GP"], 1)
+        player_stats["full_year_stats"]["averages"]["DREB"] = round(totals_on_team["DREB"] / totals_on_team["GP"], 1)
+        player_stats["full_year_stats"]["averages"]["APG"] = round(totals_on_team["AST"] / totals_on_team["GP"], 1)
+        player_stats["full_year_stats"]["averages"]["SPG"] = round(totals_on_team["STL"] / totals_on_team["GP"], 1)
+        player_stats["full_year_stats"]["averages"]["BPG"] = round(totals_on_team["BLK"] / totals_on_team["GP"], 1)
+        player_stats["full_year_stats"]["averages"]["TPG"] = round(totals_on_team["TOV"] / totals_on_team["GP"], 1)
+        player_stats["full_year_stats"]["averages"]["FGM"] = round(totals_on_team["FGM"] / totals_on_team["GP"], 1)
+        player_stats["full_year_stats"]["averages"]["FGA"] = round(totals_on_team["FGA"] / totals_on_team["GP"], 1)
+        player_stats["full_year_stats"]["averages"]["3PM"] = round(totals_on_team["3PM"] / totals_on_team["GP"], 1)
+        player_stats["full_year_stats"]["averages"]["3PA"] = round(totals_on_team["3PA"] / totals_on_team["GP"], 1)
+        player_stats["full_year_stats"]["averages"]["FTM"] = round(totals_on_team["FTM"] / totals_on_team["GP"], 1)
+        player_stats["full_year_stats"]["averages"]["FTA"] = round(totals_on_team["FTA"] / totals_on_team["GP"], 1)
+        player_stats["full_year_stats"]["averages"]["FPG"] = round(totals_on_team["PF"] / totals_on_team["GP"], 1)
         # Percentage stats may cause division by zero
         if totals_on_team["FGA"] == 0 or totals_on_team["FGA"] == 0:
             player_stats["full_year_stats"]["averages"]["FGP"] = 0
         else:
-            player_stats["full_year_stats"]["averages"]["FGP"] = round(totals_on_team["FGM"] / totals_on_team["FGA"] * 100, 2)
+            player_stats["full_year_stats"]["averages"]["FGP"] = round(totals_on_team["FGM"] / totals_on_team["FGA"] * 100, 1)
         if totals_on_team["3PM"] == 0 or totals_on_team["3PA"] == 0:
             player_stats["full_year_stats"]["averages"]["3PP"] = 0
         else:
-            player_stats["full_year_stats"]["averages"]["3PP"] = round(totals_on_team["3PM"] / totals_on_team["3PA"] * 100, 2)
+            player_stats["full_year_stats"]["averages"]["3PP"] = round(totals_on_team["3PM"] / totals_on_team["3PA"] * 100, 1)
         if totals_on_team["FTA"] == 0 or totals_on_team["FTM"] == 0:
             player_stats["full_year_stats"]["averages"]["FTP"] = 0
         else:
-            player_stats["full_year_stats"]["averages"]["FTP"] = round(totals_on_team["FTM"] / totals_on_team["FTA"] * 100, 2)
+            player_stats["full_year_stats"]["averages"]["FTP"] = round(totals_on_team["FTM"] / totals_on_team["FTA"] * 100, 1)
         # Based on the totals, add the average advanced stats to the dictionary
-        player_stats["full_year_stats"]["advanced"]["GMSC"] = round(totals_on_team["GMSC"] / totals_on_team["GP"], 2)
+        player_stats["full_year_stats"]["advanced"]["GMSC"] = round(totals_on_team["GMSC"] / totals_on_team["GP"], 1)
     # Return the player dictionary
     return player_stats
 
