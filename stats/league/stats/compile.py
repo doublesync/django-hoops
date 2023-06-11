@@ -252,8 +252,15 @@ def all_player_stats(season, playoffs=False, finals=False, career=False):
     # Find all of the players
     players = Player.objects.all()
     # Add each player's stats to the dictionary
-    for player in players:            
-        player_stats_dict[player.id] = player_stats(player=player, season=season, playoffs=playoffs, finals=finals, career=career)
+    for player in players:
+        one_player_stats = player_stats(player=player, season=season, playoffs=playoffs, finals=finals, career=career)
+        one_player_totals = one_player_stats["full_year_stats"]["totals"]
+        one_player_averages = one_player_stats["full_year_stats"]["averages"]
+        one_player_advanced = one_player_stats["full_year_stats"]["advanced"]
+        if one_player_totals and one_player_averages and one_player_advanced:           
+            player_stats_dict[player.id] = one_player_stats
+        else:
+            continue
     # Return the players dictionary
     return player_stats_dict
 
