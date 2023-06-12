@@ -1,10 +1,13 @@
 # Django imports
-from stats.models import Game
-from stats.models import Statline
+from django.db.models import Q
+
+# Main imports
 from main.models import Player
 from main.models import Team
 
 # Stats imports
+from stats.models import Game
+from stats.models import Statline
 from stats.league.stats import calculate as stats_calculate
 
 # Custom imports
@@ -278,3 +281,57 @@ def career_stats(player):
         player_career_stats[season] = player_stats(player=player, season=season)
     # Return the player dictionary
     return player_career_stats
+
+# Compile player's last (x) games
+def player_game_logs(player, x):
+    # Create the 'player_game_logs' dictionary
+    player_game_logs = []
+    # Filter based on day, limit to (x)
+    last_x_statlines = Statline.objects.filter(player=player).order_by("-game__day")[:x]
+    # Add each statline to the dictionary
+    for line in last_x_statlines:
+        player_game_logs.append({
+            "id": line.game.id,
+            "day": line.game.day,
+            "score": f"{line.game.home_points}-{line.game.away_points}",
+            "winner": line.game.winner.abbrev,
+            "loser": line.game.loser.abbrev,
+            "stats" : {
+                "PTS": line.points,
+                "REB": line.rebounds,
+                "OREB": line.offensive_rebounds,
+                "DREB": line.defensive_rebounds,
+                "AST": line.assists,
+                "STL": line.steals,
+                "BLK": line.blocks,
+                "TOV": line.turnovers,
+                "FGM": line.field_goals_made,
+                "FGA": line.field_goals_attempted,
+                "3PM": line.three_pointers_made,
+                "3PA": line.three_pointers_attempted,
+                "FTM": line.free_throws_made,
+                "FTA": line.free_throws_attempted,
+                "PF": line.personal_fouls,
+                "GMSC": stats_calculate.get_game_score(line),
+            }
+        })
+    # Return the player_game_logs dictionary
+    return player_game_logs
+
+# Compile team's last (x) games
+def team_game_logs(team, x):
+    # Create the 'team_game_logs' dictionary
+    team_game_logs = []
+    # Filter based on day, limit to (x)
+    last_x_games = Game.objects.filter(Q(home=team) | Q(away=team)).order_by("-day")[:x]
+    # Add each statline to the dictionary
+    for game in last_x_games:
+        team_game_logs.append({
+            "id": game.id,
+            "day": game.day,
+            "score": f"{game.home_points}-{game.away_points}",
+            "winner": game.winner.abbrev,
+            "loser": game.loser.abbrev,
+        })
+    # Return the player_game_logs dictionary
+    return team_game_logs

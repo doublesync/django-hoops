@@ -549,6 +549,60 @@
 
         </div>
 
+        <!-- Player game logs -->
+        <div class="container-fluid mb-5 p-5">
+            <h2 class="mb-3">Game Logs</h2>
+            <hr>
+            <table class="table table-striped table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th>DAY</th>
+                        <th>GMSC</th>
+                        <th>PTS</th>
+                        <th>REB</th>
+                        <th>AST</th>
+                        <th>STL</th>
+                        <th>BLK</th>
+                        <th>TOV</th>
+                        <th>FGM</th>
+                        <th>FGA</th>
+                        <th>3PM</th>
+                        <th>3PA</th>
+                        <th>FTM</th>
+                        <th>FTA</th>
+                        <th>DREB</th>
+                        <th>OREB</th>
+                        <th>STATUS</th>
+                        <th>GAME</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Game log stats -->
+                    {% for game_log in player_game_logs %}
+                        <tr>
+                            <td>{{ game_log.day }}</td>
+                            <td>{{ game_log.stats.GMSC }}</td>
+                            <td>{{ game_log.stats.PTS }}</td>
+                            <td>{{ game_log.stats.REB }}</td>
+                            <td>{{ game_log.stats.AST }}</td>
+                            <td>{{ game_log.stats.STL }}</td>
+                            <td>{{ game_log.stats.BLK }}</td>
+                            <td>{{ game_log.stats.TOV }}</td>
+                            <td>{{ game_log.stats.FGM }}</td>
+                            <td>{{ game_log.stats.FGA }}</td>
+                            <td>{{ game_log.stats.3PM }}</td>
+                            <td>{{ game_log.stats.3PA }}</td>
+                            <td>{{ game_log.stats.FTM }}</td>
+                            <td>{{ game_log.stats.FTA }}</td>
+                            <td>{{ game_log.stats.DREB }}</td>
+                            <td>{{ game_log.stats.OREB }}</td>
+                            <td>{{ game_log.winner }} beat {{ game_log.loser }} <b>{{ game_log.score }}</b></td>
+                            <td><a href="{% url 'stats:view_game' game_log.id %}">View full box score</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
         <!-- Bootstrap accordions -->
         <div class="container-fluid mb-5 p-5">

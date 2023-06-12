@@ -195,6 +195,7 @@ def player(request, id):
                 week_earnings += t.amount
     # Get the player's stats
     player_career_stats = stats_compile.player_stats(player=plr, career=True, season=None)
+    player_game_logs = stats_compile.player_game_logs(player=plr, x=10)
     # Initialize the context
     context = {
         # Page information
@@ -239,6 +240,7 @@ def player(request, id):
         "week_earnings": week_earnings,
         # Player stats
         "player_career_stats": player_career_stats,
+        "player_game_logs": player_game_logs,
     }
     return render(request, "main/players/player.html", context)
 
