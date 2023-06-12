@@ -67,12 +67,23 @@ load_dotenv()
 def home(request):
     # Get the current user
     current_user = request.user
+    # Find the game of the day for the past three days
+    gotd_list = []
+    gotd_list.append(stats_compile.game_of_the_day(season=league_config.current_season))
+    day_index = gotd_list[0]["day"]
+    for _ in range (2):
+        day_index -= 1
+        if day_index > 0:
+            gotd_list.append(stats_compile.game_of_the_day(season=league_config.current_season, specific=day_index))
+        else:
+            break
     # Create the context
     context = {
         "title": "Home",
         "current_user": current_user,
         "players": [],
         "notifications": None,
+        "gotd_list": gotd_list,
     }
     # Send players to home page
     if current_user.is_authenticated:

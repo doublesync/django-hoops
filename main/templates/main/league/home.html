@@ -152,6 +152,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Special -->
         <div class="col-md-6 col-xl-3 mb-4">
             <div class="card shadow border-start-primary py-2" style="height: 400px;">
@@ -175,6 +176,33 @@
                 </div>
             </div>
         </div>
+
+        <!-- Headlines -->
+        <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card shadow border-start-primary py-2" style="height: 500px;">
+                <div class="card-body" style="padding-bottom: 0px;padding-top: 0px;">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col me-2">
+                            <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                <span class="text-white" style="font-size: 12px;">Headlines</span>
+                            </div><hr>
+                            {% for gotd in gotd_list %}
+                                {% if gotd %}
+                                    <div class="text-white h5 mb-0" style="margin-top: -6px;">
+                                        <h3 class="mb-0 mt-3" style="font-size: 12px;">Day #{{ gotd.day }}<p><hr class="mb-2 mt-2">  
+                                        <p class="mb-0 mt-0" style="font-size: 11px;"><span class="text-success fw-bold">Statline:</span> {{ gotd.points }}/{{ gotd.rebounds }}/{{ gotd.assists }}/{{ gotd.steals }}/{{ gotd.blocks }}</p>
+                                        <p class="mb-0 mt-0" style="font-size: 11px;"><span style="text-transform: capitalize;" class="text-success fw-bold">{{ gotd.player }}</span> achieved a gamescore of <span class="text-success fw-bold">{{ gotd.gamescore }}</span>.<p>
+                                        <a class="fw-bold mb-0 mt-2 btn btn-primary btn-sm text-white" href="{% url 'stats:view_game' gotd.id %}" style="font-size: 10px; text-decoration: none;">View box score</a> 
+                                        <a class="fw-bold mb-0 mt-2 btn btn-primary btn-sm text-white" href="{% url 'stats:view_game' gotd.id %}" style="font-size: 10px; text-decoration: none;">View player</a><hr class="mb-2"> 
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 {% endblock %}

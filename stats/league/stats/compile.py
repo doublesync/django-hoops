@@ -335,3 +335,38 @@ def team_game_logs(team, x):
         })
     # Return the player_game_logs dictionary
     return team_game_logs
+
+# Compile game of the day (for the home page)
+def game_of_the_day(season, specific=None):
+    # Find the latest (highest) day in the season
+    latest_day = Game.objects.filter(season=season).latest("day").day if not specific else specific 
+    # Find the statlines in the latest day
+    day_games = Statline.objects.filter(game__day=latest_day)
+    gotd = None
+    # Find the game of the day
+    for line in day_games:
+        gmsc = stats_calculate.get_game_score(line)
+        if gotd == None:
+            gotd = line
+        else:
+            gotd_gmsc = stats_calculate.get_game_score(gotd)
+            if gmsc > gotd_gmsc:
+                gotd = line
+    # Return the game of the day
+    if gotd:
+        return {
+            "id": gotd.game.id,
+            "pid": gotd.player.id,
+            "day": gotd.game.day,
+            "abbrev": gotd.team_at_time.abbrev,
+            "gamescore": stats_calculate.get_game_score(gotd),
+            "player": f"{gotd.player.first_name} {gotd.player.last_name}",
+            "gamescore": stats_calculate.get_game_score(gotd),
+            "points": gotd.points,
+            "rebounds": gotd.rebounds,
+            "assists": gotd.assists,
+            "steals": gotd.steals,
+            "blocks": gotd.blocks,
+        }
+    else:
+        return None
