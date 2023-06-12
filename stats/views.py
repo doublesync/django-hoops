@@ -53,9 +53,14 @@ def view_game(request, id):
         game_viewing = Game.objects.get(id=id)
     except:
         return HttpResponse("❌ Game does not exist!")
+    # Find the statlines of home & away players
+    home_statlines = Statline.objects.filter(game=game_viewing, team_at_time=game_viewing.home)
+    away_statlines = Statline.objects.filter(game=game_viewing, team_at_time=game_viewing.away)
     # Create the context
     context = {
         "game": game_viewing,
+        "home_statlines": home_statlines,
+        "away_statlines": away_statlines,
     }
     return render(request, "stats/viewing/view_game.html", context)
 

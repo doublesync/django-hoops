@@ -193,7 +193,7 @@
                                         <p class="mb-0 mt-0" style="font-size: 11px;"><span class="text-success fw-bold">Statline:</span> {{ gotd.points }}/{{ gotd.rebounds }}/{{ gotd.assists }}/{{ gotd.steals }}/{{ gotd.blocks }}</p>
                                         <p class="mb-0 mt-0" style="font-size: 11px;"><span style="text-transform: capitalize;" class="text-success fw-bold">{{ gotd.player }}</span> achieved a gamescore of <span class="text-success fw-bold">{{ gotd.gamescore }}</span>.<p>
                                         <a class="fw-bold mb-0 mt-2 btn btn-primary btn-sm text-white" href="{% url 'stats:view_game' gotd.id %}" style="font-size: 10px; text-decoration: none;">View box score</a> 
-                                        <a class="fw-bold mb-0 mt-2 btn btn-primary btn-sm text-white" href="{% url 'stats:view_game' gotd.id %}" style="font-size: 10px; text-decoration: none;">View player</a><hr class="mb-2"> 
+                                        <a class="fw-bold mb-0 mt-2 btn btn-primary btn-sm text-white" href="{% url 'player' gotd.pid %}" style="font-size: 10px; text-decoration: none;">View player</a><hr class="mb-2"> 
                                     </div>
                                 {% endif %}
                             {% endfor %}
