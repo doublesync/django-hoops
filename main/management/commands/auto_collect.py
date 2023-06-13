@@ -31,8 +31,6 @@ class Command(BaseCommand):
                             user=discord_user,
                             message=f"Your player {player.first_name} {player.last_name} has auto collected their daily salary of ${player.salary}.",
                         )
-                        # Discord webhook
-                        hoops_webhooks.send_webhook(url="cash", title="✅ Auto Collect Players Paid", message="All auto collect players have been paid their contracts.")
                         # Send error message
                         self.stdout.write(
                             self.style.SUCCESS(f"Successfully auto collected for {player.first_name} {player.last_name}")
@@ -40,8 +38,3 @@ class Command(BaseCommand):
                         # Update the last reward date
                         discord_user.last_reward = timezone.now()
                         discord_user.save()
-                    else:
-                        # Send error message
-                        self.stdout.write(
-                            self.style.ERROR(f"Failed to auto collected for {player.first_name} {player.last_name}")
-                        )

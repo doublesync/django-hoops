@@ -1612,12 +1612,13 @@ def check_daily_reward(request):
         # Give all of the user's players their daily rewards (salary)
         for player in user.player_set.all():
             # Add money to rostered player or free agent
-            if player.salary > league_config.free_agent_salary:
+            if player.salary >= league_config.free_agent_salary:
                 player.cash += player.salary
+                rewards_given += f"✅ {player.first_name} {player.last_name} was given ${player.salary} <b>(${player.cash})</b><br>"
             else:
                 player.cash += league_config.free_agent_salary
+                rewards_given += f"✅ {player.first_name} {player.last_name} was given ${league_config.free_agent_salary} <b>(${player.cash})</b><br>"
             # Send a webhook message & save the player
-            rewards_given += f"✅ {player.first_name} {player.last_name} was given ${player.salary} <b>(${player.cash})</b><br>"
             player.save()
         # Update the last_reward date
         user.last_reward = timezone.now()
@@ -1766,3 +1767,5 @@ class ad_view(View):
     def get(self, request, *args, **kwargs):
         line = "google.com, pub-4085265783135188, DIRECT, f08c47fec0942fa0"
         return HttpResponse(line)
+
+# API views
