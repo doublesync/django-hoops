@@ -12,34 +12,33 @@
         {% for player_data in sorted_stats %}
             <tr>
                 <td>{{ player_data.1.name }}</td>
-                <td>{{ player_data.1.full_year_stats.totals.GP }}</td>
+                <td>{{ player_data.1.yearly_stats.totals.gp }}</td>
                 {% if index_to_use == 'averages' %}
-                    <td>{{ player_data.1.full_year_stats.averages.PPG }}</td>
-                    <td>{{ player_data.1.full_year_stats.averages.RPG }}</td>
-                    <td>{{ player_data.1.full_year_stats.averages.APG }}</td>
-                    <td>{{ player_data.1.full_year_stats.averages.SPG }}</td>
-                    <td>{{ player_data.1.full_year_stats.averages.BPG }}</td>
-                    <td>{{ player_data.1.full_year_stats.averages.TPG }}</td>
-                    <td>{{ player_data.1.full_year_stats.averages.FPG }}</td>
-                    <td>{{ player_data.1.full_year_stats.averages.FGP }}</td>
-                    <td>{{ player_data.1.full_year_stats.averages.3PP }}</td>
-                    <td>{{ player_data.1.full_year_stats.averages.FTP }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.gmsc }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.ppg }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.rpg }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.apg }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.spg }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.bpg }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.tpg }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.fpg }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.fgp }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.tpp }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.ftp }}</td>
                 {% elif index_to_use == 'totals' %}
-                    <td>{{ player_data.1.full_year_stats.totals.PTS }}</td>
-                    <td>{{ player_data.1.full_year_stats.totals.REB }}</td>
-                    <td>{{ player_data.1.full_year_stats.totals.AST }}</td>
-                    <td>{{ player_data.1.full_year_stats.totals.STL }}</td>
-                    <td>{{ player_data.1.full_year_stats.totals.BLK }}</td>
-                    <td>{{ player_data.1.full_year_stats.totals.TOV }}</td>
-                    <td>{{ player_data.1.full_year_stats.totals.PF }}</td>
-                    <td>{{ player_data.1.full_year_stats.totals.FGM }}</td>
-                    <td>{{ player_data.1.full_year_stats.totals.FGA }}</td>
-                    <td>{{ player_data.1.full_year_stats.totals.3PM }}</td>
-                    <td>{{ player_data.1.full_year_stats.totals.3PA }}</td>
-                    <td>{{ player_data.1.full_year_stats.totals.FTM }}</td>
-                    <td>{{ player_data.1.full_year_stats.totals.FTA }}</td>
-                {% elif index_to_use == 'advanced' %}
-                    <td>{{ player_data.1.full_year_stats.advanced.GMSC }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.pts }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.reb }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.ast }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.stl }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.blk }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.tov }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.fouls }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.fgm }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.fga }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.tpm }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.tpa }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.ftm }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.fta }}</td>
                 {% endif %}
             </tr>
         {% endfor %}

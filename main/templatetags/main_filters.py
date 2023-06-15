@@ -51,3 +51,10 @@ def int_filter(value):
 @register.filter(name="lengthinc")
 def lengthinc(value):
     return len(value) + 1
+
+@register.filter(name="getpercentage")
+def get_percentage(made, attempted):
+    try:
+        return round(made / attempted * 100, 1)
+    except Exception:
+        return "00.0"

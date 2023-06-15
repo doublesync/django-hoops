@@ -19,6 +19,8 @@ import json
 from main.league import config as league_config
 
 # Stat imports
+from stats.models import SeasonAverage
+from stats.models import SeasonTotal
 from stats.league import config as stats_config
 from stats.league.stats import compile as stats_compile
 
@@ -83,7 +85,7 @@ def view_season_stats(request, id):
     sorted_stats = stats_compile.all_player_stats(id)
     sorted_stats = list(sorted_stats.items())
     # Paginate sorted_stats
-    paginator = Paginator(sorted_stats, 15)
+    paginator = Paginator(sorted_stats, 50)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     # Create the context
@@ -175,11 +177,13 @@ def validate_game(request):
             away=away_team_object,
             home_points=home_score,
             away_points=away_score,
-            winner = home_team_object if home_score > away_score else away_team_object,
-            loser = home_team_object if home_score < away_score else away_team_object,
-            game_type = game_type,
+            winner=home_team_object if home_score > away_score else away_team_object,
+            loser=home_team_object if home_score < away_score else away_team_object,
+            game_type=game_type,
         )
         game.save()
+        # Create a list of players to update their stats
+        players_to_update = []
         try:
             # Create the statline objects for the home team
             for id, stats in game_data["home"].items():
@@ -206,6 +210,7 @@ def validate_game(request):
                     team_at_time=home_team_object,
                 )
                 statline.save()
+                players_to_update.append(player)
             # Create the statline objects for the away team
             for id, stats in game_data["away"].items():
                 # Find some player information
@@ -231,11 +236,38 @@ def validate_game(request):
                     team_at_time=away_team_object,
                 )
                 statline.save()
+                players_to_update.append(player)
         except IntegrityError:
             # Delete the game object
             game.delete()
             # Return the error message
             return HttpResponse("❌ You have a statistic that is too high!")
+        # Check for 'SeasonAverage' and 'SeasonTotal' objects (this updates the averages & totals for the specific game type in a season)
+        for player_updating in players_to_update:
+            # Check for 'SeasonAverage' object
+            if not SeasonAverage.objects.filter(player=player_updating, season=game.season, team=player.current_team, game_type=game_type).exists():
+                # Create the season average object
+                season_average = SeasonAverage.objects.create(
+                    season=game.season,
+                    team=player_updating.current_team,
+                    player=player_updating,
+                    game_type=game_type,
+                )
+                season_average.save()
+            else:
+                SeasonAverage.objects.get(player=player_updating, season=game.season, team=player.current_team, game_type=game_type).save()
+            # Check for 'SeasonTotal' object
+            if not SeasonTotal.objects.filter(player=player_updating, season=game.season, team=player.current_team, game_type=game_type).exists():
+                # Create the season total object
+                season_total = SeasonTotal.objects.create(
+                    season=game.season,
+                    team=player_updating.current_team,
+                    player=player_updating,
+                    game_type=game_type,
+                )
+                season_total.save()
+            else:
+                SeasonTotal.objects.get(player=player_updating, season=game.season, team=player.current_team, game_type=game_type).save()
         # Return the success message (refresh page and clear form)
         messages.success(request, f"✅ Game added successfully! [#{game.id}]")
         response = HttpResponse()
@@ -257,12 +289,10 @@ def sort_stats(request):
         index_to_use = "averages"
         if sort_by in stats_config.totals_sort_options:
             index_to_use = "totals"
-        elif sort_by in stats_config.advanced_sort_options:
-            index_to_use = "advanced"
         # Set 'index_to_use'
         # Sort the stats by the sort_by
         # Must make the sort_by options equivalent to the keys in the season_player_stats
-        sorted_stats = sorted(season_player_stats.values(), key=lambda x: x["full_year_stats"][index_to_use][sort_by], reverse=True)
+        sorted_stats = sorted(season_player_stats.values(), key=lambda x: x["yearly_stats"][index_to_use][sort_by], reverse=True)
         sorted_stats = {player["id"]: player for player in sorted_stats}
         sorted_stats = list(sorted_stats.items())
         # Paginate sorted_stats

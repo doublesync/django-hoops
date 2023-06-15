@@ -353,6 +353,7 @@
                         <th>SEASON</th>
                         <th>TEAM</th>
                         <th>GP</th>
+                        <th>GMSC</th>
                         <th>PPG</th>
                         <th>RPG</th>
                         <th>APG</th>
@@ -363,7 +364,6 @@
                         <th>FG%</th>
                         <th>3P%</th>
                         <th>FT%</th>
-                        <th>DREB</th>
                         <th>OREB</th>
                         <th>AWARDS</th>
                     </tr>
@@ -371,27 +371,27 @@
                 <tbody>
                     <!-- Specific team stats -->
                     {% for season, season_data in player_career_stats.items %}
-                        {% for team_at_time, stats_on_team in season_data.stats.items %}
+                        {% for team_at_time, stats_on_team in season_data.teamly_stats.items %}
                             <tr>
                                 {% if forloop.first %}
-                                    <td rowspan="{{ season_data.stats|lengthinc }}">Season {{ season }}</td>
+                                    <td rowspan="{{ season_data.teamly_stats|lengthinc }}">Season {{ season_data.season }}</td>
                                 {% endif %}
                                 <td>{{ team_at_time }}</td>
-                                <td>{{ stats_on_team.totals.GP }}</td>
-                                <td>{{ stats_on_team.averages.PPG }}</td>
-                                <td>{{ stats_on_team.averages.RPG }}</td>
-                                <td>{{ stats_on_team.averages.APG }}</td>
-                                <td>{{ stats_on_team.averages.SPG }}</td>
-                                <td>{{ stats_on_team.averages.BPG }}</td>
-                                <td>{{ stats_on_team.averages.TPG }}</td>
-                                <td>{{ stats_on_team.averages.FPG }}</td>
-                                <td>{{ stats_on_team.averages.FGP }}</td>
-                                <td>{{ stats_on_team.averages.3PP }}</td>
-                                <td>{{ stats_on_team.averages.FTP }}</td>
-                                <td>{{ stats_on_team.averages.DREB }}</td>
-                                <td>{{ stats_on_team.averages.OREB }}</td>
+                                <td>{{ stats_on_team.totals.gp }}</td>
+                                <td>{{ stats_on_team.averages.gmsc }}</td>
+                                <td>{{ stats_on_team.averages.ppg }}</td>
+                                <td>{{ stats_on_team.averages.rpg }}</td>
+                                <td>{{ stats_on_team.averages.apg }}</td>
+                                <td>{{ stats_on_team.averages.spg }}</td>
+                                <td>{{ stats_on_team.averages.bpg }}</td>
+                                <td>{{ stats_on_team.averages.tpg }}</td>
+                                <td>{{ stats_on_team.averages.fpg }}</td>
+                                <td>{{ stats_on_team.totals.fgm|getpercentage:stats_on_team.totals.fga }}</td>
+                                <td>{{ stats_on_team.totals.tpm|getpercentage:stats_on_team.totals.tpa }}</td>
+                                <td>{{ stats_on_team.totals.ftm|getpercentage:stats_on_team.totals.fta }}</td>
+                                <td>{{ stats_on_team.averages.orpg }}</td>
                                 {% if forloop.first %}
-                                    <td rowspan="{{ season_data.stats|lengthinc }}">
+                                    <td rowspan="{{ season_data.teamly_stats|lengthinc }}">
                                         {% if season in awards.MVP %} 🏆 {% endif %}
                                         {% if season in awards.DPOY %} 🔏 {% endif %}
                                         {% if season in awards.RING %} 💍 {% endif %}
@@ -402,22 +402,22 @@
                             </tr>
                         {% endfor %}
                         <!-- Full year stats -->
-                        {% if season_data.stats|length > 1 %}
+                        {% if season_data.teamly_stats|length > 1 %}
                             <tr>
                                 <td></td>
-                                <td>{{ season_data.full_year_stats.totals.GP }}</td>
-                                <td>{{ season_data.full_year_stats.averages.PPG }}</td>
-                                <td>{{ season_data.full_year_stats.averages.RPG }}</td>
-                                <td>{{ season_data.full_year_stats.averages.APG }}</td>
-                                <td>{{ season_data.full_year_stats.averages.SPG }}</td>
-                                <td>{{ season_data.full_year_stats.averages.BPG }}</td>
-                                <td>{{ season_data.full_year_stats.averages.TPG }}</td>
-                                <td>{{ season_data.full_year_stats.averages.FPG }}</td>
-                                <td>{{ season_data.full_year_stats.averages.FGP }}</td>
-                                <td>{{ season_data.full_year_stats.averages.3PP }}</td>
-                                <td>{{ season_data.full_year_stats.averages.FTP }}</td>
-                                <td>{{ season_data.full_year_stats.averages.DREB }}</td>
-                                <td>{{ season_data.full_year_stats.averages.OREB }}</td>
+                                <td>{{ season_data.yearly_stats.totals.gp }}</td>
+                                <td> {{ season_data.yearly_stats.averages.gmsc }}</td>
+                                <td>{{ season_data.yearly_stats.averages.ppg }}</td>
+                                <td>{{ season_data.yearly_stats.averages.rpg }}</td>
+                                <td>{{ season_data.yearly_stats.averages.apg }}</td>
+                                <td>{{ season_data.yearly_stats.averages.spg }}</td>
+                                <td>{{ season_data.yearly_stats.averages.bpg }}</td>
+                                <td>{{ season_data.yearly_stats.averages.tpg }}</td>
+                                <td>{{ season_data.yearly_stats.averages.fpg }}</td>
+                                <td>{{ season_data.yearly_stats.averages.fgp }}</td>
+                                <td>{{ season_data.yearly_stats.averages.tpp }}</td>
+                                <td>{{ season_data.yearly_stats.averages.ftp }}</td>
+                                <td>{{ season_data.yearly_stats.averages.orpg }}</td>
                             </tr>
                         {% endif %}
                     {% endfor %}
@@ -445,104 +445,56 @@
                         <th>3PA</th>
                         <th>FTM</th>
                         <th>FTA</th>
-                        <th>DREB</th>
                         <th>OREB</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Specific team stats -->
                     {% for season, season_data in player_career_stats.items %}
-                        {% for team_at_time, stats_on_team in season_data.stats.items %}
+                        {% for team_at_time, stats_on_team in season_data.teamly_stats.items %}
                             <tr>
                                 {% if forloop.first %}
-                                    <td rowspan="{{ season_data.stats|lengthinc }}">Season {{ season }}</td>
+                                    <td rowspan="{{ season_data.teamly_stats|lengthinc }}">Season {{ season_data.season }}</td>
                                 {% endif %}
                                 <td>{{ team_at_time }}</td>
-                                <td>{{ stats_on_team.totals.GP }}</td>
-                                <td>{{ stats_on_team.totals.PTS }}</td>
-                                <td>{{ stats_on_team.totals.REB }}</td>
-                                <td>{{ stats_on_team.totals.AST }}</td>
-                                <td>{{ stats_on_team.totals.STL }}</td>
-                                <td>{{ stats_on_team.totals.BLK }}</td>
-                                <td>{{ stats_on_team.totals.TOV }}</td>
-                                <td>{{ stats_on_team.totals.FGM }}</td>
-                                <td>{{ stats_on_team.totals.FGA }}</td>
-                                <td>{{ stats_on_team.totals.3PM }}</td>
-                                <td>{{ stats_on_team.totals.3PA }}</td>
-                                <td>{{ stats_on_team.totals.FTM }}</td>
-                                <td>{{ stats_on_team.totals.FTA }}</td>
-                                <td>{{ stats_on_team.totals.DREB }}</td>
-                                <td>{{ stats_on_team.totals.OREB }}</td>
+                                <td>{{ stats_on_team.totals.gp }}</td>
+                                <td>{{ stats_on_team.totals.pts }}</td>
+                                <td>{{ stats_on_team.totals.reb }}</td>
+                                <td>{{ stats_on_team.totals.ast }}</td>
+                                <td>{{ stats_on_team.totals.stl }}</td>
+                                <td>{{ stats_on_team.totals.blk }}</td>
+                                <td>{{ stats_on_team.totals.tov }}</td>
+                                <td>{{ stats_on_team.totals.fgm }}</td>
+                                <td>{{ stats_on_team.totals.fga }}</td>
+                                <td>{{ stats_on_team.totals.tpm }}</td>
+                                <td>{{ stats_on_team.totals.tpa }}</td>
+                                <td>{{ stats_on_team.totals.ftm }}</td>
+                                <td>{{ stats_on_team.totals.fta }}</td>
+                                <td>{{ stats_on_team.totals.oreb }}</td>
                             </tr>
                         {% endfor %}
                         <!-- Full year stats -->
-                        {% if season_data.stats|length > 1 %}
+                        {% if season_data.teamly_stats|length > 1 %}
                             <tr>
                                 <td></td>
-                                <td>{{ season_data.full_year_stats.totals.GP }}</td>
-                                <td>{{ season_data.full_year_stats.totals.PTS }}</td>
-                                <td>{{ season_data.full_year_stats.totals.REB }}</td>
-                                <td>{{ season_data.full_year_stats.totals.AST }}</td>
-                                <td>{{ season_data.full_year_stats.totals.STL }}</td>
-                                <td>{{ season_data.full_year_stats.totals.BLK }}</td>
-                                <td>{{ season_data.full_year_stats.totals.TOV }}</td>
-                                <td>{{ season_data.full_year_stats.totals.FGM }}</td>
-                                <td>{{ season_data.full_year_stats.totals.FGA }}</td>
-                                <td>{{ season_data.full_year_stats.totals.3PM }}</td>
-                                <td>{{ season_data.full_year_stats.totals.3PA }}</td>
-                                <td>{{ season_data.full_year_stats.totals.FTM }}</td>
-                                <td>{{ season_data.full_year_stats.totals.FTA }}</td>
-                                <td>{{ season_data.full_year_stats.totals.DREB }}</td>
-                                <td>{{ season_data.full_year_stats.totals.OREB }}</td>
+                                <td>{{ season_data.yearly_stats.totals.gp }}</td>
+                                <td>{{ season_data.yearly_stats.totals.pts }}</td>
+                                <td>{{ season_data.yearly_stats.totals.reb }}</td>
+                                <td>{{ season_data.yearly_stats.totals.ast }}</td>
+                                <td>{{ season_data.yearly_stats.totals.stl }}</td>
+                                <td>{{ season_data.yearly_stats.totals.blk }}</td>
+                                <td>{{ season_data.yearly_stats.totals.tov }}</td>
+                                <td>{{ season_data.yearly_stats.totals.fgm }}</td>
+                                <td>{{ season_data.yearly_stats.totals.fga }}</td>
+                                <td>{{ season_data.yearly_stats.totals.tpm }}</td>
+                                <td>{{ season_data.yearly_stats.totals.tpa }}</td>
+                                <td>{{ season_data.yearly_stats.totals.ftm }}</td>
+                                <td>{{ season_data.yearly_stats.totals.fta }}</td>
+                                <td>{{ season_data.yearly_stats.totals.oreb }}</td>
                             </tr>
                         {% endif %}
                     </tbody>
                     {% endfor %}
-            </table>
-
-            <hr>
-
-            <p>Advanced</p>
-            <table class="table table-striped table-hover table-responsive">
-                <thead>
-                    <tr>
-                        <th>SEASON</th>
-                        <th>TEAM</th>
-                        <th>GP</th>
-                        <th>GMSC</th>
-                        <th>PER</th>
-                        <th>TS%</th>
-                        <th>EFG</th>
-                        <th>ORB%</th>
-                        <th>DRB%</th>
-                        <th>TRB%</th>
-                        <th>AST%</th>
-                        <th>AST/TOV</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Specific team stats -->
-                    {% for season, season_data in player_career_stats.items %}
-                        {% for team_at_time, stats_on_team in season_data.stats.items %}
-                            <tr>
-                                {% if forloop.first %}
-                                    <td rowspan="{{ season_data.stats|lengthinc }}">Season {{ season }}</td>
-                                {% endif %}
-                                <td>{{ team_at_time }}</td>
-                                <td>{{ stats_on_team.totals.GP }}</td>
-                                <td>{{ stats_on_team.advanced.GMSC }}</td>
-                            </tr>
-                        {% endfor %}
-                        <!-- Full year stats -->
-                        {% if season_data.stats|length > 1 %}
-                            <tr>
-                                <td></td>
-                                <td>{{ season_data.full_year_stats.totals.GP }}</td>
-                                <td>{{ season_data.full_year_stats.advanced.GMSC }}</td>
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                </tbody>
             </table>
 
             <hr>
