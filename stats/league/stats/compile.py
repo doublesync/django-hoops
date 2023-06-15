@@ -193,9 +193,9 @@ def career_stats(player):
     player_career_stats = {}
     # Find the player's eligible seasons
     seasons = []
-    for line in Statline.objects.filter(player=player):
-        if line.game.season not in seasons:
-            seasons.append(line.game.season)
+    for avg in SeasonAverage.objects.filter(player=player):
+        if avg.season not in seasons:
+            seasons.append(avg.season)
     # Add the player's career totals to the dictionary
     for season in seasons:
         player_career_stats[season] = player_stats(player=player, season=season)

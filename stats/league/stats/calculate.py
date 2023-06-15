@@ -167,20 +167,23 @@ def get_combined_stats(season, team_by_team_stats):
         # Advanced totals
         combined_stats["totals"]["gmsc"] += team_stats["averages"].gmsc
     # Add averages based on totals
-    combined_stats["averages"]["ppg"] = round(combined_stats["totals"]["pts"] / combined_stats["totals"]["gp"], 1)
-    combined_stats["averages"]["rpg"] = round(combined_stats["totals"]["reb"] / combined_stats["totals"]["gp"], 1)
-    combined_stats["averages"]["apg"] = round(combined_stats["totals"]["ast"] / combined_stats["totals"]["gp"], 1)
-    combined_stats["averages"]["spg"] = round(combined_stats["totals"]["stl"] / combined_stats["totals"]["gp"], 1)
-    combined_stats["averages"]["bpg"] = round(combined_stats["totals"]["blk"] / combined_stats["totals"]["gp"], 1)
-    combined_stats["averages"]["tpg"] = round(combined_stats["totals"]["tov"] / combined_stats["totals"]["gp"], 1)
-    combined_stats["averages"]["fgm"] = round(combined_stats["totals"]["fgm"] / combined_stats["totals"]["gp"], 1)
-    combined_stats["averages"]["fga"] = round(combined_stats["totals"]["fga"] / combined_stats["totals"]["gp"], 1)
-    combined_stats["averages"]["tpm"] = round(combined_stats["totals"]["tpm"] / combined_stats["totals"]["gp"], 1)
-    combined_stats["averages"]["tpa"] = round(combined_stats["totals"]["tpa"] / combined_stats["totals"]["gp"], 1)
-    combined_stats["averages"]["ftm"] = round(combined_stats["totals"]["ftm"] / combined_stats["totals"]["gp"], 1)
-    combined_stats["averages"]["fta"] = round(combined_stats["totals"]["fta"] / combined_stats["totals"]["gp"], 1)
-    combined_stats["averages"]["orpg"] = round(combined_stats["totals"]["oreb"] / combined_stats["totals"]["gp"], 1)
-    combined_stats["averages"]["fpg"] = round(combined_stats["totals"]["fouls"] / combined_stats["totals"]["gp"], 1)
+    if not combined_stats["totals"]["gp"] == 0:
+        combined_stats["averages"]["ppg"] = round(combined_stats["totals"]["pts"] / combined_stats["totals"]["gp"], 1)
+        combined_stats["averages"]["rpg"] = round(combined_stats["totals"]["reb"] / combined_stats["totals"]["gp"], 1)
+        combined_stats["averages"]["apg"] = round(combined_stats["totals"]["ast"] / combined_stats["totals"]["gp"], 1)
+        combined_stats["averages"]["spg"] = round(combined_stats["totals"]["stl"] / combined_stats["totals"]["gp"], 1)
+        combined_stats["averages"]["bpg"] = round(combined_stats["totals"]["blk"] / combined_stats["totals"]["gp"], 1)
+        combined_stats["averages"]["tpg"] = round(combined_stats["totals"]["tov"] / combined_stats["totals"]["gp"], 1)
+        combined_stats["averages"]["fgm"] = round(combined_stats["totals"]["fgm"] / combined_stats["totals"]["gp"], 1)
+        combined_stats["averages"]["fga"] = round(combined_stats["totals"]["fga"] / combined_stats["totals"]["gp"], 1)
+        combined_stats["averages"]["tpm"] = round(combined_stats["totals"]["tpm"] / combined_stats["totals"]["gp"], 1)
+        combined_stats["averages"]["tpa"] = round(combined_stats["totals"]["tpa"] / combined_stats["totals"]["gp"], 1)
+        combined_stats["averages"]["ftm"] = round(combined_stats["totals"]["ftm"] / combined_stats["totals"]["gp"], 1)
+        combined_stats["averages"]["fta"] = round(combined_stats["totals"]["fta"] / combined_stats["totals"]["gp"], 1)
+        combined_stats["averages"]["orpg"] = round(combined_stats["totals"]["oreb"] / combined_stats["totals"]["gp"], 1)
+        combined_stats["averages"]["fpg"] = round(combined_stats["totals"]["fouls"] / combined_stats["totals"]["gp"], 1)
+        # Add advanced averages
+        combined_stats["averages"]["gmsc"] = round(combined_stats["totals"]["gmsc"] / combined_stats["totals"]["gp"], 1) 
     # Add percentages
     if combined_stats["totals"]["fga"] == 0:
         combined_stats["averages"]["fgp"] = 0
@@ -194,7 +197,5 @@ def get_combined_stats(season, team_by_team_stats):
         combined_stats["averages"]["ftp"] = 0
     else:
         combined_stats["averages"]["ftp"] = round(combined_stats["totals"]["ftm"] / combined_stats["totals"]["fta"] * 100, 1)
-    # Add advanced averages
-    combined_stats["averages"]["gmsc"] = round(combined_stats["totals"]["gmsc"] / combined_stats["totals"]["gp"], 1) 
     # Return the combined stats dictionary
     return combined_stats

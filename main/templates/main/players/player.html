@@ -368,9 +368,9 @@
                         <th>AWARDS</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- Specific team stats -->
-                    {% for season, season_data in player_career_stats.items %}
+                <!-- Specific team stats -->
+                {% for season, season_data in player_career_stats.items %}
+                    <tbody>
                         {% for team_at_time, stats_on_team in season_data.teamly_stats.items %}
                             <tr>
                                 {% if forloop.first %}
@@ -420,8 +420,8 @@
                                 <td>{{ season_data.yearly_stats.averages.orpg }}</td>
                             </tr>
                         {% endif %}
-                    {% endfor %}
-                </tbody>
+                    </tbody>
+                {% endfor %}
             </table>
 
             <hr>
