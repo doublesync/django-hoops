@@ -53,7 +53,7 @@ average_sort_options = [
     'tpg',
     "fpg",
     'fgp',
-    '3pp',
+    'tpp',
     'ftp',
 ]
 
@@ -67,8 +67,8 @@ totals_sort_options = [
     'fouls',
     'fgm',
     'fga',
-    '3pm',
-    '3pa',
+    'tpm',
+    'tpa',
     'ftm',
     'fta',
 ]

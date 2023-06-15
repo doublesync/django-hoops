@@ -182,9 +182,18 @@ def get_combined_stats(season, team_by_team_stats):
     combined_stats["averages"]["orpg"] = round(combined_stats["totals"]["oreb"] / combined_stats["totals"]["gp"], 1)
     combined_stats["averages"]["fpg"] = round(combined_stats["totals"]["fouls"] / combined_stats["totals"]["gp"], 1)
     # Add percentages
-    combined_stats["averages"]["fgp"] = round(combined_stats["totals"]["fgm"] / combined_stats["totals"]["fga"] * 100, 1)
-    combined_stats["averages"]["tpp"] = round(combined_stats["totals"]["tpm"] / combined_stats["totals"]["tpa"] * 100, 1)
-    combined_stats["averages"]["ftp"] = round(combined_stats["totals"]["ftm"] / combined_stats["totals"]["fta"] * 100, 1)
+    if combined_stats["totals"]["fga"] == 0:
+        combined_stats["averages"]["fgp"] = 0
+    else:
+        combined_stats["averages"]["fgp"] = round(combined_stats["totals"]["fgm"] / combined_stats["totals"]["fga"] * 100, 1)
+    if combined_stats["totals"]["tpa"] == 0:
+        combined_stats["averages"]["tpp"] = 0
+    else:
+        combined_stats["averages"]["tpp"] = round(combined_stats["totals"]["tpm"] / combined_stats["totals"]["tpa"] * 100, 1)
+    if combined_stats["totals"]["fta"] == 0:
+        combined_stats["averages"]["ftp"] = 0
+    else:
+        combined_stats["averages"]["ftp"] = round(combined_stats["totals"]["ftm"] / combined_stats["totals"]["fta"] * 100, 1)
     # Add advanced averages
     teams_played_for = len(team_by_team_stats)
     combined_stats["averages"]["gmsc"] = round(combined_stats["totals"]["gmsc"] / teams_played_for, 1) 
