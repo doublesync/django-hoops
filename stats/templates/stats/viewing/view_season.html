@@ -18,17 +18,17 @@
                 <hr class="mt-1 mb-1">
                 {% for performance_data in top_performers|getvalue:day %}
                     <p class="mt-1 mb-1" style="text-transform: uppercase;">
-                        <span class="fw-bold text-success">({{ performance_data.gmsc }})</span>
+                        <span class="fw-bold">({{ performance_data.gmsc }})</span>
                         <span class="fw-bold text-white" style="font-size: 12px;">{{ performance_data.name }}</span><br>
-                        <span class="fw-bold text-success">{{ performance_data.pts }}</span><span style="font-size: 11px;">pts</span>, 
-                        <span class="fw-bold text-success">{{ performance_data.reb }}</span><span style="font-size: 11px;">reb</span>, 
-                        <span class="fw-bold text-success">{{ performance_data.ast }}</span><span style="font-size: 11px;">ast</span>, 
-                        <span class="fw-bold text-success">{{ performance_data.stl }}</span><span style="font-size: 11px;">stl</span>, 
-                        <span class="fw-bold text-success">{{ performance_data.blk }}</span><span style="font-size: 11px;">blk</span>, 
-                        <span class="fw-bold text-success">{{ performance_data.tov }}</span><span style="font-size: 11px;">tov</span>
-                        (<span class="fw-bold text-success">{{ performance_data.fgm }}/{{ performance_data.fga}}</span><span style="font-size: 11px;">fg</span>,
-                        <span class="fw-bold text-success">{{ performance_data.3pm }}/{{ performance_data.3pa}}</span><span style="font-size: 11px;">3pt</span>,
-                        <span class="fw-bold text-success">{{ performance_data.ftm }}/{{ performance_data.fta}}</span><span style="font-size: 11px;">ft</span>)
+                        <span class="fw-bold">{{ performance_data.pts }}</span><span style="font-size: 11px;">/pts</span>, 
+                        <span class="fw-bold">{{ performance_data.reb }}</span><span style="font-size: 11px;">/reb</span>, 
+                        <span class="fw-bold">{{ performance_data.ast }}</span><span style="font-size: 11px;">/ast</span>, 
+                        <span class="fw-bold">{{ performance_data.stl }}</span><span style="font-size: 11px;">/stl</span>, 
+                        <span class="fw-bold">{{ performance_data.blk }}</span><span style="font-size: 11px;">/blk</span>, 
+                        <span class="fw-bold">{{ performance_data.tov }}</span><span style="font-size: 11px;">/tov</span>
+                        (<span class="fw-bold">{{ performance_data.fgm }}/{{ performance_data.fga}}</span><span style="font-size: 11px;">fg</span>,
+                        <span class="fw-bold">{{ performance_data.3pm }}/{{ performance_data.3pa}}</span><span style="font-size: 11px;">3pt</span>,
+                        <span class="fw-bold">{{ performance_data.ftm }}/{{ performance_data.fta}}</span><span style="font-size: 11px;">ft</span>)
                         {{ performance_data.}}
                     </p>
                     <hr class="mt-1 mb-1">
