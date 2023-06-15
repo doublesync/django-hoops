@@ -110,6 +110,8 @@ const calculateBadgePrice = function() {
                             cost += value["trait_one"];
                         } else if (traitTwoBadges.includes(currentIndex.name)) {
                             cost += value["trait_two"];
+                        } else if (traitThreeBadges.includes(currentIndex.name)) {
+                            cost += value["trait_two"];
                         } else {
                             cost += value["base"];
                         }

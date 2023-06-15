@@ -92,6 +92,13 @@ class Player(models.Model):
         choices=league_config.trait_choices,
         default=league_config.trait_choices[0][0],
     )
+    trait_three = models.CharField(
+        max_length=36,
+        choices=league_config.trait_choices,
+        default=None,
+        null=True,
+        blank=True,
+    )
     # Player Currencies
     primary_currency = models.BigIntegerField(
         name="cash", default=league_config.primary_currency_start

@@ -278,6 +278,7 @@ def upgrade_player(request, id):
     ]
     js_trait_one_badges = league_config.trait_badge_unlocks[player.trait_one]
     js_trait_two_badges = league_config.trait_badge_unlocks[player.trait_two]
+    js_trait_three_badges = league_config.trait_badge_unlocks[player.trait_three] if player.trait_three else []
     # Have to remove the 'range' function from attribute prices or javascript shits the bed
     js_attribute_prices = copy.deepcopy(league_config.attribute_prices)
     for _, v in js_attribute_prices.items():
@@ -298,6 +299,7 @@ def upgrade_player(request, id):
         # Traits
         "trait_one_badges": js_trait_one_badges,
         "trait_two_badges": js_trait_two_badges,
+        "trait_three_badges": js_trait_three_badges,
         # Attribute categories
         "finishing_attributes": league_config.attribute_categories["finishing"],
         "shooting_attributes": league_config.attribute_categories["shooting"],
