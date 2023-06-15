@@ -195,7 +195,6 @@ def get_combined_stats(season, team_by_team_stats):
     else:
         combined_stats["averages"]["ftp"] = round(combined_stats["totals"]["ftm"] / combined_stats["totals"]["fta"] * 100, 1)
     # Add advanced averages
-    teams_played_for = len(team_by_team_stats)
-    combined_stats["averages"]["gmsc"] = round(combined_stats["totals"]["gmsc"] / teams_played_for, 1) 
+    combined_stats["averages"]["gmsc"] = round(combined_stats["totals"]["gmsc"] / combined_stats["totals"]["gp"], 1) 
     # Return the combined stats dictionary
     return combined_stats
