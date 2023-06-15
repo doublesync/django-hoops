@@ -107,8 +107,8 @@ class SeasonAverage(models.Model):
                 self.fpg = round(sum([line.personal_fouls for line in statlines]) / len(statlines), 1)
                 # Calculate gamescore
                 self.gmsc = round(sum([stats_advanced.get_game_score(line) for line in statlines]) / len(statlines), 1)
-            # Save the model
-            super().save(*args, **kwargs)
+        # Save the model
+        super().save(*args, **kwargs)
 
     # Overwritten str method
     def __str__(self):
@@ -164,8 +164,8 @@ class SeasonTotal(models.Model):
             self.fta = sum([line.free_throws_attempted for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
             self.oreb = sum([line.offensive_rebounds for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
             self.fouls = sum([line.personal_fouls for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-            # Save the model
-            super().save(*args, **kwargs)
+        # Save the model
+        super().save(*args, **kwargs)
 
     # Overwritten str method
     def __str__(self):
