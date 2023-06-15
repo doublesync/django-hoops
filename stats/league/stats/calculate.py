@@ -165,7 +165,7 @@ def get_combined_stats(season, team_by_team_stats):
         combined_stats["totals"]["oreb"] += team_stats["totals"].oreb
         combined_stats["totals"]["fouls"] += team_stats["totals"].fouls
         # Advanced totals
-        combined_stats["totals"]["gmsc"] += team_stats["averages"].gmsc
+        # combined_stats["totals"]["gmsc"] += team_stats["averages"].gmsc
     # Add averages based on totals
     if not combined_stats["totals"]["gp"] == 0:
         combined_stats["averages"]["ppg"] = round(combined_stats["totals"]["pts"] / combined_stats["totals"]["gp"], 1)
