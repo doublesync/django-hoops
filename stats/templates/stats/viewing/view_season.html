@@ -1,4 +1,5 @@
 {% extends 'stats/base.html' %}
+{% load main_filters %}
 {% block content %}
 <!-- Add game page -->
 <div class="container mt-5">
@@ -12,6 +13,26 @@
             <div class="card mt-3 mb-3 p-3">
                 <h2>Day {{ day_data.id }}</h2>
                 <p>Day {{ day_data.id }} of S{{ season_viewing.id }}</p>
+                <!-- Top performers -->
+                <h3>Top Performers</h3>
+                <hr class="mt-1 mb-1">
+                {% for performance_data in top_performers|getvalue:day %}
+                    <p class="mt-1 mb-1" style="text-transform: uppercase;">
+                        <span class="fw-bold text-success">({{ performance_data.gmsc }})</span>
+                        <span class="fw-bold text-white" style="font-size: 12px;">{{ performance_data.name }}</span><br>
+                        <span class="fw-bold text-success">{{ performance_data.pts }}</span><span style="font-size: 11px;">pts</span>, 
+                        <span class="fw-bold text-success">{{ performance_data.reb }}</span><span style="font-size: 11px;">reb</span>, 
+                        <span class="fw-bold text-success">{{ performance_data.ast }}</span><span style="font-size: 11px;">ast</span>, 
+                        <span class="fw-bold text-success">{{ performance_data.stl }}</span><span style="font-size: 11px;">stl</span>, 
+                        <span class="fw-bold text-success">{{ performance_data.blk }}</span><span style="font-size: 11px;">blk</span>, 
+                        <span class="fw-bold text-success">{{ performance_data.tov }}</span><span style="font-size: 11px;">tov</span>
+                        (<span class="fw-bold text-success">{{ performance_data.fgm }}/{{ performance_data.fga}}</span><span style="font-size: 11px;">fg</span>,
+                        <span class="fw-bold text-success">{{ performance_data.3pm }}/{{ performance_data.3pa}}</span><span style="font-size: 11px;">3pt</span>,
+                        <span class="fw-bold text-success">{{ performance_data.ftm }}/{{ performance_data.fta}}</span><span style="font-size: 11px;">ft</span>)
+                        {{ performance_data.}}
+                    </p>
+                    <hr class="mt-1 mb-1">
+                {% endfor %}
                 <!-- Game cards -->
                 <div class="card mt-3 mb-3 p-3">
                     {% for game in day_data.games %}

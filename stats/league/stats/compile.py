@@ -4,6 +4,8 @@ from django.db.models import Q
 # Main imports
 from main.models import Player
 from main.models import Team
+from stats.models import Statline
+from stats.models import Game
 
 # Stats imports
 from stats.models import Game
@@ -72,6 +74,53 @@ def one_season(season):
     season_dict["standings"] = stats_calculate.get_standings(season)
     # Return the season dictionary
     return season_dict
+
+# Compile the top performers of a specific day
+def top_performers(season):
+    # Find days in the season
+    days = Game.objects.filter(season=season).values_list("day", flat=True).distinct()
+    top_performers_dict = {}
+    # Find the top performers for each day
+    for day in days:
+        # Find the statlines in the day
+        day_statlines = Statline.objects.filter(game__day=day)
+        # Create the top performers dictionary
+        top_performers = []
+        # Find the top performers
+        for line in day_statlines:
+            line_gamescore = stats_calculate.get_game_score(line)
+            line_dict = {
+                "id": line.player.id,
+                "name": f"{line.player.first_name} {line.player.last_name}",
+                "pts": line.points,
+                "reb": line.rebounds,
+                "ast": line.assists,
+                "stl": line.steals,
+                "blk": line.blocks,
+                "tov": line.turnovers,
+                "oreb": line.offensive_rebounds,
+                "fgm": line.field_goals_made,
+                "fga": line.field_goals_attempted,
+                "3pm": line.three_pointers_made,
+                "3pa": line.three_pointers_attempted,
+                "ftm": line.free_throws_made,
+                "fta": line.free_throws_attempted,
+                "gmsc": line_gamescore,
+            }
+            if len(top_performers) < 5:
+                top_performers.append(line_dict)
+            else:
+                for index, performer in enumerate(top_performers):
+                    if line_gamescore > performer["gmsc"]:
+                        top_performers[index] = line_dict
+                        break
+        # Sort the top performers by gamescore
+        top_performers = sorted(top_performers, key=lambda k: k["gmsc"], reverse=True)
+        top_performers_dict[day] = top_performers
+        # Limit to five top performers
+        top_performers_dict[day] = top_performers_dict[day][:5]
+    # Return the top performers dictionary
+    return top_performers_dict
 
 # Compile one player and it's stats
 def player_stats(player, season, playoffs=False, finals=False, career=False):

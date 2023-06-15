@@ -74,6 +74,7 @@ def view_season(request, id):
     context = {
         "season": season_viewing,
         "season_viewing": stats_compile.one_season(id),
+        "top_performers": stats_compile.top_performers(id),
     }
     return render(request, "stats/viewing/view_season.html", context)
 
