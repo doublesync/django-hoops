@@ -73,6 +73,7 @@ class SeasonAverage(models.Model):
 
     # Average type
     game_type = models.CharField(max_length=3, choices=stats_config.game_types,default=stats_config.game_types[1][0])
+    manual_entry = models.BooleanField(default=False)
 
     # Relationships & other data
     season = models.PositiveSmallIntegerField(default=league_config.current_season)
@@ -84,29 +85,30 @@ class SeasonAverage(models.Model):
 
     # Overwritten save method
     def save(self, *args, **kwargs):
-        # Find statlines
-        statlines = self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)
-        # Calculate averages (stop division by zero errors)
-        if not len(statlines) == 0:
-            self.gp = len(statlines)
-            self.ppg = round(sum([line.points for line in statlines]) / len(statlines), 1)
-            self.rpg = round(sum([line.rebounds for line in statlines]) / len(statlines), 1)
-            self.apg = round(sum([line.assists for line in statlines]) / len(statlines), 1)
-            self.spg = round(sum([line.steals for line in statlines]) / len(statlines), 1)
-            self.bpg = round(sum([line.blocks for line in statlines]) / len(statlines), 1)
-            self.tpg = round(sum([line.turnovers for line in statlines]) / len(statlines), 1)
-            self.fgm = round(sum([line.field_goals_made for line in statlines]) / len(statlines), 1)
-            self.fga = round(sum([line.field_goals_attempted for line in statlines]) / len(statlines), 1)
-            self.tpm = round(sum([line.three_pointers_made for line in statlines]) / len(statlines), 1)
-            self.tpa = round(sum([line.three_pointers_attempted for line in statlines]) / len(statlines), 1)
-            self.ftm = round(sum([line.free_throws_made for line in statlines]) / len(statlines), 1)
-            self.fta = round(sum([line.free_throws_attempted for line in statlines]) / len(statlines), 1)
-            self.orpg = round(sum([line.offensive_rebounds for line in statlines]) / len(statlines), 1)
-            self.fpg = round(sum([line.personal_fouls for line in statlines]) / len(statlines), 1)
-            # Calculate gamescore
-            self.gmsc = round(sum([stats_advanced.get_game_score(line) for line in statlines]) / len(statlines), 1)
-        # Save the model
-        super().save(*args, **kwargs)
+        if not self.manual_entry:
+            # Find statlines
+            statlines = self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)
+            # Calculate averages (stop division by zero errors)
+            if not len(statlines) == 0:
+                self.gp = len(statlines)
+                self.ppg = round(sum([line.points for line in statlines]) / len(statlines), 1)
+                self.rpg = round(sum([line.rebounds for line in statlines]) / len(statlines), 1)
+                self.apg = round(sum([line.assists for line in statlines]) / len(statlines), 1)
+                self.spg = round(sum([line.steals for line in statlines]) / len(statlines), 1)
+                self.bpg = round(sum([line.blocks for line in statlines]) / len(statlines), 1)
+                self.tpg = round(sum([line.turnovers for line in statlines]) / len(statlines), 1)
+                self.fgm = round(sum([line.field_goals_made for line in statlines]) / len(statlines), 1)
+                self.fga = round(sum([line.field_goals_attempted for line in statlines]) / len(statlines), 1)
+                self.tpm = round(sum([line.three_pointers_made for line in statlines]) / len(statlines), 1)
+                self.tpa = round(sum([line.three_pointers_attempted for line in statlines]) / len(statlines), 1)
+                self.ftm = round(sum([line.free_throws_made for line in statlines]) / len(statlines), 1)
+                self.fta = round(sum([line.free_throws_attempted for line in statlines]) / len(statlines), 1)
+                self.orpg = round(sum([line.offensive_rebounds for line in statlines]) / len(statlines), 1)
+                self.fpg = round(sum([line.personal_fouls for line in statlines]) / len(statlines), 1)
+                # Calculate gamescore
+                self.gmsc = round(sum([stats_advanced.get_game_score(line) for line in statlines]) / len(statlines), 1)
+            # Save the model
+            super().save(*args, **kwargs)
 
     # Overwritten str method
     def __str__(self):
@@ -133,6 +135,7 @@ class SeasonTotal(models.Model):
 
     # Total type
     game_type = models.CharField(max_length=3, choices=stats_config.game_types, default=stats_config.game_types[1][0])
+    manual_entry = models.BooleanField(default=False)
 
     # Relationships & other data
     season = models.PositiveSmallIntegerField(default=league_config.current_season)
@@ -144,24 +147,25 @@ class SeasonTotal(models.Model):
 
     # Overwritten save method
     def save(self, *args, **kwargs):
-        # Find statlines
-        self.gp = len(self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type))
-        self.pts = sum([line.points for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-        self.reb = sum([line.rebounds for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-        self.ast = sum([line.assists for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-        self.stl = sum([line.steals for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-        self.blk = sum([line.blocks for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-        self.tov = sum([line.turnovers for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-        self.fgm = sum([line.field_goals_made for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-        self.fga = sum([line.field_goals_attempted for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-        self.tpm = sum([line.three_pointers_made for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-        self.tpa = sum([line.three_pointers_attempted for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-        self.ftm = sum([line.free_throws_made for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-        self.fta = sum([line.free_throws_attempted for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-        self.oreb = sum([line.offensive_rebounds for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-        self.fouls = sum([line.personal_fouls for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
-        # Save the model
-        super().save(*args, **kwargs)
+        if not self.manual_entry:
+            # Find statlines
+            self.gp = len(self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type))
+            self.pts = sum([line.points for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
+            self.reb = sum([line.rebounds for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
+            self.ast = sum([line.assists for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
+            self.stl = sum([line.steals for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
+            self.blk = sum([line.blocks for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
+            self.tov = sum([line.turnovers for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
+            self.fgm = sum([line.field_goals_made for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
+            self.fga = sum([line.field_goals_attempted for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
+            self.tpm = sum([line.three_pointers_made for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
+            self.tpa = sum([line.three_pointers_attempted for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
+            self.ftm = sum([line.free_throws_made for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
+            self.fta = sum([line.free_throws_attempted for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
+            self.oreb = sum([line.offensive_rebounds for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
+            self.fouls = sum([line.personal_fouls for line in self.player.statline_set.filter(season=self.season, team_at_time=self.team, game__game_type=self.game_type)])
+            # Save the model
+            super().save(*args, **kwargs)
 
     # Overwritten str method
     def __str__(self):
