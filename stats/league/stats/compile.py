@@ -60,7 +60,7 @@ def one_season(season):
             "loser": game_adding.loser.abbrev,
         })
     # Find each game and add it to the season & day
-    season_games = Game.objects.filter(season=season).order_by("day")
+    season_games = Game.objects.filter(season=season).order_by("-day")
     for game in season_games:
         if game.day not in season_dict["days"]:
             season_dict["days"][game.day] = {
