@@ -8,8 +8,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 
 class Command(BaseCommand):
-    help = "Closes the specified poll for voting"
-
+    help = "Auto collects paycheck salaries for all users with auto collect permissions."
     def handle(self, *args, **options):
         # Auto collect/pay these players
         league_users = DiscordUser.objects.all()

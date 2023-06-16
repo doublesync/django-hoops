@@ -184,6 +184,7 @@ def validate_game(request):
         game.save()
         # Create a list of players to update their stats
         players_to_update = []
+        # Try to create the statline objects
         try:
             # Create the statline objects for the home team
             for id, stats in game_data["home"].items():
@@ -244,8 +245,8 @@ def validate_game(request):
             return HttpResponse("❌ You have a statistic that is too high!")
         # Check for 'SeasonAverage' and 'SeasonTotal' objects (this updates the averages & totals for the specific game type in a season)
         for player_updating in players_to_update:
-            # Check for 'SeasonAverage' object
-            if not SeasonAverage.objects.filter(player=player_updating, season=game.season, team=player.current_team, game_type=game_type).exists():
+            # Try to add the 'SeasonAverage' object
+            try:
                 # Create the season average object
                 season_average = SeasonAverage.objects.create(
                     season=game.season,
@@ -254,10 +255,10 @@ def validate_game(request):
                     game_type=game_type,
                 )
                 season_average.save()
-            else:
+            except IntegrityError:
                 SeasonAverage.objects.get(player=player_updating, season=game.season, team=player.current_team, game_type=game_type).save()
-            # Check for 'SeasonTotal' object
-            if not SeasonTotal.objects.filter(player=player_updating, season=game.season, team=player.current_team, game_type=game_type).exists():
+            # Try to add the 'SeasonTotal' object
+            try:
                 # Create the season total object
                 season_total = SeasonTotal.objects.create(
                     season=game.season,
@@ -266,7 +267,7 @@ def validate_game(request):
                     game_type=game_type,
                 )
                 season_total.save()
-            else:
+            except IntegrityError:
                 SeasonTotal.objects.get(player=player_updating, season=game.season, team=player.current_team, game_type=game_type).save()
         # Return the success message (refresh page and clear form)
         messages.success(request, f"✅ Game added successfully! [#{game.id}]")
