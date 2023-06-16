@@ -148,7 +148,7 @@ def get_combined_stats(season, team_by_team_stats):
         }
     }
     # Add totals from each team
-    for team_at_time, team_stats in team_by_team_stats.items():
+    for _, team_stats in team_by_team_stats.items():
         combined_stats["totals"]["gp"] += team_stats["totals"].gp
         combined_stats["totals"]["pts"] += team_stats["totals"].pts
         combined_stats["totals"]["reb"] += team_stats["totals"].reb
@@ -165,7 +165,7 @@ def get_combined_stats(season, team_by_team_stats):
         combined_stats["totals"]["oreb"] += team_stats["totals"].oreb
         combined_stats["totals"]["fouls"] += team_stats["totals"].fouls
         # Advanced totals
-        # combined_stats["totals"]["gmsc"] += team_stats["averages"].gmsc
+        combined_stats["totals"]["gmsc"] += (team_stats["averages"].gmsc) * (team_stats["totals"].gp)
     # Add averages based on totals
     if not combined_stats["totals"]["gp"] == 0:
         combined_stats["averages"]["ppg"] = round(combined_stats["totals"]["pts"] / combined_stats["totals"]["gp"], 1)
