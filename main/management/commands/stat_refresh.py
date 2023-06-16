@@ -15,10 +15,10 @@ class Command(BaseCommand):
         for total in season_totals:
             total.save()
         # Send success message
-        hoops_webhooks.webhooks.send(
+        hoops_webhooks.send_webhook(
             url="upgrade",
             title="Stats Refreshed",
-            description="All player stats have been refreshed.",
+            message="All player stats have been refreshed.",
         )
         # Send console message
         self.stdout.write(
