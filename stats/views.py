@@ -347,8 +347,16 @@ def season_stats_api(request):
         yearly_player_stats = {}
         # Iterate through each player and serialize their SeasonAverage and SeasonTotal objects
         for id, player in season_player_stats.items():
+            # Try to find the player's discord id
+            try:
+                player_object = Player.objects.get(id=int(id))
+                player_discord_id = player_object.discord_user.id
+            except:
+                player_discord_id = None
+            # Add the player's stats to the yearly_player_stats
             yearly_player_stats[player["name"]] = {
                 "id": id,
+                "discord_id": player_discord_id,
                 "name": player["name"],
                 "season": player["season"],
                 "averages": player["yearly_stats"]["averages"],
