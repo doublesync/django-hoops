@@ -259,7 +259,7 @@ def validate_game(request):
                 )
                 season_average.save()
             except:
-                SeasonAverage.objects.get(player=player_updating, season=game.season, team=player.current_team, game_type=game_type).save()
+                SeasonAverage.objects.get(player=player_updating, season=game.season, team=player_updating.current_team, game_type=game_type).save()
             # Try to add the 'SeasonTotal' object
             try:
                 # Create the season total object
@@ -271,7 +271,7 @@ def validate_game(request):
                 )
                 season_total.save()
             except:
-                SeasonTotal.objects.get(player=player_updating, season=game.season, team=player.current_team, game_type=game_type).save()
+                SeasonTotal.objects.get(player=player_updating, season=game.season, team=player_updating.current_team, game_type=game_type).save()
         # Return the success message (refresh page and clear form)
         messages.success(request, f"✅ Game added successfully! [#{game.id}]")
         response = HttpResponse()
