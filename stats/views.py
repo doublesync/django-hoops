@@ -255,7 +255,7 @@ def validate_game(request):
                     game_type=game_type,
                 )
                 season_average.save()
-            except IntegrityError:
+            except:
                 SeasonAverage.objects.get(player=player_updating, season=game.season, team=player.current_team, game_type=game_type).save()
             # Try to add the 'SeasonTotal' object
             try:
@@ -267,7 +267,7 @@ def validate_game(request):
                     game_type=game_type,
                 )
                 season_total.save()
-            except IntegrityError:
+            except:
                 SeasonTotal.objects.get(player=player_updating, season=game.season, team=player.current_team, game_type=game_type).save()
         # Return the success message (refresh page and clear form)
         messages.success(request, f"✅ Game added successfully! [#{game.id}]")
