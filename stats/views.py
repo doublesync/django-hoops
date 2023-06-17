@@ -5,12 +5,11 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.db.models import Sum
 from django.template.loader import render_to_string
-from django.utils import timezone
-from django.views import View
-from django.urls import reverse
 from django.db.utils import IntegrityError
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 # Custom imports
 import json
@@ -23,6 +22,10 @@ from stats.models import SeasonAverage
 from stats.models import SeasonTotal
 from stats.league import config as stats_config
 from stats.league.stats import compile as stats_compile
+
+# Serializers
+from stats.serializers import SeasonAverageSerializer
+from stats.serializers import SeasonTotalSerializer
 
 # Main application imports
 from main.models import Player
@@ -329,3 +332,29 @@ def find_options(request):
         html = render_to_string("stats/ajax/sort_options_fragment.html", context)
         # Return the options fragment
         return HttpResponse(html)
+    
+# API functions
+@api_view(['GET'])
+def season_stats_api(request):
+    if request.method == "GET":
+        # Get the form data
+        season = request.GET.get("season")
+        # Validate the season
+        if not season:
+            return HttpResponse("❌ Season is missing!")
+        # If everything is ok, find the stats
+        season_player_stats = stats_compile.all_player_stats(int(season))
+        yearly_player_stats = {}
+        # Iterate through each player and serialize their SeasonAverage and SeasonTotal objects
+        for id, player in season_player_stats.items():
+            yearly_player_stats[player["name"]] = {
+                "id": id,
+                "name": player["name"],
+                "season": player["season"],
+                "averages": player["yearly_stats"]["averages"],
+                "totals": player["yearly_stats"]["totals"],
+            }
+        # Return the stats
+        return Response(yearly_player_stats)
+    else:
+        return HttpResponse("❌ Invalid request!")

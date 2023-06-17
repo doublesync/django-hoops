@@ -17,4 +17,8 @@ urlpatterns = [
     path('seasons/averages/sort/', views.sort_stats, name='sort_stats'),
     path('seasons/averages/options/', views.find_options, name='find_options'),
 
+    # API URL patterns
+    path('seasons/averages/api/', views.season_stats_api, name='season_stats_api'),
+    
+
 ]
