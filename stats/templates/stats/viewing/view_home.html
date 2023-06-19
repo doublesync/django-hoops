@@ -40,7 +40,8 @@
         <p>Season {{ current_season.id }}</p>
         <table class="table table-striped table-hover table-responsive">
             <thead>
-                <td scope="col">RANK</th>
+                <th socpe="col">RANK</th>
+                <th scope="col">STATUS</th>
                 <th scope="col">TEAM</th>
                 <th scope="col">G</th>
                 <th scope="col">W</th>
@@ -54,8 +55,18 @@
             <tbody>
                 {% for team, team_data in current_season.standings.items %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ team }}</td>
+                        <th>{{ forloop.counter }}</th>
+                        <!-- Create badge for playoffs, fill background -->
+                        {% if forloop.counter <= 6 %}
+                            <td><span class="badge bg-primary">PLAYOFFS</span></td>
+                            <td>{{ team }}</td>
+                        {% elif forloop.counter <= 10 %}
+                            <td><span class="badge bg-dark">PLAY-IN</span></td>
+                            <td>{{ team }}</td>
+                        {% else %}
+                            <td><span class="badge bg-danger">ELIMINATED</span></td>
+                            <td>{{ team }}</td>
+                        {% endif %}
                         <td>{{ team_data.total_games }}</td>
                         <td>{{ team_data.wins }}</td>
                         <td>{{ team_data.losses }}</td>
@@ -65,12 +76,6 @@
                         <td>{{ team_data.avg_points_against }}</td>
                         <td>{{ team_data.avg_points_diff }}</td>
                     </tr>
-                    {% if forloop.counter == 8 %}
-                        <!-- Add line between table row -->
-                        <tr><td colspan="10" style="font-size: 13px;" class="text-success">Teams above will make the playoffs</td></tr>
-                    {% elif forloop.counter == 10 %}
-                        <tr><td colspan="10" style="font-size: 13px;" class="text-success">Teams above will make the play-in tournament</td></tr>}}
-                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>
