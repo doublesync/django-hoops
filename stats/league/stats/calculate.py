@@ -7,54 +7,20 @@ from stats.models import Statline
 from main.models import Player
 from main.models import Team
 
-
-# Custom imports
-import json
-
-# Calculate the tie breaker between two teams
-def get_tie_breaker(team_a, team_b):
-    head_to_head_games = Game.objects.filter(Q(home=team_a) | Q(away=team_a), Q(home=team_b) | Q(away=team_b))
-    team_a_wins = 0
-    team_b_wins = 0
-    for game in head_to_head_games:
-        if game.winner == team_a:
-            team_a_wins += 1
-        else:
-            team_b_wins += 1
-    if team_a_wins > team_b_wins:
-        return [team_a, team_b]
-    elif team_b_wins > team_a_wins:
-        return [team_b, team_a]
-
-
-# Calculates the games behind for each team
-def get_games_behind(standings):
-    for team in standings:
-        # Find the team's wins
-        team_wins = standings[team]["wins"]
-        # Find the team's losses
-        team_losses = standings[team]["losses"]
-        # Find the team's games behind
-        games_behind = 0
-        # Find the team's games behind
-        for team2 in standings:
-            # Skip the team itself
-            if team2 == team:
-                continue
-            # Find the team's wins
-            team2_wins = standings[team2]["wins"]
-            # Find the team's losses
-            team2_losses = standings[team2]["losses"]
-            # Find the team's games behind
-            games_behind = 0
-        # Add the games behind to the standings dictionary (first check if it's negative or not)
-        if games_behind > 0:
-            standings[team]["games_behind"] = games_behind
-        else:
-            # Check if the team has played any games
-            standings[team]["games_behind"] = 0
-    # Return the standings dictionary
-    return standings
+# # Calculate the tie breaker between two teams
+# def get_tie_breaker(team_a, team_b):
+#     head_to_head_games = Game.objects.filter(Q(home=team_a) | Q(away=team_a), Q(home=team_b) | Q(away=team_b))
+#     team_a_wins = 0
+#     team_b_wins = 0
+#     for game in head_to_head_games:
+#         if game.winner == team_a:
+#             team_a_wins += 1
+#         else:
+#             team_b_wins += 1
+#     if team_a_wins > team_b_wins:
+#         return [team_a, team_b]
+#     elif team_b_wins > team_a_wins:
+#         return [team_b, team_a]
 
 
 # Calculates the standings for a given season
@@ -116,8 +82,6 @@ def get_standings(season):
             standings[team.name]["percentage"] = round(standings[team.name]["wins"] / (standings[team.name]["wins"] + standings[team.name]["losses"]) * 100, 1)
         # Order the standings dictionary by wins
         standings = dict(sorted(standings.items(), key=lambda item: item[1]["wins"], reverse=True))
-        # Calculate games behind for each team
-        standings = get_games_behind(standings)
 
     # Return the standings dictionary
     return standings
