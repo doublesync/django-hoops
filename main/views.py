@@ -84,6 +84,7 @@ def home(request):
         "players": [],
         "notifications": None,
         "gotd_list": gotd_list,
+        "motd": os.environ.get("MOTD"),
     }
     # Send players to home page
     if current_user.is_authenticated:
