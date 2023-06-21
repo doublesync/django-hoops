@@ -15,10 +15,6 @@ from stats.models import Statline
 from stats.league.stats import calculate as stats_calculate
 from stats.league.stats import advanced as stats_advanced
 
-# Custom imports
-import json
-import copy
-
 # Compile all seasons and their days (and their games)
 def all_seasons():
     # Create the seasons dictionary
