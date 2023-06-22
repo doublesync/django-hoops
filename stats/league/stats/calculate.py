@@ -38,6 +38,7 @@ def get_standings(season):
             "id": team.id,
             "abbrev": team.abbrev,
             "name": team.name,
+            "logo": team.logo,
             # Standings data
             "total_games": 0,
             "home_games": 0,

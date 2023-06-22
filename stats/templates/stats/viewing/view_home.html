@@ -58,14 +58,23 @@
                         <th>{{ forloop.counter }}</th>
                         <!-- Create badge for playoffs, fill background -->
                         {% if forloop.counter <= 6 %}
-                            <td><span class="badge bg-primary">PLAYOFFS</span></td>
-                            <td>{{ team }}</td>
+                            <td><span class="badge bg-success text-dark">PLAYOFFS</span></td>
+                            <td>
+                                <img src="{{ team_data.logo }}" alt="{{ team_data.name }}" height="25" width="25">
+                                {{ team }}
+                            </td>
                         {% elif forloop.counter <= 10 %}
-                            <td><span class="badge bg-dark">PLAY-IN</span></td>
-                            <td>{{ team }}</td>
+                            <td><span class="badge bg-primary">PLAY-IN</span></td>
+                            <td>
+                                <img src="{{ team_data.logo }}" alt="{{ team_data.name }}" height="25" width="25">
+                                {{ team }}
+                            </td>
                         {% else %}
-                            <td><span class="badge bg-danger">ELIMINATED</span></td>
-                            <td>{{ team }}</td>
+                            <td><span class="badge bg-danger">OUT</span></td>
+                            <td>
+                                <img src="{{ team_data.logo }}" alt="{{ team_data.name }}" height="25" width="25">
+                                {{ team }}
+                            </td>
                         {% endif %}
                         <td>{{ team_data.total_games }}</td>
                         <td>{{ team_data.wins }}</td>

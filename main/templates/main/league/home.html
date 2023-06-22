@@ -1,8 +1,6 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-<!-- MOTD Banner -->
-
 <div class="container mt-5">
     <h1 class="text-uppercase fw-bold">DASHBOARD</h1><span style="font-size: 14px;">{{ current_user.discord_tag }}</span>
     <p><span class="fw-bold text-warning">MOTD </span> <i style="font-size: 12px;">"{{ motd }}"</i></p>
