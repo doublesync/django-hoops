@@ -196,6 +196,8 @@ def player(request, id):
     # Get the player's stats
     player_career_stats = stats_compile.player_stats(player=plr, career=True, season=None)
     player_game_logs = stats_compile.player_game_logs(player=plr, x=10)
+    # Get possible relatives
+    possible_relatives = Player.objects.filter(last_name=plr.last_name).values_list("id", "first_name")
     # Initialize the context
     context = {
         # Page information
@@ -241,6 +243,8 @@ def player(request, id):
         # Player stats
         "player_career_stats": player_career_stats,
         "player_game_logs": player_game_logs,
+        # Possible relatives
+        "possible_relatives": possible_relatives,
     }
     return render(request, "main/players/player.html", context)
 

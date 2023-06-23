@@ -4,778 +4,578 @@
 
 {% block content %}
 
-    <div class="container-fluid" style="padding: 25px;">
-        <!-- Center image -->
-        <img class="img-fluid rounded" src="{{ player.headshot }}" style="height: 250px; width: 250px; display: block; margin-left: auto; margin-right: auto;" alt="Center">
-        <h2 class="text-uppercase fw-bold mb-3 mt-3" style="text-align: center;">{{ player.first_name}} {{ player.last_name}}</h2>
-        <p style="text-align: center;">
-            <!-- Upgrade & upgrade logs -->
-            <a class="btn btn-primary btn-sm text-white" href="{% url 'upgrade_player' player.id %}">Upgrade player</a>
-            <a class="btn btn-primary btn-sm text-white" href="{% url 'upgrade_logs' player.id %}">Upgrade history</a>
-            <a class="btn btn-primary btn-sm text-white" href="{% url 'cash_logs' player.id %}">Cash history</a>
-            <!-- Player file -->
-            <button id="file" type="button" class="copyJSON btn btn-primary btn-sm" onClick="clipboard(this.id)">Copy File</button>
-            <p id="json_file" class="file" style="font-size: 6px; display: none;">{{ file }}</p>
-            <!-- Upgrades pending? -->
-            {% if player.upgrades_pending %}
-                <p class="fw-bold text-danger text-center">Pending upgrades</p>
-            {% else %}
-                <p class="fw-bold text-success text-center">No pending upgrades</p>
-            {% endif %}
-        </p>
-    </div>
+    <div class="container mt-5">
+        <div class="main-body">
 
-    <hr>
-
-    <div class="container-fluid" style="padding: 25px;">
-        <!-- Add form to pay player if user.can_update_players -->
-        {% if user.can_update_players %}
-            <div class="container">
-                <div class="row">
-                    <!-- Pay players -->
-                    <div class="col-6 mb-2">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3><span class="panel-title-text">Add Cash</span></h3>
-                            </div>
-                            <div class="card-body">
-                                <form action="{% url 'add_player_cash' %}" method="POST">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="id" value="{{ player.id }}">
-                                    <div class="row">
-                                        <div class="col-12 mb-2">
-                                            <!-- Text area for adding cash -->
-                                            <input name="amount" class="form-control mb-1" type="number" required placeholder="Enter cash amount"/>
-                                            <input name="reason" class="form-control" type="text" required placeholder="Enter reason"/><hr>
-                                            <input name="bypass" class="form-check-input" type="checkbox" value="true" id="bypass">
-                                            <label for="bypass">Bypass Weekly Earnings</label><hr>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12"><button class="btn btn-success btn-sm d-block w-100" type="submit">Add cash</button></div>
-                                    </div>
-                                </form>
+            <!-- Player information -->
+            <div class="row gutters-sm">
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column align-items-center text-center"><img class="rounded-circle" src="{{ player.headshot }}" alt="headshot" width="150" />
+                                <div class="mt-3">
+                                    <h4>{{ player.first_name }} {{ player.last_name }}</h4>
+                                    <p class="text-secondary mb-1">{{ player.primary_position }} | {{ player.current_team.name }}</p>
+                                    <p class="text-muted font-size-sm mb-1">Hi, welcome to my player profile!</p>
+                                    <a href="{% url 'upgrade_player' player.id %}">Upgrade</a> | <a href="{% url 'edit_physicals' player.id %}">Physicals</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Fine players -->
-                    <div class="col-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3><span class="panel-title-text">Take Cash</span></h3>
-                            </div>
-                            <div class="card-body">
-                                <form action="{% url 'take_player_cash' %}" method="POST">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="id" value="{{ player.id }}">
-                                    <div class="row">
-                                        <div class="col-12 mb-2">
-                                            <!-- Text area for adding cash -->
-                                            <input name="amount" class="form-control mb-1" type="number" required placeholder="Enter cash amount"/>
-                                            <input name="reason" class="form-control" type="text" required placeholder="Enter reason"/>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12"><button class="btn btn-danger btn-sm d-block w-100" type="submit">Take cash</button></div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                    <!-- Things the player can't edit -->
+                    <div class="card mt-3">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+                                  </svg> Team</h6><span class="text-secondary">{{ player.current_team.name }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash-coin" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"/>
+                                    <path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1h-.003zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195l.054.012z"/>
+                                    <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083c.058-.344.145-.678.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1H1z"/>
+                                    <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z"/>
+                                  </svg> Spent</h6><span class="text-secondary">${{ player.spent }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
+                                    <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
+                                  </svg> Contract</h6><span class="text-secondary">${{ player.salary }} through S{{ player.contract_ends_after }} ({{ player.contract_option }})</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
+                                    <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
+                                  </svg> Benefits</h6><span class="text-secondary">{{ player.contract_benefits }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-currency-exchange" viewBox="0 0 16 16">
+                                    <path d="M0 5a5.002 5.002 0 0 0 4.027 4.905 6.46 6.46 0 0 1 .544-2.073C3.695 7.536 3.132 6.864 3 5.91h-.5v-.426h.466V5.05c0-.046 0-.093.004-.135H2.5v-.427h.511C3.236 3.24 4.213 2.5 5.681 2.5c.316 0 .59.031.819.085v.733a3.46 3.46 0 0 0-.815-.082c-.919 0-1.538.466-1.734 1.252h1.917v.427h-1.98c-.003.046-.003.097-.003.147v.422h1.983v.427H3.93c.118.602.468 1.03 1.005 1.229a6.5 6.5 0 0 1 4.97-3.113A5.002 5.002 0 0 0 0 5zm16 5.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0zm-7.75 1.322c.069.835.746 1.485 1.964 1.562V14h.54v-.62c1.259-.086 1.996-.74 1.996-1.69 0-.865-.563-1.31-1.57-1.54l-.426-.1V8.374c.54.06.884.347.966.745h.948c-.07-.804-.779-1.433-1.914-1.502V7h-.54v.629c-1.076.103-1.808.732-1.808 1.622 0 .787.544 1.288 1.45 1.493l.358.085v1.78c-.554-.08-.92-.376-1.003-.787H8.25zm1.96-1.895c-.532-.12-.82-.364-.82-.732 0-.41.311-.719.824-.809v1.54h-.005zm.622 1.044c.645.145.943.38.943.796 0 .474-.37.8-1.02.86v-1.674l.077.018z"/>
+                                  </svg> Referral</h6><span class="text-secondary">{{ player.id }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Things the player can edit -->
+                    <div class="card mt-3">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+                                    <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
+                                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                  </svg> Face</h6><span class="text-secondary">{{ player.cyberface }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ol" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"/>
+                                    <path d="M1.713 11.865v-.474H2c.217 0 .363-.137.363-.317 0-.185-.158-.31-.361-.31-.223 0-.367.152-.373.31h-.59c.016-.467.373-.787.986-.787.588-.002.954.291.957.703a.595.595 0 0 1-.492.594v.033a.615.615 0 0 1 .569.631c.003.533-.502.8-1.051.8-.656 0-1-.37-1.008-.794h.582c.008.178.186.306.422.309.254 0 .424-.145.422-.35-.002-.195-.155-.348-.414-.348h-.3zm-.004-4.699h-.604v-.035c0-.408.295-.844.958-.844.583 0 .96.326.96.756 0 .389-.257.617-.476.848l-.537.572v.03h1.054V9H1.143v-.395l.957-.99c.138-.142.293-.304.293-.508 0-.18-.147-.32-.342-.32a.33.33 0 0 0-.342.338v.041zM2.564 5h-.635V2.924h-.031l-.598.42v-.567l.629-.443h.635V5z"/>
+                                  </svg> Jersey</h6><span class="text-secondary">{{ player.jersey_number }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z"/>
+                                    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                                  </svg> Tendencies</h6><span class="text-secondary">{{ player.use_game_tendencies }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-1-circle" viewBox="0 0 16 16">
+                                    <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8Zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0ZM9.283 4.002V12H7.971V5.338h-.065L6.072 6.656V5.385l1.899-1.383h1.312Z"/>
+                                  </svg> Play Type 1</h6><span class="text-secondary">{{ playstyle1.0 }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-2-circle" viewBox="0 0 16 16">
+                                    <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8Zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0ZM6.646 6.24v.07H5.375v-.064c0-1.213.879-2.402 2.637-2.402 1.582 0 2.613.949 2.613 2.215 0 1.002-.6 1.667-1.287 2.43l-.096.107-1.974 2.22v.077h3.498V12H5.422v-.832l2.97-3.293c.434-.475.903-1.008.903-1.705 0-.744-.557-1.236-1.313-1.236-.843 0-1.336.615-1.336 1.306Z"/>
+                                  </svg> Play Type 2</h6><span class="text-secondary">{{ playstyle2.0 }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-3-circle" viewBox="0 0 16 16">
+                                    <path d="M7.918 8.414h-.879V7.342h.838c.78 0 1.348-.522 1.342-1.237 0-.709-.563-1.195-1.348-1.195-.79 0-1.312.498-1.348 1.055H5.275c.036-1.137.95-2.115 2.625-2.121 1.594-.012 2.608.885 2.637 2.062.023 1.137-.885 1.776-1.482 1.875v.07c.703.07 1.71.64 1.734 1.917.024 1.459-1.277 2.396-2.93 2.396-1.705 0-2.707-.967-2.754-2.144H6.33c.059.597.68 1.06 1.541 1.066.973.006 1.6-.563 1.588-1.354-.006-.779-.621-1.318-1.541-1.318Z"/>
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0ZM1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8Z"/>
+                                  </svg> Play Type 3</h6><span class="text-secondary">{{ playstyle3.0 }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-4-circle" viewBox="0 0 16 16">
+                                    <path d="M7.519 5.057c.22-.352.439-.703.657-1.055h1.933v5.332h1.008v1.107H10.11V12H8.85v-1.559H4.978V9.322c.77-1.427 1.656-2.847 2.542-4.265ZM6.225 9.281v.053H8.85V5.063h-.065c-.867 1.33-1.787 2.806-2.56 4.218Z"/>
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0ZM1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8Z"/>
+                                  </svg> Play Type 4</h6><span class="text-secondary">{{ playstyle4.0 }}</span>
+                            </li>
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">Edit</button>
+                        </ul>
                     </div>
                 </div>
-            </div>
-        {% endif %}
-    </div>
-
-    <div class="container-fluid mb-5" style="padding: 100px; padding-top: 0px; padding-bottom: 10px;">
-        <hr>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-2">
-                    <p><b>Full Name</b></p><hr>
-                    <p>{{ player.first_name }} {{ player.last_name }}</p>
-                </div>
-                <div class="col-md-2">
-                    <p><b>Height</b></p><hr>
-                    <p>{{ height_in_feet }}</p>
-                </div>
-                <div class="col-md-2">
-                    <p><b>Weight</b></p><hr>
-                    <p>{{ player.weight }} <a href="{% url 'edit_physicals' player.id %}">Edit</a></p>
-                </div>
-                <div class="col-md-2">
-                    <p><b>Position</b></p><hr>
-                    <p>{{ player.primary_position }}/{{ player.secondary_position }}</p>
-                </div>
-                <div class="col-md-2">
-                    <p><b>Team</b></p><hr>
-                    <p>{{ player.current_team.abbrev }}</p>
-                </div>
-                <div class="col-md-2">
-                    <p><b>Spent</b></p><hr>
-                    <p>${{ player.spent }}</p>
-                </div>
-                <!-- Editable player details -->
-                <div class="row mb-3">
-                    <!-- Editable by player owner -->
-                    {% if player.discord_user == user %}
-                        <form action="{% url 'update_player_vitals' player.id %}" method="POST">
-                            {% csrf_token %}
-                            <!-- Put jersey and cyberface horizontall -->
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <p><b>Jersey</b></p><hr>
-                                    <input name="jersey" class="form-control mb-2" type="number" style="width: 50%;" value="{{ player.jersey_number }}"/>
+                <div class="col-md-8">
+                    <div class="row gutters-sm">
+                        <div class="col-sm-12 card mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Full Name</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ player.first_name }} {{ player.last_name }}
+                                    </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <p><b>Cyberface</b></p><hr>
-                                    <input name="cyberface" class="form-control mb-2" type="number" style="width: 50%;" value="{{ player.cyberface }}"/>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Archetypes</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ player.primary_archetype }}, {{ player.secondary_archetype }}
+                                    </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <p><b>Use Game Tendencies</b></p><hr>
-                                    <select class="form-select mb-2" name="use_game" style="width: 50%">
-                                        <option value="{{ player.use_game_tendencies }}">{{ player.use_game_tendencies }}</option>
-                                        {% if player.use_game_tendencies %}
-                                            <option value="False">False</option>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Traits</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ player.trait_one }}, {{ player.trait_two }}, {{ player.trait_three }}
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Rookie</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ player.is_rookie }}
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Signable</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ player.free_agent }}
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Upgrades</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {% if player.upgrades_pending %}
+                                            <small class="fw-bold text-danger">pending</small>
                                         {% else %}
-                                            <option value="True">True</option>
+                                            <small class="fw-bold text-success">updated</small>
                                         {% endif %}
-                                    </select>
-                                </div>
-                                <br>
-                                <!-- Play styles -->
-                                <div class="col-md-2">
-                                    <p><b>Play Style #1</b></p><hr>
-                                    <select class="form-select mb-2" name="playstyle1" style="width: 50%">
-                                        <option value="{{ playstyle1.1 }}">{{ playstyle1.0 }}</option>
-                                        {% for i, playstyle in playstyles.items %}
-                                            {% if not playstyle == playstyle1.0 %}
-                                                <option value="{{ i }}">{{ playstyle }}</option>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <p><b>Play Style #2</b></p><hr>
-                                    <select class="form-select mb-2" name="playstyle2" style="width: 50%">
-                                        <option value="{{ playstyle2.1 }}">{{ playstyle2.0 }}</option>
-                                        {% for i, playstyle in playstyles.items %}
-                                            {% if not playstyle == playstyle2.0 %}
-                                                <option value="{{ i }}">{{ playstyle }}</option>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <p><b>Play Style #3</b></p><hr>
-                                    <select class="form-select mb-2" name="playstyle3" style="width: 50%">
-                                        <option value="{{ playstyle3.1 }}">{{ playstyle3.0 }}</option>
-                                        {% for i, playstyle in playstyles.items %}
-                                            {% if not playstyle == playstyle3.0 %}
-                                                <option value="{{ i }}">{{ playstyle }}</option>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <p><b>Play Style #4</b></p><hr>
-                                    <select class="form-select mb-2" name="playstyle4" style="width: 50%">
-                                        <option value="{{ playstyle4.1 }}">{{ playstyle4.0 }}</option>
-                                        {% for i, playstyle in playstyles.items %}
-                                            {% if not playstyle == playstyle4.0 %}
-                                                <option value="{{ i }}">{{ playstyle }}</option>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <!-- Headshot -->
-                                <div class="col-md-2">
-                                    <p><b>Headshot</b></p><hr>
-                                    <input name="headshot" class="form-control mb-2" type="text" style="width: 50%;" value="{{ player.headshot }}" placeholder="{{ player.headshot }}"/>
-                                </div>
-                                <!-- End of updateables -->
-                            </div>
-                            <button class="btn btn-success btn-sm mt-2" type="submit" onkeydown="return event.key != 'Enter';">Update</button>
-                        </form>
-                    {% else %}
-                        <div class="col-md-2">
-                            <p><b>Jersey</b></p><hr>
-                            <p>#{{ player.jersey_number }}</p>
-                        </div>
-                        <div class="col-md-2">
-                            <p><b>Cyberface</b></p><hr>
-                            <p>{{ player.cyberface }}</p>
-                        </div>
-                        <div class="col-md-2">
-                            <p><b>Use Game Tendencies</b></p><hr>
-                            <p>{{ player.use_game_tendencies }}</p>
-                        </div>
-                        <div class="col-md-2">
-                            <p><b>Play Style #1</b></p><hr>
-                            <p>{{ playstyle1.0 }}</p>
-                        </div>
-                        <div class="col-md-2">
-                            <p><b>Play Style #2</b></p><hr>
-                            <p>{{ playstyle2.0 }}</p>
-                        </div>
-                        <div class="col-md-2">
-                            <p><b>Play Style #3</b></p><hr>
-                            <p>{{ playstyle3.0 }}</p>
-                        </div>
-                        <div class="col-md-2">
-                            <p><b>Play Style #4</b></p><hr>
-                            <p>{{ playstyle4.0 }}</p>
-                        </div>
-                    {% endif %}
-                </div>
-                <!-- Trait & archetype information -->
-                <hr>
-                <p class="mb-0"><b>Trait 1:</b> {{ player.trait_one }}</p>
-                <p class="mb-0"><b>Trait 2:</b> {{ player.trait_two }}</p>
-                <p class="mb-0"><b>Trait 3:</b> {{ player.trait_three }}</p>
-                {% if player.primary_archetype != player.secondary_archetype %}
-                <p class="mb-0"><b>Archetypes:</b> {{ player.primary_archetype }} {{ player.secondary_archetype }}</p>
-                {% else %}
-                <p class="mb-0"><b>Archetype:</b> {{ player.primary_archetype }}</p>
-                {% endif %}
-                <p class="mb-0"><b>Creator:</b> {{ player.discord_user.discord_tag }}</p>
-                <p><b>Week Earnings:</b> ${{ week_earnings }}</p>
-                <!-- Contract details -->
-                <hr>
-                <p class="mb-0"><b>Referral Code:</b> {{ player.id }}</p>
-                <p class="mb-0"><b>Contract Salary:</b> ${{ player.salary }}</p>
-                <p class="mb-0"><b>Contract Expires:</b> <i></i> Season {{ player.contract_ends_after }}</p>
-                <p class="mb-0"><b>Contract Option:</b> {{ player.contract_option }}</p>
-                <p class="mb-0"><b>Contract Benefits:</b> {{ player.contract_benefits }}</p>
-                <!-- Award details -->
-                <hr class="mt-3">
-                <p class="mb-0">
-                    {% if awards.MVP %}
-                        🏆 <b>MVP:</b>
-                        {% for a in awards.MVP %}
-                            S{{ a }} 
-                        {% endfor %}<br>
-                    {% endif %}
-                    {% if awards.DPOY %}
-                        🔏 <b>DPOY:</b>
-                        {% for a in awards.DPOY %}
-                            S{{ a }} 
-                        {% endfor %}<br>
-                    {% endif %}
-                    {% if awards.MIP %}
-                        💹 <b>MIP:</b>
-                        {% for a in awards.MIP %}
-                            S{{ a }} 
-                        {% endfor %}<br>
-                    {% endif %}
-                    {% if awards.ROY %}
-                        👦 <b>ROY:</b>
-                        {% for a in awards.ROY %}
-                            S{{ a }} 
-                        {% endfor %}<br>
-                    {% endif %}
-                    {% if awards.AH1ST %}
-                        🏀 <b>AH1ST:</b>
-                        {% for a in awards.AH1ST %}
-                            S{{ a }} 
-                        {% endfor %}<br>
-                    {% endif %}
-                    {% if awards.AH2ND %}
-                        🏀 <b>AH2ND:</b>
-                        {% for a in awards.AH2ND %}
-                            S{{ a }} 
-                        {% endfor %}<br>
-                    {% endif %}
-                    {% if awards.D1ST %}
-                        🔒 <b>D1ST:</b>
-                        {% for a in awards.D1ST %}
-                            S{{ a }} 
-                        {% endfor %}<br>
-                    {% endif %}
-                    {% if awards.D2ND %}
-                        🔒 <b>D2ND:</b>
-                        {% for a in awards.D2ND %}
-                            S{{ a }} 
-                        {% endfor %}<br>
-                    {% endif %}
-                    {% if awards.KOTS %}
-                        👑 <b>KOTS:</b> x{{ awards.KOTS }}<br>
-                    {% endif %}
-                    {% if awards.RING %}
-                        💍 <b>RING:</b>
-                        {% for a in awards.RING %}
-                            S{{ a }} 
-                        {% endfor %}<br>
-                    {% endif %}
-                    {% if awards.FMVP %}
-                        🌟 <b>FMVP:</b>
-                        {% for a in awards.FMVP %}
-                            S{{ a }} 
-                        {% endfor %}<br>
-                    {% endif %}
-                    {% if awards.ASG %}
-                        ⭐ <b>ASG:</b>
-                        {% for a in awards.ASG %}
-                            S{{ a }} 
-                        {% endfor %}<br>
-                    {% endif %}
-                    {% if awards.ASGMVP %}
-                        💫 <b>ASGMVP:</b>
-                        {% for a in awards.ASGMVP %}
-                            S{{ a }} 
-                        {% endfor %}<br>
-                    {% endif %}
-                    {% if awards.3PTWIN %}
-                        3️⃣ <b>3PTWIN:</b>
-                        {% for a in awards.3PTWIN %}
-                            S{{ a }} 
-                        {% endfor %}<br> 
-                    {% endif %}
-                    {% if awards.DNKWIN %}
-                        💪 <b>DNKWIN:</b>
-                        {% for a in awards.DNKWIN %}
-                            S{{ a }} 
-                        {% endfor %}<br> 
-                    {% endif %}
-                </p>
-            </div>
-        </div>
-
-        <!-- Player statistics -->
-        <div class="container-fluid mb-5 p-5">
-
-            <h2 class="mb-3">Player Statistics</h2>
-            <hr>
-
-            <p>Averages</p>
-            <table class="table table-striped table-hover table-responsive">
-                <thead>
-                    <tr>
-                        <th>SEASON</th>
-                        <th>TEAM</th>
-                        <th>GP</th>
-                        <th>GMSC</th>
-                        <th>PPG</th>
-                        <th>RPG</th>
-                        <th>APG</th>
-                        <th>SPG</th>
-                        <th>BPG</th>
-                        <th>TPG</th>
-                        <th>FPG</th>
-                        <th>FG%</th>
-                        <th>3P%</th>
-                        <th>FT%</th>
-                        <th>OREB</th>
-                        <th>AWARDS</th>
-                    </tr>
-                </thead>
-                <!-- Specific team stats -->
-                {% for season, season_data in player_career_stats.items %}
-                    <tbody>
-                        {% for team_at_time, stats_on_team in season_data.teamly_stats.items %}
-                            <tr>
-                                {% if forloop.first %}
-                                    <td rowspan="{{ season_data.teamly_stats|lengthinc }}">Season {{ season_data.season }}</td>
-                                {% endif %}
-                                <td>{{ team_at_time }}</td>
-                                <td>{{ stats_on_team.totals.gp }}</td>
-                                <td>{{ stats_on_team.averages.gmsc }}</td>
-                                <td>{{ stats_on_team.averages.ppg }}</td>
-                                <td>{{ stats_on_team.averages.rpg }}</td>
-                                <td>{{ stats_on_team.averages.apg }}</td>
-                                <td>{{ stats_on_team.averages.spg }}</td>
-                                <td>{{ stats_on_team.averages.bpg }}</td>
-                                <td>{{ stats_on_team.averages.tpg }}</td>
-                                <td>{{ stats_on_team.averages.fpg }}</td>
-                                <td>{{ stats_on_team.totals.fgm|getpercentage:stats_on_team.totals.fga }}</td>
-                                <td>{{ stats_on_team.totals.tpm|getpercentage:stats_on_team.totals.tpa }}</td>
-                                <td>{{ stats_on_team.totals.ftm|getpercentage:stats_on_team.totals.fta }}</td>
-                                <td>{{ stats_on_team.averages.orpg }}</td>
-                                {% if forloop.first %}
-                                    <td rowspan="{{ season_data.teamly_stats|lengthinc }}">
-                                        {% if season in awards.MVP %} 🏆 {% endif %}
-                                        {% if season in awards.DPOY %} 🔏 {% endif %}
-                                        {% if season in awards.RING %} 💍 {% endif %}
-                                        {% if season in awards.FMVP %} 🌟 {% endif %}
-                                        {% if season in awards.ASG %} ⭐ {% endif %}
-                                    </td>
-                                {% endif %}
-                            </tr>
-                        {% endfor %}
-                        <!-- Full year stats -->
-                        {% if season_data.teamly_stats|length > 1 %}
-                            <tr>
-                                <td></td>
-                                <td>{{ season_data.yearly_stats.totals.gp }}</td>
-                                <td> {{ season_data.yearly_stats.averages.gmsc }}</td>
-                                <td>{{ season_data.yearly_stats.averages.ppg }}</td>
-                                <td>{{ season_data.yearly_stats.averages.rpg }}</td>
-                                <td>{{ season_data.yearly_stats.averages.apg }}</td>
-                                <td>{{ season_data.yearly_stats.averages.spg }}</td>
-                                <td>{{ season_data.yearly_stats.averages.bpg }}</td>
-                                <td>{{ season_data.yearly_stats.averages.tpg }}</td>
-                                <td>{{ season_data.yearly_stats.averages.fpg }}</td>
-                                <td>{{ season_data.yearly_stats.averages.fgp }}</td>
-                                <td>{{ season_data.yearly_stats.averages.tpp }}</td>
-                                <td>{{ season_data.yearly_stats.averages.ftp }}</td>
-                                <td>{{ season_data.yearly_stats.averages.orpg }}</td>
-                            </tr>
-                        {% endif %}
-                    </tbody>
-                {% endfor %}
-            </table>
-
-            <hr>
-
-            <p>Totals</p>
-            <table class="table table-striped table-hover table-responsive">
-                <thead>
-                    <tr>
-                        <th>SEASON</th>
-                        <th>TEAM</th>
-                        <th>GP</th>
-                        <th>PTS</th>
-                        <th>REB</th>
-                        <th>AST</th>
-                        <th>STL</th>
-                        <th>BLK</th>
-                        <th>TOV</th>
-                        <th>FGM</th>
-                        <th>FGA</th>
-                        <th>3PM</th>
-                        <th>3PA</th>
-                        <th>FTM</th>
-                        <th>FTA</th>
-                        <th>OREB</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Specific team stats -->
-                    {% for season, season_data in player_career_stats.items %}
-                        {% for team_at_time, stats_on_team in season_data.teamly_stats.items %}
-                            <tr>
-                                {% if forloop.first %}
-                                    <td rowspan="{{ season_data.teamly_stats|lengthinc }}">Season {{ season_data.season }}</td>
-                                {% endif %}
-                                <td>{{ team_at_time }}</td>
-                                <td>{{ stats_on_team.totals.gp }}</td>
-                                <td>{{ stats_on_team.totals.pts }}</td>
-                                <td>{{ stats_on_team.totals.reb }}</td>
-                                <td>{{ stats_on_team.totals.ast }}</td>
-                                <td>{{ stats_on_team.totals.stl }}</td>
-                                <td>{{ stats_on_team.totals.blk }}</td>
-                                <td>{{ stats_on_team.totals.tov }}</td>
-                                <td>{{ stats_on_team.totals.fgm }}</td>
-                                <td>{{ stats_on_team.totals.fga }}</td>
-                                <td>{{ stats_on_team.totals.tpm }}</td>
-                                <td>{{ stats_on_team.totals.tpa }}</td>
-                                <td>{{ stats_on_team.totals.ftm }}</td>
-                                <td>{{ stats_on_team.totals.fta }}</td>
-                                <td>{{ stats_on_team.totals.oreb }}</td>
-                            </tr>
-                        {% endfor %}
-                        <!-- Full year stats -->
-                        {% if season_data.teamly_stats|length > 1 %}
-                            <tr>
-                                <td></td>
-                                <td>{{ season_data.yearly_stats.totals.gp }}</td>
-                                <td>{{ season_data.yearly_stats.totals.pts }}</td>
-                                <td>{{ season_data.yearly_stats.totals.reb }}</td>
-                                <td>{{ season_data.yearly_stats.totals.ast }}</td>
-                                <td>{{ season_data.yearly_stats.totals.stl }}</td>
-                                <td>{{ season_data.yearly_stats.totals.blk }}</td>
-                                <td>{{ season_data.yearly_stats.totals.tov }}</td>
-                                <td>{{ season_data.yearly_stats.totals.fgm }}</td>
-                                <td>{{ season_data.yearly_stats.totals.fga }}</td>
-                                <td>{{ season_data.yearly_stats.totals.tpm }}</td>
-                                <td>{{ season_data.yearly_stats.totals.tpa }}</td>
-                                <td>{{ season_data.yearly_stats.totals.ftm }}</td>
-                                <td>{{ season_data.yearly_stats.totals.fta }}</td>
-                                <td>{{ season_data.yearly_stats.totals.oreb }}</td>
-                            </tr>
-                        {% endif %}
-                    </tbody>
-                    {% endfor %}
-            </table>
-
-            <hr>
-
-        </div>
-
-        <!-- Player game logs -->
-        <div class="container-fluid mb-5 p-5">
-            <h2 class="mb-3">Game Logs</h2>
-            <hr>
-            <table class="table table-striped table-hover table-responsive">
-                <thead>
-                    <tr>
-                        <th>DAY</th>
-                        <th>GMSC</th>
-                        <th>PTS</th>
-                        <th>REB</th>
-                        <th>AST</th>
-                        <th>STL</th>
-                        <th>BLK</th>
-                        <th>TOV</th>
-                        <th>FGM</th>
-                        <th>FGA</th>
-                        <th>3PM</th>
-                        <th>3PA</th>
-                        <th>FTM</th>
-                        <th>FTA</th>
-                        <th>DREB</th>
-                        <th>OREB</th>
-                        <th>STATUS</th>
-                        <th>GAME</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Game log stats -->
-                    {% for game_log in player_game_logs %}
-                        <tr>
-                            <td>{{ game_log.day }}</td>
-                            <td>{{ game_log.stats.GMSC }}</td>
-                            <td>{{ game_log.stats.PTS }}</td>
-                            <td>{{ game_log.stats.REB }}</td>
-                            <td>{{ game_log.stats.AST }}</td>
-                            <td>{{ game_log.stats.STL }}</td>
-                            <td>{{ game_log.stats.BLK }}</td>
-                            <td>{{ game_log.stats.TOV }}</td>
-                            <td>{{ game_log.stats.FGM }}</td>
-                            <td>{{ game_log.stats.FGA }}</td>
-                            <td>{{ game_log.stats.3PM }}</td>
-                            <td>{{ game_log.stats.3PA }}</td>
-                            <td>{{ game_log.stats.FTM }}</td>
-                            <td>{{ game_log.stats.FTA }}</td>
-                            <td>{{ game_log.stats.DREB }}</td>
-                            <td>{{ game_log.stats.OREB }}</td>
-                            <td>{{ game_log.winner }} beat {{ game_log.loser }} <b>{{ game_log.score }}</b></td>
-                            <td><a href="{% url 'stats:view_game' game_log.id %}">View full box score</a></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Bootstrap accordions -->
-        <div class="container-fluid mb-5 p-5">
-            <h2 class="mb-3">Player Details</h2>
-            <hr>
-            <!-- Attribute accordion -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="flush-headingOne">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseTwo">
-                        Attributes
-                    </button>
-                </h2>
-                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionOne">
-                    <div class="accordion-body">
-                        <div class="container-fluid" style="padding: 100px; padding-top: 0px; padding-bottom: 10px;">
-                            <div class="container">
-                                <div class="row">
-                                    {% for k, v in player.attributes.items %} 
-                                        {% if k in finishing_attributes %}
-                                            <div class="col-md-2">
-                                                <p class="mt-0 mb-1"><b>{{ k }}</b></p><p>{{ v }}</p>
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                    <hr>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="container">
-                                <div class="row">
-                                    {% for k, v in player.attributes.items %} 
-                                        {% if k in shooting_attributes %}
-                                            <div class="col-md-2">
-                                                <p class="mt-0 mb-1"><b>{{ k }}</b></p><p>{{ v }}</p>
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                    <hr>
-                                </div>
-                            </div> 
-                            <div class="container">
-                                <div class="row">
-                                    {% for k, v in player.attributes.items %} 
-                                        {% if k in playmaking_attributes %}
-                                            <div class="col-md-2">
-                                                <p class="mt-0 mb-1"><b>{{ k }}</b></p><p>{{ v }}</p>
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                    <hr>
-                                </div>
-                            </div>
-                            <div class="container">
-                                <div class="row">
-                                    {% for k, v in player.attributes.items %} 
-                                        {% if k in defense_attributes %}
-                                            <div class="col-md-2">
-                                                <p class="mt-0 mb-1"><b>{{ k }}</b></p><p>{{ v }}</p>
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                    <hr>
-                                </div>
-                            </div>
-                            <div class="container">
-                                <div class="row">
-                                    {% for k, v in player.attributes.items %} 
-                                        {% if k in physical_attributes %}
-                                            <div class="col-md-2">
-                                                <p class="mt-0 mb-1"><b>{{ k }}</b></p><p>{{ v }}</p>
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                    <hr>
-                                </div>
-                            </div> 
                         </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Badge accordion -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="flush-headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                        Badges
-                    </button>
-                </h2>
-                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionOne">
-                    <div class="accordion-body">
-                        <div class="container-fluid mt-5" style="padding: 100px; padding-top: 0px; padding-bottom: 10px;">
-                            <div class="container">
-                                <div class="row">
-                                    {% for k, v in player.badges.items %} 
-                                        {% if k in finishing_badges %}
-                                            <div class="col-md-2 mb-2">
-                                                <p class="mt-0 mb-1"><b>{{ k }}</b></p>
-                                                {% if v == 0 %}
-                                                    {{ badgeEmojis.0 }} Unequipped
-                                                {% elif v == 1 %}
-                                                    {{ badgeEmojis.1 }} Bronze
-                                                {% elif v == 2 %}
-                                                    {{ badgeEmojis.2 }} Silver
-                                                {% elif v == 3 %}
-                                                    {{ badgeEmojis.3 }} Gold
-                                                {% elif v == 4 %}
-                                                    {{ badgeEmojis.4 }} Hall of Fame
-                                                {% endif %}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                                <hr>
-                            </div>
-                
-                
-                            <div class="container">
-                                <div class="row">
-                                    {% for k, v in player.badges.items %} 
-                                        {% if k in shooting_badges %}
-                                            <div class="col-md-2 mb-2">
-                                                <p class="mt-0 mb-1"><b>{{ k }}</b></p>
-                                                {% if v == 0 %}
-                                                    {{ badgeEmojis.0 }} Unequipped
-                                                {% elif v == 1 %}
-                                                    {{ badgeEmojis.1 }} Bronze
-                                                {% elif v == 2 %}
-                                                    {{ badgeEmojis.2 }} Silver
-                                                {% elif v == 3 %}
-                                                    {{ badgeEmojis.3 }} Gold
-                                                {% elif v == 4 %}
-                                                    {{ badgeEmojis.4 }} Hall of Fame
-                                                {% endif %}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
+                        <!-- measurements -->
+                        <div class="col-sm-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="d-flex align-items-center mb-1"><i class="material-icons text-light mr-2">measurements</i></h6>
+                                    <span>Height</span>
+                                    <div class="mb-3" style="height: 5px;">
+                                        <small>{{ player.height }}</small>
+                                    </div><span>Weight</span>
+                                    <div class="mb-3" style="height: 5px;">
+                                        <small>{{ player.weight }}</small>
+                                    </div>
                                 </div>
                             </div>
-                
-                            <hr>
-                
-                            <div class="container">
-                                <div class="row">
-                                    {% for k, v in player.badges.items %} 
-                                        {% if k in playmaking_badges %}
-                                            <div class="col-md-2 mb-2">
-                                                <p class="mt-0 mb-1"><b>{{ k }}</b></p>
-                                                {% if v == 0 %}
-                                                    {{ badgeEmojis.0 }} Unequipped
-                                                {% elif v == 1 %}
-                                                    {{ badgeEmojis.1 }} Bronze
-                                                {% elif v == 2 %}
-                                                    {{ badgeEmojis.2 }} Silver
-                                                {% elif v == 3 %}
-                                                    {{ badgeEmojis.3 }} Gold
-                                                {% elif v == 4 %}
-                                                    {{ badgeEmojis.4 }} Hall of Fame
-                                                {% endif %}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                
-                            <hr>
-                
-                            <div class="container">
-                                <div class="row">
-                                    {% for k, v in player.badges.items %} 
-                                        {% if k in defense_badges %}
-                                            <div class="col-md-2 mb-2">
-                                                <p class="mt-0 mb-1"><b>{{ k }}</b></p>
-                                                {% if v == 0 %}
-                                                    {{ badgeEmojis.0 }} Unequipped
-                                                {% elif v == 1 %}
-                                                    {{ badgeEmojis.1 }} Bronze
-                                                {% elif v == 2 %}
-                                                    {{ badgeEmojis.2 }} Silver
-                                                {% elif v == 3 %}
-                                                    {{ badgeEmojis.3 }} Gold
-                                                {% elif v == 4 %}
-                                                    {{ badgeEmojis.4 }} Hall of Fame
-                                                {% endif %}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                
-                            <hr>
-                
                         </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Tendency accordion -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="flush-headingThree">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseTwo">
-                        Tendencies
-                    </button>
-                </h2>
-                <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionOne">
-                    <div class="accordion-body">
-                        <div class="container-fluid mt-5" style="padding: 100px; padding-top: 0px; padding-bottom: 10px;">
-                            <div class="container">
-                                <div class="row">
-                                    {% for k, v in player.tendencies.items %} 
-                                        <div class="col-md-4 mb-2">
-                                            <p class="mt-0 mb-1"><b>{{ k }}</b></p>
-                                            <p>{{ v }}</p>
+                        <!-- relatives -->
+                        <div class="col-sm-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="d-flex align-items-center mb-1"><i class="material-icons text-light mr-2">possible relatives</i></h6>
+                                    {% for relative in possible_relatives %}
+                                        <div class="mb-3" style="height: 5px;">
+                                            <small><a href="{% url 'player' relative.0 %}">{{ relative.1 }} {{ player.last_name }}</a></small>
                                         </div>
                                     {% endfor %}
                                 </div>
-                                <hr>
+                            </div>
+                        </div>
+                        <!-- attribute viewer -->
+                        <div class="col-sm-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="d-flex align-items-center mb-2"><i class="material-icons text-light mr-2">attributes</i></h6>
+                                    <div class="tab-content">
+                                        <ul class="nav nav-tabs" id="myTabs">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" id="tab1" data-bs-toggle="tab" href="#finishing-attributes">Finishing</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="tab2" data-bs-toggle="tab" href="#shooting-attributes">Shooting</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="tab3" data-bs-toggle="tab" href="#playmaking-attributes">Playmaking</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="tab3" data-bs-toggle="tab" href="#defense-attributes">Defense</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="tab3" data-bs-toggle="tab" href="#physical-attributes">Physical</a>
+                                            </li>
+                                        </ul>
+                                        <!-- finishing attributes -->
+                                        <div class="tab-pane fade show active mt-2" id="finishing-attributes">
+                                            <div class="d-flex justify-content-start" style="gap: 20px;">
+                                                <div>
+                                                    <table>
+                                                        <tbody>
+                                                            {% for k, v in player.attributes.items %}
+                                                                <tr>
+                                                                    {% if k in finishing_attributes %}
+                                                                        <td>{{ k }}:</td>
+                                                                        <td style="padding-left: 10px;">{{ v }}</td>
+                                                                    {% endif %}
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- shooting attributes -->
+                                        <div class="tab-pane fade show mt-2" id="shooting-attributes">
+                                            <div class="d-flex justify-content-start" style="gap: 20px;">
+                                                <div>
+                                                    <table>
+                                                        <tbody>
+                                                            {% for k, v in player.attributes.items %}
+                                                                <tr>
+                                                                    {% if k in shooting_attributes %}
+                                                                        <td>{{ k }}:</td>
+                                                                        <td style="padding-left: 10px;">{{ v }}</td>
+                                                                    {% endif %}
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- playmaking attributes -->
+                                        <div class="tab-pane fade show mt-2" id="playmaking-attributes">
+                                            <div class="d-flex justify-content-start" style="gap: 20px;">
+                                                <div>
+                                                    <table>
+                                                        <tbody>
+                                                            {% for k, v in player.attributes.items %}
+                                                                <tr>
+                                                                    {% if k in playmaking_attributes %}
+                                                                        <td>{{ k }}:</td>
+                                                                        <td style="padding-left: 10px;">{{ v }}</td>
+                                                                    {% endif %}
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- defense attributes -->
+                                        <div class="tab-pane fade show mt-2" id="defense-attributes">
+                                            <div class="d-flex justify-content-start" style="gap: 20px;">
+                                                <div>
+                                                    <table>
+                                                        <tbody>
+                                                            {% for k, v in player.attributes.items %}
+                                                                <tr>
+                                                                    {% if k in defense_attributes %}
+                                                                        <td>{{ k }}:</td>
+                                                                        <td style="padding-left: 10px;">{{ v }}</td>
+                                                                    {% endif %}
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- physical attributes -->
+                                        <div class="tab-pane fade show mt-2" id="physical-attributes">
+                                            <div class="d-flex justify-content-start" style="gap: 20px;">
+                                                <div>
+                                                    <table>
+                                                        <tbody>
+                                                            {% for k, v in player.attributes.items %}
+                                                                <tr>
+                                                                    {% if k in physical_attributes %}
+                                                                        <td>{{ k }}:</td>
+                                                                        <td style="padding-left: 10px;">{{ v }}</td>
+                                                                    {% endif %}
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- badge viewer -->
+                        <div class="col-sm-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="d-flex align-items-center mb-2"><i class="material-icons text-light mr-2">badges</i></h6>
+                                    <div class="tab-content">
+                                        <ul class="nav nav-tabs" id="myTabs">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" id="tab1" data-bs-toggle="tab" href="#finishing-badges">Finishing</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="tab2" data-bs-toggle="tab" href="#shooting-badges">Shooting</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="tab3" data-bs-toggle="tab" href="#playmaking-badges">Playmaking</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="tab3" data-bs-toggle="tab" href="#defense-badges">Defense</a>
+                                            </li>
+                                        </ul>
+                                        <!-- finishing badges -->
+                                        <div class="tab-pane fade show active mt-2" id="finishing-badges">
+                                            <div class="d-flex justify-content-start" style="gap: 20px;">
+                                                <div>
+                                                    <table>
+                                                        <tbody>
+                                                            {% for k, v in player.badges.items %}
+                                                                <tr>
+                                                                    {% if k in finishing_badges %}
+                                                                        <td>{{ k }}:</td>
+                                                                        <td>
+                                                                            {% if v == 0 %}
+                                                                                {{ badgeEmojis.0 }}
+                                                                            {% elif v == 1 %}
+                                                                                {{ badgeEmojis.1 }}
+                                                                            {% elif v == 2 %}
+                                                                                {{ badgeEmojis.2 }}
+                                                                            {% elif v == 3 %}
+                                                                                {{ badgeEmojis.3 }}
+                                                                            {% elif v == 4 %}
+                                                                                {{ badgeEmojis.4 }}
+                                                                            {% endif %}
+                                                                        </td>
+                                                                    {% endif %}
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- shooting badges -->
+                                        <div class="tab-pane fade show mt-2" id="shooting-badges">
+                                            <div class="d-flex justify-content-start" style="gap: 20px;">
+                                                <div>
+                                                    <table>
+                                                        <tbody>
+                                                            {% for k, v in player.badges.items %}
+                                                                <tr>
+                                                                    {% if k in shooting_badges %}
+                                                                        <td>{{ k }}:</td>
+                                                                        <td>
+                                                                            {% if v == 0 %}
+                                                                                {{ badgeEmojis.0 }}
+                                                                            {% elif v == 1 %}
+                                                                                {{ badgeEmojis.1 }}
+                                                                            {% elif v == 2 %}
+                                                                                {{ badgeEmojis.2 }}
+                                                                            {% elif v == 3 %}
+                                                                                {{ badgeEmojis.3 }}
+                                                                            {% elif v == 4 %}
+                                                                                {{ badgeEmojis.4 }}
+                                                                            {% endif %}
+                                                                        </td>
+                                                                    {% endif %}
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- playmaking badges -->
+                                        <div class="tab-pane fade show mt-2" id="playmaking-badges">
+                                            <div class="d-flex justify-content-start" style="gap: 20px;">
+                                                <div>
+                                                    <table>
+                                                        <tbody>
+                                                            {% for k, v in player.badges.items %}
+                                                                <tr>
+                                                                    {% if k in playmaking_badges %}
+                                                                        <td>{{ k }}:</td>
+                                                                        <td>
+                                                                            {% if v == 0 %}
+                                                                                {{ badgeEmojis.0 }}
+                                                                            {% elif v == 1 %}
+                                                                                {{ badgeEmojis.1 }}
+                                                                            {% elif v == 2 %}
+                                                                                {{ badgeEmojis.2 }}
+                                                                            {% elif v == 3 %}
+                                                                                {{ badgeEmojis.3 }}
+                                                                            {% elif v == 4 %}
+                                                                                {{ badgeEmojis.4 }}
+                                                                            {% endif %}
+                                                                        </td>
+                                                                    {% endif %}
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- defense badges -->
+                                        <div class="tab-pane fade show mt-2" id="defense-badges">
+                                            <div class="d-flex justify-content-start" style="gap: 20px;">
+                                                <div>
+                                                    <table>
+                                                        <tbody>
+                                                            {% for k, v in player.badges.items %}
+                                                                <tr>
+                                                                    {% if k in defense_badges %}
+                                                                        <td>{{ k }}:</td>
+                                                                        <td>
+                                                                            {% if v == 0 %}
+                                                                                {{ badgeEmojis.0 }}
+                                                                            {% elif v == 1 %}
+                                                                                {{ badgeEmojis.1 }}
+                                                                            {% elif v == 2 %}
+                                                                                {{ badgeEmojis.2 }}
+                                                                            {% elif v == 3 %}
+                                                                                {{ badgeEmojis.3 }}
+                                                                            {% elif v == 4 %}
+                                                                                {{ badgeEmojis.4 }}
+                                                                            {% endif %}
+                                                                        </td>
+                                                                    {% endif %}
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- stat viewer -->
+                        <div class="col-sm-12 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="d-flex align-items-center mb-1"><i class="material-icons text-light mr-2">statistics</i></h6>
+                                        <small><i>Coming soon, sorry for the inconvenience.</i></small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+            {% if player.discord_user == user %}
+                <div class="modal" id="myModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="{% url 'update_player_vitals' player.id %}" method="POST">
+                                {% csrf_token %}
+                                <!-- Modal header -->
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Edit</h4>
+                                </div>
+                                <!-- Modal body -->
+                                <div class="modal-body">
+                                    <!-- Editable modal -->
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                            <h6 class="mb-0">Face</h6>
+                                            <input name="cyberface" class="form-control" type="number" style="width: 50%;" value="{{ player.cyberface }}"/>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                            <h6 class="mb-0">Jersey</h6>
+                                            <input name="jersey" class="form-control" type="number" style="width: 50%;" value="{{ player.jersey_number }}"/>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                            <h6 class="mb-0">Tendencies</h6>
+                                            <select class="form-select" name="use_game" style="width: 50%">
+                                                <option value="{{ player.use_game_tendencies }}">{{ player.use_game_tendencies }}</option>
+                                                {% if player.use_game_tendencies %}
+                                                    <option value="False">False</option>
+                                                {% else %}
+                                                    <option value="True">True</option>
+                                                {% endif %}
+                                            </select>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                            <h6 class="mb-0">Play Type 1</h6>
+                                            <select class="form-select" name="playstyle1" style="width: 50%">
+                                                <option value="{{ playstyle1.1 }}">{{ playstyle1.0 }}</option>
+                                                {% for i, playstyle in playstyles.items %}
+                                                    {% if not playstyle == playstyle1.0 %}
+                                                        <option value="{{ i }}">{{ playstyle }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                            <h6 class="mb-0">Play Type 2</h6>
+                                            <select class="form-select" name="playstyle4" style="width: 50%">
+                                                <option value="{{ playstyle2.1 }}">{{ playstyle2.0 }}</option>
+                                                {% for i, playstyle in playstyles.items %}
+                                                    {% if not playstyle == playstyle2.0 %}
+                                                        <option value="{{ i }}">{{ playstyle }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                            <h6 class="mb-0">Play Type 3</h6>
+                                            <select class="form-select" name="playstyle3" style="width: 50%">
+                                                <option value="{{ playstyle3.1 }}">{{ playstyle3.0 }}</option>
+                                                {% for i, playstyle in playstyles.items %}
+                                                    {% if not playstyle == playstyle1.0 %}
+                                                        <option value="{{ i }}">{{ playstyle }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                            <h6 class="mb-0">Play Type 4</h6>
+                                            <select class="form-select" name="playstyle4" style="width: 50%">
+                                                <option value="{{ playstyle4.1 }}">{{ playstyle4.0 }}</option>
+                                                {% for i, playstyle in playstyles.items %}
+                                                    {% if not playstyle == playstyle1.0 %}
+                                                        <option value="{{ i }}">{{ playstyle }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                            <h6 class="mb-0">Headshot</h6>
+                                            <input name="headshot" class="form-control" type="text" style="width: 50%;" value="{{ player.headshot }}"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- Modal footer -->
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary btn-sm mt-2" type="submit">Update</button>
+                                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
     </div>
 
     <script src="{% static 'main/js/players/copyJSON.js' %}"></script>
