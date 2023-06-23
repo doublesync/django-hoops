@@ -105,9 +105,58 @@
                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">Edit</button>
                         </ul>
                     </div>
+                    <!-- pay players -->
+                    <div class="mt-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                {% if user.can_update_players %}
+                                    <form action="{% url 'add_player_cash' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="id" value="{{ player.id }}">
+                                        <div class="row">
+                                            <div class="col-12 mb-2">
+                                                <!-- Text area for adding cash -->
+                                                <input name="amount" class="form-control mb-1" type="number" required placeholder="Enter cash amount"/>
+                                                <input name="reason" class="form-control" type="text" required placeholder="Enter reason"/><hr>
+                                                <input name="bypass" class="form-check-input" type="checkbox" value="true" id="bypass">
+                                                <label for="bypass">Bypass Weekly Earnings</label><hr>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12"><button class="btn btn-success btn-sm d-block w-100" type="submit">Add cash</button></div>
+                                        </div>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- fine players -->
+                    <div class="mt-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                {% if user.can_update_players %}
+                                    <form action="{% url 'take_player_cash' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="id" value="{{ player.id }}">
+                                        <div class="row">
+                                            <div class="col-12 mb-2">
+                                                <!-- Text area for adding cash -->
+                                                <input name="amount" class="form-control mb-1" type="number" required placeholder="Enter cash amount"/>
+                                                <input name="reason" class="form-control" type="text" required placeholder="Enter reason"/><hr>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12"><button class="btn btn-danger btn-sm d-block w-100" type="submit">Take cash</button></div>
+                                        </div>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-8">
                     <div class="row gutters-sm">
+                        <!-- details -->
                         <div class="col-sm-12 card mb-3">
                             <div class="card-body">
                                 <div class="row">
