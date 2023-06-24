@@ -10,6 +10,7 @@
             <!-- Player information -->
             <div class="row gutters-sm">
                 <div class="col-md-4 mb-3">
+                    <!-- Top player details -->
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center"><img class="rounded-circle" src="{{ player.headshot }}" alt="headshot" width="150" />
@@ -110,7 +111,9 @@
                                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0ZM1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8Z"/>
                                   </svg> Play Type 4</h6><span class="text-secondary">{{ playstyle4.0 }}</span>
                             </li>
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">Edit</button>
+                            <p id="json_file" class="file" style="font-size: 6px; display: none;">{{ file }}</p>
+                            <button id="file" type="button" class="m-1 mb-0 btn btn-dark btn-sm copyJSON" onClick="clipboard(this.id)">Fetch File</button>
+                            <button type="button" class="m-1 btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">Edit Details</button>
                         </ul>
                     </div>
                     <!-- pay players -->
