@@ -535,30 +535,48 @@
                                     <h6 class="d-flex align-items-center mb-1"><i class="material-icons text-light mr-2">statistics</i></h6>
                                     <div class="tab-content">
                                         <ul class="nav nav-tabs" id="mySeasonTabs">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" id="Nav_Season_Start" data-bs-toggle="tab" href="#seasonStart">Home</a>
+                                            </li>
                                             {% for season, season_data in player_career_stats.items %}
-                                                {% if forloop.first %}
-                                                    <li class="nav-item">
-                                                        <a class="nav-link active" id="Nav_S{{ season }}" data-bs-toggle="tab" href="#S{{ season }}">S{{ season }}</a>
-                                                    </li>                                        
-                                                {% else %}
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" id="Nav_S{{ season }}" data-bs-toggle="tab" href="#S{{ season }}">S{{ season }}</a>
-                                                    </li>
-                                                {% endif %}
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="Nav_S{{ season }}" data-bs-toggle="tab" href="#S{{ season }}">S{{ season }}</a>
+                                                </li>                                        
                                             {% endfor %}
                                         </ul>
+                                        <!-- season start -->
+                                        <div class="tab-pane fade show mt-2" id="seasonStart">
+                                            <div class="d-flex justify-content-start" style="gap: 20px;">
+                                                <div>
+                                                    <p class="mt-2">Click the seasons above to view.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- other seasons -->
                                         {% for season, season_data in player_career_stats.items %}
                                             <div class="tab-pane fade show mt-2" id="S{{ season }}">
                                                 <div class="d-flex justify-content-start" style="gap: 20px;">
                                                     <div>
                                                         <div class="tab-content">
                                                             <ul class="nav nav-tabs" id="myTeamTabs_S{{ season }}">
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link active" id="Nav_yearlyStats_S{{ season }}" data-bs-toggle="tab" href="#yearlyStats_S{{ season }}">Yearly</a>
+                                                                </li>
                                                                 {% for team_at_time, stats_on_team in season_data.teamly_stats.items %}
                                                                     <li class="nav-item">
                                                                         <a class="nav-link" id="Nav_{{ team_at_time }}_S{{ season }}" data-bs-toggle="tab" href="#{{ team_at_time }}_S{{ season }}">{{ team_at_time }}</a>
                                                                     </li>                                        
                                                                 {% endfor %}
                                                             </ul>
+                                                            <!-- yearly stats -->
+                                                            <div class="tab-pane fade show mt-2" id="yearlyStats_S{{ season }}">
+                                                                <div class="d-flex justify-content-start" style="gap: 20px;">
+                                                                    <div>
+                                                                        <p class="mt-2">Yearly stats coming soon</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- team by team stats -->
                                                             {% for team_at_time, stats_on_team in season_data.teamly_stats.items %}
                                                                 <div class="tab-pane fade show mt-2" id="{{ team_at_time }}_S{{ season }}">
                                                                     <div class="d-flex justify-content-start" style="gap: 20px;">
