@@ -19,6 +19,7 @@
                                     <p class="text-secondary mb-1">{{ player.primary_position }} | {{ player.current_team.name }}</p>
                                     <p class="text-muted font-size-sm mb-1">Hi, welcome to my player profile!</p>
                                     <a href="{% url 'upgrade_player' player.id %}">Upgrade</a> | <a href="{% url 'edit_physicals' player.id %}">Physicals</a>
+                                     | <a href="{% url 'upgrade_logs' player.id %}">Purchases</a> | <a href="{% url 'cash_logs' player.id %}">Transactions</a>
                                 </div>
                             </div>
                         </div>
