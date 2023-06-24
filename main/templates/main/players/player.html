@@ -533,8 +533,129 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h6 class="d-flex align-items-center mb-1"><i class="material-icons text-light mr-2">statistics</i></h6>
-                                        <small><i>Coming soon, sorry for the inconvenience.</i></small>
+                                    <div class="tab-content">
+                                        <ul class="nav nav-tabs" id="mySeasonTabs">
+                                            {% for season, season_data in player_career_stats.items %}
+                                                {% if forloop.first %}
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" id="Nav_S{{ season }}" data-bs-toggle="tab" href="#S{{ season }}">S{{ season }}</a>
+                                                    </li>                                        
+                                                {% else %}
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" id="Nav_S{{ season }}" data-bs-toggle="tab" href="#S{{ season }}">S{{ season }}</a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                        {% for season, season_data in player_career_stats.items %}
+                                            <div class="tab-pane fade show mt-2" id="S{{ season }}">
+                                                <div class="d-flex justify-content-start" style="gap: 20px;">
+                                                    <div>
+                                                        <div class="tab-content">
+                                                            <ul class="nav nav-tabs" id="myTeamTabs_S{{ season }}">
+                                                                {% for team_at_time, stats_on_team in season_data.teamly_stats.items %}
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link" id="Nav_{{ team_at_time }}_S{{ season }}" data-bs-toggle="tab" href="#{{ team_at_time }}_S{{ season }}">{{ team_at_time }}</a>
+                                                                    </li>                                        
+                                                                {% endfor %}
+                                                            </ul>
+                                                            {% for team_at_time, stats_on_team in season_data.teamly_stats.items %}
+                                                                <div class="tab-pane fade show mt-2" id="{{ team_at_time }}_S{{ season }}">
+                                                                    <div class="d-flex justify-content-start" style="gap: 20px;">
+                                                                        <div>
+                                                                            <table>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td>TEAM:</td>
+                                                                                        <td style="padding-left: 20px;">{{ team_at_time }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>GP:</td>
+                                                                                        <td style="padding-left: 20px;">{{ stats_on_team.totals.gp }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>GMSC:</td>
+                                                                                        <td style="padding-left: 20px;">{{ stats_on_team.averages.gmsc }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>PPG:</td>
+                                                                                        <td style="padding-left: 20px;">{{ stats_on_team.averages.ppg }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>RPG:</td>
+                                                                                        <td style="padding-left: 20px;">{{ stats_on_team.averages.rpg }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>ORPG:</td>
+                                                                                        <td style="padding-left: 20px;">{{ stats_on_team.averages.orpg }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>APG:</td>
+                                                                                        <td style="padding-left: 20px;">{{ stats_on_team.averages.apg }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>SPG:</td>
+                                                                                        <td style="padding-left: 20px;">{{ stats_on_team.averages.spg }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>BPG:</td>
+                                                                                        <td style="padding-left: 20px;">{{ stats_on_team.averages.bpg }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>TPG:</td>
+                                                                                        <td style="padding-left: 20px;">{{ stats_on_team.averages.tpg }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>FPG:</td>
+                                                                                        <td style="padding-left: 20px;">{{ stats_on_team.averages.fpg }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>FG%:</td>
+                                                                                        <td style="padding-left: 20px;">{{ stats_on_team.totals.fgm|getpercentage:stats_on_team.totals.fga }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>3P%:</td>
+                                                                                        <td style="padding-left: 20px;">{{ stats_on_team.totals.tpm|getpercentage:stats_on_team.totals.tpa }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>FT%:</td>
+                                                                                        <td style="padding-left: 20px;">{{ stats_on_team.totals.ftm|getpercentage:stats_on_team.totals.fta }}</td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- game logs -->
+                        <div class="col-sm-12 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="d-flex align-items-center mb-1"><i class="material-icons text-light mr-2">game logs</i></h6>
+                                    {% for game_log in player_game_logs %}
+                                        <p>
+                                            ({{ game_log.stats.GMSC }})
+                                            <span class="fw-bold text-success">{{ game_log.stats.PTS }}</span>pts, 
+                                            <span class="fw-bold text-success">{{ game_log.stats.REB }}</span>reb, 
+                                            <span class="fw-bold text-success">{{ game_log.stats.AST }}</span>ast,
+                                            <span class="fw-bold text-success">{{ game_log.stats.STL }}</span>stl, 
+                                            <span class="fw-bold text-success">{{ game_log.stats.BLK }}</span>blk, 
+                                            <span class="fw-bold text-success">{{ game_log.stats.TOV }}</span>to
+                                            <span class="fw-bold text-success">({{ game_log.stats.FGM }}/{{ game_log.stats.FGA }})</span>fg
+                                            <span class="fw-bold text-success">({{ game_log.stats.3PM }}/{{ game_log.stats.3PA }})</span>3p
+                                            <span class="fw-bold text-success">({{ game_log.stats.FTM }}/{{ game_log.stats.FTA }})</span>ft
+                                            | <span class="fw-bold text-light"><small><a href="{% url 'stats:view_game' game_log.id %}">{{ game_log.winner }} beat {{ game_log.loser }}</a></small></span>
+                                        </p>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
