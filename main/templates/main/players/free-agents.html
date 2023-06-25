@@ -2,8 +2,8 @@
 {% load main_filters %}
 {% block content %}
     <div class="container-fluid mt-5 mb-5 p-5">
-        <h1>Free Agents</h1>
-        <p id="offer-status">Offer status will appear here.</p>
+        <h1>Players</h1>
+        <p id="offer-status">View all league players</p>
         <form>
             {% csrf_token %}
             <input type="search" name="search" placeholder="Search fields" class="form-control mt-3 mb-2" style="width: 300px;" hx-post="/players/free-agents/search/" hx-trigger="keyup delay:200ms" hx-target="#search-results" hx-swap="innerHTML" onkeydown="return event.key != 'Enter';"></input>

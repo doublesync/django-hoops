@@ -377,19 +377,12 @@ def players(request):
 
 
 def free_agents(request):
-    # Check if the user is a manager
-    user = request.user
-    team = Team.objects.filter(manager=user).first()
-    if not team:
-        return HttpResponse("Sorry, you don't have permission to view this page!")
     # Create the context
     context = {
         "title": "Free Agents",
     }
     # Get all league players that contracts_end_after
-    free_agent_players = Player.objects.filter(
-        Q(current_team=None) | Q(contract_ends_after=league_config.current_season)
-    ).order_by("-spent")
+    free_agent_players = Player.objects.all().order_by("-spent")
     # Paginate the league players
     paginator = Paginator(free_agent_players, 10)
     page_number = request.GET.get("page")

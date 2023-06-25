@@ -111,10 +111,10 @@
     <!-- Table headers -->
     <thead>
         <tr>
-            <th scope="col" style="text-transform: capitalize;">Offer</th>
-            <th scope="col" style="text-transform: capitalize;">Revoke</th>
-            <th scope="col" style="text-transform: capitalize;">Owner</th>
+            <!-- <th scope="col" style="text-transform: capitalize;">Offer</th>
+            <th scope="col" style="text-transform: capitalize;">Revoke</th> -->
             <th scope="col" style="text-transform: capitalize;">Age</th>
+            <th scope="col" style="text-transform: capitalize;">Owner</th>
             <th scope="col" style="text-transform: capitalize;">Player</th>
             <th scope="type" style="text-transform: capitalize;">Type</th>
             <th scope="col" style="text-transform: capitalize;">Spent</th>
@@ -127,6 +127,7 @@
             <th scope="col" style="text-transform: capitalize;">Archetype 2</th>
             <th scope="col" style="text-transform: capitalize;">Trait 1</th>
             <th scope="col" style="text-transform: capitalize;">Trait 2</th>
+            <th scope="col" style="text-transform: capitalize;">Trait 3</th>
         </tr>
     </thead>
     <!-- Table data -->
@@ -134,13 +135,13 @@
         {% for player in page %}
             <tr>
                 <!-- Offer button that opens up a modal -->
-                <td>
+                <!-- <td>
                     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal{{player.id}}">
                         Offer
                     </button>
-                </td>
+                </td> -->
                 <!-- Revoke button that revokes offer -->
-                <td>
+                <!-- <td>
                     <form>
                         {% csrf_token %}
                         <input type="hidden" name="id" value="{{ player.id }}">
@@ -148,10 +149,10 @@
                             Revoke
                         </button>
                     </form>
-                </td>
+                </td> -->
                 <!-- User, name & age -->
-                <td style="text-transform: capitalize;"><a style="text-decoration: none;">{{ player.discord_user.discord_tag }}</a></td>
                 <td>{{ player.years_played|getage }}</td>
+                <td style="text-transform: capitalize;"><a style="text-decoration: none;">{{ player.discord_user.discord_tag }}</a></td>
                 <td style="text-transform: capitalize;"><a style="text-decoration: none;" href="{% url 'player' player.id %}">{{ player.first_name }} {{ player.last_name }}</a></td>
                 <!-- Contract option shit -->
                 {% if player.contract_option == 'Restricted Free Agent' %}
@@ -174,6 +175,7 @@
                 <td>{{ player.secondary_archetype }}</td>
                 <td>{{ player.trait_one }}</td>
                 <td>{{ player.trait_two }}</td>
+                <td>{{ player.trait_three }}</td>
             </tr>
         {% endfor %}
     </tbody>
