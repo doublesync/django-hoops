@@ -8,7 +8,9 @@
             {% csrf_token %}
             <input type="search" name="search" placeholder="Search fields" class="form-control mt-3 mb-2" style="width: 300px;" hx-post="/players/free-agents/search/" hx-trigger="keyup delay:200ms" hx-target="#search-results" hx-swap="innerHTML" onkeydown="return event.key != 'Enter';"></input>
         </form>
-        {% include 'main/ajax/free_agent_list_fragment.html' with page=page %}
+        <div id="search-results">
+            {% include 'main/ajax/free_agent_list_fragment.html' with page=page %}
+        </div>
         <!-- Table pagination -->
         <div class="mt-2" style="padding: 0px;">
             <ul class="pagination">
