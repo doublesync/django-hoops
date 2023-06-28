@@ -279,43 +279,38 @@ def validate_game(request):
         response['HX-Refresh'] = "true"
         return response
     
-def sort_stats(request):
-    # Make averages, totals, and advanced stats sortable
-    if request.method == "POST":
-        # Get the form data
-        season = request.POST.get("season")
-        sort_by = request.POST.get("sort_by")
-        # Validate both teams
-        if not sort_by or not season:
-            return HttpResponse("❌ Sort by or season is missing or wrong!")
-        # If everything is ok, find the sorted stats
-        season_player_stats = stats_compile.all_player_stats(int(season))
-        # Deciding which index to use
-        index_to_use = "averages"
-        if sort_by in stats_config.totals_sort_options:
-            index_to_use = "totals"
-        # Set 'index_to_use'
-        # Sort the stats by the sort_by
-        # Must make the sort_by options equivalent to the keys in the season_player_stats
-        sorted_stats = sorted(season_player_stats.values(), key=lambda x: x["yearly_stats"][index_to_use][sort_by], reverse=True)
-        sorted_stats = {player["id"]: player for player in sorted_stats}
-        sorted_stats = list(sorted_stats.items())
-        # Paginate sorted_stats
-        paginator = Paginator(sorted_stats, 10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        # Send the sorted stats back
-        context = {
-            "index_to_use": index_to_use,
-            "sorted_stats": page_obj,
-            "sort_options": stats_config.sort_by_options[index_to_use],
-            "page": page_obj,
-        }
-        html = render_to_string("stats/ajax/sort_stats_fragment.html", context)
-        # Return the sorted stats fragment
-        return HttpResponse(html)
-    else:
-        return HttpResponse("❌ Invalid request!")
+def sort_stats(request, page):
+    # Get the form data
+    season = request.POST.get("season")
+    sort_by = request.POST.get("sort_by")
+    # Validate both teams
+    if not sort_by or not season:
+        return HttpResponse("❌ Sort by or season is missing or wrong!")
+    # If everything is ok, find the sorted stats
+    season_player_stats = stats_compile.all_player_stats(int(season))
+    # Deciding which index to use
+    index_to_use = "averages"
+    if sort_by in stats_config.totals_sort_options:
+        index_to_use = "totals"
+    # Set 'index_to_use'
+    # Sort the stats by the sort_by
+    # Must make the sort_by options equivalent to the keys in the season_player_stats
+    sorted_stats = sorted(season_player_stats.values(), key=lambda x: x["yearly_stats"][index_to_use][sort_by], reverse=True)
+    sorted_stats = {player["id"]: player for player in sorted_stats}
+    sorted_stats = list(sorted_stats.items())
+    # Paginate sorted_stats
+    paginator = Paginator(sorted_stats, 10)
+    page_obj = paginator.get_page(page)
+    # Send the sorted stats back
+    context = {
+        "index_to_use": index_to_use,
+        "sorted_stats": page_obj,
+        "sort_options": stats_config.sort_by_options[index_to_use],
+        "page": page_obj,
+    }
+    html = render_to_string("stats/ajax/sort_stats_fragment.html", context)
+    # Return the sorted stats fragment
+    return HttpResponse(html)
     
 def find_options(request):
     if request.method == "POST":

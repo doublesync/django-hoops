@@ -21,24 +21,19 @@
         <div id="sort_options">
             {% include 'stats/ajax/sort_options_fragment.html' %}
         </div>
+        <!-- Sorted table fragment -->
+        <div id="sorted_stats_table" class="mt-2">
+            <p>Choose options to display sorted player statistics.</p>
+        </div>
+        <!-- Table pagination -->
+        <div class="mt-2" style="padding: 0px;">
+            <ul class="pagination">
+                {% for page_number in page.paginator.page_range %}
+                    <li class="page-item"><button class="page-link text-white" aria-label="{{ page_number }}" hx-post="{% url 'stats:sort_stats' page_number %}" hx-trigger="click" hx-target="#sorted_stats_table" hx-swap="innerHTML" hx-include="[name='season']">{{ page_number }}</button></li>
+                {% endfor %}
+            </ul>
+        </div>
     </form>
-    <!-- Sorted table fragment -->
-    <div id="sorted_stats_table" class="mt-2">
-        {% include 'stats/ajax/sort_stats_fragment.html' %}
-    </div>
-    <!-- Table pagination -->
-    <div class="mt-2" style="padding: 0px;">
-        <ul class="pagination">
-            {% if page.has_previous %} 
-                <li class="page-item"><a class="page-link" aria-label="Previous" href="?page={{ page.previous_page_number }}"><span aria-hidden="true">Back</span></a></li>
-            {% endif %}
-            {% for page in page.paginator.page_range %}
-                <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
-            {% endfor %}
-            {% if page.has_next %}
-                <li class="page-item"><a class="page-link" aria-label="Next" href="?page={{ page.next_page_number }}"><span aria-hidden="true">Next</span></a></li>
-            {% endif %}
-        </ul>
-    </div>
+        
 </div>
 {% endblock %}
