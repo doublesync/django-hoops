@@ -7,7 +7,7 @@
             {% for player_data in sorted_stats %}
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                     <div class="card rounded shadow-sm border-0">
-                        <div class="card-body p-4"><img class="img-fluid d-block mx-auto mb-3" src="{{ player_data.1.headshot }}" alt="Profile picture" width="75%"/>
+                        <div class="card-body p-4"><img class="img-fluid d-block mx-auto mb-3" src="{{ player_data.1.headshot }}" alt="Profile picture" style="height: 150px; width: 150px;"/>
                             <h5>(#{{ forloop.counter }}) {{ player_data.1.name }}</h5>
                             <table>
                                 <tbody>
