@@ -7,31 +7,25 @@ from stats.models import Statline
 from main.models import Player
 from main.models import Team
 
-# # Calculate the tie breaker between two teams
-# def get_tie_breaker(team_a, team_b):
-#     head_to_head_games = Game.objects.filter(Q(home=team_a) | Q(away=team_a), Q(home=team_b) | Q(away=team_b))
-#     team_a_wins = 0
-#     team_b_wins = 0
-#     for game in head_to_head_games:
-#         if game.winner == team_a:
-#             team_a_wins += 1
-#         else:
-#             team_b_wins += 1
-#     if team_a_wins > team_b_wins:
-#         return [team_a, team_b]
-#     elif team_b_wins > team_a_wins:
-#         return [team_b, team_a]
-
-
-# Calculates the standings for a given season
 def get_standings(season):
     # Create the standings dictionary
     standings = {}
     all_teams = Team.objects.all()
+    
+    # Function to calculate tie-breaker score based on head-to-head matchups
+    def calculate_tie_breaker(team1, team2):      
+        if team1["wins"] > team2["wins"]:
+            return 1
+        elif team1["wins"] < team2["wins"]:
+            return -1
+        else:
+            return 0
+
     for team in all_teams:
         # Check if team should show on lists
         if not team.show_on_lists:
             continue
+        
         # Add the team to the standings dictionary
         standings[team.name] = {
             # Team data
@@ -56,6 +50,7 @@ def get_standings(season):
             "avg_points_diff": 0,
             "percentage": 0,
         }
+        
         # Find all of the team data based on games
         for game in Game.objects.filter(Q(home=team) | Q(away=team), season=season):
             # Winner, or loser?
@@ -63,6 +58,7 @@ def get_standings(season):
                 standings[team.name]["wins"] += 1
             else:
                 standings[team.name]["losses"] += 1
+            
             # Home, or away?
             if game.home == team:
                 standings[team.name]["total_games"] += 1
@@ -76,15 +72,19 @@ def get_standings(season):
                 standings[team.name]["points_for"] += game.away_points
                 standings[team.name]["points_against"] += game.home_points
                 standings[team.name]["points_diff"] += game.away_points - game.home_points
+            
             # Calculate averages
             standings[team.name]["avg_points_for"] = round(standings[team.name]["points_for"] / (standings[team.name]["home_games"] + standings[team.name]["away_games"]), 1)
             standings[team.name]["avg_points_against"] = round(standings[team.name]["points_against"] / (standings[team.name]["home_games"] + standings[team.name]["away_games"]), 1)
             standings[team.name]["avg_points_diff"] = round(standings[team.name]["points_diff"] / (standings[team.name]["home_games"] + standings[team.name]["away_games"]), 1)
             standings[team.name]["percentage"] = round(standings[team.name]["wins"] / (standings[team.name]["wins"] + standings[team.name]["losses"]) * 100, 1)
+        
         # Order the standings dictionary by wins
         standings = dict(sorted(standings.items(), key=lambda item: item[1]["wins"], reverse=True))
-
-    # Return the standings dictionary
+        
+        # Order the standings dictionary including tie breakers
+        standings = dict(sorted(standings.items(), key=lambda item: (item[1]["wins"], calculate_tie_breaker(item[1], standings[next(iter(standings))])), reverse=True))
+    
     return standings
 
 
