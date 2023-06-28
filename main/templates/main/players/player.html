@@ -572,7 +572,62 @@
                                                             <div class="tab-pane fade show mt-2" id="yearlyStats_S{{ season }}">
                                                                 <div class="d-flex justify-content-start" style="gap: 20px;">
                                                                     <div>
-                                                                        <p class="mt-2">Yearly stats coming soon</p>
+                                                                        <table>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>GP:</td>
+                                                                                    <td style="padding-left: 20px;">{{ season_data.yearly_stats.totals.gp }}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>GMSC:</td>
+                                                                                    <td style="padding-left: 20px;">{{ season_data.yearly_stats.averages.gmsc }}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>PPG:</td>
+                                                                                    <td style="padding-left: 20px;">{{ season_data.yearly_stats.averages.ppg }}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>RPG:</td>
+                                                                                    <td style="padding-left: 20px;">{{ season_data.yearly_stats.averages.rpg }}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>ORPG:</td>
+                                                                                    <td style="padding-left: 20px;">{{ season_data.yearly_stats.averages.orpg }}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>APG:</td>
+                                                                                    <td style="padding-left: 20px;">{{ season_data.yearly_stats.averages.apg }}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>SPG:</td>
+                                                                                    <td style="padding-left: 20px;">{{ season_data.yearly_stats.averages.spg }}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>BPG:</td>
+                                                                                    <td style="padding-left: 20px;">{{ season_data.yearly_stats.averages.bpg }}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>TPG:</td>
+                                                                                    <td style="padding-left: 20px;">{{ season_data.yearly_stats.averages.tpg }}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>FPG:</td>
+                                                                                    <td style="padding-left: 20px;">{{ season_data.yearly_stats.averages.fpg }}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>FG%:</td>
+                                                                                    <td style="padding-left: 20px;">{{ season_data.yearly_stats.averages.fgp }}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>3P%:</td>
+                                                                                    <td style="padding-left: 20px;">{{ season_data.yearly_stats.averages.tpp }}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>FT%:</td>
+                                                                                    <td style="padding-left: 20px;">{{ season_data.yearly_stats.averages.ftp }}</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
                                                                     </div>
                                                                 </div>
                                                             </div>
