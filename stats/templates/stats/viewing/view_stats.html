@@ -26,5 +26,19 @@
     <div id="sorted_stats_table" class="mt-2">
         {% include 'stats/ajax/sort_stats_fragment.html' %}
     </div>
+    <!-- Table pagination -->
+    <div class="mt-2" style="padding: 0px;">
+        <ul class="pagination">
+            {% if page.has_previous %} 
+                <li class="page-item"><a class="page-link" aria-label="Previous" href="?page={{ page.previous_page_number }}"><span aria-hidden="true">Back</span></a></li>
+            {% endif %}
+            {% for page in page.paginator.page_range %}
+                <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+            {% endfor %}
+            {% if page.has_next %}
+                <li class="page-item"><a class="page-link" aria-label="Next" href="?page={{ page.next_page_number }}"><span aria-hidden="true">Next</span></a></li>
+            {% endif %}
+        </ul>
+    </div>
 </div>
 {% endblock %}

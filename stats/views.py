@@ -88,7 +88,7 @@ def view_season_stats(request, id):
     sorted_stats = stats_compile.all_player_stats(id)
     sorted_stats = list(sorted_stats.items())
     # Paginate sorted_stats
-    paginator = Paginator(sorted_stats, 50)
+    paginator = Paginator(sorted_stats, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     # Create the context
@@ -96,6 +96,7 @@ def view_season_stats(request, id):
         "season": id,
         "sorted_stats": page_obj,
         "sort_options": stats_config.average_sort_options,
+        "page": page_obj,
     }
     return render(request, "stats/viewing/view_stats.html", context)
 
@@ -300,7 +301,7 @@ def sort_stats(request):
         sorted_stats = {player["id"]: player for player in sorted_stats}
         sorted_stats = list(sorted_stats.items())
         # Paginate sorted_stats
-        paginator = Paginator(sorted_stats, 15)
+        paginator = Paginator(sorted_stats, 10)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         # Send the sorted stats back
@@ -308,6 +309,7 @@ def sort_stats(request):
             "index_to_use": index_to_use,
             "sorted_stats": page_obj,
             "sort_options": stats_config.sort_by_options[index_to_use],
+            "page": page_obj,
         }
         html = render_to_string("stats/ajax/sort_stats_fragment.html", context)
         # Return the sorted stats fragment
