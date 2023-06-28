@@ -126,6 +126,7 @@ def player_stats(player, season, playoffs=False, finals=False, career=False):
     player_season_stats = {
         "id": player.id,
         "name": f"{player.first_name} {player.last_name}",
+        "headshot": player.headshot,
         "season": season,
         "teamly_stats": {},
         "yearly_stats": {},
