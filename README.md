@@ -1,7 +1,7 @@
 # django-hoops
 A web-app for "hoops" (a basketball league) made with Django, Bootstrap &amp; Postgres.
 
-**Environment variables go in a file called '.env' in th emain directory.**
+**Environment variables go in a file called '.env' in the main directory (not for production).**
 ```
 # [DISCORD OAUTH2]
 DISCORD_AUTH_URL = "get_your_own"
