@@ -278,7 +278,13 @@ def validate_game(request):
         response = HttpResponse()
         response['HX-Refresh'] = "true"
         return response
-    
+
+# This needs to be more efficient
+# Serialize the data first
+# Include (all_player_stats) in the htmx request
+# The only time compilation should happen is in (view_season_stats)
+# Use the data sent from the htmx request to sort the stats
+# Instead of accessing the database every htmx request
 def sort_stats(request, page):
     # Get the form data
     season = request.POST.get("season")

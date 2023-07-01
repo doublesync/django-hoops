@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "rest_framework",
     "stats",
+    "polls",
     # Local Apps
     "main.apps.MainConfig",
     # Third Party Apps
