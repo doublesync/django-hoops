@@ -110,7 +110,8 @@ def top_performers(season):
             else:
                 for index, performer in enumerate(top_performers):
                     if line_gamescore > performer["gmsc"]:
-                        top_performers[index] = line_dict
+                        top_performers.insert(index, line_dict)
+                        break
         # Sort the top performers by gamescore
         top_performers = sorted(top_performers, key=lambda k: k["gmsc"], reverse=True)
         top_performers_dict[day] = top_performers
