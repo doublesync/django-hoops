@@ -4,7 +4,8 @@ from . import views
 urlpatterns = [
     
     # Discord URL patterns
-    path("", views.home, name="home"),
+    path("", views.index, name="index"),
+    path("home/", views.home, name="home"),
     path("login/", views.login, name="login"),
     path("login/discord/", views.login_discord, name="login_discord"),
     path("login/discord/redirect/", views.login_discord_redirect, name="login_discord_redirect"),

@@ -64,6 +64,14 @@ load_dotenv()
 
 
 # Create your views here.
+def index(request):
+    # Create the context
+    context = {
+        "title": "Home",
+    }
+    # Return the home page
+    return render(request, "main/index.html", context)
+
 def home(request):
     # Get the current user
     current_user = request.user
