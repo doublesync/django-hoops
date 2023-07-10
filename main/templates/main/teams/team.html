@@ -16,6 +16,7 @@
             <thead>
                 <tr>
                     <th scope="col">Name</th>
+                    <th scope="col">Cap Hit</th>
                     <th scope="col">Salary</th>
                     <th scope="col">Spent</th>
                     <th scope="col">Height</th>
@@ -31,6 +32,7 @@
                 {% for player in team.player_set.all %}
                     <tr>
                         <td><a href="{% url 'player' player.id %}">{{ player.first_name }} {{ player.last_name }}</a></td>
+                        <td>${{ player.cap_hit }}</td>
                         <td>${{ player.salary }}</td>
                         <td>${{ player.spent }}</td>
                         <td>{{ player.height|americanheight }}</td>
@@ -50,6 +52,7 @@
             <tfoot>
                 <tr>
                     <td><b>Total</b></td>
+                    <td><b>${{ total_cap_hits }}</b></td>
                     <td><b>${{ total_salary }}</b></td>
                     <td><b>${{ total_spent }}</b></td>
                 </tr>

@@ -104,6 +104,7 @@ class Player(models.Model):
         name="cash", default=league_config.primary_currency_start
     )
     salary = models.PositiveBigIntegerField(name="salary", default=0)
+    cap_hit = models.PositiveBigIntegerField(name="cap_hit", default=0)
     spent = models.PositiveBigIntegerField(name="spent", default=0)
     # Player Contract Details
     contract_ends_after = models.SmallIntegerField(default=1)

@@ -440,6 +440,7 @@ def cash_logs(request, id):
 def team(request, id):
     team_object = Team.objects.get(pk=id)
     total_salary = hoops_team_trade.get_total_salary(team_object)
+    total_cap_hits = hoops_team_trade.get_cap_hits(team_object)
     # Filter players by the team, and get sum of salary
     spent_list = Player.objects.filter(current_team=team_object).aggregate(
         total=Sum("spent")
@@ -448,6 +449,7 @@ def team(request, id):
         "title": team_object.name,
         "team": team_object,
         "total_salary": total_salary,
+        "total_cap_hits": total_cap_hits,
         "total_spent": spent_list["total"],
         "hard_cap": league_config.hard_cap,
     }

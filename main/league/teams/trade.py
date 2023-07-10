@@ -38,3 +38,13 @@ def get_total_salary(team):
             cap += league_config.rookie_salary
     # Return cap
     return cap
+
+def get_cap_hits(team):
+    # Define cap variables
+    hits = 0
+    # Validate post-trade caps
+    for player in team.player_set.all():
+        hits += player.cap_hit
+    # Return cap
+    return hits
+
