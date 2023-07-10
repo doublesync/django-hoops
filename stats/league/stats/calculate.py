@@ -18,6 +18,11 @@ def get_standings(season):
             return 1
         elif team1["wins"] < team2["wins"]:
             return -1
+        elif team1["wins"] == team2["wins"]:
+            if team1["points_diff"] > team2["points_diff"]:
+                return 1
+            else:
+                return -1
         else:
             return 0
 
