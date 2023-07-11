@@ -168,32 +168,6 @@ def player(request, id):
     # Get transaction history & total earnings in past week (cash_taken, cash_given, paycheck)
     transactions = Transaction.objects.filter(player=plr)
     week_earnings = 0
-    # Get awards for the player
-    awards_list = Award.objects.filter(player=plr)
-    # Get count of KOTS awrds
-    awards = {
-        "MVP": [],
-        "DPOY": [],
-        "ROY": [],
-        "6MOY": [],
-        "MIP": [],
-        "AH1ST": [],
-        "AH2ND": [],
-        "D1ST": [],
-        "D2ND": [],
-        "KOTS": awards_list.filter(name="KOTS").count(),
-        "RING": [],
-        "FMVP": [],
-        "ASG": [],
-        "ASGMVP": [],
-        "3PTWIN": [],
-        "DNKWIN": [],
-    }
-    for a in awards_list:
-        if a.name == "KOTS":
-            pass
-        else:
-            awards[a.name].append(a.season)
     # If date is in the past week, add/subtract to/from week_earnings
     for t in transactions:
         if t.date > timezone.now() - datetime.timedelta(days=7):
@@ -206,6 +180,11 @@ def player(request, id):
     player_game_logs = stats_compile.player_game_logs(player=plr, x=10)
     # Get possible relatives
     possible_relatives = Player.objects.filter(last_name=plr.last_name).values_list("id", "first_name")
+    # Check if player has claimed daily reward
+    has_collected_today = False
+    if plr.discord_user and plr.discord_user.last_reward:
+        if timezone.now().day == plr.discord_user.last_reward.day:
+            has_collected_today = True
     # Initialize the context
     context = {
         # Page information
@@ -241,8 +220,6 @@ def player(request, id):
             league_config.playstyles[plr.statics["playstyles"]["playstyle4"]],
             plr.statics["playstyles"]["playstyle4"],
         ],
-        # Awards
-        "awards": awards,
         # Precalled methods
         "height_in_feet": hoops_extra_convert.convert_to_height(plr.height),
         "file": json.dumps(hoops_player_export.export_player(plr), indent=4),
@@ -253,6 +230,8 @@ def player(request, id):
         "player_game_logs": player_game_logs,
         # Possible relatives
         "possible_relatives": possible_relatives,
+        # Daily rewards
+        "has_collected_today": has_collected_today,
     }
     return render(request, "main/players/player.html", context)
 
