@@ -1,129 +1,46 @@
-<div>
-    <div class="container py-5">
-        <header class="text-center mb-5">
-            <h1 class="display-4 font-weight-bold">Sorted Leaders</h1>
-        </header>
-        <div class="row pb-5 mb-4">
-            {% for player_data in sorted_stats %}
-            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                    <div class="card rounded shadow-sm border-0">
-                        <div class="card-body p-4"><img class="img-fluid d-block mx-auto mb-3" src="{{ player_data.1.headshot }}" alt="Profile picture" style="height: 150px; width: 150px;"/>
-                            <h5>(#{{ forloop.counter }}) {{ player_data.1.name }}</h5>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>GP:</td>
-                                        <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.totals.gp }}</td>
-                                    </tr>
-                                    {% if index_to_use == 'averages' %}
-                                        <tr>
-                                            <td>GMSC:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.averages.gmsc }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>PPG:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.averages.ppg }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>RPG:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.averages.rpg }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>ORPG:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.averages.orpg }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>APG:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.averages.apg }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>SPG:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.averages.spg }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>BPG:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.averages.bpg }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>TPG:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.averages.tpg }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>FPG:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.averages.fpg }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>FG%:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.averages.fgp }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3P%:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.averages.tpp }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>FT%:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.averages.ftp }}</td>
-                                        </tr>
-                                    {% elif index_to_use == 'totals' %}
-                                        <tr>
-                                            <td>PTS:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.totals.pts }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>REB:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.totals.reb }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>OREB:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.totals.oreb }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AST:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.totals.ast }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>STL:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.totals.stl }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>BLK:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.totals.blk }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>TOV:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.totals.tov }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>FGM:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.totals.fgm }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>FGA:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.totals.fga }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3PM:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.totals.tpm }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3PA:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.totals.tpa }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>FTM:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.totals.ftm }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>FTA:</td>
-                                            <td style="padding-left: 20px;">{{ player_data.1.yearly_stats.totals.fta }}</td>
-                                        </tr>
-                                    {% endif %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+<table class="table table-striped table-hover table-responsive">
+    <thead>
+        <tr>
+            <th scope="col" style="text-transform: capitalize;">PLAYER</th>
+            <th scope="col" style="text-transform: capitalize;">GP</th>
+            {% for header in sort_options %} 
+                <th scope="col">{{ header }}</th>
             {% endfor %}
-        </div>
-    </div>
-</div>
+        </tr>
+    </thead>
+    <tbody>
+        {% for player_data in sorted_stats %}
+            <tr>
+                <td>{{ player_data.1.name }}</td>
+                <td>{{ player_data.1.yearly_stats.totals.gp }}</td>
+                {% if index_to_use == 'averages' %}
+                    <td>{{ player_data.1.yearly_stats.averages.gmsc }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.ppg }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.rpg }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.apg }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.spg }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.bpg }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.tpg }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.fpg }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.fgp }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.tpp }}</td>
+                    <td>{{ player_data.1.yearly_stats.averages.ftp }}</td>
+                {% elif index_to_use == 'totals' %}
+                    <td>{{ player_data.1.yearly_stats.totals.pts }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.reb }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.ast }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.stl }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.blk }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.tov }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.fouls }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.fgm }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.fga }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.tpm }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.tpa }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.ftm }}</td>
+                    <td>{{ player_data.1.yearly_stats.totals.fta }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
