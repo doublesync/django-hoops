@@ -72,6 +72,7 @@ def index(request):
     # Return the home page
     return render(request, "main/index.html", context)
 
+
 def home(request):
     # Get the current user
     current_user = request.user

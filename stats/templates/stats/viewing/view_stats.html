@@ -17,10 +17,56 @@
     <form>
         {% csrf_token %}
         <input type="hidden" name="season" value="{{ season }}">
+        <!-- Position chooser -->
+        <select name="pos_type" class="form-control mt-1">
+            <option value="ALL">All positions</option>
+            <option value="PG">Point Guard</option>
+            <option value="SG">Shooting Guard</option>
+            <option value="SF">Small Forward</option>
+            <option value="PF">Power Forward</option>
+            <option value="C">Center</option>
+        </select>
+        <!-- Archetype chooser -->
+        <select name="arch_type" class="form-control mt-1">
+            <option value="ALL">All archetypes</option>
+            <option value="Shooter">Shooter</option>
+            <option value="Slasher">Slasher</option>
+            <option value="Playmaker">Playmaker</option>
+            <option value="Post Scorer">Post Scorer</option>
+            <option value="Rebounder">Rebounder</option>
+            <option value="Perimeter Defender">Perimeter Defender</option>
+            <option value="Interior Defender">Interior Defender</option>
+        </select>
+        <!-- Trait chooser -->
+        <select name="trait_type" class="form-control mt-1">
+            <option value="ALL">All traits</option>
+            <option value="Movement Shooter">Movement Shooter</option>
+            <option value="3PT Shooter">3PT Shooter</option>
+            <option value="Midrange Menace">Midrange Menace</option>
+            <option value="Finesse Finisher">Finesse Finisher</option>
+            <option value="Fierce Finisher">Fierce Finisher</option>
+            <option value="Ankle Snatcher">Ankle Snatcher</option>
+            <option value="Passing Maestro">Passing Maestro</option>
+            <option value="Rebound Hound">Rebound Hound</option>
+            <option value="Interior Anchor">Interior Anchor</option>
+            <option value="Perimeter Lockdown">Perimeter Lockdown</option>
+            <option value="Post-Up Powerhouse">Post-Up Powerhouse</option>
+            <option value="Dribble Driver">Dribble Driver</option>
+            <option value="Post-Up Conductor">Post-Up Conductor</option>
+        </select>
+        <!-- Status chooser -->
+        <select name="status_type" class="form-control mt-1">
+            <option value="ALL">All types</option>
+            <option value="ACTIVE">Active</option>
+            <option value="ROOKIE">Rookie</option>
+            <option value="FREEAGENT">Free Agent</option>
+        </select>
         <!-- Sort option chooser -->
         <div id="sort_options">
             {% include 'stats/ajax/sort_options_fragment.html' %}
         </div>
+        <!-- Update button -->
+        <button class="btn btn-primary btn-sm mt-1" type="submit" hx-post="{% url 'stats:sort_stats' 1 %}" hx-trigger="click" hx-target="#sorted_stats_table" hx-swap="innerHTML" hx-include="[name='season']">Update</button>
         <!-- Sorted table fragment -->
         <div id="sorted_stats_table" class="mt-2">
             <p>Choose options to display sorted player statistics.</p>

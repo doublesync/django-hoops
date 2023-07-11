@@ -289,11 +289,31 @@ def sort_stats(request, page):
     # Get the form data
     season = request.POST.get("season")
     sort_by = request.POST.get("sort_by")
+    pos_type = request.POST.get("pos_type")
+    arch_type = request.POST.get("arch_type")
+    trait_type = request.POST.get("trait_type")
+    status_type = request.POST.get("status_type")
     # Validate both teams
     if not sort_by or not season:
         return HttpResponse("❌ Sort by or season is missing or wrong!")
+    # Build the queryset
+    queryset = Player.objects.all()
+    # Filter the queryset
+    if pos_type and pos_type != "ALL":
+        queryset = queryset.filter(Q(primary_position=pos_type))
+    if arch_type and arch_type != "ALL":
+        queryset = queryset.filter(Q(primary_archetype=arch_type))
+    if trait_type and trait_type != "ALL":
+        queryset = queryset.filter(Q(trait_one=trait_type) | Q(trait_two=trait_type) | Q(trait_three=trait_type))
+    if status_type and status_type != "ALL":
+        if status_type == "ACTIVE":
+            queryset = queryset.filter(Q(current_team__isnull=False))
+        elif status_type == "FREEAGENT":
+            queryset = queryset.filter(Q(current_team__isnull=True))
+        elif status_type == "ROOKIE":
+            queryset = queryset.filter(Q(years_played=1))
     # If everything is ok, find the sorted stats
-    season_player_stats = stats_compile.all_player_stats(int(season))
+    season_player_stats = stats_compile.all_player_stats(season=int(season), all_players=queryset, custom_query=True)
     # Deciding which index to use
     index_to_use = "averages"
     if sort_by in stats_config.totals_sort_options:

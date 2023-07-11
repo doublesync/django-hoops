@@ -171,11 +171,12 @@ def player_stats(player, season, playoffs=False, finals=False, career=False):
     return player_season_stats
 
 # Compile every player's stats
-def all_player_stats(season, playoffs=False, finals=False, career=False):
+def all_player_stats(season, playoffs=False, finals=False, career=False, all_players=None, custom_query=False):
     # Create the players dictionary
     players_stats = {}
     # Find all players
-    all_players = Player.objects.all()
+    if not custom_query:
+        all_players = Player.objects.all()
     # Add each player to the players dictionary
     for player in all_players:
         response = player_stats(player=player, season=season, playoffs=playoffs, finals=finals, career=career)
