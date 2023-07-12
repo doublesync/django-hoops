@@ -12,6 +12,7 @@ from django.db.models import Sum
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.views import View
+from rest_framework.decorators import api_view
 
 # Model imports
 from .models import Player
@@ -1737,3 +1738,15 @@ class ad_view(View):
         return HttpResponse(line)
 
 # API views
+@api_view(['GET'])
+def cyberface_check(request):
+    if request.method == 'GET':
+        # Get the form data
+        cyberface = request.GET.get("cyberface")
+        # Get the player
+        player = Player.objects.filter(cyberface=cyberface).exists()
+        # Check if the player exists
+        if player:
+            return HttpResponse("true")
+        else:
+            return HttpResponse("false")

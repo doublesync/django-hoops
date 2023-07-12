@@ -66,4 +66,7 @@ urlpatterns = [
     # User URL patterns
     path("user/notifications/<int:id>/", views.notifications, name="notifications"),
 
+    # API URL patterns
+    path('players/cyberfaces/api/', views.cyberface_check, name='cyberface_check'),
+
 ]
