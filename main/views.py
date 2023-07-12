@@ -1741,12 +1741,11 @@ class ad_view(View):
 @api_view(['GET'])
 def cyberface_check(request):
     if request.method == 'GET':
-        # Get the form data
-        cyberface = request.GET.get("cyberface")
-        # Get the player
-        player = Player.objects.filter(cyberface=cyberface).exists()
-        # Check if the player exists
-        if player:
-            return HttpResponse("true")
-        else:
-            return HttpResponse("false")
+        # Make list of all used cyberfaces, only get cyberface from player query
+        players = Player.objects.all().values_list('cyberface', flat=True)
+        # Add to list of used cyberfaces
+        used_cyberfaces = {}
+        for player in players:
+            used_cyberfaces[player] = True
+        # Return list
+        return JsonResponse(used_cyberfaces)
