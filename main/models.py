@@ -25,6 +25,8 @@ class DiscordUser(models.Model):
     can_update_players = models.BooleanField(default=False)
     can_approve_trades = models.BooleanField(default=False)
     can_update_styles = models.BooleanField(default=False)
+    can_edit_events = models.BooleanField(default=False)
+    can_edit_scores = models.BooleanField(default=False)
     # Player Slots
     player_slots = models.SmallIntegerField(default=league_config.max_players)
     auto_collect_rewards = models.BooleanField(default=False)
