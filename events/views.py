@@ -133,7 +133,9 @@ def add_entree(request):
     if not event.free_agents_allowed and is_free_agent:
         return HttpResponse("❌ That event does not allow free agents.")
     if not event.active_players_allowed and is_active_player:
-        return HttpResponse("❌ That event does not allow active players.")        
+        return HttpResponse("❌ That event does not allow active players.")  
+    if event.use_spent_limit and player.spent > event.spent_limit:
+        return HttpResponse(f"❌ That event does not allow players who have spent more than ${event.spent_limit}.")      
     # Add the entree
     entree = Entree(
         player=player,
