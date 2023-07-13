@@ -19,7 +19,7 @@
                                     <!-- Add a select for player_list that shows all players -->
                                     <select class="form-select mb-2" name="id">
                                         {% for player in player_list %}
-                                        <option value="{{ player.id }}">{{ player.first_name }} {{ player.last_name }}</option>
+                                            <option value="{{ player.id }}">{{ player.first_name }} {{ player.last_name }}</option>
                                         {% endfor %}
                                     </select>
                                     <!-- Text area for coupon codes -->

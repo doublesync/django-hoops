@@ -9,6 +9,7 @@ class Poll(models.Model):
 
     # Poll model
     question = models.CharField(max_length=200)
+    answers = models.JSONField(default=dict)
     reward = models.IntegerField(default=0)
     date = models.DateTimeField()
 
