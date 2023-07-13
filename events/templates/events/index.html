@@ -1,0 +1,42 @@
+{% extends "events/base.html" %}
+{% load static %}
+{% load main_filters %}
+{% block content %}
+    <!-- List all events -->
+    <div class="container">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mt-5">
+                    <!-- Create card for each event -->
+                    {% for event in events %}
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>{{ event.title }}</h3>
+                            </div>
+                            <div class="card-body">
+                                <!-- Create a badge for each -->
+                                {% if event.rookies_allowed %}
+                                    <span class="badge bg-primary badge-primary">Rookies Allowed</span>
+                                {% endif %}
+                                {% if event.free_agents_allowed %}
+                                    <span class="badge bg-primary badge-primary">Free Agents Allowed</span>
+                                {% endif %}
+                                {% if event.active_players_allowed %}
+                                    <span class="badge bg-primary badge-primary">Active Players Allowed</span>
+                                {% endif %}
+                                {% if event.use_spent_limit %}
+                                    <span class="badge bg-primary badge-primary"><= ${{ event.spent_limit }}</span>
+                                {% endif %}
+                                <hr>
+                                <p>{{ event.description }}</p>
+                                <p id="join-event-status"></p>
+                                <hr>
+                                <a href="{% url 'events:view_event' event.id %}" class="btn btn-dark btn-sm text-white">Join event</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -58,10 +58,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "rest_framework",
-    "stats",
-    "polls",
     # Local Apps
     "main.apps.MainConfig",
+    "stats",
+    "polls",
+    "events",
     # Third Party Apps
     "jsoneditor",
     "mathfilters",

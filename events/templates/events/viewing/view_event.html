@@ -1,0 +1,44 @@
+{% extends "events/base.html" %}
+{% load static %}
+{% load main_filters %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mt-5">
+                <h1>{{ event.title }}</h1>
+                <p>{{ event.description }}</p>
+                <p id="join-event-status"></p>
+                <!-- Create a badge for each -->
+                {% if event.rookies_allowed %}
+                    <span class="badge bg-primary badge-primary">Rookies Allowed</span>
+                {% endif %}
+                {% if event.free_agents_allowed %}
+                    <span class="badge bg-primary badge-primary">Free Agents Allowed</span>
+                {% endif %}
+                {% if event.active_players_allowed %}
+                    <span class="badge bg-primary badge-primary">Active Players Allowed</span>
+                {% endif %}
+                {% if event.use_spent_limit %}
+                    <span class="badge bg-primary badge-primary"><= ${{ event.spent_limit }}</span>
+                {% endif %}
+                <span class="badge bg-primary badge-primary">{{ entree_count }}/{{ event.max_entrees }}</span>
+                <hr>
+                <form>
+                    {% csrf_token %}
+                    <input type="hidden" name="event_id" value="{{ event.id }}">
+                    <select class="form-select mb-2" name="id" style="max-width: fit-content;">
+                        {% for player in player_list %}
+                            <option value="{{ player.id }}">{{ player.first_name }} {{ player.last_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary" hx-target="#join-event-status" hx-trigger="click" hx-swap="innerHTML" hx-post="{% url 'events:add_entree' %}">Join</button>
+                </form>
+                <hr>
+                <h2>Entrees</h2>
+                {% for entree in entrees %}
+                    <a href="{% url 'player' entree.player.id %}">View</a> <span>({{ entree.player.primary_position }}/{{ entree.player.secondary_position }}) {{ entree.player.first_name }} {{ entree.player.last_name }}</span><br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

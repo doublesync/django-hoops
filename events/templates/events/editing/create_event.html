@@ -1,0 +1,37 @@
+{% extends "events/base.html" %}
+{% load static %}
+{% load main_filters %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mt-5">
+                <h1>Create Event</h1>
+                <p>Create a league event</p>
+                <p id="event-status"></p>
+                <form>
+                    {% csrf_token %}
+                    <!-- Form fields -->
+                    <span class="mt-2 mb-2" style="max-width: fit-content;">{{ create_event_form.title.label }}</span>
+                    {{ create_event_form.title|addclass:"form-control" }}
+                    <span class="mt-2 mb-2" style="max-width: fit-content;">{{ create_event_form.description.label }}</span>
+                    {{ create_event_form.description|addclass:"form-control" }}
+                    <span class="mt-2 mb-2" style="max-width: fit-content;">{{ create_event_form.spent_limit.label }}</span>
+                    {{ create_event_form.spent_limit|addclass:"form-control" }}
+                    <span class="mt-2 mb-2" style="max-width: fit-content;">{{ create_event_form.max_entrees.label }}</span>
+                    {{ create_event_form.max_entrees|addclass:"form-control" }}
+                    <hr>
+                    {{ create_event_form.rookies_allowed }}
+                    <span>{{ create_event_form.rookies_allowed.label}}</span><br>
+                    {{ create_event_form.free_agents_allowed }}
+                    <span>{{ create_event_form.free_agents_allowed.label }}</span><br>
+                    {{ create_event_form.active_players_allowed }}
+                    <span>{{ create_event_form.active_players_allowed.label }}</span><br>
+                    {{ create_event_form.use_spent_limit }}
+                    <span>{{ create_event_form.use_spent_limit.label }}</span><br>
+                    <hr class="mb-0">
+                    <br><button type="submit" class="btn btn-primary" hx-target="#event-status" hx-trigger="click" hx-swap="innerHTML" hx-post="{% url 'events:add_event' %}">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
