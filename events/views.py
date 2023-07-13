@@ -68,6 +68,7 @@ def add_event(request):
         title = request.POST.get("title")
         description = request.POST.get("description")
         spent_limit = request.POST.get("spent_limit")
+        max_entrees = request.POST.get("max_entrees")
         rookies_allowed = True if request.POST.get("rookies_allowed") else False
         free_agents_allowed = True if request.POST.get("free_agents_allowed") else False
         active_players_allowed = True if request.POST.get("active_players_allowed") else False
@@ -86,6 +87,7 @@ def add_event(request):
             active_players_allowed=active_players_allowed,
             use_spent_limit=use_spent_limit,
             spent_limit=int(spent_limit),
+            max_entrees=max_entrees,
         )
         event.save()
         # Return the success message (refresh page and clear form)
