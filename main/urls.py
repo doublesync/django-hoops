@@ -27,6 +27,7 @@ urlpatterns = [
     path("player/cash/add/", views.add_player_cash, name="add_player_cash"),
     path("player/cash/take/", views.take_player_cash, name="take_player_cash"),
     path("player/daily/reward/collect/", views.daily_rewards, name="daily_rewards"),
+    path("player/upgrade/scrape/<int:id>/", views.scrape_tendencies, name="scrape_tendencies"),
 
     # Team URL patterns
     path("team/<int:id>/", views.team, name="team"),

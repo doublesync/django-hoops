@@ -52,6 +52,7 @@ from .league.player import create as hoops_player_create
 from .league.player import physicals as hoops_player_physicals
 from .league.player import export as hoops_player_export
 from .league.player import style as hoops_player_style
+from .league.player import scrape2KMT as hoops_player_scrape
 from .league.extra import convert as hoops_extra_convert
 from .league.teams import trade as hoops_team_trade
 from .league.teams import offer as hoops_team_offer
@@ -930,6 +931,38 @@ def update_player_pending_upgrades(request):
     else:
         return HttpResponse("Invalid request!")
 
+
+def scrape_tendencies(request, id):
+    # Get some form details
+    user = request.user
+    player = Player.objects.get(pk=id)
+    url = request.POST.get("tendency_url")
+    # Check if the player exists & the user owns the player
+    if not player or not url:
+        messages.error(request, "Something went wrong!")
+        return redirect(upgrade_player, id=id)
+    if not player.discord_user == user:
+        messages.error(request, "You do not have permission to do that!")
+        return redirect(upgrade_player, id=id)
+    # Scrape the tendencies
+    tendencies = hoops_player_scrape.scrape(url=url)
+    if tendencies:
+        # Update the player's tendencies
+        player.tendencies = tendencies[1]
+        player.use_game_tendencies = True
+        player.save()
+        # Send a webhook message
+        discord_webhooks.send_webhook(
+            url="upgrade",
+            title="Tendencies Scrape",
+            message=f"**{user.discord_tag}** scraped {tendencies[0]}'s tendencies for {player.first_name} {player.last_name}.",
+        )
+        # Return the updated tendencies{
+        messages.success(request, f"Player tendencies updated to {tendencies[0]}!")
+        return redirect(upgrade_player, id=id)
+    else:
+        messages.error(request, "Something went wrong!")
+        return redirect(upgrade_player, id=id)
 
 # Check views
 def check_player_search(request):
