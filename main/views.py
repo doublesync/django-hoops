@@ -949,7 +949,7 @@ def scrape_tendencies(request, id):
     if tendencies:
         # Update the player's tendencies
         player.tendencies = tendencies[1]
-        player.use_game_tendencies = True
+        player.use_game_tendencies = False
         player.save()
         # Send a webhook message
         discord_webhooks.send_webhook(
