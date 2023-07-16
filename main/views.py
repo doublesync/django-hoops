@@ -355,6 +355,7 @@ def create_player(request):
 def players(request):
     context = {
         "title": "Players",
+        "current_season": league_config.current_season,
     }
     # Get the league players
     league_players = Player.objects.order_by("id")
@@ -370,6 +371,7 @@ def free_agents(request):
     # Create the context
     context = {
         "title": "Free Agents",
+        "current_season": league_config.current_season,
     }
     # Get all league players that contracts_end_after
     free_agent_players = Player.objects.all().order_by("-spent")
