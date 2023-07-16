@@ -1701,10 +1701,14 @@ def check_free_agent_search(request):
             # Check if there were any players found
             if not results:
                 return HttpResponse("<p class='text-danger'>No results found!</p>")
+            # Create the context
+            context = {
+                "page": results,
+                "current_season": league_config.current_season,
+            }
             # Render the player list fragment to string
-            html = render_to_string(
-                "main/ajax/free_agent_list_fragment.html", {"page": results}
-            )
+            html = render_to_string("main/ajax/free_agent_list_fragment.html", context)
+
             # Return the player list fragment
             return HttpResponse(html)
     else:
