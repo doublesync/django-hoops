@@ -52,7 +52,6 @@
                 {% if player.contract_ends_after == current_season %}
                     <td class="fw-bold text-danger" style="text-transform: capitalize;">EXPIRING</td>
                 {% else %}
-                    {{ player.contract_ends_after }} vs. {{ current_season }}<br>
                     <td style="text-transform: capitalize;">{{ player.contract_ends_after }}</td>
                 {% endif %}
                 <!-- Other important details -->
