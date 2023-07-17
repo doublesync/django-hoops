@@ -16,7 +16,14 @@
     <!-- Sort options -->
     <form>
         {% csrf_token %}
+        <!-- Current season -->
         <input type="hidden" name="season" value="{{ season }}">
+        <!-- Season type chooser -->
+        <select name="season_type" class="form-control mt-1">
+            <option value="REG">Season</option>
+            <option value="PLY">Playoffs</option>
+            <option value="FIN">Finals</option>
+        </select>
         <!-- Position chooser -->
         <select name="pos_type" class="form-control mt-1">
             <option value="ALL">All positions</option>

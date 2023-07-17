@@ -71,13 +71,11 @@ def view_game(request, id):
 
 def view_season(request, id):
     # Attempt to find the season
-    try:
-        season_viewing = Game.objects.filter(season=id)
-    except:
+    if not Game.objects.filter(season=id).exists():
         return HttpResponse("❌ Season does not exist!")
     # Create the context
     context = {
-        "season": season_viewing,
+        "season": Game.objects.filter(season=id),
         "season_viewing": stats_compile.one_season(id),
         "top_performers": stats_compile.top_performers(id),
     }
@@ -288,14 +286,15 @@ def validate_game(request):
 def sort_stats(request, page):
     # Get the form data
     season = request.POST.get("season")
+    season_type = request.POST.get("season_type")
     sort_by = request.POST.get("sort_by")
     pos_type = request.POST.get("pos_type")
     arch_type = request.POST.get("arch_type")
     trait_type = request.POST.get("trait_type")
     status_type = request.POST.get("status_type")
     # Validate both teams
-    if not sort_by or not season:
-        return HttpResponse("❌ Sort by or season is missing or wrong!")
+    if not sort_by or not season or not season_type:
+        return HttpResponse("❌ Sort by, season, or season type is missing or wrong!")
     # Build the queryset
     queryset = Player.objects.all()
     # Filter the queryset
@@ -312,8 +311,15 @@ def sort_stats(request, page):
             queryset = queryset.filter(Q(current_team__isnull=True))
         elif status_type == "ROOKIE":
             queryset = queryset.filter(Q(years_played=1))
+    # Filtering the statistics to show
+    show_playoffs = False
+    show_finals = False
+    if season_type == "PLY": 
+        show_playoffs = True
+    elif season_type == "FIN":
+        show_finals = True
     # If everything is ok, find the sorted stats
-    season_player_stats = stats_compile.all_player_stats(season=int(season), all_players=queryset, custom_query=True)
+    season_player_stats = stats_compile.all_player_stats(season=int(season), all_players=queryset, custom_query=True, playoffs=show_playoffs, finals=show_finals)
     # Deciding which index to use
     index_to_use = "averages"
     if sort_by in stats_config.totals_sort_options:
