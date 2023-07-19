@@ -1,4 +1,17 @@
 <div>
+    {% if randomize_data %}
+        <h2>Randomized!</h2>
+        <b>Position</b> <br>{{ randomize_data.position }}<br>
+        <b>Height</b> <br>{{ randomize_data.height }}<br>
+        <b>Weight</b> <br>{{ randomize_data.weight }}<br>
+        <b>Primary Archetype</b> <br>{{ randomize_data.primary_archetype }}<br>
+        <b>Secondary Archetype</b> <br>{{ randomize_data.secondary_archetype }}<br>
+        <b>Trait One</b> <br>{{ randomize_data.trait1 }}<br>
+        <b>Trait Two</b> <br>{{ randomize_data.trait2 }}<br>
+    {% endif %}
+</div>
+<hr>
+<div>
     <p>Attributes relevant to your <span class="text-success"><b>primary</b></span> and <span class="text-primary"><b>secondary</b></span> archetypes will cost considerably less to upgrade.</p>
     {% for k, v in primary_attributes.items %}
         <div class="col-md-3">

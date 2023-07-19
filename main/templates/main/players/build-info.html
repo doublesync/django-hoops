@@ -4,7 +4,7 @@
 {% block content %}
     <div class="container mt-5">
         <!-- HTMX live updater/changer -->
-        <h1 class="mb-3">Mock Builder</h1>
+        <h1 class="mb-3">Test Builder</h1>
         <form>
             {% csrf_token %}
             <!-- Position label -->
@@ -45,6 +45,11 @@
                     <option value="{{ tuple.0 }}">{{ tuple.1 }}</option>
                 {% endfor %}
             </select>
+            <!-- Randomize -->
+            <div class="mt-2 mb-2">
+                <input id="randomize" type="checkbox" name="randomize" class="form-check-input mb-1" value="false"/>
+                <label for="randomize">Randomize build</label>
+            </div>
             <!-- Submit button -->
             <button style="width: 100%; display: block;" class="mt-1 btn btn-success" hx-post="/players/attributes/" hx-trigger="click" hx-target="#position-results" hx-swap="innerHTML">Submit</button>
         </form>

@@ -42,6 +42,7 @@ from stats.league.stats import calculate as stats_calculate
 # Custom packages
 import copy
 import json
+import random
 import requests
 import datetime
 from requests.structures import CaseInsensitiveDict
@@ -1170,6 +1171,17 @@ def check_starting_attributes(request):
         secondary_archetype = request.POST.get("archetype2")
         trait1 = request.POST.get("trait1")
         trait2 = request.POST.get("trait2")
+        randomize = request.POST.get("randomize")
+        # Check if randomize is true
+        if randomize:
+            position = random.choice(league_config.position_choices)[0]
+            height = random.choice(range(league_config.min_max_heights[position]["min"], league_config.min_max_heights[position]["max"] + 1))
+            weight = random.choice(range(league_config.min_max_weights[position]["min"], league_config.min_max_weights[position]["max"] + 1))
+            primary_archetype = random.choice(league_config.archetype_choices)[0]
+            secondary_archetype = random.choice(league_config.archetype_choices)[0]
+            trait1 = random.choice(league_config.trait_choices)[0]
+            while trait2 == trait1:
+                trait2 = random.choice(league_config.trait_choices)[0]
         # Define some variables
         height_limits = league_config.min_max_heights[position]
         weight_limits = league_config.min_max_weights[position]
@@ -1232,7 +1244,7 @@ def check_starting_attributes(request):
             # We don't want overlapping badges to be marked as secondary if they are also primary
             if not badge in trait1_list:
                 mock_player_badges[badge] = "[S]"
-        # Return the starting attributes
+        # Create the context
         context = {
             "title": "Archetypes & Traits",
             "header": position,
@@ -1246,6 +1258,18 @@ def check_starting_attributes(request):
             "trait_choices": league_config.trait_choices,
             "welcome_message": False,
         }
+        # Add randomize data
+        if randomize:
+            context["randomize_data"] = {
+                "position": position,
+                "height": hoops_extra_convert.convert_to_height(height),
+                "weight": weight,
+                "primary_archetype": primary_archetype,
+                "secondary_archetype": secondary_archetype,
+                "trait1": trait1,
+                "trait2": trait2,
+            }
+        # Return the response
         html = render_to_string("main/ajax/position_fragment.html", context)
         return HttpResponse(html)
     else:
