@@ -1179,9 +1179,12 @@ def check_starting_attributes(request):
             weight = random.choice(range(league_config.min_max_weights[position]["min"], league_config.min_max_weights[position]["max"] + 1))
             primary_archetype = random.choice(league_config.archetype_choices)[0]
             secondary_archetype = random.choice(league_config.archetype_choices)[0]
-            trait1 = random.choice(league_config.trait_choices)[0]
-            while trait2 == trait1:
-                trait2 = random.choice(league_config.trait_choices)[0]
+            trait1_tuple = random.choice(league_config.trait_choices)
+            trait1 = trait1_tuple[0]
+            # Create list of traits that are not trait1
+            trait2_list = league_config.trait_choices.copy()
+            trait2_list.remove(trait1_tuple)
+            trait2 = random.choice(trait2_list)[0]
         # Define some variables
         height_limits = league_config.min_max_heights[position]
         weight_limits = league_config.min_max_weights[position]
