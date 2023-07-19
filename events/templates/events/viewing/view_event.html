@@ -36,7 +36,7 @@
                 <hr>
                 <h2>Entrees</h2>
                 {% for entree in entrees %}
-                    <a href="{% url 'player' entree.player.id %}">View</a> <span>({{ entree.player.primary_position }}/{{ entree.player.secondary_position }}) {{ entree.player.first_name }} {{ entree.player.last_name }}</span><br>
+                    <a href="{% url 'player' entree.player.id %}">View</a> <span>({{ entree.player.spent }}) ({{ entree.player.primary_position }}/{{ entree.player.secondary_position }}) {{ entree.player.first_name }} {{ entree.player.last_name }}</span><br>
                 {% endfor %}
             </div>
         </div>
