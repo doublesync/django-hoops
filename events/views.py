@@ -37,7 +37,7 @@ def view_event(request, id):
     # Create the context
     context = {
         "event": Event.objects.get(id=id),
-        "entrees": Entree.objects.filter(event=id),
+        "entrees": Entree.objects.filter(event=id).order_by("-player__spent"),
         "entree_count": Entree.objects.filter(event=id).count(),
         "player_list": Player.objects.filter(discord_user=request.user),
     }

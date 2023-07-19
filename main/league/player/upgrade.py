@@ -205,3 +205,4 @@ def createUpgrade(player, cleanedFormData):
         player.history_list.save()
         # Return success message
         return f"✅ Congrats, you upgraded your player for ${totalCost}!"
+    

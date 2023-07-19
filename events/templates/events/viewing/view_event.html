@@ -28,7 +28,7 @@
                     <input type="hidden" name="event_id" value="{{ event.id }}">
                     <select class="form-select mb-2" name="id" style="max-width: fit-content;">
                         {% for player in player_list %}
-                            <option value="{{ player.id }}">{{ player.first_name }} {{ player.last_name }}</option>
+                            <option value="{{ player.id }}">(${{ player.spent }}) {{ player.first_name }} {{ player.last_name }}</option>
                         {% endfor %}
                     </select>
                     <button type="submit" class="btn btn-primary" hx-target="#join-event-status" hx-trigger="click" hx-swap="innerHTML" hx-post="{% url 'events:add_entree' %}">Join</button>
