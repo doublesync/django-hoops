@@ -47,18 +47,22 @@
                                         {{ create_player_form.secondary_position|addclass:"form-control form-control-sm mb-2" }}
                                         <label for="jersey_number" class="label label-primary">Jersey Number</label>
                                         {{ create_player_form.jersey_number|addclass:"form-control form-control-sm mb-2" }}
-                                    </div> 
-                                    <!-- Archetypes & Traits -->
-                                    <div class="">
-                                        <label for="primary_archetype" class="label label-primary">Primary Archetype</label>
-                                        {{ create_player_form.primary_archetype|addclass:"form-control form-control-sm mb-2" }}
-                                        <label for="secondary_archetype" class="label label-primary">Secondary Archetype</label>
-                                        {{ create_player_form.secondary_archetype|addclass:"form-control form-control-sm mb-2" }}
-                                        <label for="trait_one" class="label label-primary">Trait One</label>
-                                        {{ create_player_form.trait_one|addclass:"form-control form-control-sm mb-2" }}
-                                        <label for="trait_two" class="label label-primary">Trait Two</label>
-                                        {{ create_player_form.trait_two|addclass:"form-control form-control-sm mb-2" }}
+                                    </div><hr>
+                                    <!-- Attributes & Badges -->
+                                    <div>
+                                        <p>CTRL + Click to select multiple options on desktop.</p>
+                                        <label for="primary_attributes" class="fw-bold label label-primary">Primary Attributes (10 points available)</label>
+                                        <span hx-post="{% url 'check_creation_spent' %}" hx-trigger="click" hx-target="#spent-status">{{ create_player_form.primary_attributes|addclass:"form-control form-control-sm mb-2 list-select" }}<hr></span>
+                                        <label for="secondary_attributes" class="fw-bold label label-primary">Secondary Attributes (16 points available)</label>
+                                        <span hx-post="{% url 'check_creation_spent' %}" hx-trigger="click" hx-target="#spent-status">{{ create_player_form.secondary_attributes|addclass:"form-control form-control-sm mb-2 list-select" }}<hr></span>
+                                        <label for="primary_badges" class="fw-bold label label-primary">Primary Badges (10 points available)</label>
+                                        <span hx-post="{% url 'check_creation_spent' %}" hx-trigger="click" hx-target="#spent-status">{{ create_player_form.primary_badges|addclass:"form-control form-control-sm mb-2 list-select" }}<hr></span>
+                                        <label for="secondary_badges" class="fw-bold label label-primary">Secondary Badges (16 points available)</label>
+                                        <span hx-post="{% url 'check_creation_spent' %}" hx-trigger="click" hx-target="#spent-status">{{ create_player_form.secondary_badges|addclass:"form-control form-control-sm mb-2 list-select" }}<hr></span>
                                     </div>
+                                    <div class="mt-2 mb-2">
+                                        <p name="spent-status" id="spent-status"></p>
+                                    </div><hr>
                                     <!-- Referral Code -->
                                     <div>
                                         <label for="referral_code" class="label label-primary">Referral Code</label>

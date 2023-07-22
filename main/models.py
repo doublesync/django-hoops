@@ -73,34 +73,11 @@ class Player(models.Model):
         default=league_config.initial_headshot,
         blank=True,
     )
-    # Archetypes & Traits
-    primary_archetype = models.CharField(
-        max_length=36,
-        choices=league_config.archetype_choices,
-        default=league_config.archetype_choices[0][0],
-    )
-    secondary_archetype = models.CharField(
-        max_length=36,
-        choices=league_config.archetype_choices,
-        default=league_config.archetype_choices[0][0],
-    )
-    trait_one = models.CharField(
-        max_length=36,
-        choices=league_config.trait_choices,
-        default=league_config.trait_choices[0][0],
-    )
-    trait_two = models.CharField(
-        max_length=36,
-        choices=league_config.trait_choices,
-        default=league_config.trait_choices[0][0],
-    )
-    trait_three = models.CharField(
-        max_length=36,
-        choices=league_config.trait_choices,
-        default=None,
-        null=True,
-        blank=True,
-    )
+    # Attributes & Badges
+    primary_attributes = models.JSONField(null=True, blank=True)
+    secondary_attributes = models.JSONField(null=True, blank=True)
+    primary_badges = models.JSONField(null=True, blank=True)
+    secondary_badges = models.JSONField(null=True, blank=True)
     # Player Currencies
     primary_currency = models.BigIntegerField(
         name="cash", default=league_config.primary_currency_start

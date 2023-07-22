@@ -167,6 +167,7 @@
                                 <span class="text-white" style="font-size: 12px;">Permissions</span>
                             </div><hr>
                             <div class="text-white h5 mb-0" style="margin-top: -6px;">
+                                <a class="fw-bold"href="{% url 'integrate_player' %}" style="font-size: 10px; text-decoration: none;">🟩 Integrate Existing Players</a><br>
                                 {% if current_user.can_update_players %}
                                     <a class="fw-bold"href="{% url 'upgrades_pending' %}" style="font-size: 10px; text-decoration: none;">Export Pending Upgrades</a><br>
                                 {% endif %}

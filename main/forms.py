@@ -1,11 +1,25 @@
+# Custom imports
 import json
+
+# Django imports
 from django import forms
+from django.core.validators import MaxValueValidator, MinValueValidator
+
+# Main imports
 from .league import config as league_config
+from copy import deepcopy
 
 player_styles = open("main/league/looyh/styles.json")
 player_styles = json.load(player_styles)
 
 class PlayerForm(forms.Form):
+    # Get attribute_choices
+    attribute_choices_config = league_config.attribute_choices
+    attribute_choices = []
+    for tuple in attribute_choices_config:
+        if not tuple[0] in league_config.attribute_categories["physical"]:
+            attribute_choices.append(tuple)
+    # Create fields
     first_name = forms.CharField(label="First Name", max_length=16)
     last_name = forms.CharField(label="Last Name", max_length=16)
     cyberface = forms.IntegerField(label="Cyberface", min_value=0, max_value=40000)
@@ -24,20 +38,27 @@ class PlayerForm(forms.Form):
     jersey_number = forms.IntegerField(
         label="Jersey Number", min_value=0, max_value=league_config.max_attribute
     )
-    primary_archetype = forms.ChoiceField(
-        label="Primary Archetype", choices=league_config.archetype_choices
+    primary_attributes = forms.MultipleChoiceField(
+        label="Primary Attributes",
+        choices=attribute_choices,
+        widget=forms.SelectMultiple(),
     )
-    secondary_archetype = forms.ChoiceField(
-        label="Secondary Archetype", choices=league_config.archetype_choices
+    secondary_attributes = forms.MultipleChoiceField(
+        label="Primary Attributes",
+        choices=attribute_choices,
+        widget=forms.SelectMultiple(),
     )
-    trait_one = forms.ChoiceField(
-        label="Trait One", choices=league_config.trait_choices
+    primary_badges = forms.MultipleChoiceField(
+        label="Primary Badges",
+        choices=league_config.badge_choices,
+        widget=forms.SelectMultiple(),
     )
-    trait_two = forms.ChoiceField(
-        label="Trait Two", choices=league_config.trait_choices
+    secondary_badges = forms.MultipleChoiceField(
+        label="Secondary Badges",
+        choices=league_config.badge_choices,
+        widget=forms.SelectMultiple(),
     )
     referral_code = forms.IntegerField(label="Referral Code", required=False)
-
 
 class UpgradeForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -79,7 +100,6 @@ class UpgradeForm(forms.Form):
         #         widget=forms.Select(attrs={"onchange": "updatePrice()"}),
         #     )
 
-
 class StylesForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(StylesForm, self).__init__(*args, **kwargs)
@@ -90,7 +110,6 @@ class StylesForm(forms.Form):
                 choices=data["options"],
                 widget=forms.Select(),
             )
-
 
 class TradeForm(forms.Form):
     pass

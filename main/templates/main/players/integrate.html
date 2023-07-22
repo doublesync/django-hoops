@@ -1,0 +1,58 @@
+{% extends 'main/base.html' %}
+{% load main_filters %}
+
+{% block content %}
+
+    <section class="py-4 py-xl-5">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-md-10 col-xl-8 text-center d-flex d-sm-flex d-md-flex justify-content-center align-items-center mx-auto justify-content-md-start align-items-md-center justify-content-xl-center">
+                    <div>
+                        <h2 class="text-uppercase fw-bold mb-3">EXISTING PLAYER</h2>
+                        <p class="mb-4">Integrate your existing player with the new builder system.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="py-4 py-xl-5">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+                        <div class="card mb-5">
+                            <div class="card-body p-sm-5">
+                                <h3 class="text-uppercase fw-bold mb-2">INTEGRATE</h3>
+                                <form action="{% url 'check_player_integration' %}" method="post">
+                                    {% csrf_token %}
+                                    <!-- Add a select for player_list that shows all players -->
+                                    <hr><label for="id" class="mb-2">Select Player</label>
+                                    <select class="form-select mb-2" name="id">
+                                        {% for player in player_list %}
+                                            <option value="{{ player.id }}">{{ player.first_name }} {{ player.last_name }}</option>
+                                        {% endfor %}
+                                    </select><hr>
+                                    <!-- Attributes & Badges -->
+                                    <div>
+                                        <p>CTRL + Click to select multiple options on desktop.</p><hr>
+                                        <label for="primary_attributes" class="fw-bold label label-primary">Primary Attributes (12 points available)</label>
+                                        <span hx-post="{% url 'check_creation_spent' %}" hx-trigger="click" hx-target="#spent-status">{{ create_player_form.primary_attributes|addclass:"form-control form-control-sm mb-2 list-select" }}<hr></span>
+                                        <label for="secondary_attributes" class="fw-bold label label-primary">Secondary Attributes (18 points available)</label>
+                                        <span hx-post="{% url 'check_creation_spent' %}" hx-trigger="click" hx-target="#spent-status">{{ create_player_form.secondary_attributes|addclass:"form-control form-control-sm mb-2 list-select" }}<hr></span>
+                                        <label for="primary_badges" class="fw-bold label label-primary">Primary Badges (12 points available)</label>
+                                        <span hx-post="{% url 'check_creation_spent' %}" hx-trigger="click" hx-target="#spent-status">{{ create_player_form.primary_badges|addclass:"form-control form-control-sm mb-2 list-select" }}<hr></span>
+                                        <label for="secondary_badges" class="fw-bold label label-primary">Secondary Badges (18 points available)</label>
+                                        <span hx-post="{% url 'check_creation_spent' %}" hx-trigger="click" hx-target="#spent-status">{{ create_player_form.secondary_badges|addclass:"form-control form-control-sm mb-2 list-select" }}<hr></span>
+                                    </div>
+                                    <div class="mt-2 mb-2">
+                                        <p name="spent-status" id="spent-status"></p>
+                                    </div><hr>
+                                    <!-- Submission -->
+                                    <input type="submit" class="btn btn-success mt-1" value="Integrate Player">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock %}

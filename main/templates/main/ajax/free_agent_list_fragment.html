@@ -17,11 +17,6 @@
             <th scope="col" style="text-transform: capitalize;">Position</th>
             <th scope="col" style="text-transform: capitalize;">Height</th>
             <th scope="col" style="text-transform: capitalize;">Weight</th>
-            <th scope="col" style="text-transform: capitalize;">Archetype 1</th>
-            <th scope="col" style="text-transform: capitalize;">Archetype 2</th>
-            <th scope="col" style="text-transform: capitalize;">Trait 1</th>
-            <th scope="col" style="text-transform: capitalize;">Trait 2</th>
-            <th scope="col" style="text-transform: capitalize;">Trait 3</th>
         </tr>
     </thead>
     <!-- Table data -->
@@ -62,11 +57,6 @@
                 <td>{{ player.primary_position }}</td>
                 <td>{{ player.height|americanheight }}</td>
                 <td>{{ player.weight }}</td>
-                <td>{{ player.primary_archetype }}</td>
-                <td>{{ player.secondary_archetype }}</td>
-                <td>{{ player.trait_one }}</td>
-                <td>{{ player.trait_two }}</td>
-                <td>{{ player.trait_three }}</td>
             </tr>
         {% endfor %}
     </tbody>

@@ -70,7 +70,7 @@ const calculateAttributePrice = function() {
                             cost += attributePrices[tier]["secondary"];
                         } else {
                             // console.log(attributePrices)
-                            console.log(attributePrices[tier])
+                            console.log(attributePrices[tier]);
                             cost += attributePrices[tier]["base"];
                         }
                     }
@@ -105,13 +105,11 @@ const calculateBadgePrice = function() {
                 for (const [tier, value] of Object.entries(badgePrices)) {
                     // if the badge level is equivalent to the index of the tier
                     if (i == tier) {
-                        // check which traits the user has, and use the price for those traits
-                        if (traitOneBadges.includes(currentIndex.name)) {
-                            cost += value["trait_one"];
-                        } else if (traitTwoBadges.includes(currentIndex.name)) {
-                            cost += value["trait_two"];
-                        } else if (traitThreeBadges.includes(currentIndex.name)) {
-                            cost += value["trait_two"];
+                        // check which badges the user has, and use the price for those badges
+                        if (primaryBadges.includes(currentIndex.name)) {
+                            cost += value["primary"];
+                        } else if (secondaryBadges.includes(currentIndex.name)) {
+                            cost += value["secondary"];
                         } else {
                             cost += value["base"];
                         }

@@ -289,8 +289,6 @@ def sort_stats(request, page):
     season_type = request.POST.get("season_type")
     sort_by = request.POST.get("sort_by")
     pos_type = request.POST.get("pos_type")
-    arch_type = request.POST.get("arch_type")
-    trait_type = request.POST.get("trait_type")
     status_type = request.POST.get("status_type")
     # Validate both teams
     if not sort_by or not season or not season_type:
@@ -300,10 +298,6 @@ def sort_stats(request, page):
     # Filter the queryset
     if pos_type and pos_type != "ALL":
         queryset = queryset.filter(Q(primary_position=pos_type))
-    if arch_type and arch_type != "ALL":
-        queryset = queryset.filter(Q(primary_archetype=arch_type))
-    if trait_type and trait_type != "ALL":
-        queryset = queryset.filter(Q(trait_one=trait_type) | Q(trait_two=trait_type) | Q(trait_three=trait_type))
     if status_type and status_type != "ALL":
         if status_type == "ACTIVE":
             queryset = queryset.filter(Q(current_team__isnull=False))

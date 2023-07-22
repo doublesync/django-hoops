@@ -8,7 +8,7 @@
 
 current_season = 2
 
-max_players = 1
+max_players = 10
 primary_currency_start = 1000
 primary_currency_max = 100000
 max_weekly_earnings = 2000  # per/week
@@ -268,222 +268,32 @@ attribute_prices = {
     "71-80": {"range": range(71, 81), "base": 100, "primary": 25, "secondary": 50},
     "81-86": {"range": range(81, 87), "base": 200, "primary": 50, "secondary": 100},
     "87-93": {"range": range(87, 94), "base": 400, "primary": 100, "secondary": 200},
-    "94-96": {"range": range(94, 97), "base": 800, "primary": 200, "secondary": 400},
-    "97-99": {"range": range(97, 100), "base": 1200, "primary": 400, "secondary": 800},
+    "94-96": {"range": range(94, 97), "base": 600, "primary": 150, "secondary": 300},
+    "97-99": {"range": range(97, 100), "base": 1000, "primary": 250, "secondary": 500},
 }
-badge_prices = {
+badge_prices = { 
     1: {
-        "base": 100,
-        "trait_one": 25,
-        "trait_two": 50,
+        "base": 500,
+        "primary": 125,
+        "secondary": 250,
     },
     2: {
-        "base": 200,
-        "trait_one": 50,
-        "trait_two": 75,
+        "base": 1000,
+        "primary": 250,
+        "secondary": 500,
     },
     3: {
-        "base": 300,
-        "trait_one": 75,
-        "trait_two": 100,
+        "primary": 500,
+        "secondary": 1000,
     },
     4: {
-        "base": 400,
-        "trait_one": 100,
-        "trait_two": 125,
+        "primary": 1000,
     },
 }
 banned_tendencies = ["TOUCHES_TENDENCY", "BLOCK_SHOT_TENDENCY", "ON-BALL_STEAL_TENDENCY"]
 max_tendencies = {
     "ON-BALL_STEAL_TENDENCY": 75,
     "BLOCK_SHOT_TENDENCY": 75,
-}
-
-# Description: For player traits (traits unlock badges)
-# Description: Players not have duplicate traits, they can have duplicate archetypes though.
-
-trait_one_max = 4
-trait_two_max = 3
-trait_none_max = 2
-trait_badge_unlocks = {
-    "Movement Shooter": [
-        "Agent Threes",
-        "Blinders",
-        "Clutch Shooter",
-        "Comeback Kid",
-        "Deadeye",
-        "Green Machine",
-        # "Guard Up",
-        "Middy Magician",
-        "Slippery Off Ball",
-        "Space Creator",
-        "Volume Shooter",
-        # "Ankle Breaker",
-        # "Killer Combos",
-        # "Mismatch Expert",
-    ],
-    "3PT Shooter": [
-        "Blinders",
-        "Catch And Shoot",
-        "Claymore",
-        "Clutch Shooter",
-        "Comeback Kid",
-        "Corner Specialist",
-        "Deadeye",
-        "Green Machine",
-        "Guard Up",
-        "Limitless Range",
-        "Slippery Off Ball",
-        "Volume Shooter",
-    ],
-    "Midrange Menace": [
-        "Blinders",
-        "Clutch Shooter",
-        "Comeback Kid",
-        "Deadeye",
-        "Green Machine",
-        "Guard Up",
-        "Middy Magician",
-        "Slippery Off Ball",
-        "Space Creator",
-        "Volume Shooter",
-        # "Ankle Breaker",
-    ],
-    "Finesse Finisher": [
-        "Acrobat",
-        "Fearless Finisher",
-        "Giant Slayer",
-        "Limitless Takeoff",
-        "Pro Touch",
-        "Slithery",
-        "Mismatch Expert",
-    ],
-    "Fierce Finisher": [
-        "Aerial Wizard",
-        "Bully",
-        "Fearless Finisher",
-        "Limitless Takeoff",
-        "Masher",
-        "Posterizer",
-        "Rise Up",
-        "Mismatch Expert",
-    ],
-    "Ankle Snatcher": [
-        "Clamp Breaker",
-        "Handles For Days",
-        "Hyperdrive",
-        "Killer Combos",
-        "Mismatch Expert",
-        "Quick First Step",
-        "Unpluckable",
-        "Ankle Breaker",
-    ],
-    "Passing Maestro": [
-        "Bail Out",
-        "Break Starter",
-        "Dimer",
-        "Floor General",
-        "Needle Threader",
-        "Special Delivery",
-        "Unpluckable",
-    ],
-    "Rebound Hound": [
-        "Vice Grip",
-        "Boxout Beast",
-        "Pick Dodger",
-        "Rebound Chaser",
-        "Work Horse",
-    ],
-    "Interior Anchor": [
-        "Vice Grip",
-        "Anchor",
-        "Brick Wall",
-        "Chase Down Artist",
-        "Menace",
-        "Pogo Stick",
-        "Post Lockdown",
-    ],
-    "Perimeter Lockdown": [
-        "Ankle Braces",
-        "Challenger",
-        "Clamps",
-        "Glove",
-        "Interceptor",
-        "Menace",
-        "Off Ball Pest",
-        "Pick Dodger",
-    ],
-    "Post-Up Powerhouse": [
-        "Backdown Punisher",
-        "Drop Stepper",
-        "Fast Twitch",
-        "Fearless Finisher",
-        "Masher",
-        "Rise Up",
-        "Bully",
-    ],
-    "Dribble Driver": [
-        "Clamp Breaker",
-        "Hyperdrive",
-        "Killer Combos",
-        "Quick First Step",
-        "Unpluckable",
-        "Mismatch Expert",
-    ],
-    "Post-Up Conductor": [
-        "Dream Shake",
-        "Fast Twitch",
-        "Post Spin Technician",
-        "Post Playmaker",
-    ],
-}
-
-# Description: For player archetypes
-# Description: The player is first given starting attributes of zero, thenthey are set to the starting attributes depending on position.
-# Description: Then, depending on the player's chosen archetype, archetype additions are added to the starting attributes.
-
-archetype_primary_bonus = 10  # Primary archetypes add (+10) to the chosen attributes
-archetype_secondary_bonus = 5  # Secondary archetypes add (+5) to the chosen attributes
-archetype_attribute_bonuses = {
-    "Shooter": ["Mid Range Shot", "Three Point Shot", "Free Throw", "Shot Iq"],
-    "Slasher": [
-        "Driving Layup",
-        "Draw Foul",
-        "Standing Dunk",
-        "Driving Dunk",
-        "Close Shot",
-    ],
-    "Playmaker": [
-        "Draw Foul",
-        "Ball Control",
-        "Passing Iq",
-        "Passing Accuracy",
-        "Passing Vision",
-    ],
-    "Post Scorer": [
-        "Post Fadeaway",
-        "Post Hook",
-        "Post Moves",
-        "Close Shot",
-        "Mid Range Shot",
-        "Standing Dunk",
-    ],
-    "Rebounder": ["Offensive Rebound", "Defensive Rebound"],
-    "Perimeter Defender": [
-        "Perimeter Defense",
-        "Steal",
-        "Pass Perception",
-        "Help Defense Iq",
-        "Shot Contest",
-        "Defensive Consistency",
-    ],
-    "Interior Defender": [
-        "Interior Defense",
-        "Block",
-        "Help Defense Iq",
-        "Shot Contest",
-        "Defensive Consistency",
-    ],
 }
 
 # Description: Initials for models
@@ -740,6 +550,125 @@ initial_trade_offer = {}
 initial_team_logo = "https://cdn.simplystamps.com/media/catalog/product/5/8/5802-n-a-stock-stamp-hcb.png"
 initial_headshot = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
 
+# Description: New build system
+attribute_list = list(initial_attributes.keys())
+badge_list = list(initial_badges.keys())
+
+max_primary_attributes = 12
+max_secondary_attributes = 18
+max_primary_badges = 12
+max_secondary_badges = 18
+
+primary_badge_max = 4
+secondary_badge_max = 3
+tertiary_badge_max = 2
+
+attribute_weights = {
+    "Driving Layup": 3,
+    "Standing Dunk": 1,
+    "Driving Dunk": 4,
+    "Close Shot": 2,
+    "Mid Range Shot": 2,
+    "Three Point Shot": 4,
+    "Free Throw": 2,
+    "Post Hook": 2,
+    "Post Fadeaway": 2,
+    "Post Moves": 2,
+    "Draw Foul": 1,
+    "Shot Iq": 1,
+    "Passing Accuracy": 2,
+    "Ball Control": 3,
+    "Hands": 2,
+    "Passing Iq": 2,
+    "Passing Vision": 1,
+    "Offensive Consistency": 2,
+    "Interior Defense": 3,
+    "Perimeter Defense": 3,
+    "Steal": 3,
+    "Block": 3,
+    "Offensive Rebound": 3,
+    "Defensive Rebound": 3,
+    "Help Defense Iq": 1,
+    "Pass Perception": 1,
+    "Defensive Consistency": 1,
+    "Pick Roll Defensive Iq": 1,
+    "Shot Contest": 2,
+    "Hustle": 1,
+    "Intangibles": 1,
+    "Lateral Quickness": 100, # Physical
+    "Speed With Ball": 100, # Physical
+    "Speed": 100, # Physical
+    "Acceleration": 100, # Physical
+    "Strength": 100, # Physical
+    "Vertical": 100, # Physical
+}
+badge_weights = {
+    "Acrobat": 3,
+    "Aerial Wizard": 2,
+    "Backdown Punisher": 3,
+    "Bully": 2,
+    "Dream Shake": 1,
+    "Drop Stepper": 2,
+    "Fast Twitch": 2,
+    "Fearless Finisher": 3,
+    "Giant Slayer": 3,
+    "Limitless Takeoff": 4,
+    "Masher": 1,
+    "Post Spin Technician": 2,
+    "Posterizer": 3,
+    "Pro Touch": 2,
+    "Rise Up": 2,
+    "Slithery": 3,
+    "Agent Threes": 4,
+    "Amped": 0,
+    "Blinders": 3,
+    "Catch And Shoot": 3,
+    "Claymore": 3,
+    "Corner Specialist": 2,
+    "Deadeye": 3,
+    "Green Machine": 4,
+    "Guard Up": 1,
+    "Limitless Range": 4,
+    "Middy Magician": 2,
+    "Slippery Off Ball": 1,
+    "Space Creator": 2,
+    "Volume Shooter": 3,
+    "Clutch Shooter": 2,
+    "Comeback Kid": 2,
+    "Ankle Breaker": 1,
+    "Bail Out": 2,
+    "Break Starter": 1,
+    "Clamp Breaker": 3,
+    "Killer Combos": 2,
+    "Dimer": 4,
+    "Floor General": 2,
+    "Handles For Days": 0,
+    "Hyperdrive": 2,
+    "Mismatch Expert": 1,
+    "Needle Threader": 2,
+    "Post Playmaker": 1,
+    "Quick First Step": 4,
+    "Special Delivery": 1,
+    "Unpluckable": 4,
+    "Vice Grip": 1,
+    "Anchor": 4,
+    "Ankle Braces": 1,
+    "Challenger": 3,
+    "Chase Down Artist": 1,
+    "Clamps": 3,
+    "Glove": 3,
+    "Interceptor": 2,
+    "Menace": 2,
+    "Off Ball Pest": 1,
+    "Pick Dodger": 1,
+    "Post Lockdown": 2,
+    "Pogo Stick": 3,
+    "Work Horse": 1,
+    "Brick Wall": 3,
+    "Boxout Beast": 3,
+    "Rebound Chaser": 4,
+}
+
 # Description: Choices & labels for player forms
 
 height_choices = [
@@ -771,29 +700,11 @@ badge_upgrade_choices = [
     (3, "Gold"),
     (4, "Hall of Fame"),
 ]
-archetype_choices = [
-    ("Shooter", "Shooter"),
-    ("Slasher", "Slasher"),
-    ("Playmaker", "Playmaker"),
-    ("Post Scorer", "Post Scorer"),
-    ("Rebounder", "Rebounder"),
-    ("Perimeter Defender", "Perimeter Defender"),
-    ("Interior Defender", "Interior Defender"),
+attribute_choices = [
+    (attr, f"({attribute_weights[attr]}) {attr}") for attr in attribute_list
 ]
-trait_choices = [
-    ("Movement Shooter", "Movement Shooter"),
-    ("3PT Shooter", "3PT Shooter"),
-    ("Midrange Menace", "Midrange Menace"),
-    ("Finesse Finisher", "Finesse Finisher"),
-    ("Fierce Finisher", "Fierce Finisher"),
-    ("Ankle Snatcher", "Ankle Snatcher"),
-    ("Passing Maestro", "Passing Maestro"),
-    ("Rebound Hound", "Rebound Hound"),
-    ("Interior Anchor", "Interior Anchor"),
-    ("Perimeter Lockdown", "Perimeter Lockdown"),
-    ("Post-Up Powerhouse", "Post-Up Powerhouse"),
-    ("Dribble Driver", "Dribble Driver"),
-    ("Post-Up Conductor", "Post-Up Conductor"),
+badge_choices = [
+    (badge, f"({badge_weights[badge]}) {badge}") for badge in badge_list
 ]
 transaction_type_choices = [
     ("cash_taken", "Cash Taken"),

@@ -59,8 +59,6 @@
             {% csrf_token %}
             <!-- dropdown -->
             <select class="form-select mt-2 mb-2" name="meta" hx-post="/metas/leaders/" hx-trigger="change" hx-target="#meta-results" hx-swap="innerHTML">
-                <option value="archetype">Archetypes</option>
-                <option value="trait">Traits</option>
                 <option value="height">Heights</option>
             </select>
             <!-- results -->

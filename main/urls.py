@@ -28,6 +28,7 @@ urlpatterns = [
     path("player/cash/take/", views.take_player_cash, name="take_player_cash"),
     path("player/daily/reward/collect/", views.daily_rewards, name="daily_rewards"),
     path("player/upgrade/scrape/<int:id>/", views.scrape_tendencies, name="scrape_tendencies"),
+    path("player/integrate/", views.integrate_player, name="integrate_player"),
 
     # Team URL patterns
     path("team/<int:id>/", views.team, name="team"),
@@ -63,6 +64,8 @@ urlpatterns = [
     path("players/free-agents/search/", views.check_free_agent_search, name="check_free_agent_search"),
     path("contract/offer/", views.check_contract_offer, name="check_contract_offer"),
     path("contract/revoke/", views.check_contract_revoke, name="check_contract_revoke"),
+    path("players/create/spent/", views.check_creation_spent, name="check_creation_spent"),
+    path("players/integrate/", views.check_player_integration, name="check_player_integration"),
 
     # User URL patterns
     path("user/notifications/<int:id>/", views.notifications, name="notifications"),

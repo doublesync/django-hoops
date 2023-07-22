@@ -248,21 +248,20 @@ def upgrade_player(request, id):
     player = Player.objects.get(pk=id)
     if not player:
         return HttpResponse("Sorry, this player doesn't exist!")
+    # Check if player has been integrated
+    if not player.primary_attributes or not player.secondary_attributes or not player.primary_badges or not player.secondary_badges:
+        return redirect(integrate_player)
+    return HttpResponse("Upgrading is closed while we integrate the new system.")
     # Check if the user has permission to upgrade this player
     if not player.discord_user == user:
         return HttpResponse("Sorry, you don't have permission to upgrade this player!")
     # Combine attributes & badges + convert to Django form format
     prefill_info = dict(player.attributes, **player.badges, **player.tendencies)
     # Convert primary & secondary attributes to Django form format
-    js_primary_attributes = league_config.archetype_attribute_bonuses[
-        player.primary_archetype
-    ]
-    js_secondary_attributes = league_config.archetype_attribute_bonuses[
-        player.secondary_archetype
-    ]
-    js_trait_one_badges = league_config.trait_badge_unlocks[player.trait_one]
-    js_trait_two_badges = league_config.trait_badge_unlocks[player.trait_two]
-    js_trait_three_badges = league_config.trait_badge_unlocks[player.trait_three] if player.trait_three else []
+    js_primary_attributes = player.primary_attributes
+    js_secondary_attributes = player.secondary_attributes
+    js_primary_badges = player.primary_badges
+    js_secondary_badges = player.secondary_badges
     # Have to remove the 'range' function from attribute prices or javascript shits the bed
     js_attribute_prices = copy.deepcopy(league_config.attribute_prices)
     for _, v in js_attribute_prices.items():
@@ -277,13 +276,11 @@ def upgrade_player(request, id):
         "badge_attributes": prefill_info,
         "badge_prices": league_config.badge_prices,
         "attribute_prices": js_attribute_prices,
-        "attribute_bonuses": league_config.archetype_attribute_bonuses,
         "primary_attributes": js_primary_attributes,
         "secondary_attributes": js_secondary_attributes,
         # Traits
-        "trait_one_badges": js_trait_one_badges,
-        "trait_two_badges": js_trait_two_badges,
-        "trait_three_badges": js_trait_three_badges,
+        "primary_badges": js_primary_badges,
+        "secondary_badges": js_secondary_badges,
         # Attribute categories
         "finishing_attributes": league_config.attribute_categories["finishing"],
         "shooting_attributes": league_config.attribute_categories["shooting"],
@@ -349,8 +346,25 @@ def create_player(request):
         # If the form is invalid, or the player creation failed, redirect to the create player page
         return redirect(create_player)
     else:
-        context = {"create_player_form": PlayerForm}
+        context = {
+            "create_player_form": PlayerForm,
+            "attribute_weights": league_config.attribute_weights,
+            "badge_weights": league_config.badge_weights,
+        }
         return render(request, "main/players/create.html", context)
+
+
+@login_required(login_url="/login/discord/")
+def integrate_player(request):
+    # Create the context
+    context = {
+        "create_player_form": PlayerForm,
+        "attribute_weights": league_config.attribute_weights,
+        "badge_weights": league_config.badge_weights,
+        "player_list": Player.objects.filter(discord_user=request.user),
+    }
+    # Return the integrate player page
+    return render(request, "main/players/integrate.html", context)
 
 
 def players(request):
@@ -588,12 +602,10 @@ def upgrades_pending(request):
 def mock_builder(request):
     # Check if the tag is in the list of position starting attributes
     context = {
-        "title": "Archetypes & Traits",
+        "title": "Attributes & Badges",
         "info": league_config.position_starting_attributes["PG"],
         "height_choices": league_config.height_choices,
-        "archetype_choices": league_config.archetype_choices,
         "position_choices": league_config.position_choices,
-        "trait_choices": league_config.trait_choices,
         "welcome_message": True,
     }
     # Return the build info page
@@ -1167,24 +1179,12 @@ def check_starting_attributes(request):
         position = request.POST.get("position")
         height = request.POST.get("height")
         weight = request.POST.get("weight")
-        primary_archetype = request.POST.get("archetype1")
-        secondary_archetype = request.POST.get("archetype2")
-        trait1 = request.POST.get("trait1")
-        trait2 = request.POST.get("trait2")
         randomize = request.POST.get("randomize")
         # Check if randomize is true
         if randomize:
             position = random.choice(league_config.position_choices)[0]
             height = random.choice(range(league_config.min_max_heights[position]["min"], league_config.min_max_heights[position]["max"] + 1))
             weight = random.choice(range(league_config.min_max_weights[position]["min"], league_config.min_max_weights[position]["max"] + 1))
-            primary_archetype = random.choice(league_config.archetype_choices)[0]
-            secondary_archetype = random.choice(league_config.archetype_choices)[0]
-            trait1_tuple = random.choice(league_config.trait_choices)
-            trait1 = trait1_tuple[0]
-            # Create list of traits that are not trait1
-            trait2_list = league_config.trait_choices.copy()
-            trait2_list.remove(trait1_tuple)
-            trait2 = random.choice(trait2_list)[0]
         # Define some variables
         height_limits = league_config.min_max_heights[position]
         weight_limits = league_config.min_max_weights[position]
@@ -1200,8 +1200,6 @@ def check_starting_attributes(request):
             return HttpResponse(
                 f"❌ Weight must be between {weight_limits['min']} and {weight_limits['max']}!",
             )
-        if trait1 == trait2:
-            return HttpResponse("❌ Traits cannot be the same!")
         # Check what the starting attributes would be
         starting_attributes = {
             "height": int(height),
@@ -1215,50 +1213,18 @@ def check_starting_attributes(request):
             starting_attributes, mock=True
         )
         player_attributes = mock_player["attributes"]
-        # Add archetype bonuses
-        primary_list = league_config.archetype_attribute_bonuses[primary_archetype]
-        secondary_list = league_config.archetype_attribute_bonuses[secondary_archetype]
-        for attribute in primary_list:
-            player_attributes[attribute] += league_config.archetype_primary_bonus
-        for attribute in secondary_list:
-            player_attributes[attribute] += league_config.archetype_secondary_bonus
         # Format the attributes with primary/secondary/base tags
         mock_player_attributes = {"primary": {}, "secondary": {}, "base": {}}
         for attribute in player_attributes:
-            if attribute in primary_list:
-                mock_player_attributes["primary"][attribute] = player_attributes[
-                    attribute
-                ]
-                continue
-            elif attribute in secondary_list:
-                mock_player_attributes["secondary"][attribute] = player_attributes[
-                    attribute
-                ]
-                continue
-            else:
                 mock_player_attributes["base"][attribute] = player_attributes[attribute]
-        # Add trait bonuses
-        mock_player_badges = {}
-        trait1_list = league_config.trait_badge_unlocks[trait1]
-        trait2_list = league_config.trait_badge_unlocks[trait2]
-        for badge in trait1_list:
-            mock_player_badges[badge] = "[P]"
-        for badge in trait2_list:
-            # We don't want overlapping badges to be marked as secondary if they are also primary
-            if not badge in trait1_list:
-                mock_player_badges[badge] = "[S]"
         # Create the context
         context = {
-            "title": "Archetypes & Traits",
+            "title": "Attributes & Badges",
             "header": position,
             "height_choices": league_config.height_choices,
             "primary_attributes": mock_player_attributes["primary"],
             "secondary_attributes": mock_player_attributes["secondary"],
             "base_attributes": mock_player_attributes["base"],
-            "badges": mock_player_badges,
-            "archetype_choices": league_config.archetype_choices,
-            "position_choices": league_config.position_choices,
-            "trait_choices": league_config.trait_choices,
             "welcome_message": False,
         }
         # Add randomize data
@@ -1267,10 +1233,6 @@ def check_starting_attributes(request):
                 "position": position,
                 "height": hoops_extra_convert.convert_to_height(height),
                 "weight": weight,
-                "primary_archetype": primary_archetype,
-                "secondary_archetype": secondary_archetype,
-                "trait1": trait1,
-                "trait2": trait2,
             }
         # Return the response
         html = render_to_string("main/ajax/position_fragment.html", context)
@@ -1360,31 +1322,12 @@ def check_meta_leaders(request):
     if request.method == "POST":
         # Get the form data
         meta = request.POST.get("meta")
-
         # Calculate player using each meta
         leaders = {}
         players = Player.objects.all()
         total_players = len(players)
         for player in players:
-            if meta == "archetype":
-                if not player.primary_archetype in leaders:
-                    leaders[player.primary_archetype] = [1, 0]
-                else:
-                    leaders[player.primary_archetype][0] += 1
-                if not player.secondary_archetype in leaders:
-                    leaders[player.secondary_archetype] = [0, 1]
-                else:
-                    leaders[player.secondary_archetype][1] += 1
-            elif meta == "trait":
-                if not player.trait_one in leaders:
-                    leaders[player.trait_one] = [1, 0]
-                else:
-                    leaders[player.trait_one][0] += 1
-                if not player.trait_two in leaders:
-                    leaders[player.trait_two] = [0, 1]
-                else:
-                    leaders[player.trait_two][1] += 1
-            elif meta == "height":
+            if meta == "height":
                 height = hoops_extra_convert.convert_to_height(player.height)
                 if not height in leaders:
                     leaders[height] = [1, 0]
@@ -1796,6 +1739,94 @@ def check_contract_revoke(request):
         else:
             return HttpResponse("❌ Contract offer not found!")
 
+
+def check_creation_spent(request):
+    # Get some form data
+    primary_attributes = request.POST.getlist("primary_attributes")
+    secondary_attributes = request.POST.getlist("secondary_attributes")
+    primary_badges = request.POST.getlist("primary_badges")
+    secondary_badges = request.POST.getlist("secondary_badges")
+    # Get some configuration data
+    attribute_primary_spent = 0
+    attribute_secondary_spent = 0
+    badge_primary_spent = 0
+    badge_secondary_spent = 0
+    # Calculate the spent amount
+    for attribute in primary_attributes:
+        attribute_primary_spent += league_config.attribute_weights[attribute]
+    for attribute in secondary_attributes:
+        attribute_secondary_spent += league_config.attribute_weights[attribute]
+    for badge in primary_badges:
+        badge_primary_spent += league_config.badge_weights[badge]
+    for badge in secondary_badges:
+        badge_secondary_spent += league_config.badge_weights[badge]
+    # Return the spent amount
+    spent_string = ""
+    # Check if attributes & badge points have all been spent
+    if attribute_primary_spent == league_config.max_primary_attributes:
+        spent_string += f"✅ Primary Attributes: {attribute_primary_spent}/{league_config.max_primary_attributes}\n"
+    else:
+        spent_string += f"❌ Primary Attributes: {attribute_primary_spent}/{league_config.max_primary_attributes}\n"
+    if attribute_secondary_spent == league_config.max_secondary_attributes:
+        spent_string += f"<br>✅ Secondary Attributes: {attribute_secondary_spent}/{league_config.max_secondary_attributes}\n"
+    else:
+        spent_string += f"<br>❌ Secondary Attributes: {attribute_secondary_spent}/{league_config.max_secondary_attributes}\n"
+    if badge_primary_spent == league_config.max_primary_badges:
+        spent_string += f"<br>✅ Primary Badges: {badge_primary_spent}/{league_config.max_primary_badges}\n"
+    else:
+        spent_string += f"<br>❌ Primary Badges: {badge_primary_spent}/{league_config.max_primary_badges}\n"
+    if badge_secondary_spent == league_config.max_secondary_badges:
+        spent_string += f"<br>✅ Secondary Badges: {badge_secondary_spent}/{league_config.max_secondary_badges}\n"
+    else:
+        spent_string += f"<br>❌ Secondary Badges: {badge_secondary_spent}/{league_config.max_secondary_badges}\n"
+    # Return the spent string
+    return HttpResponse(spent_string)
+
+
+def check_player_integration(request):
+    # Get some form data
+    id = request.POST.get("id")
+    user = request.user
+    primary_attributes = request.POST.getlist("primary_attributes")
+    secondary_attributes = request.POST.getlist("secondary_attributes")
+    primary_badges = request.POST.getlist("primary_badges")
+    secondary_badges = request.POST.getlist("secondary_badges")
+    # Check if user is the owner of this player
+    player = Player.objects.get(id=id)
+    if not player or player.discord_user != user:
+        messages.error(request, "❌ Player not found!")
+        return redirect(integrate_player)
+    # Make sure player has no attributes or badges yet
+    if player.primary_attributes or player.secondary_attributes or player.primary_badges or player.secondary_badges:
+        messages.error(request, "❌ This player has already been integrated!")
+        return redirect(integrate_player)
+    # Validate the attributes & badges
+    form_data = {
+        "primary_attributes": primary_attributes, 
+        "secondary_attributes": secondary_attributes, 
+        "primary_badges": primary_badges, 
+        "secondary_badges": secondary_badges
+    }
+    validation_response = hoops_player_create.validateAttributesBadges(formData=form_data)
+    if not validation_response[0]:
+        messages.error(request, validation_response[1])
+        return redirect(integrate_player)
+    # Add the attributes & badges
+    player.primary_attributes = primary_attributes
+    player.secondary_attributes = secondary_attributes
+    player.primary_badges = primary_badges
+    player.secondary_badges = secondary_badges
+    player.cash += 750
+    player.save()
+    # Send a webhook message
+    discord_webhooks.send_webhook(
+        url="upgrade",
+        title="Player Integration",
+        message=f"**{user.discord_tag}** has integrated {player.first_name} {player.last_name} into the new build system.",
+    )
+    # Return the response
+    messages.success(request, "✅ Player successfully integrated!")
+    return redirect(integrate_player)
 
 # Ad views
 class ad_view(View):
