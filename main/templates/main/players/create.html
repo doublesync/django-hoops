@@ -51,13 +51,13 @@
                                     <!-- Attributes & Badges -->
                                     <div>
                                         <p>CTRL + Click to select multiple options on desktop.</p>
-                                        <label for="primary_attributes" class="fw-bold label label-primary">Primary Attributes (10 points available)</label>
+                                        <label for="primary_attributes" class="fw-bold label label-primary">Primary Attributes (12 points available)</label>
                                         <span hx-post="{% url 'check_creation_spent' %}" hx-trigger="click" hx-target="#spent-status">{{ create_player_form.primary_attributes|addclass:"form-control form-control-sm mb-2 list-select" }}<hr></span>
-                                        <label for="secondary_attributes" class="fw-bold label label-primary">Secondary Attributes (16 points available)</label>
+                                        <label for="secondary_attributes" class="fw-bold label label-primary">Secondary Attributes (18 points available)</label>
                                         <span hx-post="{% url 'check_creation_spent' %}" hx-trigger="click" hx-target="#spent-status">{{ create_player_form.secondary_attributes|addclass:"form-control form-control-sm mb-2 list-select" }}<hr></span>
-                                        <label for="primary_badges" class="fw-bold label label-primary">Primary Badges (10 points available)</label>
+                                        <label for="primary_badges" class="fw-bold label label-primary">Primary Badges (12 points available)</label>
                                         <span hx-post="{% url 'check_creation_spent' %}" hx-trigger="click" hx-target="#spent-status">{{ create_player_form.primary_badges|addclass:"form-control form-control-sm mb-2 list-select" }}<hr></span>
-                                        <label for="secondary_badges" class="fw-bold label label-primary">Secondary Badges (16 points available)</label>
+                                        <label for="secondary_badges" class="fw-bold label label-primary">Secondary Badges (18 points available)</label>
                                         <span hx-post="{% url 'check_creation_spent' %}" hx-trigger="click" hx-target="#spent-status">{{ create_player_form.secondary_badges|addclass:"form-control form-control-sm mb-2 list-select" }}<hr></span>
                                     </div>
                                     <div class="mt-2 mb-2">
