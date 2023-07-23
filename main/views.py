@@ -251,7 +251,6 @@ def upgrade_player(request, id):
     # Check if player has been integrated
     if not player.primary_attributes or not player.secondary_attributes or not player.primary_badges or not player.secondary_badges:
         return redirect(integrate_player)
-    return HttpResponse("Upgrading is closed while we integrate the new system.")
     # Check if the user has permission to upgrade this player
     if not player.discord_user == user:
         return HttpResponse("Sorry, you don't have permission to upgrade this player!")
