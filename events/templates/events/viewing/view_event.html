@@ -36,8 +36,12 @@
                 <hr>
                 <h2>Entrees</h2>
                 {% for entree in entrees %}
-                    <a href="{% url 'player' entree.player.id %}">View</a> <span>(${{ entree.player.spent }}) ({{ entree.player.primary_position }}/{{ entree.player.secondary_position }}) {{ entree.player.first_name }} {{ entree.player.last_name }}</span><br>
+                    <a href="{% url 'player' entree.player.id %}" class="btn btn-primary btn-sm text-white">View</a> <span id="{{ entree.player.id }}" type="button" class="copyJSON btn btn-primary btn-sm text-white" onClick="clipboard(this.id)">Export</span><span class="ml-2"> (${{ entree.player.spent }}) ({{ entree.player.primary_position }}/{{ entree.player.secondary_position }}) {{ entree.player.first_name }} {{ entree.player.last_name }}</span><br>
+                    <p style="display: none;" id="json_{{ entree.player.id }}" class="file" style="font-size: 6px;">{{ entree.player.id|jsonfile }}</p>
                 {% endfor %}
+
+                <script src="{% static 'main/js/players/copyJSON.js' %}"></script>
+
             </div>
         </div>
     </div>

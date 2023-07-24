@@ -1,6 +1,13 @@
+# Django imports
 from django import template
+
+# Main imports
+from main.models import Player
+
+# Main imports
 from ..league.extra import convert as league_converters
 from ..league.player import style as player_style
+from ..league.player import export as player_export
 
 register = template.Library()
 
@@ -58,3 +65,13 @@ def get_percentage(made, attempted):
         return round(made / attempted * 100, 1)
     except Exception:
         return "00.0"
+    
+@register.filter(name="jsonfile")
+def jsonfile(id):
+    # Check if player exists
+    if not Player.objects.filter(id=id).exists():
+        return None
+    # Get the player object
+    player = Player.objects.get(id=id)
+    # Check if the player has a json file
+    return player_export.export_player(player)
