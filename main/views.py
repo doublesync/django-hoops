@@ -236,6 +236,8 @@ def player(request, id):
         "possible_relatives": possible_relatives,
         # Daily rewards
         "has_collected_today": has_collected_today,
+        # Total badge points
+        "total_badge_points": hoops_player_upgrade.total_badge_points(plr)
     }
     return render(request, "main/players/player.html", context)
 

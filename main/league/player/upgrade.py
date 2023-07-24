@@ -199,3 +199,12 @@ def createUpgrade(player, cleanedFormData):
         # Return success message
         return f"✅ Congrats, you upgraded your player for ${totalCost}!"
     
+def total_badge_points(player):
+    primary_total = 0
+    secondary_total = 0
+    if player.primary_badges and player.secondary_badges:
+        for badge in player.primary_badges:
+            primary_total += league_config.badge_weights[badge]
+        for badge in player.secondary_badges:
+            secondary_total += league_config.badge_weights[badge]
+    return [primary_total, secondary_total]
