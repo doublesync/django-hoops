@@ -37,5 +37,6 @@ class Command(BaseCommand):
                     else:
                         player.secondary_badges.append(badge_str)
         # Save the player
+        player.upgrades_pending = True
         player.save()
         self.stdout.write(self.style.SUCCESS(f"{player.first_name} {player.last_name} has been updated successfully (added {badge_str})."))
