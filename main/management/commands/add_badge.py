@@ -27,9 +27,15 @@ class Command(BaseCommand):
                 raise CommandError(f"Player {player.first_name} {player.last_name} does not have any primary or secondary badges.")
             else:
                 if badge_type == 'primary':
-                    player.primary_badges.append(badge_str)
+                    if badge_str in player.primary_badges:
+                        raise CommandError(f"Player {player.first_name} {player.last_name} already has the {badge_str} badge.")
+                    else:
+                        player.primary_badges.append(badge_str)
                 elif badge_type == 'secondary':
-                    player.secondary_badges.append(badge_str)
+                    if badge_str in player.secondary_badges:
+                        raise CommandError(f"Player {player.first_name} {player.last_name} already has the {badge_str} badge.")
+                    else:
+                        player.secondary_badges.append(badge_str)
         # Save the player
         player.save()
         self.stdout.write(self.style.SUCCESS(f"{player.first_name} {player.last_name} has been updated successfully (added {badge_str})."))
