@@ -31,9 +31,12 @@ class Command(BaseCommand):
                     if badge_str in player.primary_badges:
                         raise CommandError(f"Player {player.first_name} {player.last_name} already has the {badge_str} badge.")
                     else:
+                        # Remove the badge from the secondary badges if it exists
+                        if badge_str in player.secondary_badges:
+                            player.secondary_badges.remove(badge_str)
                         player.primary_badges.append(badge_str)
                 elif badge_type == 'secondary':
-                    if badge_str in player.secondary_badges:
+                    if badge_str in player.secondary_badges or badge_str in player.primary_badges:
                         raise CommandError(f"Player {player.first_name} {player.last_name} already has the {badge_str} badge.")
                     else:
                         player.secondary_badges.append(badge_str)
