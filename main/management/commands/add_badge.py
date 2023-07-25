@@ -1,4 +1,5 @@
 from main.league import config as league_config
+from main.league.player import physicals as player_physicals
 from main.models import Player
 from django.core.management.base import BaseCommand, CommandError
 
@@ -38,5 +39,8 @@ class Command(BaseCommand):
                         player.secondary_badges.append(badge_str)
         # Save the player
         player.upgrades_pending = True
-        player.save()
+        # Update the player's physical attributes
+        updated_player = player_physicals.setStartingPhysicals(player)
+        # Save the player
+        updated_player.save()
         self.stdout.write(self.style.SUCCESS(f"{player.first_name} {player.last_name} has been updated successfully (added {badge_str})."))
