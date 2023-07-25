@@ -1671,7 +1671,7 @@ def check_free_agent_search(request):
             free_agent_players = Player.objects.all().order_by("-spent")
             # Custom search phrase
             if search == "free agents":
-                results = free_agent_players.filter(current_team=None)
+                results = free_agent_players.filter(current_team=None, contract_ends_after=league_config.current_season)
             else:
                 # Check for players based on first and last name
                 results = free_agent_players.filter(
