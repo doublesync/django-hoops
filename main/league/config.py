@@ -8,7 +8,7 @@
 
 current_season = 2
 
-max_players = 10
+max_players = 1
 primary_currency_start = 1000
 primary_currency_max = 100000
 max_weekly_earnings = 2000  # per/week

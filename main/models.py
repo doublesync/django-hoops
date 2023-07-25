@@ -86,7 +86,7 @@ class Player(models.Model):
     cap_hit = models.PositiveBigIntegerField(name="cap_hit", default=0)
     spent = models.PositiveBigIntegerField(name="spent", default=0)
     # Player Contract Details
-    contract_ends_after = models.SmallIntegerField(default=1)
+    contract_ends_after = models.SmallIntegerField(default=999)
     contract_option = models.CharField(
         max_length=54,
         choices=league_config.contract_option_choices,
