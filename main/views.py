@@ -985,12 +985,18 @@ def check_player_search(request):
     if request.method == "POST":
         search = request.POST.get("search")
         if search:
-            # Check for players based on first and last name
-            players = Player.objects.filter(
-                Q(first_name__icontains=search)
-                | Q(last_name__icontains=search)
-                | Q(discord_user__discord_tag__icontains=search)
-            )
+            print(search)
+            # Special search phrases
+            if search == "free agents":
+                players = Player.objects.filter(contract_ends_after=league_config.current_season)
+                print(players)
+            else:
+                # Check for players based on first and last name
+                players = Player.objects.filter(
+                    Q(first_name__icontains=search)
+                    | Q(last_name__icontains=search)
+                    | Q(discord_user__discord_tag__icontains=search)
+                )
             # Check if there were any players found
             if not players:
                 return HttpResponse("<p class='text-danger'>No players found!</p>")
@@ -1663,15 +1669,19 @@ def check_free_agent_search(request):
         if search:
             # Get players
             free_agent_players = Player.objects.all().order_by("-spent")
-            # Check for players based on first and last name
-            results = free_agent_players.filter(
-                Q(first_name__icontains=search)
-                | Q(last_name__icontains=search)
-                | Q(discord_user__discord_tag__icontains=search)
-            )
-            # Check if there were any players found
-            if not results:
-                return HttpResponse("<p class='text-danger'>No results found!</p>")
+            # Custom search phrase
+            if search == "free agents":
+                results = free_agent_players.filter(current_team=None)
+            else:
+                # Check for players based on first and last name
+                results = free_agent_players.filter(
+                    Q(first_name__icontains=search)
+                    | Q(last_name__icontains=search)
+                    | Q(discord_user__discord_tag__icontains=search)
+                )
+                # Check if there were any players found
+                if not results:
+                    return HttpResponse("<p class='text-danger'>No results found!</p>")
             # Create the context
             context = {
                 "page": results,
