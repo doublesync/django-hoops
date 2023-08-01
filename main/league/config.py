@@ -6,7 +6,7 @@
 # main league application.
 # ------------------------------------------------
 
-current_season = 2
+current_season = 3
 
 max_players = 1
 primary_currency_start = 1000
