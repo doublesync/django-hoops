@@ -81,14 +81,16 @@ def home(request):
     current_user = request.user
     # Find the game of the day for the past three days
     gotd_list = []
-    gotd_list.append(stats_compile.game_of_the_day(season=league_config.current_season))
-    day_index = gotd_list[0]["day"]
-    for _ in range (2):
-        day_index -= 1
-        if day_index > 0:
-            gotd_list.append(stats_compile.game_of_the_day(season=league_config.current_season, specific=day_index))
-        else:
-            break
+    gotd_return = stats_compile.game_of_the_day(season=league_config.current_season)
+    if gotd_return:
+        gotd_list.append(gotd_return)
+        day_index = gotd_list[0]["day"]
+        for _ in range (2):
+            day_index -= 1
+            if day_index > 0:
+                gotd_list.append(stats_compile.game_of_the_day(season=league_config.current_season, specific=day_index))
+            else:
+                break
     # Create the context
     context = {
         "title": "Home",
