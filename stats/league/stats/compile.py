@@ -81,7 +81,7 @@ def top_performers(season):
     # Find the top performers for each day
     for day in days:
         # Find the statlines in the day
-        day_statlines = Statline.objects.filter(game__day=day)
+        day_statlines = Statline.objects.filter(game__season=season, game__day=day)
         # Create the top performers dictionary
         top_performers = []
         # Find the top performers
