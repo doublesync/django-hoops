@@ -10,7 +10,7 @@
 # ------------------------------------------------
 # These are the settings for the stats application.
 # ------------------------------------------------
-active_seasons = [1, 2]
+active_seasons = [2, 3]
 
 #  Statline Validations
 # ------------------------------------------------

@@ -38,7 +38,7 @@ def index(request):
     # Create the context
     context = {
         "active_seasons": stats_config.active_seasons,
-        "recent_games": Game.objects.all().order_by("-day")[:8],
+        "recent_games": Game.objects.filter(season=league_config.current_season).order_by("-day")[:3],
         "current_season": stats_compile.one_season(league_config.current_season),
         "season_id": league_config.current_season,
     }
