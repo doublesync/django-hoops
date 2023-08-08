@@ -183,7 +183,7 @@ def player(request, id):
                 week_earnings += t.amount
     # Get the player's stats
     player_career_stats = stats_compile.player_stats(player=plr, career=True, season=None)
-    player_game_logs = stats_compile.player_game_logs(player=plr, x=10)
+    player_game_logs = stats_compile.player_game_logs(player=plr, season=league_config.current_season, x=10)
     # Get possible relatives
     possible_relatives = Player.objects.filter(last_name=plr.last_name).values_list("id", "first_name")
     # Check if player has claimed daily reward

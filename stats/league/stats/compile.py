@@ -201,11 +201,11 @@ def career_stats(player):
     return player_career_stats
 
 # Compile player's last (x) games
-def player_game_logs(player, x):
+def player_game_logs(player, season, x):
     # Create the 'player_game_logs' dictionary
     player_game_logs = []
     # Filter based on day, limit to (x)
-    last_x_statlines = Statline.objects.filter(player=player).order_by("-game__day")[:x]
+    last_x_statlines = Statline.objects.filter(player=player, game__season=season).order_by("-game__day")[:x]
     # Add each statline to the dictionary
     for line in last_x_statlines:
         player_game_logs.append({
