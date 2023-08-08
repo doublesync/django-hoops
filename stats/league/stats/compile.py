@@ -262,7 +262,7 @@ def game_of_the_day(season, specific=None):
     # Find the latest (highest) day in the season
     latest_day = Game.objects.filter(season=season).latest("day").day if not specific else specific 
     # Find the statlines in the latest day
-    day_games = Statline.objects.filter(game__day=latest_day)
+    day_games = Statline.objects.filter(game__season=season, game__day=latest_day)
     gotd = None
     # Find the game of the day
     for line in day_games:
