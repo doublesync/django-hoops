@@ -124,6 +124,7 @@ def validate_game(request):
     if request.method == "POST":
         # Get the form data
         day = request.POST.get("day")
+        season = request.POST.get("season")
         home_team = request.POST.get("home_team")
         away_team = request.POST.get("away_team")
         home_score = request.POST.get("home_score")
@@ -168,8 +169,8 @@ def validate_game(request):
                 hps[stat] = int(value)
         # Check if a game with the same teams and day exists (even if they are different home/away)
         if Game.objects.filter(
-            Q(home=home_team_object, away=away_team_object, day=day) | 
-            Q(home=away_team_object, away=home_team_object, day=day)
+            Q(home=home_team_object, away=away_team_object, day=day, season=season) |
+            Q(home=away_team_object, away=home_team_object, day=day, season=season)
         ).exists():
             return HttpResponse("❌ Game already exists!")
         # Create the game object
