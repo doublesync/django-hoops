@@ -392,7 +392,9 @@ def free_agents(request):
         "current_season": league_config.current_season,
     }
     # Get all league players that contracts_end_after
-    free_agent_players = Player.objects.all().order_by("-spent")
+    order_by = request.GET.get('order_by', '-spent')
+    free_agent_players = Player.objects.all().order_by(order_by)
+
     # Paginate the league players
     paginator = Paginator(free_agent_players, 10)
     page_number = request.GET.get("page")
