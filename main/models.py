@@ -118,6 +118,8 @@ class Player(models.Model):
     badges = models.JSONField(default=league_config.get_default_badges)
     hotzones = models.JSONField(default=league_config.get_default_hotzones)
     tendencies = models.JSONField(default=league_config.get_default_tendencies)
+    # Spent rewards
+    badge_upgrades_given = models.PositiveSmallIntegerField(default=0)
     # Player Methods
     def __str__(self):
         return f"[{self.id}] {self.first_name} {self.last_name}"
