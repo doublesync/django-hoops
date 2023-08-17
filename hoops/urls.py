@@ -21,5 +21,6 @@ urlpatterns = [
     path(route='stats/', view=include('stats.urls')),
     path(route='polls/', view=include('polls.urls')),
     path(route='events/', view=include('events.urls')),
+    path(route='wrestling/', view=include('wrestling.urls')),
     path(route='admin/', view=admin.site.urls),
 ]

@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "stats",
     "polls",
     "events",
+    "wrestling",
     # Third Party Apps
     "jsoneditor",
     "mathfilters",
