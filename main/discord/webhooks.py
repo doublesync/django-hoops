@@ -12,7 +12,7 @@ webhook_urls = {
 
 default_webhook_msg = "Webhook test message"
 
-
+# Send a webhook
 def send_webhook(url, title="", message=""):
     # Create the webhook
     webhook = DiscordWebhook(url=webhook_urls[url])
