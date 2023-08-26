@@ -72,7 +72,6 @@ urlpatterns = [
 
     # API URL patterns
     path('players/cyberfaces/api/', views.cyberface_check, name='cyberface_check'),
-    # path('players/auto-collect/', views.auto_collect, name='auto_collect'),
-    # path('players/add-badge/', views.add_badge, name='add_badge'),
+    path('players/auto-collect/', views.auto_collect, name='auto_collect'),
 
 ]

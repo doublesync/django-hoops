@@ -34,9 +34,6 @@ class MyAdmin(admin.ModelAdmin):
         # Get the original object from the database
         original_obj = self.model.objects.get(pk=obj.pk)
 
-        # Create a string with the changes
-        pasteText = ""
-
         # Compare the fields to find the changes
         changed_fields = []
         for field in obj._meta.fields:
