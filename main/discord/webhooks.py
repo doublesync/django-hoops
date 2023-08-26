@@ -7,6 +7,7 @@ webhook_urls = {
     "cash": "https://discord.com/api/webhooks/1093686733318672424/G6Dondhfu84ytVtB3vglQ8Lbol_LGdg7TDy0mlH-O5fPWL6LowcAYPE4_6NA2OzErttw",
     "trade": "https://discord.com/api/webhooks/1095495035899883630/RUOqYoUltS8niJUfh3TQyYcxwwwAHNVVGeVeyJccg9FDB7tlWOA0NzTsWDQz3-5SJYbU",
     "style": "https://discord.com/api/webhooks/1115065068732825661/btBZaLvR-PjIR3wygStkGLfuQNX9fkxkcGdEB8Cga8C2MhmTsoUSc9FP-JFrEdkzE85x",
+    "panel_logs": "https://discord.com/api/webhooks/1145056579549409360/PEd14xYdlca6dl2HP7EfomocBXHp_Lt9EexVSHlP3WimF1f1sDf64wfK2tVjNVXN-ohV",
 }
 
 default_webhook_msg = "Webhook test message"
@@ -23,3 +24,4 @@ def send_webhook(url, title="", message=""):
     webhook.add_embed(webhook_embed)
     # Send webhook
     webhook.execute()
+

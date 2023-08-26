@@ -7,6 +7,7 @@ from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.core.management import call_command
 from django.db.models import Q
 from django.db.models import Sum
 from django.template.loader import render_to_string
@@ -40,6 +41,7 @@ from stats.league.stats import compile as stats_compile
 from stats.league.stats import calculate as stats_calculate
 
 # Custom packages
+import sys
 import copy
 import json
 import random
@@ -1859,3 +1861,36 @@ def cyberface_check(request):
             used_cyberfaces[player] = True
         # Return list
         return JsonResponse(used_cyberfaces)
+    
+# @api_view(['GET'])
+# def auto_collect(request):
+#     # Get discord_id from request
+#     id = request.GET.get('discord_id')
+#     discord_user = DiscordUser.objects.filter(id=id).first()
+#     # Check if user exists
+#     if not discord_user:
+#         return HttpResponse("❌ User not found!")
+#     # Check if the user has permissions
+#     if not discord_user.can_update_players:
+#         return HttpResponse("❌ You do not have permission to do this!")
+#     # Run the auto collect checks management command
+#     call_command("auto_collect")
+#     # Return the response
+#     return HttpResponse("👍 Sent auto collect checks request.")
+
+# @api_view(['GET'])
+# def add_badge(request):
+#     # Get discord_id from request
+#     id = request.GET.get('discord_id')
+#     discord_user = DiscordUser.objects.filter(id=id).first()
+#     player_id = request.GET.get('player_id')
+#     badge_type = request.GET.get('badge_type')
+#     badge_name = request.GET.get('badge_name')
+#     # Check if user exists
+#     if not discord_user:
+#         return HttpResponse("❌ User not found!")
+#     # Check if the user has permissions
+#     if not discord_user.can_update_players:
+#         return HttpResponse("❌ You do not have permission to do this!")
+#     # Run the add badge management command
+#     call_command("add_badge", player_id, badge_type, badge_name)
