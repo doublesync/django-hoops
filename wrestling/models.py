@@ -60,3 +60,11 @@ class Wrestler(models.Model):
     # Wrestler relationships
     team = models.ForeignKey('Team', on_delete=models.CASCADE)
     manager = models.ForeignKey(DiscordUser, on_delete=models.CASCADE)
+
+class Show(models.Model):
+    
+    # Show default fields
+    name = models.CharField(max_length=100)
+    picture = models.CharField(max_length=100, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    date_created = models.DateTimeField(auto_now_add=True)
