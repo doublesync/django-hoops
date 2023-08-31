@@ -58,7 +58,7 @@ class Wrestler(models.Model):
     special_matches = models.SmallIntegerField(blank=True, null=True)
 
     # Wrestler relationships
-    team = models.ForeignKey('Team', on_delete=models.CASCADE)
+    team = models.ForeignKey('Team', blank=True, null=True, on_delete=models.CASCADE)
     manager = models.ForeignKey(DiscordUser, on_delete=models.CASCADE)
 
 class Show(models.Model):
@@ -68,3 +68,21 @@ class Show(models.Model):
     picture = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
+
+class Title(models.Model):
+
+    # Title default fields
+    name = models.CharField(max_length=100)
+    picture = models.CharField(max_length=100, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+class Reign(models.Model):
+
+    # Reign default fields
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    # Reign relationships
+    title = models.ForeignKey('Title', on_delete=models.CASCADE)
+    wrestler = models.ForeignKey('Wrestler', on_delete=models.CASCADE)
+    show = models.ForeignKey('Show', on_delete=models.CASCADE)
