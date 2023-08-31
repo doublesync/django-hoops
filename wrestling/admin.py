@@ -9,6 +9,8 @@ from jsoneditor.forms import JSONEditor
 from .models import Team
 from .models import Wrestler
 from .models import Show
+from .models import Title
+from .models import Reign
 
 # Override the default JSONField widget with the JSONEditor widget
 class MyAdmin(admin.ModelAdmin):
@@ -21,3 +23,5 @@ class MyAdmin(admin.ModelAdmin):
 admin.site.register(Team, MyAdmin)
 admin.site.register(Wrestler, MyAdmin)
 admin.site.register(Show, MyAdmin)
+admin.site.register(Title, MyAdmin)
+admin.site.register(Reign, MyAdmin)
