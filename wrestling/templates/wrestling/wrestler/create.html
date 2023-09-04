@@ -1,0 +1,149 @@
+{% extends 'main/base.html' %}
+{% load main_filters %}
+
+{% block content %}
+
+    <section class="py-4 py-xl-5">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-md-10 col-xl-8 text-center d-flex d-sm-flex d-md-flex justify-content-center align-items-center mx-auto justify-content-md-start align-items-md-center justify-content-xl-center">
+                    <div>
+                        <h2 class="text-uppercase fw-bold mb-3">CREATE A PLAYER</h2>
+                        <p class="mb-4">Create a player by filling out the form below.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="py-4 py-xl-5">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+                        <div class="card mb-5">
+                            <div class="card-body p-sm-5">
+                                <h3 class="text-uppercase fw-bold mb-2">REGISTER</h3>
+                                <form>
+                                    {% csrf_token %}
+                                    <!-- Section 1 -->
+                                    <hr><div>
+                                        <label for="discord_handle" class="label label-primary mb-2">Discord Handle</label>
+                                        <input name="discord_handle" type="text" class="form-control form-control-sm mb-2" placeholder="Enter discord handle"></input>
+                                        <label for="twitch_handle" class="label label-primary mb-2">Twitch Handle</label>
+                                        <input name="twitch_handle" type="text" class="form-control form-control-sm mb-2" placeholder="Enter twitch handle"></input>     
+                                    </div><hr>
+                                    <!-- Wrestler name -->
+                                    <div>
+                                        <!-- Wrestler name -->
+                                        <label for="wrestler_name" class="label label-primary mb-2">Wrestler Name</label>
+                                        <input name="wrestler_name" type="text" class="form-control form-control-sm mb-2" placeholder="A full name, not a gimmick name"></input>
+                                        <!-- Origin story -->
+                                        <label for="origin_story" class="label label-primary mb-2">Origin Story</label>
+                                        <input name="origin_story" type="text" class="form-control form-control-sm mb-2" placeholder="Enter short origin story"></input>     
+                                        <!-- Nationality -->
+                                        <label for="nationality" class="label label-primary mb-2">Nationality</label>
+                                        <input name="nationality" type="text" class="form-control form-control-sm mb-2" placeholder="Enter nationality or country"></input>  
+                                        <!-- Appearance detailils -->
+                                        <label for="appearance" class="label label-primary mb-2">Appearance</label>
+                                        <input name="appearance" type="text" class="form-control form-control-sm mb-2" placeholder="Enter appearance details"></input>
+                                        <p class="small">Please include: skin color, body type, hair, facial hair, height and weight.</p>
+                                        <!-- Gender -->
+                                        <label for="gender" class="label label-primary mb-2">Gender</label>
+                                        <select class="form-select mb-2" name="gender">
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                        <hr>
+                                            <p class="small">These will have an impact on your starting attributes & potential.</p>
+                                        <hr>
+                                        <!-- Weightclass -->
+                                        <label for="weightclass" class="label label-primary mb-2">Weightclass</label>
+                                        <select class="form-select mb-2" name="weightclass">
+                                            <option value="Cruiserweight">Cruiserweight</option>
+                                            <option value="Light Heavyweight">Light Heavyweight</option>
+                                            <option value="Heavyweight">Heavyweight</option>
+                                            <option value="Super Heavyweight">Super Heavyweight</option>
+                                        </select>
+                                        <!-- Class -->
+                                        <label for="wrestler_class" class="label label-primary mb-2">Wrestler Class</label>
+                                        <select class="form-select mb-2" name="class">
+                                            <option value="Striker">Striker</option>
+                                            <option value="Technician">Technician</option>
+                                            <option value="Powerhouse">Powerhouse</option>
+                                            <option value="High Flyer">High Flyer</option>
+                                        </select>
+                                        <!-- Former profession -->
+                                        <label for="former_profession" class="label label-primary mb-2">Former Profession</label>
+                                        <select class="form-select mb-2" name="former_profession">
+                                            <option>MMA Fighter</option>
+                                            <option>Pro Athlete</option>
+                                            <option>Pro Wrestler</option>
+                                            <option>Actor</option>
+                                        </select>
+                                        <!-- Age -->
+                                        <hr>
+                                            <p class="small">Young wrestlers start with lower attributes, but have a higher potential.</p>
+                                            <p class="small">Older wrestlers start with higher attributes, but have a lower potential.</p>
+                                        <hr>
+                                        <label for="age" class="label label-primary mb-2">Age</label>
+                                        <select class="form-select mb-2" name="age">
+                                            <option>Mid Twenties</option>
+                                            <option>Early Thirties</option>
+                                            <option>Mid Thirties</option>
+                                            <option>Early Fourties</option>
+                                            <option>Mid Fourties</option>
+                                        </select><hr>
+                                        <!-- Attire -->
+                                        <label for="attire" class="label label-primary mb-2">Attire</label>
+                                        <input name="attire" type="text" class="form-control form-control-sm mb-2" placeholder="Enter attire details"></input>
+                                        <!-- Colorscheme -->
+                                        <label for="colorscheme" class="label label-primary mb-2">Colorscheme</label>
+                                        <input name="colorscheme" type="text" class="form-control form-control-sm mb-2" placeholder="Enter your wrestlers colorscheme"></input>
+                                        <!-- Entrance -->
+                                        <label for="entrance" class="label label-primary mb-2">Entrance</label>
+                                        <input name="entrance" type="text" class="form-control form-control-sm mb-2" placeholder="Enter entrance details"></input>
+                                        <p class="small">This must be a basic entrance without props.</p>
+                                        <!-- Moveset -->
+                                        <label for="moveset" class="label label-primary mb-2">Moveset</label>
+                                        <select class="form-select mb-2" name="moveset">
+                                        </select>
+                                        <hr>
+                                            <p class="small">Choose a number between -100 & +100.</p>
+                                        <hr>
+                                        <!-- Egotistical or prideful -->
+                                        <label for="prideful" class="label label-primary mb-2">Egotistical or Prideful</label>
+                                        <input name="prideful" type="number" class="form-control form-control-sm mb-2" value="0"></input>
+                                        <!-- Disrespectful or respectful -->
+                                        <label for="respectful" class="label label-primary mb-2">Disrespectful or Respectful</label>
+                                        <input name="respectful" type="number" class="form-control form-control-sm mb-2" value="0"></input>
+                                        <!-- Desperate or perserverant -->
+                                        <label for="perserverant" class="label label-primary mb-2">Desperate or Perserverant</label>
+                                        <input name="perserverant" type="number" class="form-control form-control-sm mb-2" value="0"></input>
+                                        <!-- Treacherous or loyal -->
+                                        <label for="loyal" class="label label-primary mb-2">Treacherous or Loyal</label>
+                                        <input name="loyal" type="number" class="form-control form-control-sm mb-2" value="0"></input>
+                                        <!-- Cowardly or bold -->
+                                        <label for="bold" class="label label-primary mb-2">Cowardly or Bold</label>
+                                        <input name="bold" type="number" class="form-control form-control-sm mb-2" value="0"></input>
+                                        <!-- Aggressive or Disciplined -->
+                                        <label for="disciplined" class="label label-primary mb-2">Aggressive or Disciplined</label>
+                                        <input name="disciplined" type="number" class="form-control form-control-sm mb-2" value="0"></input>
+                                    </div><hr>
+                                    <!-- Subscribe -->
+                                    <hr>
+                                        <p class="small">If you haven't yet, please follow our <a href="https://www.twitch.tv/yawn_ttv">twitch channel.</a></p>
+                                    <hr>
+                                    <hr>
+                                        <p name="wrestler-status" id="wrestler-status" class="small">✅ Successful, this is a test status!</a></p>
+                                    <hr>
+                                    <!-- Submission -->
+                                    <!-- Send request using HTMX (validate and create wrestler from there) -->
+                                    <!-- Target element is called #wrestler-status -->
+                                    <input type="submit" class="btn btn-success mt-1" value="Create Wrestler">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock %}
