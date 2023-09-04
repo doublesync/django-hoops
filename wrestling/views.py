@@ -27,7 +27,10 @@ def index(request):
 # Wrestler views
 @login_required(login_url="/login/discord/")
 def wrestler_create(request):
-    return render(request, 'wrestling/wrestler_create.html')
+    context = {
+        
+    }
+    return render(request, 'wrestling/wrestler/create.html', context=context)
 
 def wrestler_profile(request, wrestler_id):
     return render(request, 'wrestling/wrestler_profile.html')
