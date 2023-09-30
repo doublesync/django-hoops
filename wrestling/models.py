@@ -4,6 +4,9 @@ from django.db import models
 # Main imports
 from main.models import DiscordUser
 
+# Custom imports
+from .league import config as league_config
+
 # Wrestling models
 class Team(models.Model):
     name = models.CharField(max_length=100)
@@ -27,8 +30,8 @@ class Wrestler(models.Model):
     accolades = models.TextField(blank=True, null=True)
 
     # Wrestler attribute fields
-    total_xp = models.SmallIntegerField()
-    attributes = models.JSONField()
+    total_xp = models.SmallIntegerField(default=0)
+    attributes = models.JSONField(default=league_config.starting_attributes)
 
     # Wrestler profile fields
     profession = models.CharField(max_length=100) # has choices
@@ -40,9 +43,9 @@ class Wrestler(models.Model):
     story = models.TextField(blank=True, null=True)
 
     # Wrestler image fields
-    profile_picture = models.CharField(max_length=100)
-    payback_one_picture = models.CharField(max_length=100)
-    payback_two_picture = models.CharField(max_length=100)
+    profile_picture = models.CharField(max_length=100, blank=True, null=True)
+    payback_one_picture = models.CharField(max_length=100, blank=True, null=True)
+    payback_two_picture = models.CharField(max_length=100, blank=True, null=True)
 
     # wrestler move fields
     move_set = models.CharField(max_length=100) # has choices

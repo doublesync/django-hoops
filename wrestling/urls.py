@@ -22,5 +22,9 @@ urlpatterns = [
 
     # Shows URL Patterns
     path(route='shows', view=views.wrestling_shows, name='wrestling_shows'),
+
+    # HTMX URL Patterns
+    path(route='htmx/wrestler/create/', view=views.htmx_wrestler_create, name='htmx_wrestler_create'),
+    
     
 ]

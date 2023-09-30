@@ -10,6 +10,9 @@
 # -----------------------------------------------------
 # These are the settings for the wrestling application.
 # -----------------------------------------------------
+
+max_wrestlers = 1
+
 initial_attributes = {
     # Miscanellous Category
     "In-Ring": 0,
